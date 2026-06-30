@@ -71,7 +71,7 @@ body { margin:0; background:#121414; min-height:100vh; }
 </div>
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
   <div style="flex:1; min-width:150px;"><label class="cap">Hướng luyện</label>
-    <select id="dir"><option value="read">Đọc: kana → romaji</option><option value="write">Viết: romaji → kana (canvas)</option><option value="meaning">Nghĩa → viết/gõ kana</option></select></div>
+    <select id="dir"><option value="read">Đọc: kana → romaji</option><option value="write">Viết: romaji → kana (canvas)</option><option value="meaning">Nghĩa → viết/gõ kana</option><option value="listen">Nghe → gõ/nhớ kana 🔊</option></select></div>
   <div style="flex:1; min-width:150px;"><label class="cap">Cách chọn câu</label>
     <select id="algo">
       <option value="uniform">Ngẫu nhiên đều</option>
@@ -345,7 +345,11 @@ body { margin:0; background:#121414; min-height:100vh; }
 <div style="display:flex; gap:10px; margin-bottom:10px;">
   <button class="btn" id="statBtn" style="flex:1;">Xem thống kê (▾)</button>
   <button class="btn" id="gramBtn" style="flex:1;">Ngữ pháp theo bài (▾)</button>
+  <button class="btn" id="kanaChartBtn" style="flex:1;">Bảng tra kana (▾)</button>
 </div>
+<div id="kanaChartBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:12px;">
+  <div id="kanaChartList"></div>
+</div></div>
 <div id="gramBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:12px;">
   <label class="cap">Điểm ngữ pháp của bài</label>
   <select id="gramSel"></select>

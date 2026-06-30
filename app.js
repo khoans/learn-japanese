@@ -1189,9 +1189,15 @@ function nextCard(forced) {
     card = pick;
     cardDir = (dir === 'meaning' && !(pick[2] && pick[2].length > 0)) ? 'read' : dir;
     const el = $('kana');
-    const promptText = (cardDir === 'write') ? pick[1] : ((cardDir === 'meaning') ? (pick[2] || pick[1]) : pick[0]);
+    let promptText = (cardDir === 'write') ? pick[1] : ((cardDir === 'meaning') ? (pick[2] || pick[1]) : pick[0]);
+    if (cardDir === 'listen') promptText = '🔊';   // chế độ Nghe: ẩn chữ, chỉ phát âm
     el.textContent = promptText;
-    if (cardDir === 'write' || cardDir === 'meaning') {
+    if (cardDir === 'listen') {
+        el.style.fontFamily = '';
+        el.style.whiteSpace = 'nowrap';
+        el.style.lineHeight = '1.15';
+        el.style.fontSize = '88px';
+    } else if (cardDir === 'write' || cardDir === 'meaning') {
         el.style.whiteSpace = 'normal';
         el.style.lineHeight = '1.35';
         el.style.fontFamily = '';
@@ -1208,7 +1214,7 @@ function nextCard(forced) {
         el.style.fontSize = (pick[0].length >= 4 ? '60px' : (pick[0].length === 3 ? '78px' : '100px'));
     }
     const rj = $('romaji');
-    rj.textContent = (cardDir === 'read') ? pick[1] : pick[0];
+    rj.textContent = (cardDir === 'read' || cardDir === 'listen') ? pick[1] : pick[0];
     rj.style.visibility = 'hidden';
     $('ansKanji').style.display = 'none';
     $('wordMeaning').textContent = '';
@@ -1223,7 +1229,7 @@ function nextCard(forced) {
             fh.style.visibility = showFuri ? 'visible' : 'hidden';
         }
     }
-    isTypingCard = ($('typingOn').checked && (cardDir === 'read' || cardDir === 'meaning') && phase === 'running');
+    isTypingCard = ($('typingOn').checked && (cardDir === 'read' || cardDir === 'meaning' || cardDir === 'listen') && phase === 'running');
     {
         const showCanvas = phase === 'running' && (cardDir === 'write' || (cardDir === 'meaning' && !isTypingCard));
         if (showCanvas) {
@@ -1266,6 +1272,7 @@ function nextCard(forced) {
         $('typeInput').style.display = 'none';
         setCardButtons('reveal');
     }
+    if (cardDir === 'listen' && phase === 'running') speak(card[4] || card[0]);
     startTimer();
 }
 
@@ -1371,7 +1378,18 @@ function saveNoteInline() {
     if (box) box.style.display = 'none';
     showNoteBar();
 }
+function revealListenText() {
+    // Chế độ Nghe: khi lật, hiện lại câu/từ tiếng Nhật (vốn bị ẩn lúc hỏi)
+    if (cardDir !== 'listen' || !card) return;
+    const el = $('kana');
+    el.style.fontFamily = '';
+    el.style.whiteSpace = 'normal';
+    el.style.lineHeight = '1.5';
+    el.style.fontSize = (card[0].length > 24 ? '24px' : (card[0].length > 12 ? '30px' : '40px'));
+    el.textContent = card[0];
+}
 function onAnswerShown() {
+    revealListenText();
     maybeSpeak();
     showNoteBar();
 }
@@ -2555,6 +2573,30 @@ $('gramBtn').addEventListener('click', function () {
     if (show) renderGram();
 });
 $('gramSel').addEventListener('change', renderGram);
+
+function renderKanaChart() {
+    const box = $('kanaChartList');
+    if (!box) return;
+    function grid(title, rows) {
+        let h = '<div style="font-weight:600; color:#cfe6ff; margin:12px 0 6px; font-size:13px;">' + title + '</div>';
+        h += '<div style="display:flex; flex-wrap:wrap; gap:5px;">';
+        (rows || []).forEach(function (r) {
+            h += '<div style="width:46px; text-align:center; background:#1a1d1f; border:1px solid #2c2f31; border-radius:7px; padding:5px 2px;">'
+                + '<div style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:19px; color:#fff;">' + r[0] + '</div>'
+                + '<div style="font-size:10px; color:#9ecbff;">' + r[1] + '</div></div>';
+        });
+        return h + '</div>';
+    }
+    box.innerHTML = grid('Hiragana — cơ bản', H_BASIC) + grid('Hiragana — biến âm (dakuten)', H_DAKU) + grid('Hiragana — âm ghép (yōon)', H_YOON)
+        + grid('Katakana — cơ bản', K_BASIC) + grid('Katakana — biến âm', K_DAKU) + grid('Katakana — âm ghép', K_YOON);
+}
+if ($('kanaChartBtn')) $('kanaChartBtn').addEventListener('click', function () {
+    const b = $('kanaChartBox');
+    const show = b.style.display === 'none';
+    b.style.display = show ? 'block' : 'none';
+    $('kanaChartBtn').textContent = 'Bảng tra kana ' + (show ? '(▴)' : '(▾)');
+    if (show) renderKanaChart();
+});
 document.querySelectorAll('.keybtn').forEach(function (btn) {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.keybtn').forEach(function (b) {
