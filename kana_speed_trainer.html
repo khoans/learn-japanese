@@ -204,6 +204,8 @@ body { margin:0; background:#121414; min-height:100vh; }
 </div>
 <div class="panel" style="padding:8px 12px; margin-bottom:14px; display:flex; align-items:center; gap:10px; font-size:13px; flex-wrap:wrap;">
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="practiceOn"> Luyện thử (không tính điểm/thống kê)</label>
+  <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="audioOn"> 🔊 Tự đọc khi hiện đáp án</label>
+  <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="furiOn"> Furigana (cách đọc trên kanji)</label>
 </div>
 </details>
 </div><div class="main">
@@ -213,6 +215,7 @@ body { margin:0; background:#121414; min-height:100vh; }
   <button class="btn red" id="stopBtn" style="flex:1; height:44px;" disabled>⏹ Dừng</button>
 </div>
 <div class="panel" id="cardPanel" style="padding:28px 14px; text-align:center; margin-bottom:14px; min-height:120px; display:flex; flex-direction:column; justify-content:center;">
+  <div id="furiHint" style="font-family:'Hiragino Sans','Noto Sans JP',sans-serif; font-size:18px; color:#9ecbff; min-height:0; margin-bottom:2px; visibility:hidden;"></div>
   <div id="kana" style="font-size:100px; line-height:1.15; color:#fff;">ー</div>
   <div id="ansKanji" style="display:none; font-size:46px; line-height:1.2; color:#fff; font-family:'Hiragino Sans','Noto Sans JP',sans-serif; margin-top:4px;"></div>
   <div id="romaji" style="font-size:24px; color:#9ecbff; min-height:32px; visibility:hidden; margin-top:6px;">a</div>
@@ -234,6 +237,7 @@ body { margin:0; background:#121414; min-height:100vh; }
     </div>
   </div>
   <div id="timeNow" style="font-size:13px; color:#9aa0a6; min-height:16px; margin-top:6px;">Bấm ▶ Bắt đầu để luyện</div>
+  <div><button class="btn small" id="speakBtn" style="margin-top:8px;">🔊 Nghe</button></div>
 </div>
 <div id="drawWrap" style="display:none; margin-bottom:14px; text-align:center;">
   <div style="display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; margin-bottom:8px; font-size:12px; color:#9aa0a6;">

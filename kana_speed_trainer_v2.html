@@ -375,6 +375,8 @@ table{ width:100%; border-collapse:collapse; }
 </div>
 <div class="strip" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="practiceOn"> Luyện thử (không tính điểm/thống kê)</label>
+  <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="audioOn"> 🔊 Tự đọc khi hiện đáp án</label>
+  <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="furiOn"> Furigana (cách đọc trên kanji)</label>
 </div>
 </div>
 </details>
@@ -385,6 +387,7 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn red" id="stopBtn" disabled>⏹ Dừng</button>
 </div>
 <div class="panel" id="cardPanel">
+  <div id="furiHint" style="font-family:var(--fjps); font-size:18px; color:var(--slate); min-height:0; margin-bottom:2px; visibility:hidden; position:relative; z-index:1;"></div>
   <div id="kana" style="font-size:96px;">ー</div>
   <div id="ansKanji" style="display:none; font-size:46px;"></div>
   <div id="romaji" style="visibility:hidden;">a</div>
@@ -406,6 +409,7 @@ table{ width:100%; border-collapse:collapse; }
     </div>
   </div>
   <div id="timeNow">Bấm ▶ Bắt đầu để luyện</div>
+  <div><button class="btn small" id="speakBtn" style="margin-top:10px; position:relative; z-index:1;">🔊 Nghe</button></div>
 </div>
 <div id="drawWrap" style="display:none; margin-bottom:14px; text-align:center;">
   <div style="display:flex; gap:7px; align-items:center; justify-content:center; flex-wrap:wrap; margin-bottom:8px; font-size:12px;" class="muted">

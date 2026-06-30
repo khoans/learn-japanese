@@ -1123,6 +1123,16 @@ function nextCard(forced) {
     $('ansKanji').style.display = 'none';
     $('wordMeaning').textContent = '';
     $('timeNow').textContent = '';
+    {
+        // Furigana: hiện cách đọc kana phía trên khi đề là chữ kanji (chỉ chế độ Đọc)
+        var fh = $('furiHint');
+        if (fh) {
+            var showFuri = $('furiOn') && $('furiOn').checked && cardDir === 'read'
+                && mode !== 'sent' && card[5] && card[4] && card[4] !== card[0];
+            fh.textContent = showFuri ? card[4] : '';
+            fh.style.visibility = showFuri ? 'visible' : 'hidden';
+        }
+    }
     isTypingCard = ($('typingOn').checked && (cardDir === 'read' || cardDir === 'meaning') && phase === 'running');
     {
         const showCanvas = phase === 'running' && (cardDir === 'write' || (cardDir === 'meaning' && !isTypingCard));
@@ -1165,6 +1175,43 @@ function nextCard(forced) {
     startTimer();
 }
 
+/* ===== Phát âm (Web Speech API — miễn phí, client-side) ===== */
+let _jaVoice = null;
+function pickJaVoice() {
+    try {
+        const vs = speechSynthesis.getVoices();
+        _jaVoice = vs.filter(function (v) {
+            return /ja[-_]?JP/i.test(v.lang) || /japanese/i.test(v.name);
+        })[0] || _jaVoice;
+    } catch (e) {
+    }
+}
+if (typeof speechSynthesis !== 'undefined') {
+    pickJaVoice();
+    try {
+        speechSynthesis.onvoiceschanged = pickJaVoice;
+    } catch (e) {
+    }
+}
+function speak(text) {
+    if (!text || typeof speechSynthesis === 'undefined') return;
+    try {
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(String(text));
+        u.lang = 'ja-JP';
+        if (_jaVoice) u.voice = _jaVoice;
+        u.rate = 0.95;
+        speechSynthesis.speak(u);
+    } catch (e) {
+    }
+}
+function speakCurrent() {
+    if (card) speak(card[4] || card[0]); // card[4] = cách đọc kana (không nhập nhằng âm Hán)
+}
+function maybeSpeak() {
+    if ($('audioOn') && $('audioOn').checked) speakCurrent();
+}
+
 function reveal() {
     if (phase !== 'running' || isRevealed) return;
     clearTimer();
@@ -1177,6 +1224,7 @@ function reveal() {
     isRevealed = true;
     setCardButtons('grade');
     k130ShowEditBar();
+    maybeSpeak();
 }
 
 function recordItem(field, ms) {
@@ -1236,6 +1284,7 @@ function doTimeout() {
         $('timeNow').innerHTML = '<span style="color:#9aa0a6;">⏱ Hết giờ (không tính)</span>';
         setCardButtons('next');
         k130ShowEditBar();
+        maybeSpeak();
         return;
     }
     session.to = (session.to || 0) + 1;
@@ -1258,6 +1307,7 @@ function doTimeout() {
     setCardButtons('next');
     afterRecord();
     k130ShowEditBar();
+    maybeSpeak();
     if ($('goalOn').checked && sessionCount() >= goalTarget()) {
         setTimeout(finishByGoal, 600);
     }
@@ -1655,6 +1705,7 @@ function typingSubmit() {
     isRevealed = true;
     setCardButtons('grade');
     k130ShowEditBar();
+    maybeSpeak();
 }
 
 function afterRecord() {
@@ -1991,6 +2042,8 @@ function saveLimit() {
         algo: $('algo').value,
         typing: $('typingOn').checked,
         practice: $('practiceOn').checked,
+        audio: $('audioOn') ? $('audioOn').checked : false,
+        furi: $('furiOn') ? $('furiOn').checked : false,
         lwf: $('lwordForm').value
     }));
 }
@@ -2376,6 +2429,8 @@ window.addEventListener('keydown', function (e) {
             if (o.algo) $('algo').value = o.algo;
             $('typingOn').checked = !!o.typing;
             $('practiceOn').checked = !!o.practice;
+            if ($('audioOn')) $('audioOn').checked = !!o.audio;
+            if ($('furiOn')) $('furiOn').checked = !!o.furi;
             if (o.lwf) $('lwordForm').value = o.lwf;
         } catch (e) {
         }
@@ -2389,6 +2444,12 @@ window.addEventListener('keydown', function (e) {
         setAppWidth(70);
     }
 })();
+if ($('audioOn')) $('audioOn').addEventListener('change', saveLimit);
+if ($('furiOn')) $('furiOn').addEventListener('change', function () {
+    saveLimit();
+    if (phase === 'running') nextCard();
+});
+if ($('speakBtn')) $('speakBtn').addEventListener('click', speakCurrent);
 initCanvas();
 renderKeyLabels();
 loadK130E();
