@@ -1045,6 +1045,15 @@ function pickItem() {
         pool = currentPool();
     }
     if (!pool.length) return null;
+    // "Ôn lỗi sai": chỉ giữ các mục từng Sai hoặc Hết giờ trong bộ này (nếu có)
+    if ($('mistakesOn') && $('mistakesOn').checked) {
+        const wrongBucket = currentBucket();
+        const onlyWrong = pool.filter(function (item) {
+            const st = wrongBucket[item[0]];
+            return st && ((st.w || 0) + (st.t || 0)) > 0;
+        });
+        if (onlyWrong.length) pool = onlyWrong;
+    }
     // Guaranteed coverage near session end (needs question goal on)
     if ($('goalOn').checked) {
         const goal = goalTarget();
@@ -2044,6 +2053,7 @@ function saveLimit() {
         practice: $('practiceOn').checked,
         audio: $('audioOn') ? $('audioOn').checked : false,
         furi: $('furiOn') ? $('furiOn').checked : false,
+        mistakes: $('mistakesOn') ? $('mistakesOn').checked : false,
         lwf: $('lwordForm').value
     }));
 }
@@ -2431,6 +2441,7 @@ window.addEventListener('keydown', function (e) {
             $('practiceOn').checked = !!o.practice;
             if ($('audioOn')) $('audioOn').checked = !!o.audio;
             if ($('furiOn')) $('furiOn').checked = !!o.furi;
+            if ($('mistakesOn')) $('mistakesOn').checked = !!o.mistakes;
             if (o.lwf) $('lwordForm').value = o.lwf;
         } catch (e) {
         }
@@ -2450,6 +2461,10 @@ if ($('furiOn')) $('furiOn').addEventListener('change', function () {
     if (phase === 'running') nextCard();
 });
 if ($('speakBtn')) $('speakBtn').addEventListener('click', speakCurrent);
+if ($('mistakesOn')) $('mistakesOn').addEventListener('change', function () {
+    saveLimit();
+    if (phase === 'running') nextCard();
+});
 initCanvas();
 renderKeyLabels();
 loadK130E();
