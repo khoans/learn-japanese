@@ -389,24 +389,24 @@ function buildLessonUI() {
     var box = $('baiBtns');
     if (box) {
         box.innerHTML = '';
-        ALL_LESSONS.forEach(function (n) {
-            var b = document.createElement('button');
-            b.className = 'btn small bai active';
-            b.setAttribute('data-bai', n);
-            b.textContent = 'Bài ' + n;
-            box.appendChild(b);
+        ALL_LESSONS.forEach(function (num) {
+            var btn = document.createElement('button');
+            btn.className = 'btn small bai active';
+            btn.setAttribute('data-bai', num);
+            btn.textContent = 'Bài ' + num;
+            box.appendChild(btn);
         });
     }
-    var gs = $('gramSel');
-    if (gs) {
-        gs.innerHTML = '';
-        Object.keys(GRAM).map(Number).sort(function (a, b) {
-            return a - b;
-        }).forEach(function (n) {
-            var o = document.createElement('option');
-            o.value = n;
-            o.textContent = 'Bài ' + n;
-            gs.appendChild(o);
+    var gramSelect = $('gramSel');
+    if (gramSelect) {
+        gramSelect.innerHTML = '';
+        Object.keys(GRAM).map(Number).sort(function (a, btn) {
+            return a - btn;
+        }).forEach(function (num) {
+            var opt = document.createElement('option');
+            opt.value = num;
+            opt.textContent = 'Bài ' + num;
+            gramSelect.appendChild(opt);
         });
     }
 }
@@ -691,17 +691,17 @@ function saveSession() {
 }
 
 function loadHist() {
-    const s = lsGet(LS_HIST);
-    if (!s) return [];
+    const str = lsGet(LS_HIST);
+    if (!str) return [];
     try {
-        return JSON.parse(s);
+        return JSON.parse(str);
     } catch (e) {
         return [];
     }
 }
 
-function saveHist(h) {
-    lsSet(LS_HIST, JSON.stringify(h));
+function saveHist(history) {
+    lsSet(LS_HIST, JSON.stringify(history));
 }
 
 let phase = 'idle'; // idle | running | paused
@@ -717,36 +717,36 @@ function deckKey() {
 }
 
 function deckLabel(key) {
-    let pre = '';
+    let prefix = '';
     if (key.indexOf('W:') === 0) {
-        pre = 'Viết · ';
+        prefix = 'Viết · ';
         key = key.slice(2);
     } else if (key.indexOf('M:') === 0) {
-        pre = 'Nghĩa→kana · ';
+        prefix = 'Nghĩa→kana · ';
         key = key.slice(2);
     }
-    const p = key.split('|');
-    const sc = {mix: 'Trộn cả hai', hira: 'Hiragana', kata: 'Katakana'};
-    if (p[0] === 'counter') return pre + 'Đơn vị đếm · loại ' + (p[1] || 'all');
-    if (p[0] === 'number') return pre + 'Số đếm · cấp ' + (p[1] || 'all');
-    if (p[0] === 'kanji') return pre + 'Kanji N5 · hàng ' + (p[1] || 'all');
-    if (p[0] === 'kanji130') return pre + '130 kanji N5 · nhóm ' + (p[1] || 'all');
-    if (p[0] === 'radical') return pre + 'Bộ thủ thông dụng';
-    if (p[0] === 'sent') return pre + 'Câu · Bài ' + (p[1] || '1-5');
-    if (p[0] === 'lword') return pre + 'Từ · Bài ' + (p[1] || '1-6') + (p[2] === 'K' ? ' (kanji)' : '');
-    if (p[0] === 'word') return pre + 'Đọc từ N5 · ' + sc[p[1]];
-    const rg = {basic: 'Cơ bản', full: 'Cơ bản+biến âm', yoon: 'Cơ bản+biến âm+ghép', tricky: 'Hay nhầm'};
-    return pre + 'Ký tự · ' + sc[p[1]] + ' · ' + rg[p[2]];
+    const parts = key.split('|');
+    const scriptNames = {mix: 'Trộn cả hai', hira: 'Hiragana', kata: 'Katakana'};
+    if (parts[0] === 'counter') return prefix + 'Đơn vị đếm · loại ' + (parts[1] || 'all');
+    if (parts[0] === 'number') return prefix + 'Số đếm · cấp ' + (parts[1] || 'all');
+    if (parts[0] === 'kanji') return prefix + 'Kanji N5 · hàng ' + (parts[1] || 'all');
+    if (parts[0] === 'kanji130') return prefix + '130 kanji N5 · nhóm ' + (parts[1] || 'all');
+    if (parts[0] === 'radical') return prefix + 'Bộ thủ thông dụng';
+    if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
+    if (parts[0] === 'lword') return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (parts[2] === 'K' ? ' (kanji)' : '');
+    if (parts[0] === 'word') return prefix + 'Đọc từ N5 · ' + scriptNames[parts[1]];
+    const rangeNames = {basic: 'Cơ bản', full: 'Cơ bản+biến âm', yoon: 'Cơ bản+biến âm+ghép', tricky: 'Hay nhầm'};
+    return prefix + 'Ký tự · ' + scriptNames[parts[1]] + ' · ' + rangeNames[parts[2]];
 }
 
 function parseLessons(seg) {
     if (!seg) return ALL_LESSONS.slice();
-    const a = seg.split(',').map(function (x) {
-        return parseInt(x, 10);
-    }).filter(function (x) {
-        return ALL_LESSONS.indexOf(x) >= 0;
+    const lessons = seg.split(',').map(function (num) {
+        return parseInt(num, 10);
+    }).filter(function (num) {
+        return ALL_LESSONS.indexOf(num) >= 0;
     });
-    return a.length ? a : ALL_LESSONS.slice();
+    return lessons.length ? lessons : ALL_LESSONS.slice();
 }
 
 function selectedLessons() {
@@ -799,136 +799,136 @@ function selectedCGroups() {
 function poolForKey(key) {
     const isW = key.indexOf('W:') === 0;
     if (isW || key.indexOf('M:') === 0) key = key.slice(2);
-    const p = key.split('|');
-    if (p[0] === 'sent') {
-        const ls = parseLessons(p[1]);
-        return LSENT.filter(function (x) {
-            return ls.indexOf(x[2]) >= 0;
-        }).map(function (x) {
-            return [x[0], x[1], x[3] || '', x[1], x[0], ''];
+    const parts = key.split('|');
+    if (parts[0] === 'sent') {
+        const lessons = parseLessons(parts[1]);
+        return LSENT.filter(function (row) {
+            return lessons.indexOf(row[2]) >= 0;
+        }).map(function (row) {
+            return [row[0], row[1], row[3] || '', row[1], row[0], ''];
         });
     }
-    if (p[0] === 'lword') {
-        const ls = parseLessons(p[1]);
-        const km = (p[2] === 'K');
-        return LWORDS.filter(function (x) {
-            return ls.indexOf(x[2]) >= 0;
-        }).map(function (x) {
-            var rd = x[4] || x[0];
-            var kj = x[0];
-            var hasK = /[\u4e00-\u9fff]/.test(kj);
-            var kf = hasK ? kj : '';
-            var cmp = hasK ? rd : kj;
-            if (km) {
-                var disp = kj;
-                var ans = (disp !== rd) ? (rd + '  ·  ' + x[1]) : x[1];
-                return [disp, ans, x[3] || '', x[1], cmp, kf];
+    if (parts[0] === 'lword') {
+        const lessons = parseLessons(parts[1]);
+        const kanjiMode = (parts[2] === 'K');
+        return LWORDS.filter(function (row) {
+            return lessons.indexOf(row[2]) >= 0;
+        }).map(function (row) {
+            var reading = row[4] || row[0];
+            var kanji = row[0];
+            var hasK = /[\u4e00-\u9fff]/.test(kanji);
+            var kanjiForm = hasK ? kanji : '';
+            var compareKey = hasK ? reading : kanji;
+            if (kanjiMode) {
+                var display = kanji;
+                var answer = (display !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
+                return [display, answer, row[3] || '', row[1], compareKey, kanjiForm];
             }
-            var hdisp = hasK ? rd : kj;
-            var hans = (hdisp !== rd) ? (rd + '  ·  ' + x[1]) : x[1];
-            return [hdisp, hans, x[3] || '', x[1], cmp, kf];
+            var hDisplay = hasK ? reading : kanji;
+            var hAnswer = (hDisplay !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
+            return [hDisplay, hAnswer, row[3] || '', row[1], compareKey, kanjiForm];
         });
     }
-    if (p[0] === 'radical') {
-        return RADICALS.map(function (x) {
-            return [x[0], x[1], x[2], '', x[0], ''];
+    if (parts[0] === 'radical') {
+        return RADICALS.map(function (row) {
+            return [row[0], row[1], row[2], '', row[0], ''];
         });
     }
-    if (p[0] === 'kanji') {
-        const rw = (p[1] ? p[1].split(',').map(function (z) {
-            return parseInt(z, 10);
+    if (parts[0] === 'kanji') {
+        const rowsSel = (parts[1] ? parts[1].split(',').map(function (numStr) {
+            return parseInt(numStr, 10);
         }) : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        return KANJIV.filter(function (x) {
-            return rw.indexOf(x[4]) >= 0;
-        }).map(function (x) {
-            return [x[0], x[1] + '  ·  ' + x[2], x[3], x[2], x[1], x[0]];
+        return KANJIV.filter(function (row) {
+            return rowsSel.indexOf(row[4]) >= 0;
+        }).map(function (row) {
+            return [row[0], row[1] + '  ·  ' + row[2], row[3], row[2], row[1], row[0]];
         });
     }
-    if (p[0] === 'kanji130') {
-        const gs = (p[1] ? p[1].split(',').map(function (z) {
-            return parseInt(z, 10);
+    if (parts[0] === 'kanji130') {
+        const groupsSel = (parts[1] ? parts[1].split(',').map(function (numStr) {
+            return parseInt(numStr, 10);
         }) : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-        return KANJI130.filter(function (x) {
-            return gs.indexOf(x[3]) >= 0;
-        }).map(function (x) {
-            var rom = kanaRomaji(x[1]);
-            return [x[0], x[1] + '  ·  ' + rom, k130Compose(x[0]), rom, x[1], x[0]];
+        return KANJI130.filter(function (row) {
+            return groupsSel.indexOf(row[3]) >= 0;
+        }).map(function (row) {
+            var rom = kanaRomaji(row[1]);
+            return [row[0], row[1] + '  ·  ' + rom, k130Compose(row[0]), rom, row[1], row[0]];
         });
     }
-    if (p[0] === 'number') {
-        const ng = (p[1] ? p[1].split(',').map(function (z) {
-            return parseInt(z, 10);
+    if (parts[0] === 'number') {
+        const numGroups = (parts[1] ? parts[1].split(',').map(function (numStr) {
+            return parseInt(numStr, 10);
         }) : [1, 2, 3, 4, 5, 6, 7]);
-        return NUMSET.filter(function (x) {
-            return ng.indexOf(x[4]) >= 0;
-        }).map(function (x) {
-            return [x[0], x[1] + '  ·  ' + x[2], '= ' + x[3], x[2], x[1], x[0]];
+        return NUMSET.filter(function (row) {
+            return numGroups.indexOf(row[4]) >= 0;
+        }).map(function (row) {
+            return [row[0], row[1] + '  ·  ' + row[2], '= ' + row[3], row[2], row[1], row[0]];
         });
     }
-    if (p[0] === 'counter') {
-        const cg = (p[1] ? p[1].split(',').map(function (z) {
-            return parseInt(z, 10);
+    if (parts[0] === 'counter') {
+        const counterGroups = (parts[1] ? parts[1].split(',').map(function (numStr) {
+            return parseInt(numStr, 10);
         }) : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
-        return COUNTSET.filter(function (x) {
-            return cg.indexOf(x[4]) >= 0;
-        }).map(function (x) {
-            return [x[0], x[1] + '  ·  ' + x[2], x[3], x[2], x[1], x[0]];
+        return COUNTSET.filter(function (row) {
+            return counterGroups.indexOf(row[4]) >= 0;
+        }).map(function (row) {
+            return [row[0], row[1] + '  ·  ' + row[2], row[3], row[2], row[1], row[0]];
         });
     }
-    if (p[0] === 'word') {
-        const s = p[1];
-        return WORDS.filter(function (w) {
-            if (s === 'hira') return w[2] === 'H';
-            if (s === 'kata') return w[2] === 'K';
+    if (parts[0] === 'word') {
+        const scriptSel = parts[1];
+        return WORDS.filter(function (wordRow) {
+            if (scriptSel === 'hira') return wordRow[2] === 'H';
+            if (scriptSel === 'kata') return wordRow[2] === 'K';
             return true;
-        }).map(function (w) {
-            return [w[0], w[1], w[3] || '', w[1], w[0], ''];
+        }).map(function (wordRow) {
+            return [wordRow[0], wordRow[1], wordRow[3] || '', wordRow[1], wordRow[0], ''];
         });
     }
-    const s = p[1], rg = p[2];
-    if (rg === 'tricky') {
+    const scriptSel = parts[1], rangeSel = parts[2];
+    if (rangeSel === 'tricky') {
         const m = {};
-        [].concat(H_BASIC, H_DAKU, K_BASIC, K_DAKU).forEach(function (z) {
-            m[z[0]] = z[1];
+        [].concat(H_BASIC, H_DAKU, K_BASIC, K_DAKU).forEach(function (numStr) {
+            m[numStr[0]] = numStr[1];
         });
         return TRICKY.filter(function (k) {
             const h = k.charCodeAt(0) < 0x30A0;
-            if (s === 'hira') return h;
-            if (s === 'kata') return !h;
+            if (scriptSel === 'hira') return h;
+            if (scriptSel === 'kata') return !h;
             return true;
         }).map(function (k) {
             return [k, m[k], '', m[k], k, ''];
         });
     }
-    if (s === 'mix' && isW) {
-        let hl = [].concat(H_BASIC), kl = [].concat(K_BASIC);
-        if (rg === 'full' || rg === 'yoon') {
-            hl = hl.concat(H_DAKU);
-            kl = kl.concat(K_DAKU);
+    if (scriptSel === 'mix' && isW) {
+        let hiraList = [].concat(H_BASIC), kataList = [].concat(K_BASIC);
+        if (rangeSel === 'full' || rangeSel === 'yoon') {
+            hiraList = hiraList.concat(H_DAKU);
+            kataList = kataList.concat(K_DAKU);
         }
-        if (rg === 'yoon') {
-            hl = hl.concat(H_YOON);
-            kl = kl.concat(K_YOON);
+        if (rangeSel === 'yoon') {
+            hiraList = hiraList.concat(H_YOON);
+            kataList = kataList.concat(K_YOON);
         }
-        const out = [];
-        for (let i = 0; i < hl.length; i++) {
-            out.push([hl[i][0] + ' / ' + kl[i][0], hl[i][1], '', hl[i][1], hl[i][0] + kl[i][0], '']);
+        const mixRows = [];
+        for (let i = 0; i < hiraList.length; i++) {
+            mixRows.push([hiraList[i][0] + ' / ' + kataList[i][0], hiraList[i][1], '', hiraList[i][1], hiraList[i][0] + kataList[i][0], '']);
         }
-        return out;
+        return mixRows;
     }
-    let arr = [];
-    if (s === 'hira' || s === 'mix') {
-        arr = arr.concat(H_BASIC);
-        if (rg === 'full' || rg === 'yoon') arr = arr.concat(H_DAKU);
-        if (rg === 'yoon') arr = arr.concat(H_YOON);
+    let kanaRows = [];
+    if (scriptSel === 'hira' || scriptSel === 'mix') {
+        kanaRows = kanaRows.concat(H_BASIC);
+        if (rangeSel === 'full' || rangeSel === 'yoon') kanaRows = kanaRows.concat(H_DAKU);
+        if (rangeSel === 'yoon') kanaRows = kanaRows.concat(H_YOON);
     }
-    if (s === 'kata' || s === 'mix') {
-        arr = arr.concat(K_BASIC);
-        if (rg === 'full' || rg === 'yoon') arr = arr.concat(K_DAKU);
-        if (rg === 'yoon') arr = arr.concat(K_YOON);
+    if (scriptSel === 'kata' || scriptSel === 'mix') {
+        kanaRows = kanaRows.concat(K_BASIC);
+        if (rangeSel === 'full' || rangeSel === 'yoon') kanaRows = kanaRows.concat(K_DAKU);
+        if (rangeSel === 'yoon') kanaRows = kanaRows.concat(K_YOON);
     }
-    return arr.map(function (x) {
-        return [x[0], x[1], x[3] || '', x[1], x[0], ''];
+    return kanaRows.map(function (row) {
+        return [row[0], row[1], row[3] || '', row[1], row[0], ''];
     });
 }
 
@@ -1000,15 +1000,15 @@ function currentBucket() {
     return session.byOption[deckKey()] || {};
 }
 
-function seenCount(b, k) {
-    const s = b[k];
-    return s ? (s.c + s.w + (s.t || 0)) : 0;
+function seenCount(bucket, cardKey) {
+    const stat = bucket[cardKey];
+    return stat ? (stat.c + stat.w + (stat.t || 0)) : 0;
 }
 
-function unseenList(p) {
-    const b = currentBucket();
-    return p.filter(function (item) {
-        return seenCount(b, item[0]) === 0;
+function unseenList(pool) {
+    const bucket = currentBucket();
+    return pool.filter(function (item) {
+        return seenCount(bucket, item[0]) === 0;
     });
 }
 
@@ -1020,15 +1020,15 @@ function avoidRepeat(list) {
     return list[i];
 }
 
-function weightedPick(list, w) {
-    let tot = 0;
-    for (let i = 0; i < w.length; i++) tot += w[i];
-    if (tot <= 0) return avoidRepeat(list);
-    let r = Math.random() * tot;
+function weightedPick(list, weights) {
+    let totalWeight = 0;
+    for (let i = 0; i < weights.length; i++) totalWeight += weights[i];
+    if (totalWeight <= 0) return avoidRepeat(list);
+    let rnd = Math.random() * totalWeight;
     let idx = list.length - 1;
     for (let i = 0; i < list.length; i++) {
-        r -= w[i];
-        if (r <= 0) {
+        rnd -= weights[i];
+        if (rnd <= 0) {
             idx = i;
             break;
         }
@@ -1038,56 +1038,56 @@ function weightedPick(list, w) {
 }
 
 function pickItem() {
-    let p = currentPool().filter(function (item) {
+    let pool = currentPool().filter(function (item) {
         return !isSkipped(item[0]) && !isExcluded(item[0]);
     });
-    if (!p.length) {
-        p = currentPool();
+    if (!pool.length) {
+        pool = currentPool();
     }
-    if (!p.length) return null;
+    if (!pool.length) return null;
     // Guaranteed coverage near session end (needs question goal on)
     if ($('goalOn').checked) {
-        const g = goalTarget();
-        const prog = sessionCount() / g;
-        const remaining = g - sessionCount();
-        const un = unseenList(p);
-        if (un.length > 0) {
-            if (prog >= 0.7 || remaining <= un.length) return avoidRepeat(un);
+        const goal = goalTarget();
+        const prog = sessionCount() / goal;
+        const remaining = goal - sessionCount();
+        const unseen = unseenList(pool);
+        if (unseen.length > 0) {
+            if (prog >= 0.7 || remaining <= unseen.length) return avoidRepeat(unseen);
             if (prog >= 0.4) {
                 const push = (prog - 0.4) / 0.3;
-                if (Math.random() < push) return avoidRepeat(un);
+                if (Math.random() < push) return avoidRepeat(unseen);
             }
         }
     }
-    const algo = $('algo').value, b = currentBucket();
+    const algo = $('algo').value, bucket = currentBucket();
     if (algo === 'unseen') {
-        const un = unseenList(p);
-        return avoidRepeat(un.length ? un : p);
+        const unseen = unseenList(pool);
+        return avoidRepeat(unseen.length ? unseen : pool);
     }
     if (algo === 'least') {
-        let min = Infinity;
-        p.forEach(function (item) {
-            const n = seenCount(b, item[0]);
-            if (n < min) min = n;
+        let minSeen = Infinity;
+        pool.forEach(function (item) {
+            const seen = seenCount(bucket, item[0]);
+            if (seen < minSeen) minSeen = seen;
         });
-        const cand = p.filter(function (item) {
-            return seenCount(b, item[0]) === min;
+        const candidates = pool.filter(function (item) {
+            return seenCount(bucket, item[0]) === minSeen;
         });
-        return avoidRepeat(cand);
+        return avoidRepeat(candidates);
     }
     if (algo === 'weak') {
-        const w = p.map(function (item) {
-            const s = b[item[0]];
-            if (!s) return 3.0;
-            const n = s.c + s.w + (s.t || 0);
-            if (n === 0) return 3.0;
-            const fr = (s.w + (s.t || 0)) / n;
-            const avg = (s.tn ? s.ts / s.tn : 0);
-            return Math.max(0.15, 0.4 + fr * 3 + Math.min(2, avg / 2000));
+        const w = pool.map(function (item) {
+            const stat = bucket[item[0]];
+            if (!stat) return 3.0;
+            const seen = stat.c + stat.w + (stat.t || 0);
+            if (seen === 0) return 3.0;
+            const failRate = (stat.w + (stat.t || 0)) / seen;
+            const avg = (stat.tn ? stat.ts / stat.tn : 0);
+            return Math.max(0.15, 0.4 + failRate * 3 + Math.minSeen(2, avg / 2000));
         });
-        return weightedPick(p, w);
+        return weightedPick(pool, w);
     }
-    return avoidRepeat(p); // uniform
+    return avoidRepeat(pool); // uniform
 }
 
 function nextCard(forced) {
@@ -1180,20 +1180,20 @@ function reveal() {
 }
 
 function recordItem(field, ms) {
-    const ok2 = deckKey();
-    if (!session.byOption[ok2]) session.byOption[ok2] = {};
-    const b = session.byOption[ok2];
-    const k = card[0];
-    if (!b[k]) b[k] = {r: card[1], c: 0, w: 0, t: 0, ts: 0, tn: 0};
-    if (b[k].t === undefined) b[k].t = 0;
-    if (b[k].ts === undefined) {
-        b[k].ts = 0;
-        b[k].tn = 0;
+    const dKey = deckKey();
+    if (!session.byOption[dKey]) session.byOption[dKey] = {};
+    const bucket = session.byOption[dKey];
+    const cardKey = card[0];
+    if (!bucket[cardKey]) bucket[cardKey] = {r: card[1], c: 0, w: 0, t: 0, ts: 0, tn: 0};
+    if (bucket[cardKey].t === undefined) bucket[cardKey].t = 0;
+    if (bucket[cardKey].ts === undefined) {
+        bucket[cardKey].ts = 0;
+        bucket[cardKey].tn = 0;
     }
-    b[k][field]++;
+    bucket[cardKey][field]++;
     if (ms !== undefined && ms > 0) {
-        b[k].ts += ms;
-        b[k].tn++;
+        bucket[cardKey].ts += ms;
+        bucket[cardKey].tn++;
     }
 }
 
@@ -1263,32 +1263,32 @@ function doTimeout() {
     }
 }
 
-function exKey(k) {
-    return deckKey() + '\u00a7' + k;
+function exKey(cardKey) {
+    return deckKey() + '\u00a7' + cardKey;
 }
 
-function isExcluded(k) {
-    return session.excluded && session.excluded.indexOf(exKey(k)) >= 0;
+function isExcluded(cardKey) {
+    return session.excluded && session.excluded.indexOf(exKey(cardKey)) >= 0;
 }
 
-function toggleExclude(k) {
+function toggleExclude(cardKey) {
     if (!session.excluded) session.excluded = [];
-    const e = exKey(k);
-    const i = session.excluded.indexOf(e);
-    if (i >= 0) session.excluded.splice(i, 1); else session.excluded.push(e);
+    const exclKey = exKey(cardKey);
+    const i = session.excluded.indexOf(exclKey);
+    if (i >= 0) session.excluded.splice(i, 1); else session.excluded.push(exclKey);
     saveSession();
 }
 
 function pickAll(inc) {
-    const p = poolForKey(deckKey());
+    const pool = poolForKey(deckKey());
     if (!session.excluded) session.excluded = [];
-    p.forEach(function (item) {
-        const e = exKey(item[0]);
-        const i = session.excluded.indexOf(e);
+    pool.forEach(function (item) {
+        const exclKey = exKey(item[0]);
+        const i = session.excluded.indexOf(exclKey);
         if (inc) {
             if (i >= 0) session.excluded.splice(i, 1);
         } else {
-            if (i < 0) session.excluded.push(e);
+            if (i < 0) session.excluded.push(exclKey);
         }
     });
     saveSession();
@@ -1308,18 +1308,18 @@ function itemMatches(item, q) {
 }
 
 function pickFiltered(inc) {
-    const q = (($('pickSearch') && $('pickSearch').value) || '').toLowerCase();
+    const query = (($('pickSearch') && $('pickSearch').value) || '').toLowerCase();
     const items = poolForKey(deckKey()).filter(function (item) {
-        return itemMatches(item, q);
+        return itemMatches(item, query);
     });
     if (!session.excluded) session.excluded = [];
     items.forEach(function (item) {
-        const e = exKey(item[0]);
-        const i = session.excluded.indexOf(e);
+        const exclKey = exKey(item[0]);
+        const i = session.excluded.indexOf(exclKey);
         if (inc) {
             if (i >= 0) session.excluded.splice(i, 1);
         } else {
-            if (i < 0) session.excluded.push(e);
+            if (i < 0) session.excluded.push(exclKey);
         }
     });
     saveSession();
@@ -1332,23 +1332,23 @@ function pickFiltered(inc) {
 function renderPickList() {
     const box = $('pickList');
     if (!box) return;
-    const q = (($('pickSearch') && $('pickSearch').value) || '').toLowerCase();
+    const query = (($('pickSearch') && $('pickSearch').value) || '').toLowerCase();
     const items = poolForKey(deckKey());
-    const inc = items.filter(function (x) {
-        return !isExcluded(x[0]);
+    const activeCount = items.filter(function (row) {
+        return !isExcluded(row[0]);
     }).length;
     const shown = items.filter(function (item) {
-        return itemMatches(item, q);
+        return itemMatches(item, query);
     });
     box.innerHTML = '';
     shown.forEach(function (item) {
-        const k = item[0];
-        const on = !isExcluded(k);
+        const cardKey = item[0];
+        const isOn = !isExcluded(cardKey);
         const row = document.createElement('div');
-        row.className = 'pickrow' + (on ? ' on' : '');
-        row.innerHTML = '<span class="pchk">' + (on ? '\u2713' : '') + '</span><span class="pjp">' + escapeHtml(k) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
+        row.className = 'pickrow' + (isOn ? ' isOn' : '');
+        row.innerHTML = '<span class="pchk">' + (isOn ? '\u2713' : '') + '</span><span class="pjp">' + escapeHtml(cardKey) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
         row.addEventListener('click', function () {
-            toggleExclude(k);
+            toggleExclude(cardKey);
             renderPickList();
             updateCoverage();
             refreshMas();
@@ -1356,7 +1356,7 @@ function renderPickList() {
         });
         box.appendChild(row);
     });
-    $('pickCount').textContent = 'Đang luyện ' + inc + ' / ' + items.length + (q ? (' · tìm thấy ' + shown.length) : '');
+    $('pickCount').textContent = 'Đang luyện ' + activeCount + ' / ' + items.length + (query ? (' · tìm thấy ' + shown.length) : '');
 }
 
 function refreshPick() {
@@ -1365,38 +1365,38 @@ function refreshPick() {
 
 function renderMasteryLists() {
     const items = poolForKey(deckKey());
-    const dB = $('masDoneList'), rB = $('masRemList');
-    if (!dB) return;
-    dB.innerHTML = '';
-    rB.innerHTML = '';
-    let dn = 0, rn = 0;
+    const doneBox = $('masDoneList'), remainBox = $('masRemList');
+    if (!doneBox) return;
+    doneBox.innerHTML = '';
+    remainBox.innerHTML = '';
+    let doneCount = 0, remainCount = 0;
     items.forEach(function (item) {
-        const k = item[0];
-        if (isExcluded(k)) return;
+        const cardKey = item[0];
+        if (isExcluded(cardKey)) return;
         const row = document.createElement('div');
         row.className = 'pickrow on';
-        row.innerHTML = '<span class="pjp">' + escapeHtml(k) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
-        if (isSkipped(k)) {
-            dn++;
+        row.innerHTML = '<span class="pjp">' + escapeHtml(cardKey) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
+        if (isSkipped(cardKey)) {
+            doneCount++;
             row.addEventListener('click', function () {
-                unmaster(k);
+                unmaster(cardKey);
             });
-            dB.appendChild(row);
+            doneBox.appendChild(row);
         } else {
-            rn++;
+            remainCount++;
             row.addEventListener('click', function () {
-                masterItem(k);
+                masterItem(cardKey);
             });
-            rB.appendChild(row);
+            remainBox.appendChild(row);
         }
     });
-    $('masDoneN').textContent = dn;
-    $('masRemN').textContent = rn;
+    $('masDoneN').textContent = doneCount;
+    $('masRemN').textContent = remainCount;
 }
 
-function unmaster(k) {
+function unmaster(cardKey) {
     if (!session.skip) session.skip = [];
-    const i = session.skip.indexOf(skipKeyFor(k));
+    const i = session.skip.indexOf(skipKeyFor(cardKey));
     if (i >= 0) {
         session.skip.splice(i, 1);
         saveSession();
@@ -1406,11 +1406,11 @@ function unmaster(k) {
     if ($('pickGrp') && $('pickGrp').open) renderPickList();
 }
 
-function masterItem(k) {
+function masterItem(cardKey) {
     if (!session.skip) session.skip = [];
-    const sk = skipKeyFor(k);
-    if (session.skip.indexOf(sk) < 0) session.skip.push(sk);
-    if (phase === 'running') recordCorrectKey(k);
+    const skipKey = skipKeyFor(cardKey);
+    if (session.skip.indexOf(skipKey) < 0) session.skip.push(skipKey);
+    if (phase === 'running') recordCorrectKey(cardKey);
     saveSession();
     updateStats();
     updateStreak();
@@ -1426,12 +1426,12 @@ function refreshMas() {
     if ($('masGrp') && $('masGrp').open) renderMasteryLists();
 }
 
-function skipKeyFor(k) {
-    return deckKey() + '\u00a7' + k;
+function skipKeyFor(cardKey) {
+    return deckKey() + '\u00a7' + cardKey;
 }
 
-function isSkipped(k) {
-    return session.skip && session.skip.indexOf(skipKeyFor(k)) >= 0;
+function isSkipped(cardKey) {
+    return session.skip && session.skip.indexOf(skipKeyFor(cardKey)) >= 0;
 }
 
 function redoCard() {
@@ -1442,12 +1442,12 @@ function redoCard() {
     showFixNote('Làm lại (không tính)');
 }
 
-function recordCorrectKey(k) {
-    const ok2 = deckKey();
-    if (!session.byOption[ok2]) session.byOption[ok2] = {};
-    const b = session.byOption[ok2];
-    if (!b[k]) b[k] = {r: '', c: 0, w: 0, t: 0, ts: 0, tn: 0};
-    b[k].c = (b[k].c || 0) + 1;
+function recordCorrectKey(cardKey) {
+    const dKey = deckKey();
+    if (!session.byOption[dKey]) session.byOption[dKey] = {};
+    const bucket = session.byOption[dKey];
+    if (!bucket[cardKey]) bucket[cardKey] = {r: '', c: 0, w: 0, t: 0, ts: 0, tn: 0};
+    bucket[cardKey].c = (bucket[cardKey].c || 0) + 1;
     session.c = (session.c || 0) + 1;
     session.streak = (session.streak || 0) + 1;
     if (session.streak > (session.best || 0)) session.best = session.streak;
@@ -1470,9 +1470,9 @@ function finishMastered() {
 
 function skipCurrent() {
     if (phase !== 'running' || !card) return;
-    const sk = skipKeyFor(card[0]);
+    const skipKey = skipKeyFor(card[0]);
     if (!session.skip) session.skip = [];
-    if (session.skip.indexOf(sk) < 0) session.skip.push(sk);
+    if (session.skip.indexOf(skipKey) < 0) session.skip.push(skipKey);
     recordCorrectKey(card[0]);
     saveSession();
     showFixNote('Đã thuộc (\u2713): ' + card[0]);
@@ -1510,17 +1510,17 @@ function fixPrev() {
         showFixNote('Câu trước đã là Sai');
         return;
     }
-    const oa = lastGraded;
-    if (oa.field === 'c') session.c = Math.max(0, session.c - 1);
-    else if (oa.field === 't') session.to = Math.max(0, (session.to || 0) - 1);
+    const prevAction = lastGraded;
+    if (prevAction.field === 'c') session.c = Math.max(0, session.c - 1);
+    else if (prevAction.field === 't') session.to = Math.max(0, (session.to || 0) - 1);
     session.w++;
-    const b = session.byOption[oa.deckKey];
-    if (b && b[oa.itemKey]) {
-        const item = b[oa.itemKey];
-        item[oa.field] = Math.max(0, (item[oa.field] || 0) - 1);
+    const bucket = session.byOption[prevAction.deckKey];
+    if (bucket && bucket[prevAction.itemKey]) {
+        const item = bucket[prevAction.itemKey];
+        item[prevAction.field] = Math.max(0, (item[prevAction.field] || 0) - 1);
         item.w = (item.w || 0) + 1;
     }
-    if (oa.field === 'c') {
+    if (prevAction.field === 'c') {
         if ((session.streak || 0) > 0) session.prev = session.streak;
         session.streak = 0;
     }
@@ -1531,7 +1531,7 @@ function fixPrev() {
     updateCoverage();
     if ($('statBox').style.display !== 'none' && $('vSession').value === 'cur') refreshStatView();
     renderPrev();
-    showFixNote('Đã sửa "' + oa.itemKey + '" → Sai');
+    showFixNote('Đã sửa "' + prevAction.itemKey + '" → Sai');
 }
 
 function sessionCount() {
@@ -1686,17 +1686,17 @@ function updateStats() {
 
 function updateCoverage() {
     const key = deckKey();
-    const p = poolForKey(key);
-    const b = session.byOption[key] || {};
+    const pool = poolForKey(key);
+    const bucket = session.byOption[key] || {};
     let seen = 0, mast = 0, total = 0;
-    for (let i = 0; i < p.length; i++) {
-        const k = p[i][0];
-        if (isExcluded(k)) continue;
+    for (let i = 0; i < pool.length; i++) {
+        const cardKey = pool[i][0];
+        if (isExcluded(cardKey)) continue;
         total++;
-        const s = b[k];
-        const sk = isSkipped(k);
-        if (sk) mast++;
-        if ((s && (s.c + s.w + (s.t || 0) > 0)) || sk) seen++;
+        const stat = bucket[cardKey];
+        const skipped = isSkipped(cardKey);
+        if (skipped) mast++;
+        if ((stat && (stat.c + stat.w + (stat.t || 0) > 0)) || skipped) seen++;
     }
     const pct = total ? Math.round(seen / total * 100) : 0;
     $('covVal').textContent = seen + ' / ' + total + ' (' + pct + '%)';
@@ -1767,50 +1767,50 @@ function stopSession() {
 
 function archiveIfData() {
     if ((session.c + session.w + (session.to || 0)) > 0) {
-        const h = loadHist();
-        const tot = session.c + session.w + (session.to || 0);
+        const history = loadHist();
+        const total = session.c + session.w + (session.to || 0);
         const now = new Date();
         const pad = function (x) {
             return (x < 10 ? '0' : '') + x;
         };
-        h.push({
+        history.push({
             date: now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()),
             c: session.c,
             w: session.w,
             to: (session.to || 0),
             best: (session.best || 0),
-            acc: Math.round(session.c / tot * 100),
+            acc: Math.round(session.c / total * 100),
             avg: session.times.length ? fmtSec(session.times.reduce(function (a, b) {
                 return a + b;
             }, 0) / session.times.length) : '–',
             byOption: JSON.parse(JSON.stringify(session.byOption))
         });
-        saveHist(h);
+        saveHist(history);
     }
 }
 
 function getSessionObj(sel) {
     if (sel === 'cur') return session;
-    const h = loadHist();
-    return h[parseInt(sel, 10)] || null;
+    const history = loadHist();
+    return history[parseInt(sel, 10)] || null;
 }
 
 function populateSessionSelect() {
     const sel = $('vSession');
     const prev = sel.value;
     sel.innerHTML = '';
-    let o = document.createElement('option');
-    o.value = 'cur';
-    o.textContent = 'Hiện tại';
-    sel.appendChild(o);
-    const h = loadHist();
-    h.forEach(function (s, i) {
-        const op = document.createElement('option');
-        op.value = String(i);
-        op.textContent = '#' + (i + 1) + ' · ' + s.date;
-        sel.appendChild(op);
+    let firstOpt = document.createElement('option');
+    firstOpt.value = 'cur';
+    firstOpt.textContent = 'Hiện tại';
+    sel.appendChild(firstOpt);
+    const history = loadHist();
+    history.forEach(function (sessItem, i) {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = '#' + (i + 1) + ' · ' + sessItem.date;
+        sel.appendChild(opt);
     });
-    if (prev && (prev === 'cur' || parseInt(prev, 10) < h.length)) sel.value = prev; else sel.value = 'cur';
+    if (prev && (prev === 'cur' || parseInt(prev, 10) < history.length)) sel.value = prev; else sel.value = 'cur';
 }
 
 function populateOptionSelect() {
@@ -1818,29 +1818,29 @@ function populateOptionSelect() {
     const sel = $('vOption');
     const prev = sel.value;
     sel.innerHTML = '';
-    const bo = (sess && sess.byOption) ? sess.byOption : {};
-    const ka = Object.keys(bo).filter(function (k) {
-        const b = bo[k];
-        for (const x in b) {
-            if (b[x].c + b[x].w + (b[x].t || 0) > 0) return true;
+    const buckets = (sess && sess.byOption) ? sess.byOption : {};
+    const deckKeys = Object.keys(buckets).filter(function (dKey) {
+        const bucket = buckets[dKey];
+        for (const cardKey in bucket) {
+            if (bucket[cardKey].c + bucket[cardKey].w + (bucket[cardKey].t || 0) > 0) return true;
         }
         return false;
     });
-    if (!ka.length) {
-        const op = document.createElement('option');
-        op.value = '';
-        op.textContent = '(chưa có dữ liệu)';
-        sel.appendChild(op);
+    if (!deckKeys.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = '(chưa có dữ liệu)';
+        sel.appendChild(opt);
         return;
     }
     const currentDeckKey = deckKey();
-    ka.forEach(function (k) {
-        const op = document.createElement('option');
-        op.value = k;
-        op.textContent = deckLabel(k);
-        sel.appendChild(op);
+    deckKeys.forEach(function (dKey) {
+        const opt = document.createElement('option');
+        opt.value = dKey;
+        opt.textContent = deckLabel(dKey);
+        sel.appendChild(opt);
     });
-    if (prev && ka.indexOf(prev) >= 0) sel.value = prev; else if (ka.indexOf(currentDeckKey) >= 0) sel.value = currentDeckKey; else sel.value = ka[0];
+    if (prev && deckKeys.indexOf(prev) >= 0) sel.value = prev; else if (deckKeys.indexOf(currentDeckKey) >= 0) sel.value = currentDeckKey; else sel.value = deckKeys[0];
 }
 
 function refreshStatView() {
@@ -1848,14 +1848,14 @@ function refreshStatView() {
     renderDist();
 }
 
-function renderUnseen(okey, bucket) {
-    const pl = poolForKey(okey);
-    const total = pl.length;
+function renderUnseen(optionKey, bucket) {
+    const pool = poolForKey(optionKey);
+    const total = pool.length;
     const seenSet = {};
-    for (const k in bucket) {
-        if (bucket[k].c + bucket[k].w + (bucket[k].t || 0) > 0) seenSet[k] = 1;
+    for (const cardKey in bucket) {
+        if (bucket[cardKey].c + bucket[cardKey].w + (bucket[cardKey].t || 0) > 0) seenSet[cardKey] = 1;
     }
-    const missing = pl.filter(function (item) {
+    const missing = pool.filter(function (item) {
         return !seenSet[item[0]];
     });
     const seen = total - missing.length;
@@ -1865,89 +1865,89 @@ function renderUnseen(okey, bucket) {
     const box = $('distList');
     box.innerHTML = '';
     if (!missing.length) {
-        const d = document.createElement('div');
-        d.style.cssText = 'padding:10px; color:#6ee7a0; font-size:14px;';
-        d.textContent = '✓ Đã gặp hết tất cả mục trong lựa chọn này!';
-        box.appendChild(d);
+        const div = document.createElement('div');
+        div.style.cssText = 'padding:10px; color:#6ee7a0; font-size:14px;';
+        div.textContent = '✓ Đã gặp hết tất cả mục trong lựa chọn này!';
+        box.appendChild(div);
         return;
     }
     const grid = document.createElement('div');
     grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill,minmax(82px,1fr)); gap:8px;';
     missing.forEach(function (item) {
-        const d = document.createElement('div');
-        d.style.cssText = 'background:#1a1d1f; border:0.5px solid #3a3f43; border-radius:8px; padding:6px 4px; text-align:center;';
-        d.innerHTML = '<div style="font-size:20px; color:#fff; font-family:Hiragino Sans,Noto Sans JP,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="' + item[0] + '">' + item[0] + '</div><div style="font-size:11px; color:#9aa0a6;">' + item[1] + '</div>';
-        grid.appendChild(d);
+        const div = document.createElement('div');
+        div.style.cssText = 'background:#1a1d1f; border:0.5px solid #3a3f43; border-radius:8px; padding:6px 4px; text-align:center;';
+        div.innerHTML = '<div style="font-size:20px; color:#fff; font-family:Hiragino Sans,Noto Sans JP,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="' + item[0] + '">' + item[0] + '</div><div style="font-size:11px; color:#9aa0a6;">' + item[1] + '</div>';
+        grid.appendChild(div);
     });
     box.appendChild(grid);
 }
 
 function renderDist() {
-    const sess = getSessionObj($('vSession').value);
-    const okey = $('vOption').value;
+    const statSession = getSessionObj($('vSession').value);
+    const optionKey = $('vOption').value;
     const box = $('distList');
     box.innerHTML = '';
-    if (!okey) {
+    if (!optionKey) {
         $('distCoverage').textContent = '';
         $('distSummary').textContent = 'Chưa có dữ liệu cho lựa chọn này.';
         return;
     }
-    const bucket = (sess && sess.byOption && sess.byOption[okey]) ? sess.byOption[okey] : {};
+    const bucket = (statSession && statSession.byOption && statSession.byOption[optionKey]) ? statSession.byOption[optionKey] : {};
     if (statSort === 'unseen') {
-        renderUnseen(okey, bucket);
+        renderUnseen(optionKey, bucket);
         return;
     }
-    if (!sess || !sess.byOption || !sess.byOption[okey]) {
+    if (!statSession || !statSession.byOption || !statSession.byOption[optionKey]) {
         $('distCoverage').textContent = '';
         $('distSummary').textContent = 'Chưa có dữ liệu cho lựa chọn này.';
         return;
     }
-    const arr = [];
-    for (const k in bucket) {
-        const s = bucket[k];
-        const tt = (s.t || 0);
-        const n = s.c + s.w + tt;
-        const tn = (s.tn || 0);
-        const avg = tn ? (s.ts / tn) : 0;
-        if (n > 0) arr.push({k: k, r: s.r, c: s.c, w: s.w, t: tt, n: n, fr: (s.w + tt) / n, avg: avg, tn: tn});
+    const rows = [];
+    for (const cardKey in bucket) {
+        const stat = bucket[cardKey];
+        const tt = (stat.t || 0);
+        const n = stat.c + stat.w + tt;
+        const tn = (stat.tn || 0);
+        const avg = tn ? (stat.ts / tn) : 0;
+        if (n > 0) rows.push({cardKey: cardKey, r: stat.r, c: stat.c, w: stat.w, t: tt, n: n, fr: (stat.w + tt) / n, avg: avg, tn: tn});
     }
-    const total = poolForKey(okey).length;
-    const seen = arr.length;
+    const total = poolForKey(optionKey).length;
+    const seen = rows.length;
     const pct = total ? Math.round(seen / total * 100) : 0;
     $('distCoverage').textContent = 'Đã gặp: ' + seen + ' / ' + total + ' mục (' + pct + '%)';
-    let lt = 0;
-    arr.forEach(function (x) {
-        lt += x.n;
+    let totalAttempts = 0;
+    rows.forEach(function (row) {
+        totalAttempts += row.n;
     });
-    $('distSummary').textContent = 'Tổng ' + lt + ' lượt trên ' + seen + ' mục đã gặp';
-    if (statSort === 'count') arr.sort(function (a, b) {
+    $('distSummary').textContent = 'Tổng ' + totalAttempts + ' lượt trên ' + seen + ' mục đã gặp';
+    if (statSort === 'count') rows.sort(function (a, b) {
         return b.n - a.n;
     });
-    else if (statSort === 'failrate') arr.sort(function (a, b) {
+    else if (statSort === 'failrate') rows.sort(function (a, b) {
         return b.fr - a.fr || (b.w + b.t) - (a.w + a.t);
     });
-    else if (statSort === 'slow') arr.sort(function (a, b) {
+    else if (statSort === 'slow') rows.sort(function (a, b) {
         return b.avg - a.avg;
     });
-    else arr.sort(function (a, b) {
-            return a.k.localeCompare(b.k, 'ja');
+    else rows.sort(function (a, b) {
+            return a.cardKey.localeCompare(b.cardKey, 'ja');
         });
-    const maxN = arr.length ? Math.max.apply(null, arr.map(function (x) {
-        return x.n;
+    const maxAttempts = rows.length ? Math.max.apply(null, rows.map(function (row) {
+        return row.n;
     })) : 1;
-    arr.forEach(function (x) {
-        const acc = Math.round(x.c / x.n * 100);
-        const col = x.fr >= 0.5 ? '#7d3743' : (x.fr > 0 ? '#8a6d3b' : '#356394');
-        const toStr = x.t ? (' /<span style="color:#ffd27a;">' + x.t + '⏱</span>') : '';
-        const avgStr = x.tn ? ('<span style="color:#9ecbff; min-width:48px; text-align:right;">' + fmtSec(x.avg) + '</span>') : '<span style="color:#555; min-width:48px; text-align:right;">–</span>';
-        const d = document.createElement('div');
-        d.className = 'distrow';
-        d.innerHTML = '<span style="min-width:60px; font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="' + x.k + '">' + x.k + '</span>'
-            + '<div class="distbar" style="width:' + (x.n / maxN * 80) + 'px; background:' + col + ';"></div>'
-            + '<span style="color:#9aa0a6; min-width:26px;">' + x.n + '×</span>'
-            + avgStr
-            + '<span style="margin-left:auto; font-size:12px;"><span style="color:#6ee7a0;">' + x.c + '✓</span>/<span style="color:#ff8b8b;">' + x.w + '✗</span>' + toStr + ' · ' + acc + '%</span>';
-        box.appendChild(d);
+    rows.forEach(function (row) {
+        const acc = Math.round(row.c / row.n * 100);
+        const color = row.fr >= 0.5 ? '#7d3743' : (row.fr > 0 ? '#8a6d3b' : '#356394');
+        const timeoutStr = row.t ? (' /<span style="color:#ffd27a;">' + row.t + '⏱</span>') : '';
+        const avgHtml = row.tn ? ('<span style="color:#9ecbff; min-width:48px; text-align:right;">' + fmtSec(row.avg) + '</span>') : '<span style="color:#555; min-width:48px; text-align:right;">–</span>';
+        const div = document.createElement('div');
+        div.className = 'distrow';
+        div.innerHTML = '<span style="min-width:60px; font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="' + row.cardKey + '">' + row.cardKey + '</span>'
+            + '<div class="distbar" style="width:' + (row.n / maxAttempts * 80) + 'px; background:' + color + ';"></div>'
+            + '<span style="color:#9aa0a6; min-width:26px;">' + row.n + '×</span>'
+            + avgHtml
+            + '<span style="margin-left:auto; font-size:12px;"><span style="color:#6ee7a0;">' + row.c + '✓</span>/<span style="color:#ff8b8b;">' + row.w + '✗</span>' + timeoutStr + ' · ' + acc + '%</span>';
+        box.appendChild(div);
     });
 }
 
@@ -2237,21 +2237,21 @@ document.querySelectorAll('[data-cgrp]').forEach(function (b) {
 });
 
 function renderGram() {
-    const n = $('gramSel').value;
-    const arr = GRAM[n] || [];
+    const lessonNum = $('gramSel').value;
+    const items = GRAM[lessonNum] || [];
     const box = $('gramList');
     box.innerHTML = '';
-    arr.forEach(function (g) {
-        const d = document.createElement('div');
-        d.style.cssText = 'margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #2c2f31;';
-        var h = '<div style="color:#cfe6ff; font-weight:600; font-size:14px;">' + g.p + '</div>';
-        h += '<div style="color:#c8c8c8; font-size:13px; margin-top:4px; line-height:1.5;">' + g.g + '</div>';
-        if (g.ex) {
-            h += '<div style="margin-top:6px; font-size:13px;"><span style="color:#fff; font-family:Hiragino Sans,Noto Sans JP,sans-serif;">' + g.ex + '</span> <span style="color:#9ecbff;"> ' + g.exr + '</span></div>';
-            h += '<div style="font-size:12px; color:#9aa0a6; margin-top:2px;">' + g.m + '</div>';
+    items.forEach(function (gram) {
+        const div = document.createElement('div');
+        div.style.cssText = 'margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #2c2f31;';
+        var html = '<div style="color:#cfe6ff; font-weight:600; font-size:14px;">' + gram.p + '</div>';
+        html += '<div style="color:#c8c8c8; font-size:13px; margin-top:4px; line-height:1.5;">' + gram.gram + '</div>';
+        if (gram.ex) {
+            html += '<div style="margin-top:6px; font-size:13px;"><span style="color:#fff; font-family:Hiragino Sans,Noto Sans JP,sans-serif;">' + gram.ex + '</span> <span style="color:#9ecbff;"> ' + gram.exr + '</span></div>';
+            html += '<div style="font-size:12px; color:#9aa0a6; margin-top:2px;">' + gram.m + '</div>';
         }
-        d.innerHTML = h;
-        box.appendChild(d);
+        div.innerHTML = html;
+        box.appendChild(div);
     });
 }
 
