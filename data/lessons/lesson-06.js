@@ -61,9 +61,44 @@ registerLesson(6, {
     ["大阪城公園", "oosakajoukouen", "Công viên lâu đài Osaka", "おおさかじょうこうえん"]
   ],
   sentences: [
-
+    ["ごはんを たべます。", "Gohan o tabemasu.", "Tôi ăn cơm."],
+    ["ジュースを のみます。", "Juusu o nomimasu.", "Tôi uống nước ép."],
+    ["たばこを すいます。", "Tabako o suimasu.", "Tôi hút thuốc lá."],
+    ["まいあさ パンを たべます。", "Maiasa pan o tabemasu.", "Sáng nào tôi cũng ăn bánh mì."],
+    ["なにを たべますか。", "Nani o tabemasu ka.", "Bạn ăn gì?"],
+    ["…さかなを たべます。", "…Sakana o tabemasu.", "…Tôi ăn cá."],
+    ["なにを のみますか。", "Nani o nomimasu ka.", "Bạn uống gì?"],
+    ["…おちゃを のみます。", "…Ocha o nomimasu.", "…Tôi uống trà."],
+    ["なにを しますか。", "Nani o shimasu ka.", "Bạn làm gì?"],
+    ["…しゅくだいを します。", "…Shukudai o shimasu.", "…Tôi làm bài tập về nhà."],
+    ["えいがを みます。", "Eiga o mimasu.", "Tôi xem phim."],
+    ["おんがくを ききます。", "Ongaku o kikimasu.", "Tôi nghe nhạc."],
+    ["てがみを かきます。", "Tegami o kakimasu.", "Tôi viết thư."],
+    ["しゃしんを とります。", "Shashin o torimasu.", "Tôi chụp ảnh."],
+    ["なにも たべません。", "Nani mo tabemasen.", "Tôi không ăn gì cả."],
+    ["なにも しませんでした。", "Nani mo shimasen deshita.", "Tôi đã không làm gì cả."],
+    ["レストランで ばんごはんを たべます。", "Resutoran de bangohan o tabemasu.", "Tôi ăn cơm tối ở nhà hàng."],
+    ["みせで くだものを かいます。", "Mise de kudamono o kaimasu.", "Tôi mua trái cây ở cửa hàng."],
+    ["がっこうで にほんごを べんきょうします。", "Gakkou de nihongo o benkyou shimasu.", "Tôi học tiếng Nhật ở trường."],
+    ["どこで しゃしんを とりますか。", "Doko de shashin o torimasu ka.", "Bạn chụp ảnh ở đâu?"],
+    ["…おおさかじょうこうえんで とります。", "…Oosakajoukouen de torimasu.", "…Tôi chụp ở công viên lâu đài Osaka."],
+    ["いっしょに ばんごはんを たべませんか。", "Isshoni bangohan o tabemasen ka.", "Cùng đi ăn cơm tối không?"],
+    ["…ええ、いいですね。", "…Ee, ii desu ne.", "…Vâng, hay quá."],
+    ["いっしょに テニスを しましょう。", "Isshoni tenisu o shimashou.", "Cùng chơi quần vợt nào."],
+    ["ちょっと やすみましょう。", "Chotto yasumimashou.", "Nghỉ một chút nào."],
+    ["あした おはなみを しませんか。", "Ashita ohanami o shimasen ka.", "Ngày mai đi ngắm hoa anh đào không?"],
+    ["…いいですね。じゃ、また あした。", "…Ii desu ne. Ja, mata ashita.", "…Hay đấy. Vậy hẹn gặp lại ngày mai."],
+    ["ともだちに あいます。", "Tomodachi ni aimasu.", "Tôi gặp bạn."],
+    ["ときどき えいがを みます。", "Tokidoki eiga o mimasu.", "Thỉnh thoảng tôi xem phim."],
+    ["ばんごはんを たべます。それから、テレビを みます。", "Bangohan o tabemasu. Sorekara, terebi o mimasu.", "Tôi ăn cơm tối. Sau đó xem tivi."]
   ],
   grammar: [
-
+    {"p": "① trợ từ を (tân ngữ)", "g": "[danh từ]＋を＋[động từ tha] = đối tượng chịu tác động của hành động: ごはんを たべます, てがみを かきます. を ở đây đọc là 'o'.", "ex": "ジュースを のみます。", "exr": "Juusu o nomimasu.", "m": "Tôi uống nước ép."},
+    {"p": "② なにを (làm gì)", "g": "Hỏi đối tượng của hành động dùng なにを ＋[động từ]＋か: なにを たべますか, なにを しますか.", "ex": "なにを たべますか。", "exr": "Nani o tabemasu ka.", "m": "Bạn ăn gì?"},
+    {"p": "③ なにも ～ません", "g": "なにも đi với động từ PHỦ ĐỊNH = 'không … gì cả': なにも たべません, なにも しませんでした. KHÔNG dùng với câu khẳng định.", "ex": "なにも たべません。", "exr": "Nani mo tabemasen.", "m": "Tôi không ăn gì cả."},
+    {"p": "④ trợ từ で (nơi hành động)", "g": "[nơi chốn]＋で = 'tại ~ (nơi diễn ra hành động)': レストランで たべます, みせで かいます. Phân biệt với で chỉ phương tiện ở bài 5. Hỏi nơi: どこで.", "ex": "レストランで ばんごはんを たべます。", "exr": "Resutoran de bangohan o tabemasu.", "m": "Tôi ăn cơm tối ở nhà hàng."},
+    {"p": "⑤ ～ませんか (rủ rê)", "g": "[động từ]ませんか = 'cùng … nhé / … không?', lời mời lịch sự: いっしょに たべませんか. Đồng ý: ええ、いいですね.", "ex": "いっしょに ばんごはんを たべませんか。", "exr": "Isshoni bangohan o tabemasen ka.", "m": "Cùng đi ăn cơm tối không?"},
+    {"p": "⑥ ～ましょう (đề nghị)", "g": "[động từ]ましょう = 'nào / hãy cùng …', dùng khi rủ và mong đối phương đồng ý, hoặc đáp lại lời mời: テニスを しましょう, ちょっと やすみましょう.", "ex": "いっしょに テニスを しましょう。", "exr": "Isshoni tenisu o shimashou.", "m": "Cùng chơi quần vợt nào."},
+    {"p": "⑦ それから", "g": "それから = 'sau đó, tiếp theo', nối hai hành động/câu theo thứ tự thời gian: ～ます。それから、～ます。", "ex": "ばんごはんを たべます。それから、テレビを みます。", "exr": "Bangohan o tabemasu. Sorekara, terebi o mimasu.", "m": "Tôi ăn cơm tối. Sau đó xem tivi."}
   ]
 });
