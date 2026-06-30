@@ -257,7 +257,16 @@ body { margin:0; background:#121414; min-height:100vh; }
     </div>
   </div>
   <div id="timeNow" style="font-size:13px; color:#9aa0a6; min-height:16px; margin-top:6px;">Bấm ▶ Bắt đầu để luyện</div>
-  <div><button class="btn small" id="speakBtn" style="margin-top:8px;">🔊 Nghe</button></div>
+  <div style="margin-top:8px; display:flex; gap:6px; justify-content:center; flex-wrap:wrap;"><button class="btn small" id="speakBtn">🔊 Nghe</button><button class="btn small" id="strokeBtn" style="display:none;">✍ Thứ tự nét</button></div>
+</div>
+<div id="strokeBox" class="panel" style="display:none; padding:14px; margin-bottom:14px; text-align:center;">
+  <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <span style="font-weight:600; color:#cfe6ff;">✍ Thứ tự nét</span>
+    <button class="btn small" id="strokeReplay" style="margin-left:auto;">↻ Lặp lại</button>
+    <button class="btn small" id="strokeClose">Đóng ✕</button>
+  </div>
+  <div id="strokeStatus" style="font-size:13px; color:#9aa0a6; margin-bottom:8px; line-height:1.5;"></div>
+  <div id="strokeTarget" style="display:flex; flex-wrap:wrap; justify-content:center;"></div>
 </div>
 <div id="summaryBox" class="panel" style="display:none; padding:16px; margin-bottom:14px;"></div>
 <div id="drawWrap" style="display:none; margin-bottom:14px; text-align:center;">

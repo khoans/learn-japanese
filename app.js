@@ -1254,6 +1254,8 @@ function nextCard(forced) {
         if (_nb) _nb.style.display = 'none';
         var _nx = $('noteBox');
         if (_nx) _nx.style.display = 'none';
+        var _sb = $('strokeBox');
+        if (_sb) _sb.style.display = 'none';
     }
     $('typeDiff').style.display = 'none';
     $('typeDiff').innerHTML = '';
@@ -1273,6 +1275,7 @@ function nextCard(forced) {
         setCardButtons('reveal');
     }
     if (cardDir === 'listen' && phase === 'running') speak(card[4] || card[0]);
+    showStrokeBtn();
     startTimer();
 }
 
@@ -2596,6 +2599,82 @@ if ($('kanaChartBtn')) $('kanaChartBtn').addEventListener('click', function () {
     b.style.display = show ? 'block' : 'none';
     $('kanaChartBtn').textContent = 'Bảng tra kana ' + (show ? '(▴)' : '(▾)');
     if (show) renderKanaChart();
+});
+
+/* ===== Thứ tự nét (hanzi-writer, tải theo yêu cầu; CHỈ kanji, CẦN internet) ===== */
+let _hwLoading = null;
+function ensureHanziWriter() {
+    if (window.HanziWriter) return Promise.resolve(true);
+    if (_hwLoading) return _hwLoading;
+    _hwLoading = new Promise(function (resolve) {
+        const sc = document.createElement('script');
+        sc.src = 'https://cdn.jsdelivr.net/npm/hanzi-writer@3/dist/hanzi-writer.min.js';
+        sc.onload = function () { resolve(!!window.HanziWriter); };
+        sc.onerror = function () { _hwLoading = null; resolve(false); };
+        document.head.appendChild(sc);
+    });
+    return _hwLoading;
+}
+function kanjiChars(s) {
+    const out = [];
+    String(s || '').split('').forEach(function (ch) {
+        if (/[一-鿿㐀-䶿]/.test(ch) && out.indexOf(ch) < 0) out.push(ch);
+    });
+    return out;
+}
+function showStrokeBtn() {
+    const btn = $('strokeBtn');
+    if (!btn) return;
+    btn.style.display = (card && phase === 'running' && kanjiChars(card[5] || card[0]).length) ? 'inline-block' : 'none';
+}
+const OFFLINE_MSG = '⚠ Không xem được thứ tự nét: cần <b>kết nối internet</b> để tải dữ liệu, mà hiện không truy cập được. Hãy kiểm tra mạng rồi bấm "↻ Lặp lại".';
+function openStroke() {
+    if (!card) return;
+    const chars = kanjiChars(card[5] || card[0]);
+    if (!chars.length) return;
+    const box = $('strokeBox'), target = $('strokeTarget'), status = $('strokeStatus');
+    if (!box) return;
+    box.style.display = 'block';
+    target.innerHTML = '';
+    status.innerHTML = 'Đang tải dữ liệu thứ tự nét…';
+    ensureHanziWriter().then(function (ok) {
+        if (!ok || !window.HanziWriter) {
+            status.innerHTML = OFFLINE_MSG;
+            return;
+        }
+        status.innerHTML = '';
+        chars.forEach(function (ch) {
+            const cell = document.createElement('div');
+            cell.style.cssText = 'margin:4px; text-align:center;';
+            const holder = document.createElement('div');
+            holder.style.cssText = 'background:#101213; border:1px solid #3a3f43; border-radius:8px;';
+            cell.appendChild(holder);
+            const lbl = document.createElement('div');
+            lbl.style.cssText = 'font-size:11px; color:#9aa0a6; margin-top:3px; font-family:Hiragino Sans,Noto Sans JP,sans-serif;';
+            lbl.textContent = ch;
+            cell.appendChild(lbl);
+            target.appendChild(cell);
+            try {
+                const writer = window.HanziWriter.create(holder, ch, {
+                    width: 100, height: 100, padding: 6, showOutline: true,
+                    strokeColor: '#9ecbff', radicalColor: '#6ee7a0', outlineColor: '#333',
+                    strokeAnimationSpeed: 1, delayBetweenStrokes: 220,
+                    onLoadCharDataError: function () {
+                        status.innerHTML = OFFLINE_MSG;
+                        lbl.innerHTML = '<span style="color:#ff8b8b;">' + ch + ' ✕</span>';
+                    }
+                });
+                writer.loopCharacterAnimation();
+            } catch (e) {
+                status.innerHTML = OFFLINE_MSG;
+            }
+        });
+    });
+}
+if ($('strokeBtn')) $('strokeBtn').addEventListener('click', openStroke);
+if ($('strokeReplay')) $('strokeReplay').addEventListener('click', openStroke);
+if ($('strokeClose')) $('strokeClose').addEventListener('click', function () {
+    if ($('strokeBox')) $('strokeBox').style.display = 'none';
 });
 document.querySelectorAll('.keybtn').forEach(function (btn) {
     btn.addEventListener('click', function () {
