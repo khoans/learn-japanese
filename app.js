@@ -218,9 +218,9 @@ function romajiInputOn() {
     return !!($('romajiInput') && $('romajiInput').checked);
 }
 function syncKanaBar() {
-    // Chỉ hiện thanh "Kana khi gõ" khi BẬT tự chuyển romaji; tắt đi nếu dùng IME riêng
-    const bar = $('kanaBar');
-    if (bar) bar.style.display = romajiInputOn() ? 'flex' : 'none';
+    // Thanh luôn hiện (có checkbox bật/tắt); phần chọn hiragana/katakana chỉ hiện khi đang bật
+    const wrap = $('kanaScriptWrap');
+    if (wrap) wrap.style.display = romajiInputOn() ? 'inline-flex' : 'none';
 }
 function cycleKana() {
     const sel = $('kanaScript');

@@ -208,7 +208,6 @@ body { margin:0; background:#121414; min-height:100vh; }
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="audioOn"> 🔊 Tự đọc khi hiện đáp án</label>
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="furiOn"> Furigana (cách đọc trên kanji)</label>
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="mistakesOn"> Chỉ ôn lỗi sai (sai/hết giờ)</label>
-  <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="romajiInput"> Gõ romaji tự thành kana (vd: watashi → わたし) — TẮT nếu bạn dùng IME tiếng Nhật</label>
 </div>
 </details>
 </div><div class="main">
@@ -218,9 +217,11 @@ body { margin:0; background:#121414; min-height:100vh; }
   <button class="btn red" id="stopBtn" style="flex:1; height:44px;" disabled>⏹ Dừng</button>
 </div>
 <div id="kanaBar" class="panel" style="padding:8px 12px; margin-bottom:14px; display:flex; align-items:center; gap:10px; font-size:13px; flex-wrap:wrap;">
-  <span style="color:#9aa0a6;">Kana khi gõ romaji:</span>
-  <select id="kanaScript" style="width:auto; padding:5px 9px; font-size:13px;"><option value="auto">Tự động</option><option value="hira">あ Hiragana</option><option value="kata">ア Katakana</option></select>
-  <span style="margin-left:auto; color:#9aa0a6; font-size:12px;">đổi nhanh: <span class="keycap" id="lblKanaMain">=</span></span>
+  <label style="display:flex; align-items:center; gap:6px; cursor:pointer;" title="Tắt nếu bạn dùng IME tiếng Nhật"><input type="checkbox" id="romajiInput"> Gõ romaji → kana</label>
+  <span id="kanaScriptWrap" style="display:none; align-items:center; gap:8px;">
+    <select id="kanaScript" style="width:auto; padding:5px 9px; font-size:13px;"><option value="auto">Tự động</option><option value="hira">あ Hiragana</option><option value="kata">ア Katakana</option></select>
+    <span style="color:#9aa0a6; font-size:12px;">đổi: <span class="keycap" id="lblKanaMain">=</span></span>
+  </span>
 </div>
 <div class="panel" id="cardPanel" style="padding:28px 14px; text-align:center; margin-bottom:14px; min-height:120px; display:flex; flex-direction:column; justify-content:center;">
   <div id="furiHint" style="font-family:'Hiragino Sans','Noto Sans JP',sans-serif; font-size:18px; color:#9ecbff; min-height:0; margin-bottom:2px; visibility:hidden;"></div>
