@@ -208,7 +208,7 @@ body { margin:0; background:#121414; min-height:100vh; }
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="audioOn"> 🔊 Tự đọc khi hiện đáp án</label>
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="furiOn"> Furigana (cách đọc trên kanji)</label>
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="mistakesOn"> Chỉ ôn lỗi sai (sai/hết giờ)</label>
-  <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="romajiInput"> Gõ romaji tự thành kana (vd: watashi → わたし)</label>
+  <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="romajiInput"> Gõ romaji tự thành kana (vd: watashi → わたし) — TẮT nếu bạn dùng IME tiếng Nhật</label>
 </div>
 </details>
 </div><div class="main">
@@ -217,7 +217,7 @@ body { margin:0; background:#121414; min-height:100vh; }
   <button class="btn amber" id="pauseBtn" style="flex:1; height:44px;" disabled>⏸ Tạm dừng</button>
   <button class="btn red" id="stopBtn" style="flex:1; height:44px;" disabled>⏹ Dừng</button>
 </div>
-<div class="panel" style="padding:8px 12px; margin-bottom:14px; display:flex; align-items:center; gap:10px; font-size:13px; flex-wrap:wrap;">
+<div id="kanaBar" class="panel" style="padding:8px 12px; margin-bottom:14px; display:flex; align-items:center; gap:10px; font-size:13px; flex-wrap:wrap;">
   <span style="color:#9aa0a6;">Kana khi gõ romaji:</span>
   <select id="kanaScript" style="width:auto; padding:5px 9px; font-size:13px;"><option value="auto">Tự động</option><option value="hira">あ Hiragana</option><option value="kata">ア Katakana</option></select>
   <span style="margin-left:auto; color:#9aa0a6; font-size:12px;">đổi nhanh: <span class="keycap" id="lblKanaMain">=</span></span>

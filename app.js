@@ -214,6 +214,14 @@ function toScript(text, kata) {
     return String(text).replace(/[ァ-ヶ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); });
 }
 const KANA_LABELS = {auto: 'Tự động', hira: 'あ Hiragana', kata: 'ア Katakana'};
+function romajiInputOn() {
+    return !!($('romajiInput') && $('romajiInput').checked);
+}
+function syncKanaBar() {
+    // Chỉ hiện thanh "Kana khi gõ" khi BẬT tự chuyển romaji; tắt đi nếu dùng IME riêng
+    const bar = $('kanaBar');
+    if (bar) bar.style.display = romajiInputOn() ? 'flex' : 'none';
+}
 function cycleKana() {
     const sel = $('kanaScript');
     if (!sel) return;
@@ -2346,7 +2354,7 @@ $('penColor').addEventListener('input', function () {
     }
 });
 $('typeInput').addEventListener('keydown', function (e) {
-    if (e.code === keys.kana) {       // đổi loại kana ngay khi đang gõ
+    if (e.code === keys.kana && romajiInputOn()) {   // đổi loại kana — chỉ khi đang dùng tự chuyển
         e.preventDefault();
         cycleKana();
         return;
@@ -2702,7 +2710,7 @@ window.addEventListener('keydown', function (e) {
         return;
     }
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
-    if (e.code === keys.kana) {       // đổi loại kana khi KHÔNG ở trong ô nhập (ô gõ tự xử lý riêng)
+    if (e.code === keys.kana && romajiInputOn()) {   // đổi loại kana — chỉ khi đang dùng tự chuyển
         e.preventDefault();
         cycleKana();
         return;
@@ -2838,7 +2846,10 @@ if ($('mistakesOn')) $('mistakesOn').addEventListener('change', function () {
     saveLimit();
     if (phase === 'running') nextCard();
 });
-if ($('romajiInput')) $('romajiInput').addEventListener('change', saveLimit);
+if ($('romajiInput')) $('romajiInput').addEventListener('change', function () {
+    saveLimit();
+    syncKanaBar();
+});
 if ($('kanaScript')) $('kanaScript').addEventListener('change', saveLimit);
 if ($('typeInput')) $('typeInput').addEventListener('input', function () {
     if (!($('romajiInput') && $('romajiInput').checked)) return;
@@ -2862,6 +2873,7 @@ updateCoverage();
 updateGoalProg();
 updatePhaseUI();
 renderPrev();
+syncKanaBar();
 
 /* ===== PWA: đăng ký service worker (chỉ trên http/https, bỏ qua file://) ===== */
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
