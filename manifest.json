@@ -1,0 +1,15 @@
+{
+  "name": "Luyện đọc nhanh tiếng Nhật N5",
+  "short_name": "JP N5",
+  "description": "Luyện kana, kanji, từ vựng, câu và ngữ pháp tiếng Nhật trình độ N5",
+  "lang": "vi",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0E151D",
+  "theme_color": "#0E151D",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

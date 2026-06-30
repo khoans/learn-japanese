@@ -54,7 +54,7 @@ All state is `localStorage`, keys prefixed `jp_`: current deck & progress (`jp_r
 
 **Add a new lesson (e.g. Bài 8):**
 1. Copy `data/lessons/_TEMPLATE.js` → `data/lessons/lesson-08.js`, set `registerLesson(8, {...})`, fill data.
-2. Add `<script src="data/lessons/lesson-08.js"></script>` in the "THÊM BÀI Ở ĐÂY" block, in ascending order — **in BOTH `kana_speed_trainer.html` and `kana_speed_trainer_v2.html`** (the include list is the one thing duplicated across the two shells).
+2. Add `<script src="data/lessons/lesson-08.js"></script>` in the "THÊM BÀI Ở ĐÂY" block, in ascending order — **in BOTH `kana_speed_trainer.html` and `kana_speed_trainer_v2.html`** (the include list is the one thing duplicated across the two shells). Also add the file to the `CORE` array in `sw.js` (and bump `CACHE`) so it's precached for offline; online users get it automatically via the network-first SW.
 3. Nothing else — the lesson button and its grammar section appear automatically from `ALL_LESSONS`/`GRAM`.
 
 **Add words/sentences/grammar to an existing lesson:** edit the array in that `data/lessons/lesson-NN.js`; no HTML change needed.

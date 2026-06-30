@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luyện đọc nhanh tiếng Nhật N5 — Chọn giao diện</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0E151D"><link rel="apple-touch-icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
@@ -70,5 +71,10 @@ h1 .jp{ font-family:var(--fjp); color:var(--azure); margin-right:7px; }
 
   <p class="note">Hai giao diện <b>dùng chung dữ liệu</b> (tiến độ, thống kê, phím tắt) và <b>chung mã nguồn</b> <code>app.js</code> — đổi qua lại bất cứ lúc nào, tiến độ không mất.</p>
 </div>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+</script>
 </body>
 </html>
