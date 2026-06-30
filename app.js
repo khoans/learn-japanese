@@ -153,6 +153,56 @@ function kanaRomaji(str) {
     }).join(' / ');
 }
 
+/* ===== Gõ romaji -> kana (IME mini cho ô đánh máy) =====
+   Chuyển tham lam: ưu tiên khớp 3 ký tự (kya/sha), rồi 2, rồi 1.
+   Bỏ qua ký tự đã là kana (pass-through) để chuyển lại được chuỗi trộn.
+   Phụ âm đôi -> っ; "n" trước phụ âm/"nn" -> ん (n cuối chỉ thành ん khi final=true). */
+const ROMA2KANA = {
+    a: 'あ', i: 'い', u: 'う', e: 'え', o: 'お',
+    ka: 'か', ki: 'き', ku: 'く', ke: 'け', ko: 'こ', kya: 'きゃ', kyu: 'きゅ', kyo: 'きょ',
+    sa: 'さ', shi: 'し', si: 'し', su: 'す', se: 'せ', so: 'そ', sha: 'しゃ', shu: 'しゅ', sho: 'しょ', sya: 'しゃ', syu: 'しゅ', syo: 'しょ',
+    ta: 'た', chi: 'ち', ti: 'ち', tsu: 'つ', tu: 'つ', te: 'て', to: 'と', cha: 'ちゃ', chu: 'ちゅ', cho: 'ちょ', cya: 'ちゃ',
+    na: 'な', ni: 'に', nu: 'ぬ', ne: 'ね', no: 'の', nya: 'にゃ', nyu: 'にゅ', nyo: 'にょ',
+    ha: 'は', hi: 'ひ', fu: 'ふ', hu: 'ふ', he: 'へ', ho: 'ほ', hya: 'ひゃ', hyu: 'ひゅ', hyo: 'ひょ',
+    fa: 'ふぁ', fi: 'ふぃ', fe: 'ふぇ', fo: 'ふぉ',
+    ma: 'ま', mi: 'み', mu: 'む', me: 'め', mo: 'も', mya: 'みゃ', myu: 'みゅ', myo: 'みょ',
+    ya: 'や', yu: 'ゆ', yo: 'よ',
+    ra: 'ら', ri: 'り', ru: 'る', re: 'れ', ro: 'ろ', rya: 'りゃ', ryu: 'りゅ', ryo: 'りょ',
+    wa: 'わ', wo: 'を', wi: 'うぃ', we: 'うぇ',
+    ga: 'が', gi: 'ぎ', gu: 'ぐ', ge: 'げ', go: 'ご', gya: 'ぎゃ', gyu: 'ぎゅ', gyo: 'ぎょ',
+    za: 'ざ', ji: 'じ', zi: 'じ', zu: 'ず', ze: 'ぜ', zo: 'ぞ', ja: 'じゃ', ju: 'じゅ', jo: 'じょ', jya: 'じゃ', jyu: 'じゅ', jyo: 'じょ', zya: 'じゃ',
+    da: 'だ', di: 'ぢ', du: 'づ', de: 'で', do: 'ど',
+    ba: 'ば', bi: 'び', bu: 'ぶ', be: 'べ', bo: 'ぼ', bya: 'びゃ', byu: 'びゅ', byo: 'びょ',
+    pa: 'ぱ', pi: 'ぴ', pu: 'ぷ', pe: 'ぺ', po: 'ぽ', pya: 'ぴゃ', pyu: 'ぴゅ', pyo: 'ぴょ',
+    '-': 'ー', xtsu: 'っ', ltsu: 'っ'
+};
+function romajiToKana(s, kata, final) {
+    s = String(s).toLowerCase();
+    let out = '', i = 0;
+    const isVowel = function (ch) { return 'aiueo'.indexOf(ch) >= 0; };
+    while (i < s.length) {
+        const c = s[i];
+        if (!/[a-z]/.test(c)) { out += c; i++; continue; }     // kana / dấu cách: giữ nguyên
+        const len = ROMA2KANA[s.substr(i, 3)] ? 3 : (ROMA2KANA[s.substr(i, 2)] ? 2 : (ROMA2KANA[s.substr(i, 1)] ? 1 : 0));
+        if (len) { out += ROMA2KANA[s.substr(i, len)]; i += len; continue; }
+        const n = s[i + 1];
+        if (c === 'n') {
+            if (n === undefined) { if (final) { out += 'ん'; i++; } else break; continue; }
+            if (n === 'n') { out += 'ん'; i += 2; continue; }
+            if (!isVowel(n) && n !== 'y') { out += 'ん'; i++; continue; }
+            out += c; i++; continue;
+        }
+        if (c === n && /[bcdfghjkmprstvwz]/.test(c)) { out += 'っ'; i++; continue; } // phụ âm đôi
+        break;                                                  // phụ âm lẻ chưa đủ âm tiết: để nguyên phần còn lại
+    }
+    out += s.slice(i);
+    if (kata) out = out.replace(/[ぁ-ゖ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) + 0x60); });
+    return out;
+}
+function readingIsKatakana() {
+    return !!(card && card[4] && /[゠-ヿ]/.test(card[4]));
+}
+
 /* ===== Kanji130: chỉnh sửa nghĩa/ghi chú, lưu localStorage, lịch sử + hoàn lại ===== */
 const LS_K130 = 'jp_kanji130_edits_v1';
 let kanji130Edits = {ov: {}, hist: []};
@@ -1699,7 +1749,8 @@ function typingSubmit() {
     if (phase !== 'running' || isRevealed || !isTypingCard) return;
     clearTimer();
     answerMs = pausedMs + (performance.now() - cardStartMs);
-    const typed = $('typeInput').value;
+    let typed = $('typeInput').value;
+    if ($('romajiInput') && $('romajiInput').checked) typed = romajiToKana(typed, readingIsKatakana(), true);
     const cmp = card[4] || card[0];
     styleAnswer();
     showAnsKanji();
@@ -2054,6 +2105,7 @@ function saveLimit() {
         audio: $('audioOn') ? $('audioOn').checked : false,
         furi: $('furiOn') ? $('furiOn').checked : false,
         mistakes: $('mistakesOn') ? $('mistakesOn').checked : false,
+        romaji: $('romajiInput') ? $('romajiInput').checked : false,
         lwf: $('lwordForm').value
     }));
 }
@@ -2442,6 +2494,7 @@ window.addEventListener('keydown', function (e) {
             if ($('audioOn')) $('audioOn').checked = !!o.audio;
             if ($('furiOn')) $('furiOn').checked = !!o.furi;
             if ($('mistakesOn')) $('mistakesOn').checked = !!o.mistakes;
+            if ($('romajiInput')) $('romajiInput').checked = !!o.romaji;
             if (o.lwf) $('lwordForm').value = o.lwf;
         } catch (e) {
         }
@@ -2464,6 +2517,18 @@ if ($('speakBtn')) $('speakBtn').addEventListener('click', speakCurrent);
 if ($('mistakesOn')) $('mistakesOn').addEventListener('change', function () {
     saveLimit();
     if (phase === 'running') nextCard();
+});
+if ($('romajiInput')) $('romajiInput').addEventListener('change', saveLimit);
+if ($('typeInput')) $('typeInput').addEventListener('input', function () {
+    if (!($('romajiInput') && $('romajiInput').checked)) return;
+    const conv = romajiToKana(this.value, readingIsKatakana(), false);
+    if (conv !== this.value) {
+        this.value = conv;
+        try {
+            this.setSelectionRange(conv.length, conv.length);
+        } catch (e) {
+        }
+    }
 });
 initCanvas();
 renderKeyLabels();
