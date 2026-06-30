@@ -1173,7 +1173,7 @@ function pickItem() {
             if (seen === 0) return 3.0;
             const failRate = (stat.w + (stat.t || 0)) / seen;
             const avg = (stat.tn ? stat.ts / stat.tn : 0);
-            return Math.max(0.15, 0.4 + failRate * 3 + Math.minSeen(2, avg / 2000));
+            return Math.max(0.15, 0.4 + failRate * 3 + Math.min(2, avg / 2000));
         });
         return weightedPick(pool, w);
     }
