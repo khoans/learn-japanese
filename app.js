@@ -1603,8 +1603,72 @@ function checkAllMastered() {
     return true;
 }
 
+/* ===== Tổng kết phiên (đọc từ entry vừa lưu trong lịch sử) + biểu đồ ===== */
+function renderSummary() {
+    const box = $('summaryBox');
+    if (!box) return;
+    const history = loadHist();
+    if (!history.length) { box.style.display = 'none'; return; }
+    const s = history[history.length - 1];
+    const total = s.c + s.w + (s.to || 0);
+    // Gom các mục cần ôn (sai + hết giờ) trên mọi bộ trong phiên
+    const weak = [];
+    const byOpt = s.byOption || {};
+    for (const dk in byOpt) {
+        const bucket = byOpt[dk];
+        for (const cardKey in bucket) {
+            const st = bucket[cardKey];
+            const bad = (st.w || 0) + (st.t || 0);
+            if (bad > 0) weak.push({k: cardKey, r: st.r || '', bad: bad});
+        }
+    }
+    weak.sort(function (a, b) { return b.bad - a.bad; });
+    const recent = history.slice(-12);
+
+    let html = '<div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:12px;">';
+    html += '<div style="font-size:40px; font-weight:800; color:#6ee7a0; line-height:1;">' + (s.acc || 0) + '%</div>';
+    html += '<div style="font-size:13px; color:#c8c8c8; line-height:1.7;">'
+        + '<div>✓ <b style="color:#6ee7a0;">' + s.c + '</b>　✗ <b style="color:#ff8b8b;">' + s.w + '</b>　⏱ <b style="color:#ffd27a;">' + (s.to || 0) + '</b>　/ ' + total + ' câu</div>'
+        + '<div>Chuỗi dài nhất: <b style="color:#ffd27a;">' + (s.best || 0) + '</b>　·　TB: <b style="color:#9ecbff;">' + (s.avg || '–') + '</b></div>'
+        + '</div>';
+    html += '<button class="btn small" data-sum-close style="margin-left:auto;">Đóng ✕</button>';
+    html += '</div>';
+
+    if (weak.length) {
+        html += '<div style="font-size:12px; color:#9aa0a6; margin-bottom:6px;">Cần ôn lại (sai/hết giờ nhiều nhất) — bật "Chỉ ôn lỗi sai" để luyện:</div>';
+        html += '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;">';
+        weak.slice(0, 10).forEach(function (item) {
+            html += '<span style="background:#3a1f24; border:1px solid #7d3743; border-radius:7px; padding:3px 8px; font-size:13px;">'
+                + '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff;">' + escapeHtml(item.k) + '</span>'
+                + (item.r ? ' <span style="color:#9ecbff; font-size:11px;">' + escapeHtml(item.r) + '</span>' : '')
+                + ' <span style="color:#ff8b8b; font-size:11px;">×' + item.bad + '</span></span>';
+        });
+        html += '</div>';
+    } else {
+        html += '<div style="color:#6ee7a0; font-size:13px; margin-bottom:14px;">✓ Không sai câu nào — tuyệt vời!</div>';
+    }
+
+    if (recent.length > 1) {
+        html += '<div style="font-size:12px; color:#9aa0a6; margin-bottom:6px;">Độ chính xác ' + recent.length + ' phiên gần nhất:</div>';
+        html += '<div style="display:flex; align-items:flex-end; gap:4px; height:74px; padding:6px 4px 2px; background:#101213; border-radius:8px;">';
+        recent.forEach(function (rs, idx) {
+            const acc = rs.acc || 0;
+            const barH = Math.max(3, Math.round(acc * 0.58));
+            const isLast = idx === recent.length - 1;
+            html += '<div title="' + escapeHtml(rs.date || '') + ' · ' + acc + '%" style="flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:2px;">'
+                + '<div style="width:100%; max-width:24px; height:' + barH + 'px; background:' + (isLast ? '#6ee7a0' : '#356394') + '; border-radius:3px 3px 0 0;"></div>'
+                + '<div style="font-size:9px; color:#777;">' + acc + '</div></div>';
+        });
+        html += '</div>';
+    }
+
+    box.innerHTML = html;
+    box.style.display = 'block';
+}
+
 function finishMastered() {
     stopSession();
+    renderSummary();
     $('timeNow').innerHTML = '<span style="color:#6ee7a0;">\u2713 Đã thuộc hết mục này — session đã lưu</span>';
 }
 
@@ -1705,6 +1769,7 @@ function finishByGoal() {
     clearTimer();
     const reached = goalTarget();
     stopSession();
+    renderSummary();
     $('timeNow').innerHTML = '<span style="color:#6ee7a0;">\u2713 Đã đạt ' + reached + ' câu \u2014 session đã lưu</span>';
 }
 
@@ -1850,6 +1915,7 @@ function updateCoverage() {
 
 function startSession() {
     if (phase !== 'idle') return;
+    if ($('summaryBox')) $('summaryBox').style.display = 'none';
     lastGraded = null;
     phase = 'running';
     updatePhaseUI();
@@ -2557,6 +2623,11 @@ if ($('furiOn')) $('furiOn').addEventListener('change', function () {
     if (phase === 'running') nextCard();
 });
 if ($('speakBtn')) $('speakBtn').addEventListener('click', speakCurrent);
+if ($('summaryBox')) $('summaryBox').addEventListener('click', function (e) {
+    if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-sum-close')) {
+        $('summaryBox').style.display = 'none';
+    }
+});
 if ($('mistakesOn')) $('mistakesOn').addEventListener('change', function () {
     saveLimit();
     if (phase === 'running') nextCard();
