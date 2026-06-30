@@ -1244,6 +1244,10 @@ function nextCard(forced) {
         if (_eb) _eb.style.display = 'none';
         var _ex = $('k130EditBox');
         if (_ex) _ex.style.display = 'none';
+        var _nb = $('noteBar');
+        if (_nb) _nb.style.display = 'none';
+        var _nx = $('noteBox');
+        if (_nx) _nx.style.display = 'none';
     }
     $('typeDiff').style.display = 'none';
     $('typeDiff').innerHTML = '';
@@ -1302,6 +1306,76 @@ function maybeSpeak() {
     if ($('audioOn') && $('audioOn').checked) speakCurrent();
 }
 
+/* ===== Ghi chú cá nhân cho MỌI mục (lưu theo card[0]) ===== */
+const LS_NOTES = 'jp_notes_v1';
+let notesStore = {};
+function loadNotes() {
+    try {
+        const s = lsGet(LS_NOTES);
+        if (s) notesStore = JSON.parse(s) || {};
+    } catch (e) {
+        notesStore = {};
+    }
+}
+function saveNotes() {
+    try {
+        lsSet(LS_NOTES, JSON.stringify(notesStore));
+    } catch (e) {
+    }
+}
+function getNote(key) {
+    return (key && notesStore[key]) ? notesStore[key] : '';
+}
+function setNote(key, text) {
+    text = (text || '').trim();
+    if (text) notesStore[key] = text; else delete notesStore[key];
+    saveNotes();
+}
+function showNoteBar() {
+    const bar = $('noteBar');
+    if (!bar) return;
+    const on = isRevealed && phase === 'running' && !!card;
+    bar.style.display = on ? 'block' : 'none';
+    if (!on) {
+        const box = $('noteBox');
+        if (box) box.style.display = 'none';
+        return;
+    }
+    const note = getNote(card[0]);
+    const disp = $('noteDisplay');
+    if (disp) {
+        disp.textContent = note;
+        disp.style.display = note ? 'block' : 'none';
+    }
+    const btn = $('noteBtnText');
+    if (btn) btn.textContent = note ? '📝 Sửa ghi chú' : '📝 Thêm ghi chú';
+}
+function openNoteEdit() {
+    if (!card) return;
+    const inp = $('noteInput');
+    if (inp) inp.value = getNote(card[0]);
+    const box = $('noteBox');
+    if (box) box.style.display = 'block';
+    setTimeout(function () {
+        try {
+            if (inp) inp.focus();
+        } catch (e) {
+        }
+    }, 0);
+}
+function saveNoteInline() {
+    if (!card) return;
+    const inp = $('noteInput');
+    setNote(card[0], inp ? inp.value : '');
+    const box = $('noteBox');
+    if (box) box.style.display = 'none';
+    showNoteBar();
+}
+function onAnswerShown() {
+    maybeSpeak();
+    showNoteBar();
+}
+
 function reveal() {
     if (phase !== 'running' || isRevealed) return;
     clearTimer();
@@ -1314,7 +1388,7 @@ function reveal() {
     isRevealed = true;
     setCardButtons('grade');
     k130ShowEditBar();
-    maybeSpeak();
+    onAnswerShown();
 }
 
 function recordItem(field, ms) {
@@ -1374,7 +1448,7 @@ function doTimeout() {
         $('timeNow').innerHTML = '<span style="color:#9aa0a6;">⏱ Hết giờ (không tính)</span>';
         setCardButtons('next');
         k130ShowEditBar();
-        maybeSpeak();
+        onAnswerShown();
         return;
     }
     session.to = (session.to || 0) + 1;
@@ -1397,7 +1471,7 @@ function doTimeout() {
     setCardButtons('next');
     afterRecord();
     k130ShowEditBar();
-    maybeSpeak();
+    onAnswerShown();
     if ($('goalOn').checked && sessionCount() >= goalTarget()) {
         setTimeout(finishByGoal, 600);
     }
@@ -1861,7 +1935,7 @@ function typingSubmit() {
     isRevealed = true;
     setCardButtons('grade');
     k130ShowEditBar();
-    maybeSpeak();
+    onAnswerShown();
 }
 
 function afterRecord() {
@@ -2628,6 +2702,17 @@ if ($('summaryBox')) $('summaryBox').addEventListener('click', function (e) {
         $('summaryBox').style.display = 'none';
     }
 });
+if ($('noteBtn')) $('noteBtn').addEventListener('click', openNoteEdit);
+if ($('noteSave')) $('noteSave').addEventListener('click', saveNoteInline);
+if ($('noteCancel')) $('noteCancel').addEventListener('click', function () {
+    if ($('noteBox')) $('noteBox').style.display = 'none';
+});
+if ($('noteInput')) $('noteInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        saveNoteInline();
+    }
+});
 if ($('mistakesOn')) $('mistakesOn').addEventListener('change', function () {
     saveLimit();
     if (phase === 'running') nextCard();
@@ -2648,6 +2733,7 @@ if ($('typeInput')) $('typeInput').addEventListener('input', function () {
 initCanvas();
 renderKeyLabels();
 loadK130E();
+loadNotes();
 syncControls();
 updateStats();
 updateStreak();

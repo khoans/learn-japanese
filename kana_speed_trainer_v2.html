@@ -415,6 +415,18 @@ table{ width:100%; border-collapse:collapse; }
       <span id="k130SaveMsg" style="font-size:12px; color:var(--jade);"></span>
     </div>
   </div>
+  <div id="noteBar" style="display:none; margin-top:10px; position:relative; z-index:1;">
+    <div id="noteDisplay" style="display:none; font-size:13px; color:var(--gold); background:var(--gold-bg); border:1px solid var(--gold-line); border-radius:8px; padding:7px 10px; margin-bottom:6px; text-align:left;"></div>
+    <button class="btn small" id="noteBtn"><span id="noteBtnText">📝 Thêm ghi chú</span></button>
+  </div>
+  <div id="noteBox" style="display:none; margin-top:10px; text-align:left; background:var(--raise); border:1px solid var(--line); border-radius:10px; padding:11px; position:relative; z-index:1;">
+    <div style="font-size:11px; margin-bottom:4px;" class="muted">Ghi chú cho mục này (lưu trên máy)</div>
+    <input type="text" id="noteInput" placeholder="vd: dễ nhầm với…, mẹo nhớ…" style="width:100%; margin-bottom:9px;">
+    <div style="display:flex; gap:8px;">
+      <button class="btn small green" id="noteSave">✓ Lưu</button>
+      <button class="btn small" id="noteCancel">Hủy</button>
+    </div>
+  </div>
   <div id="timeNow">Bấm ▶ Bắt đầu để luyện</div>
   <div><button class="btn small" id="speakBtn" style="margin-top:10px; position:relative; z-index:1;">🔊 Nghe</button></div>
 </div>

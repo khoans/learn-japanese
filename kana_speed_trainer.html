@@ -243,6 +243,18 @@ body { margin:0; background:#121414; min-height:100vh; }
       <span id="k130SaveMsg" style="font-size:12px; color:#6ee7a0;"></span>
     </div>
   </div>
+  <div id="noteBar" style="display:none; margin-top:10px;">
+    <div id="noteDisplay" style="display:none; font-size:13px; color:#ffe6ab; background:#2a2410; border:1px solid #6b5022; border-radius:8px; padding:7px 10px; margin-bottom:6px; text-align:left;"></div>
+    <button class="btn small" id="noteBtn"><span id="noteBtnText">📝 Thêm ghi chú</span></button>
+  </div>
+  <div id="noteBox" style="display:none; margin-top:10px; text-align:left; background:#1c1f21; border:1px solid #33383c; border-radius:10px; padding:11px;">
+    <div style="font-size:11px; color:#9aa0a6; margin-bottom:4px;">Ghi chú cho mục này (lưu trên máy)</div>
+    <input type="text" id="noteInput" placeholder="vd: dễ nhầm với…, mẹo nhớ…" style="width:100%; background:#101213; color:#fff; border:1px solid #4a5560; border-radius:6px; padding:7px; font-size:14px; margin-bottom:9px;">
+    <div style="display:flex; gap:8px;">
+      <button class="btn small green" id="noteSave">✓ Lưu</button>
+      <button class="btn small" id="noteCancel">Hủy</button>
+    </div>
+  </div>
   <div id="timeNow" style="font-size:13px; color:#9aa0a6; min-height:16px; margin-top:6px;">Bấm ▶ Bắt đầu để luyện</div>
   <div><button class="btn small" id="speakBtn" style="margin-top:8px;">🔊 Nghe</button></div>
 </div>
