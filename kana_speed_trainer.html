@@ -208,9 +208,6 @@ body { margin:0; background:#121414; min-height:100vh; }
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="furiOn"> Furigana (cách đọc trên kanji)</label>
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="mistakesOn"> Chỉ ôn lỗi sai (sai/hết giờ)</label>
   <label style="display:flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="romajiInput"> Gõ romaji tự thành kana (vd: watashi → わたし)</label>
-  <label style="display:flex; align-items:center; gap:6px;">Kana khi gõ:
-    <select id="kanaScript" style="width:auto; padding:4px 8px; font-size:12px;"><option value="auto">Tự động</option><option value="hira">あ Hiragana</option><option value="kata">ア Katakana</option></select>
-  </label>
 </div>
 </details>
 </div><div class="main">
@@ -218,6 +215,11 @@ body { margin:0; background:#121414; min-height:100vh; }
   <button class="btn green" id="startBtn" style="flex:1; height:44px;">▶ Bắt đầu</button>
   <button class="btn amber" id="pauseBtn" style="flex:1; height:44px;" disabled>⏸ Tạm dừng</button>
   <button class="btn red" id="stopBtn" style="flex:1; height:44px;" disabled>⏹ Dừng</button>
+</div>
+<div class="panel" style="padding:8px 12px; margin-bottom:14px; display:flex; align-items:center; gap:10px; font-size:13px; flex-wrap:wrap;">
+  <span style="color:#9aa0a6;">Kana khi gõ romaji:</span>
+  <select id="kanaScript" style="width:auto; padding:5px 9px; font-size:13px;"><option value="auto">Tự động</option><option value="hira">あ Hiragana</option><option value="kata">ア Katakana</option></select>
+  <span style="margin-left:auto; color:#9aa0a6; font-size:12px;">đổi nhanh: <span class="keycap" id="lblKanaMain">=</span></span>
 </div>
 <div class="panel" id="cardPanel" style="padding:28px 14px; text-align:center; margin-bottom:14px; min-height:120px; display:flex; flex-direction:column; justify-content:center;">
   <div id="furiHint" style="font-family:'Hiragino Sans','Noto Sans JP',sans-serif; font-size:18px; color:#9ecbff; min-height:0; margin-bottom:2px; visibility:hidden;"></div>
@@ -322,6 +324,7 @@ body { margin:0; background:#121414; min-height:100vh; }
     <div>Nét mỏng hơn: <span class="keycap" id="lblPenDown">[</span> <span class="keybtn" data-slot="pendown">gán</span></div>
     <div>Đã thuộc (bỏ qua): <span class="keycap" id="lblSkip">M</span> <span class="keybtn" data-slot="skip">gán</span></div>
     <div>Làm lại (không tính): <span class="keycap" id="lblRedo">R</span> <span class="keybtn" data-slot="redo">gán</span></div>
+    <div>Đổi loại kana (khi gõ): <span class="keycap" id="lblKana">=</span> <span class="keybtn" data-slot="kana">gán</span></div>
   </div>
 </div>
 </details>

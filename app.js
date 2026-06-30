@@ -209,6 +209,24 @@ function kanaOutKata() {
     if (v === 'hira') return false;    // luôn Hiragana
     return readingIsKatakana();        // tự động theo đáp án
 }
+function toScript(text, kata) {
+    if (kata) return String(text).replace(/[ぁ-ゖ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) + 0x60); });
+    return String(text).replace(/[ァ-ヶ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); });
+}
+const KANA_LABELS = {auto: 'Tự động', hira: 'あ Hiragana', kata: 'ア Katakana'};
+function cycleKana() {
+    const sel = $('kanaScript');
+    if (!sel) return;
+    const order = ['auto', 'hira', 'kata'];
+    sel.value = order[(order.indexOf(sel.value) + 1) % order.length];
+    saveLimit();
+    // Chuyển luôn phần đã gõ sang script mới (chỉ khi không phải 'auto')
+    const ti = $('typeInput');
+    if (ti && ti.style.display !== 'none' && sel.value !== 'auto') {
+        ti.value = toScript(ti.value, sel.value === 'kata');
+    }
+    showFixNote('Kana gõ: ' + KANA_LABELS[sel.value]);
+}
 
 /* ===== Kanji130: chỉnh sửa nghĩa/ghi chú, lưu localStorage, lịch sử + hoàn lại ===== */
 const LS_K130 = 'jp_kanji130_edits_v1';
@@ -664,7 +682,8 @@ let keys = {
     penup: 'BracketRight',
     pendown: 'BracketLeft',
     skip: 'KeyM',
-    redo: 'KeyR'
+    redo: 'KeyR',
+    kana: 'Equal'
 };
 (function () {
     const s = lsGet(LS_KEYS);
@@ -683,7 +702,8 @@ let keys = {
                 penup: 'BracketRight',
                 pendown: 'BracketLeft',
                 skip: 'KeyM',
-                redo: 'KeyR'
+                redo: 'KeyR',
+                kana: 'Equal'
             }, o);
         } catch (e) {
         }
@@ -719,6 +739,10 @@ function renderKeyLabels() {
     if (_ls) _ls.textContent = keyLabel(keys.skip);
     var _lr = $('lblRedo');
     if (_lr) _lr.textContent = keyLabel(keys.redo);
+    var _lk = $('lblKana');
+    if (_lk) _lk.textContent = keyLabel(keys.kana);
+    var _lkm = $('lblKanaMain');
+    if (_lkm) _lkm.textContent = keyLabel(keys.kana);
 }
 
 // session = tiến độ phiên hiện tại. ĐƯỢC LƯU localStorage (LS_CUR) — KHÔNG đổi tên các field:
@@ -2161,6 +2185,11 @@ $('penColor').addEventListener('input', function () {
     }
 });
 $('typeInput').addEventListener('keydown', function (e) {
+    if (e.code === keys.kana) {       // đổi loại kana ngay khi đang gõ
+        e.preventDefault();
+        cycleKana();
+        return;
+    }
     if (e.key === 'Enter') {
         if (e.isComposing || e.keyCode === 229) return;
         e.preventDefault();
@@ -2412,6 +2441,11 @@ window.addEventListener('keydown', function (e) {
         return;
     }
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
+    if (e.code === keys.kana) {       // đổi loại kana khi KHÔNG ở trong ô nhập (ô gõ tự xử lý riêng)
+        e.preventDefault();
+        cycleKana();
+        return;
+    }
     if (typingDone) {
         if (e.code === 'Enter' || e.code === keys.reveal) {
             e.preventDefault();
