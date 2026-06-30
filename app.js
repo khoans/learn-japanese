@@ -182,9 +182,9 @@ function romajiToKana(s, kata, final) {
     const isVowel = function (ch) { return 'aiueo'.indexOf(ch) >= 0; };
     while (i < s.length) {
         const c = s[i];
-        if (!/[a-z]/.test(c)) { out += c; i++; continue; }     // kana / dấu cách: giữ nguyên
         const len = ROMA2KANA[s.substr(i, 3)] ? 3 : (ROMA2KANA[s.substr(i, 2)] ? 2 : (ROMA2KANA[s.substr(i, 1)] ? 1 : 0));
-        if (len) { out += ROMA2KANA[s.substr(i, len)]; i += len; continue; }
+        if (len) { out += ROMA2KANA[s.substr(i, len)]; i += len; continue; }  // tra bảng trước (gồm '-' -> ー)
+        if (!/[a-z]/.test(c)) { out += c; i++; continue; }     // kana / dấu cách: giữ nguyên
         const n = s[i + 1];
         if (c === 'n') {
             if (n === undefined) { if (final) { out += 'ん'; i++; } else break; continue; }
@@ -201,6 +201,13 @@ function romajiToKana(s, kata, final) {
 }
 function readingIsKatakana() {
     return !!(card && card[4] && /[゠-ヿ]/.test(card[4]));
+}
+function kanaOutKata() {
+    const sel = $('kanaScript');
+    const v = sel ? sel.value : 'auto';
+    if (v === 'kata') return true;     // luôn Katakana
+    if (v === 'hira') return false;    // luôn Hiragana
+    return readingIsKatakana();        // tự động theo đáp án
 }
 
 /* ===== Kanji130: chỉnh sửa nghĩa/ghi chú, lưu localStorage, lịch sử + hoàn lại ===== */
@@ -1750,7 +1757,7 @@ function typingSubmit() {
     clearTimer();
     answerMs = pausedMs + (performance.now() - cardStartMs);
     let typed = $('typeInput').value;
-    if ($('romajiInput') && $('romajiInput').checked) typed = romajiToKana(typed, readingIsKatakana(), true);
+    if ($('romajiInput') && $('romajiInput').checked) typed = romajiToKana(typed, kanaOutKata(), true);
     const cmp = card[4] || card[0];
     styleAnswer();
     showAnsKanji();
@@ -2106,6 +2113,7 @@ function saveLimit() {
         furi: $('furiOn') ? $('furiOn').checked : false,
         mistakes: $('mistakesOn') ? $('mistakesOn').checked : false,
         romaji: $('romajiInput') ? $('romajiInput').checked : false,
+        kanaScript: $('kanaScript') ? $('kanaScript').value : 'auto',
         lwf: $('lwordForm').value
     }));
 }
@@ -2495,6 +2503,7 @@ window.addEventListener('keydown', function (e) {
             if ($('furiOn')) $('furiOn').checked = !!o.furi;
             if ($('mistakesOn')) $('mistakesOn').checked = !!o.mistakes;
             if ($('romajiInput')) $('romajiInput').checked = !!o.romaji;
+            if ($('kanaScript') && o.kanaScript) $('kanaScript').value = o.kanaScript;
             if (o.lwf) $('lwordForm').value = o.lwf;
         } catch (e) {
         }
@@ -2519,9 +2528,10 @@ if ($('mistakesOn')) $('mistakesOn').addEventListener('change', function () {
     if (phase === 'running') nextCard();
 });
 if ($('romajiInput')) $('romajiInput').addEventListener('change', saveLimit);
+if ($('kanaScript')) $('kanaScript').addEventListener('change', saveLimit);
 if ($('typeInput')) $('typeInput').addEventListener('input', function () {
     if (!($('romajiInput') && $('romajiInput').checked)) return;
-    const conv = romajiToKana(this.value, readingIsKatakana(), false);
+    const conv = romajiToKana(this.value, kanaOutKata(), false);
     if (conv !== this.value) {
         this.value = conv;
         try {
