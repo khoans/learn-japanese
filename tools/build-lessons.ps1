@@ -129,6 +129,26 @@ Get-ChildItem -Path $LDir -Directory | Where-Object { $_.Name -ne 'csv' } | ForE
   }
 }
 
+# --- Sinh data/radicals.js tu csv/radicals.csv (bo thu) ---
+$radCsv = Join-Path $CsvDir 'radicals.csv'
+if (Test-Path $radCsv) {
+  $rads = @(Import-Csv -Path $radCsv -Encoding utf8)
+  $rLines = foreach ($r in $rads) {
+    $info = 'Hán Việt: ' + $r.hanViet + ' · ' + $r.docNhat
+    $common = if ($r.phoBien -match '\S') { 'true' } else { 'false' }
+    '    [' + (Esc $r.boThu) + ', ' + (Esc $r.nghia) + ', ' + (Esc $info) + ', ' + (Esc $r.nhom) + ', ' + $common + ']'
+  }
+  $radJs = @"
+// TU DONG SINH tu  data/lessons/csv/radicals.csv  boi  tools/build-lessons.ps1 -- DUNG SUA TAY.
+// Moi bo thu: [ chu, nghia, info (Han Viet + am Nhat), nhom, phoBien(bool) ]
+const RADICALS = [
+$($rLines -join ",`r`n")
+];
+"@
+  [System.IO.File]::WriteAllText((Join-Path $Root 'data\radicals.js'), $radJs, $Utf8NoBom)
+  Write-Host ("radicals.js: {0} bo thu" -f $rads.Count)
+}
+
 # --- Sinh manifest.js (trang + service worker deu doc) ---
 $levelNames = @($manifest.Keys)
 $levelsJs = ($levelNames | ForEach-Object { '"' + $_ + '"' }) -join ', '

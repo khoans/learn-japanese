@@ -37,6 +37,7 @@ function buildLessonUI() {
 }
 
 buildLessonUI();
+buildRadicalGroups();
 let canvas = null, ctx = null, isDrawing = false, canvasSize = 'm', penWidth = 11, penColor = '#ffffff';
 const CANVAS_SIZES = {s: {fixed: 300, h: 300}, m: {frac: 0.55, h: 340}, l: {frac: 0.8, h: 430}, xl: {frac: 1.0, h: 340}};
 
@@ -360,7 +361,7 @@ let isRevealed = false, isTimedOut = false, cardStartMs = 0, pausedMs = 0, answe
 function deckKey() {
     const m = $('mode').value;
     let base;
-    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical'; else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
+    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
@@ -379,7 +380,7 @@ function deckLabel(key) {
     if (parts[0] === 'number') return prefix + 'Số đếm · cấp ' + (parts[1] || 'all');
     if (parts[0] === 'kanji') return prefix + 'Kanji N5 · hàng ' + (parts[1] || 'all');
     if (parts[0] === 'kanji130') return prefix + '130 kanji N5 · nhóm ' + (parts[1] || 'all');
-    if (parts[0] === 'radical') return prefix + 'Bộ thủ thông dụng';
+    if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
     if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
     if (parts[0] === 'lword') return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (parts[2] === 'K' ? ' (kanji)' : '');
     if (parts[0] === 'word') return prefix + 'Đọc từ N5 · ' + scriptNames[parts[1]];
@@ -437,6 +438,31 @@ function selectedCGroups() {
     return a.length ? a : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 }
 
+// Dựng nút nhóm bộ thủ (chủ đề) — suy ra nhóm phân biệt từ RADICALS[*][3].
+function buildRadicalGroups() {
+    const box = $('rgrpBtns');
+    if (!box) return;
+    box.innerHTML = '';
+    const seen = {};
+    (typeof RADICALS !== 'undefined' ? RADICALS : []).forEach(function (r) {
+        if (r[3] && !seen[r[3]]) {
+            seen[r[3]] = true;
+            const btn = document.createElement('button');
+            btn.className = 'btn small rgrp active';
+            btn.setAttribute('data-rgrp', r[3]);
+            btn.textContent = r[3];
+            box.appendChild(btn);
+        }
+    });
+}
+function selectedRGroups() {
+    const a = [];
+    document.querySelectorAll('[data-rgrp]').forEach(function (b) {
+        if (b.classList.contains('active')) a.push(b.getAttribute('data-rgrp'));
+    });
+    return a; // rỗng = không lọc nhóm (tất cả)
+}
+
 // poolForKey() trả về mảng các "thẻ" để luyện. Mỗi thẻ (biến `card` / `item`) là mảng 6 phần tử:
 //   [0] prompt      — đề bài hiển thị (đồng thời là KHÓA định danh của mục)
 //   [1] answer      — đáp án (romaji, hoặc "romaji · nghĩa")
@@ -483,7 +509,13 @@ function poolForKey(key) {
         });
     }
     if (parts[0] === 'radical') {
-        return RADICALS.map(function (row) {
+        const rgroups = parts[1] ? parts[1].split(',').filter(Boolean) : [];
+        const commonOnly = (parts[2] === 'C');
+        return RADICALS.filter(function (row) {
+            if (commonOnly && !row[4]) return false;                 // row[4] = phổ biến
+            if (rgroups.length && rgroups.indexOf(row[3]) < 0) return false; // row[3] = nhóm
+            return true;
+        }).map(function (row) {
             return [row[0], row[1], row[2], '', row[0], ''];
         });
     }

@@ -15,7 +15,8 @@ data/
   registry.js                  ← bộ gom dữ liệu các bài. PHẢI nạp đầu tiên.
   core-data.js                 ← dữ liệu KHÔNG theo bài: bảng kana, từ N5 (WORDS),
                                  kanji (KANJIV, KANJI130), số đếm (NUMSET),
-                                 đơn vị đếm (COUNTSET), bộ thủ (RADICALS)...
+                                 đơn vị đếm (COUNTSET)...
+  radicals.js                  ← TỰ ĐỘNG SINH từ csv/radicals.csv: 214 bộ thủ (RADICALS)
   lessons/
     manifest.js                  ← DANH SÁCH trình độ + số bài (TỰ ĐỘNG SINH). Trang + sw.js đều đọc.
     N5/lesson-01.js … lesson-07.js ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.

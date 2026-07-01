@@ -36,7 +36,8 @@ js/                            THE ENGINE, split by concern (classic scripts, sh
   tools-init.js                  tab bar, stroke/writing, ALL event wiring + init + PWA  — loads last
 data/
   registry.js                   registerLesson() + JPLessons collector — loads FIRST
-  core-data.js                  non-lesson data: kana, WORDS, KANJIV, KANJI130, NUMSET, COUNTSET, RADICALS
+  core-data.js                  non-lesson data: kana, WORDS, KANJIV, KANJI130, NUMSET, COUNTSET
+  radicals.js                   GENERATED from csv/radicals.csv — RADICALS (214 Kangxi: [char,meaning,info,group,common])
   lessons/
     manifest.js                 GENERATED — LEVELS + LESSON_MANIFEST (nums per level)
     <LEVEL>/lesson-NN.js         GENERATED from CSV — e.g. N5/lesson-01.js — DO NOT hand-edit

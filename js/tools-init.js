@@ -343,6 +343,7 @@ window.addEventListener('keydown', function (e) {
             if ($('romajiInput')) $('romajiInput').checked = !!o.romaji;
             if ($('kanaScript') && o.kanaScript) $('kanaScript').value = o.kanaScript;
             if ($('hideReading')) $('hideReading').checked = !!o.hideReading;
+            if ($('radCommon')) $('radCommon').checked = !!o.radCommon;
             if (o.lwf) $('lwordForm').value = o.lwf;
         } catch (e) {
         }
