@@ -1,12 +1,15 @@
 /* Service worker — network-first (online luôn mới) + cache để chạy offline.
    Chỉ hoạt động trên http/https (GitHub Pages), KHÔNG chạy với file://.
    Khi đổi nội dung/app, bump CACHE để dọn cache cũ. */
-const CACHE = 'jp-n5-v2';
+const CACHE = 'jp-n5-v3';
 
-// Danh sach so bai lay tu manifest (dung chung voi trang) -> them bai KHONG phai sua file nay.
-importScripts('./data/lessons/manifest.js'); // dat self.LESSON_NUMS
-var LESSON_URLS = (self.LESSON_NUMS || []).map(function (n) {
-  return './data/lessons/lesson-' + (n < 10 ? '0' : '') + n + '.js';
+// Danh sach trinh do + so bai lay tu manifest (dung chung voi trang) -> them bai KHONG phai sua file nay.
+importScripts('./data/lessons/manifest.js'); // dat self.LEVELS + self.LESSON_MANIFEST
+var LESSON_URLS = [];
+(self.LEVELS || []).forEach(function (lv) {
+  (self.LESSON_MANIFEST[lv] || []).forEach(function (n) {
+    LESSON_URLS.push('./data/lessons/' + lv + '/lesson-' + (n < 10 ? '0' : '') + n + '.js');
+  });
 });
 
 const CORE = [

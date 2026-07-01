@@ -571,10 +571,14 @@ table{ width:100%; border-collapse:collapse; }
 <script src="data/lessons/manifest.js"></script>
 <script>
 (function () {
-  var nums = window.LESSON_NUMS || [];
-  for (var i = 0; i < nums.length; i++) {
-    var nn = (nums[i] < 10 ? '0' : '') + nums[i];
-    document.write('<script src="data/lessons/lesson-' + nn + '.js"><\/script>');
+  var man = window.LESSON_MANIFEST || {};
+  var levels = window.LEVELS || [];
+  for (var li = 0; li < levels.length; li++) {
+    var lv = levels[li], nums = man[lv] || [];
+    for (var i = 0; i < nums.length; i++) {
+      var nn = (nums[i] < 10 ? '0' : '') + nums[i];
+      document.write('<script src="data/lessons/' + lv + '/lesson-' + nn + '.js"><\/script>');
+    }
   }
 })();
 </script>

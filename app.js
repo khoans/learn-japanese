@@ -472,12 +472,23 @@ function buildLessonUI() {
     var box = $('baiBtns');
     if (box) {
         box.innerHTML = '';
-        ALL_LESSONS.forEach(function (num) {
-            var btn = document.createElement('button');
-            btn.className = 'btn small bai active';
-            btn.setAttribute('data-bai', num);
-            btn.textContent = 'Bài ' + num;
-            box.appendChild(btn);
+        var levels = (JPLessons.levels && JPLessons.levels()) || [];
+        if (!levels.length) levels = ['N5'];
+        levels.forEach(function (lv) {
+            var nums = (JPLessons.numsOf && JPLessons.numsOf(lv)) || ALL_LESSONS;
+            var lab = document.createElement('div');
+            lab.className = 'lvl-label';
+            lab.textContent = 'Trình độ ' + lv;
+            lab.style.cssText = 'flex-basis:100%; width:100%; margin:2px 0 4px; font-size:11px; font-weight:700; letter-spacing:1px; opacity:.6;';
+            box.appendChild(lab);
+            nums.forEach(function (num) {
+                var btn = document.createElement('button');
+                btn.className = 'btn small bai active';
+                btn.setAttribute('data-bai', num);
+                btn.setAttribute('data-level', lv);
+                btn.textContent = 'Bài ' + num;
+                box.appendChild(btn);
+            });
         });
     }
     var gramSelect = $('gramSel');
