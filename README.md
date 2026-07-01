@@ -101,3 +101,7 @@ thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đ
   logic luyện tập, thống kê, localStorage giữ nguyên không đổi.
 - Giao diện mới dùng Google Fonts (Be Vietnam Pro, Noto Serif JP); nếu offline sẽ
   tự lùi về font hệ thống, vẫn chạy bình thường.
+- Thẻ **kanji** và **bộ thủ** có 2 nút: **✍ Thứ tự nét** (xem animation) và
+  **✏️ Luyện viết** (tự vẽ từng nét, máy chấm; có nút Đúng/Sai để ghi nhận rồi qua
+  thẻ sau). Dùng thư viện `hanzi-writer` tải từ CDN nên **cần internet**; offline sẽ
+  hiện thông báo dự phòng. Phủ toàn bộ kanji + bộ thủ N5.

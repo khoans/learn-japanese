@@ -119,18 +119,27 @@ or `file://`** — don't rely on it. Instead:
 - **CRLF:** the PS build writes CRLF; git normalizes to LF on commit (warnings are harmless).
 - **sw cache:** the build auto-bumps `const CACHE = 'jp-n5-vN'`. If it drifts high from
   repeated test builds, reset to one bump over the deployed value before committing.
+- **Stroke order + writing practice (hanzi-writer):** kanji/radical cards show
+  **✍ Thứ tự nét** (`openStroke`, animation) and **✏️ Luyện viết** (`openWrite`,
+  interactive `HanziWriter.quiz()`; in-box **Đúng/Sai** → `gradeFromWrite()` →
+  `reveal()`+`grade()`, respects practice mode). Both buttons toggled by
+  `showStrokeBtn()`. Lazy-loaded from CDN — **online-only**, offline fallback
+  (`OFFLINE_MSG`). Data covers all N5 kanji+radicals (verified), but is
+  Chinese-derived → a few kanji differ from Japanese stroke order/shape.
 - **No tooling:** there is no npm/make/lint/test. Don't look for them.
 
-## Current state (2026-07-01)
+## Current state (2026-07-02)
 
 - One level, **N5**, lessons **1–7**. 329 words, 51 grammar points.
   Sentences per lesson: 1:30, 2:30, 3:23, **4:46, 5:50, 6:67**, 7:20.
 - Working tree clean (all pushed to `main`).
-- Recent commits: `364d62b` (author lessons as CSV + auto-loading manifest),
-  `03d5326` (group by JLPT level, per-lesson CSV folders, VN headers),
-  `7912830` (add sentences to Bài 4/5/6; add this HANDOFF.md).
+- Recent commits: `03d5326` (group by JLPT level, per-lesson CSV folders, VN headers),
+  `7912830` (add sentences to Bài 4/5/6; add this HANDOFF.md),
+  `1dd07e0` (interactive stroke-writing practice for kanji & radicals).
 - Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
   sentence practice for now).
+- `references/` (third-party reference HTML) is intentionally **untracked** — not
+  committed/deployed.
 
 ## Deploy
 
