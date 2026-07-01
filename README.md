@@ -14,7 +14,6 @@ data/
   lessons/
     manifest.js                  ← DANH SÁCH trình độ + số bài (TỰ ĐỘNG SINH). Trang + sw.js đều đọc.
     N5/lesson-01.js … lesson-07.js ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
-    _TEMPLATE.js                 ← mẫu .js cũ (không được nạp; nay soạn bằng CSV)
     csv/                         ← NGUỒN DỮ LIỆU GỐC — soạn ở đây bằng Excel/Sheets:
       N5/                          · một thư mục cho mỗi TRÌNH ĐỘ (N5, N4, N3…)
         lesson-01/                 · một thư mục cho mỗi BÀI, gồm 3 file:

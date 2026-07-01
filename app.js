@@ -2465,16 +2465,6 @@ $('pickExclResBtn').addEventListener('click', function () {
     pickFiltered(false);
 });
 $('pickSearch').addEventListener('input', renderPickList);
-if ($('statBtn')) $('statBtn').addEventListener('click', function () {
-    const b = $('statBox');
-    const show = b.style.display === 'none';
-    b.style.display = show ? 'block' : 'none';
-    $('statBtn').textContent = 'Xem thống kê ' + (show ? '(▴)' : '(▾)');
-    if (show) {
-        populateSessionSelect();
-        refreshStatView();
-    }
-});
 $('vSession').addEventListener('change', refreshStatView);
 $('vOption').addEventListener('change', renderDist);
 $('clearAll').addEventListener('click', clearAll);
@@ -2637,13 +2627,6 @@ function renderGram() {
     });
 }
 
-if ($('gramBtn')) $('gramBtn').addEventListener('click', function () {
-    const b = $('gramBox');
-    const show = b.style.display === 'none';
-    b.style.display = show ? 'block' : 'none';
-    $('gramBtn').textContent = 'Ngữ pháp theo bài ' + (show ? '(▴)' : '(▾)');
-    if (show) renderGram();
-});
 $('gramSel').addEventListener('change', renderGram);
 
 function renderKanaChart() {
@@ -2662,13 +2645,6 @@ function renderKanaChart() {
     box.innerHTML = grid('Hiragana — cơ bản', H_BASIC) + grid('Hiragana — biến âm (dakuten)', H_DAKU) + grid('Hiragana — âm ghép (yōon)', H_YOON)
         + grid('Katakana — cơ bản', K_BASIC) + grid('Katakana — biến âm', K_DAKU) + grid('Katakana — âm ghép', K_YOON);
 }
-if ($('kanaChartBtn')) $('kanaChartBtn').addEventListener('click', function () {
-    const b = $('kanaChartBox');
-    const show = b.style.display === 'none';
-    b.style.display = show ? 'block' : 'none';
-    $('kanaChartBtn').textContent = 'Bảng tra kana ' + (show ? '(▴)' : '(▾)');
-    if (show) renderKanaChart();
-});
 
 /* ===== Xem trước danh sách: các mục (+ ngữ pháp nếu là bài) trước khi luyện ===== */
 function renderPreview() {
@@ -2700,13 +2676,6 @@ function renderPreview() {
     }
     box.innerHTML = html;
 }
-if ($('previewBtn')) $('previewBtn').addEventListener('click', function () {
-    const b = $('previewBox');
-    const show = b.style.display === 'none';
-    b.style.display = show ? 'block' : 'none';
-    $('previewBtn').textContent = 'Xem trước bài ' + (show ? '(▴)' : '(▾)');
-    if (show) renderPreview();
-});
 
 /* ===== Thanh công cụ dạng tab (chỉ bản v2): gom Tùy chọn · Chọn từ · Sửa nghĩa ·
         Thống kê · Ngữ pháp · Bảng kana · Xem trước vào 1 thanh dưới thẻ ===== */

@@ -15,7 +15,7 @@ or via GitHub Pages. All progress lives in `localStorage`.
   **Deploy = `git push`.** No CI.
 - One UI: `kana_speed_trainer_v2.html` (azure) `<script src>`s `app.js` (the engine).
   `index.html` just redirects there. **All logic is in `app.js`.** *(A former second
-  "classic" shell was removed; a few `if ($('classicOnlyId'))` guards remain in `app.js`.)*
+  "classic" shell was removed.)*
 - The user (khoans) is Vietnamese, learning N5. Talk to them in Vietnamese;
   write AI-facing docs/code comments in English/ASCII-safe text.
 
@@ -33,7 +33,6 @@ data/
   lessons/
     manifest.js                 GENERATED — LEVELS + LESSON_MANIFEST (nums per level)
     <LEVEL>/lesson-NN.js         GENERATED from CSV — e.g. N5/lesson-01.js — DO NOT hand-edit
-    _TEMPLATE.js                legacy JS template, unused
     csv/                        *** SOURCE OF TRUTH ***  (edit here, in Excel/Sheets)
       <LEVEL>/lesson-NN/words.csv|sentences.csv|grammar.csv
       _TEMPLATE/                copy-me folder for a new lesson
