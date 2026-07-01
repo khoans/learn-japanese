@@ -28,10 +28,13 @@ Data is split out of the HTML into `data/`, loaded by ordered `<script>` tags ne
 
 1. `data/registry.js` — defines `registerLesson()` and the `JPLessons` collector. **Must load first.**
 2. `data/core-data.js` — non-lesson data as global `const`s: kana tables (`H_BASIC`/`K_BASIC`/…), `WORDS` (N5), `KANJIV`, `KANJI130`, `NUMSET`, `COUNTSET`, `RADICALS`.
-3. `data/lessons/lesson-NN.js` — one file per lesson, each calls `registerLesson(N, {...})`.
-4. `app.js` — the app itself, which reads everything back. Loads **last**. Note: top-level `const`s in the data scripts are shared with `app.js` via the global lexical scope (plain classic scripts), so this only works in this exact order.
+3. `data/lessons/manifest.js` — sets a global `LESSON_NUMS = [1,2,…]` (written to `window` **and** `self` so both the page and the service worker can read it). **Auto-generated** by `tools/build-lessons.ps1`.
+4. A tiny inline loader (in each shell, right after `manifest.js`) iterates `LESSON_NUMS` and `document.write`s a `<script src="data/lessons/lesson-NN.js">` for each — synchronous, in order, so it works on `file://` (you cannot list a directory over `file://`, hence the manifest). This replaces the old hand-maintained list of per-lesson `<script>` tags.
+5. `data/lessons/lesson-NN.js` — one file per lesson, each calls `registerLesson(N, {...})`. **Auto-generated from CSV** (see below) — do not hand-edit.
+6. `app.js` — the app itself, which reads everything back. Loads **last**. Note: top-level `const`s in the data scripts are shared with `app.js` via the global lexical scope (plain classic scripts), so this only works in this exact order.
 
-`data/lessons/_TEMPLATE.js` is a copy-me template and is intentionally **not** included by any `<script>` tag.
+### Lessons are authored as CSV, not JS
+The source of truth for lesson content is **CSV files in `data/lessons/csv/`** (`lesson-NN-words.csv` cols `jp,romaji,vi,kana`; `-sentences.csv` cols `jp,romaji,vi`; `-grammar.csv` cols `p,g,ex,exr,m`) — editable in Excel/Sheets by non-technical maintainers. `tools/build-lessons.ps1` (PowerShell 7, zero install) reads every CSV and **generates** `data/lessons/lesson-NN.js` + `data/lessons/manifest.js`, and bumps the `sw.js` cache version. The generated `.js` files are committed/deployed (GitHub Pages serves `.js`, not CSV — CSV can't load over `file://`), but should never be hand-edited. `data/lessons/_TEMPLATE.js` is the legacy JS template (still not included by any `<script>` tag); the CSV `_TEMPLATE-*.csv` files are the current copy-me starting point.
 
 ### Data flow: registry → app
 - Each lesson file registers its data with the lesson number stated **once** in `registerLesson(N, {...})` (not repeated per row).
@@ -53,8 +56,8 @@ All state is `localStorage`, keys prefixed `jp_`: current deck & progress (`jp_r
 ## Common changes
 
 **Add a new lesson (e.g. Bài 8):**
-1. Copy `data/lessons/_TEMPLATE.js` → `data/lessons/lesson-08.js`, set `registerLesson(8, {...})`, fill data.
-2. Add `<script src="data/lessons/lesson-08.js"></script>` in the "THÊM BÀI Ở ĐÂY" block, in ascending order — **in BOTH `kana_speed_trainer.html` and `kana_speed_trainer_v2.html`** (the include list is the one thing duplicated across the two shells). Also add the file to the `CORE` array in `sw.js` (and bump `CACHE`) so it's precached for offline; online users get it automatically via the network-first SW.
+1. In `data/lessons/csv/`, copy `_TEMPLATE-words.csv` / `_TEMPLATE-sentences.csv` / `_TEMPLATE-grammar.csv` → `lesson-08-words.csv` / `lesson-08-sentences.csv` / `lesson-08-grammar.csv`, fill in the rows (Excel/Sheets, keep the header row, save as UTF-8 CSV).
+2. Run `tools/build-lessons.ps1`. It regenerates `lesson-08.js`, updates `manifest.js` (so the loader in both shells picks it up), and bumps `sw.js`'s cache. **No HTML or `sw.js` edits needed** — the manifest is the single source of the file list, read by both the page loader and the SW's `importScripts`.
 3. Nothing else — the lesson button and its grammar section appear automatically from `ALL_LESSONS`/`GRAM`.
 
-**Add words/sentences/grammar to an existing lesson:** edit the array in that `data/lessons/lesson-NN.js`; no HTML change needed.
+**Add words/sentences/grammar to an existing lesson:** edit the matching CSV in `data/lessons/csv/` (e.g. `lesson-06-words.csv`), then run `tools/build-lessons.ps1`. Do **not** edit the generated `data/lessons/lesson-NN.js` directly — it will be overwritten on the next build.

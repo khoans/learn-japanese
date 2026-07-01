@@ -394,14 +394,18 @@ body { margin:0; background:#121414; min-height:100vh; }
 <!-- ===== DU LIEU (tach rieng de de bao tri) ===== -->
 <script src="data/registry.js"></script>
 <script src="data/core-data.js"></script>
-<!-- ===== THEM BAI O DAY (moi bai 1 dong, dung thu tu tang dan) ===== -->
-<script src="data/lessons/lesson-01.js"></script>
-<script src="data/lessons/lesson-02.js"></script>
-<script src="data/lessons/lesson-03.js"></script>
-<script src="data/lessons/lesson-04.js"></script>
-<script src="data/lessons/lesson-05.js"></script>
-<script src="data/lessons/lesson-06.js"></script>
-<script src="data/lessons/lesson-07.js"></script>
+<!-- ===== BAI HOC: tu dong nap theo manifest (sinh boi tools/build-lessons.ps1). -->
+<!--     KHONG can them dong nao o day khi co bai moi - chi can chay build-lessons.ps1. -->
+<script src="data/lessons/manifest.js"></script>
+<script>
+(function () {
+  var nums = window.LESSON_NUMS || [];
+  for (var i = 0; i < nums.length; i++) {
+    var nn = (nums[i] < 10 ? '0' : '') + nums[i];
+    document.write('<script src="data/lessons/lesson-' + nn + '.js"><\/script>');
+  }
+})();
+</script>
 <!-- ===== HET PHAN BAI ===== -->
 <script src="app.js"></script>
 </body></html>

@@ -1,7 +1,14 @@
 /* Service worker — network-first (online luôn mới) + cache để chạy offline.
    Chỉ hoạt động trên http/https (GitHub Pages), KHÔNG chạy với file://.
    Khi đổi nội dung/app, bump CACHE để dọn cache cũ. */
-const CACHE = 'jp-n5-v1';
+const CACHE = 'jp-n5-v2';
+
+// Danh sach so bai lay tu manifest (dung chung voi trang) -> them bai KHONG phai sua file nay.
+importScripts('./data/lessons/manifest.js'); // dat self.LESSON_NUMS
+var LESSON_URLS = (self.LESSON_NUMS || []).map(function (n) {
+  return './data/lessons/lesson-' + (n < 10 ? '0' : '') + n + '.js';
+});
+
 const CORE = [
   './',
   './index.html',
@@ -12,14 +19,8 @@ const CORE = [
   './icon.svg',
   './data/registry.js',
   './data/core-data.js',
-  './data/lessons/lesson-01.js',
-  './data/lessons/lesson-02.js',
-  './data/lessons/lesson-03.js',
-  './data/lessons/lesson-04.js',
-  './data/lessons/lesson-05.js',
-  './data/lessons/lesson-06.js',
-  './data/lessons/lesson-07.js'
-];
+  './data/lessons/manifest.js'
+].concat(LESSON_URLS);
 
 self.addEventListener('install', function (e) {
   e.waitUntil(

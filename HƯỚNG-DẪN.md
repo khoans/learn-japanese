@@ -14,8 +14,17 @@ data/
                                  kanji (KANJIV, KANJI130), số đếm (NUMSET),
                                  đơn vị đếm (COUNTSET), bộ thủ (RADICALS)...
   lessons/
-    lesson-01.js … lesson-07.js  ← mỗi bài 1 file: từ vựng + câu + ngữ pháp
-    _TEMPLATE.js                 ← mẫu để tạo bài mới (không được nạp)
+    manifest.js                  ← DANH SÁCH số bài (TỰ ĐỘNG SINH). Trang + sw.js đều đọc.
+    lesson-01.js … lesson-07.js  ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
+    _TEMPLATE.js                 ← mẫu .js cũ (không được nạp; nay ưu tiên soạn bằng CSV)
+    csv/                         ← NGUỒN DỮ LIỆU GỐC — soạn ở đây bằng Excel/Sheets:
+      lesson-NN-words.csv          · từ vựng   (cột: jp, romaji, vi, kana)
+      lesson-NN-sentences.csv      · câu        (cột: jp, romaji, vi)
+      lesson-NN-grammar.csv        · ngữ pháp   (cột: p, g, ex, exr, m)
+      _TEMPLATE-*.csv              · file mẫu để tạo bài mới
+      README.md                    · hướng dẫn chi tiết cho người biên soạn
+tools/
+  build-lessons.ps1              ← chạy để sinh lesson-*.js + manifest.js từ CSV
 ```
 
 > Mở `index.html` để chọn giao diện, hoặc double-click thẳng một trong hai file
@@ -46,24 +55,30 @@ registerLesson(1, {
 Số bài (ví dụ `1`) chỉ cần ghi MỘT lần ở `registerLesson(...)` — không phải lặp
 lại trên từng dòng từ vựng nữa.
 
-## Thêm bài mới (Bài 8, 9…)
+## Thêm bài mới (Bài 8, 9…) — soạn bằng CSV, KHÔNG đụng code
 
-1. Copy `data/lessons/_TEMPLATE.js` → `data/lessons/lesson-08.js`, đổi số trong
-   `registerLesson(8, {…})` và điền dữ liệu.
-2. Tìm khối **"THÊM BÀI Ở ĐÂY"** và thêm 1 dòng (đặt theo thứ tự tăng dần):
-   ```html
-   <script src="data/lessons/lesson-08.js"></script>
-   ```
-   ⚠️ Phải thêm vào **CẢ HAI** file: `kana_speed_trainer.html` **và**
-   `kana_speed_trainer_v2.html` (danh sách include là thứ duy nhất bị lặp giữa
-   hai giao diện).
-3. Xong. Nút **"Bài 8"** tự xuất hiện trong phần chọn bài ở cả hai giao diện;
-   nếu bài đó có `grammar`, nó cũng tự hiện trong mục "Ngữ pháp theo bài".
+Toàn bộ từ vựng / câu / ngữ pháp nay nằm trong **file CSV** ở `data/lessons/csv/`
+(mở bằng Excel hoặc Google Sheets). Bạn chỉ sửa CSV rồi chạy 1 script — không phải
+sửa HTML hay viết JavaScript nữa.
 
-## Thêm từ vựng cho bài đã có
+1. Vào `data/lessons/csv/`, chép 3 file mẫu `_TEMPLATE-words.csv`,
+   `_TEMPLATE-sentences.csv`, `_TEMPLATE-grammar.csv` → đổi tên thành
+   `lesson-08-words.csv`, `lesson-08-sentences.csv`, `lesson-08-grammar.csv`.
+2. Mở bằng Excel/Sheets, điền dữ liệu (giữ nguyên dòng tiêu đề đầu tiên), **Lưu**
+   ở định dạng CSV (UTF-8).
+3. Chạy build: chuột phải `tools/build-lessons.ps1` → **Run with PowerShell**
+   (hoặc `./tools/build-lessons.ps1` trong PowerShell ở thư mục gốc).
+4. Xong. Script tự sinh `lesson-08.js` và cập nhật `manifest.js`; nút **"Bài 8"**
+   tự xuất hiện ở **cả hai giao diện** (không phải sửa file HTML nào), và phần
+   ngữ pháp cũng tự hiện. Xem thêm `data/lessons/csv/README.md`.
 
-Mở `data/lessons/lesson-0X.js` và thêm dòng vào mảng `words` (hoặc `sentences`).
-Không cần đụng tới file HTML hay `app.js`.
+## Thêm/sửa từ vựng cho bài đã có
+
+Mở file CSV tương ứng trong `data/lessons/csv/` (ví dụ `lesson-06-words.csv`),
+thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đụng HTML/`app.js`.
+
+> **Lưu ý:** các file `data/lessons/lesson-*.js` và `manifest.js` là **tự động
+> sinh** từ CSV — đừng sửa trực tiếp, mọi thay đổi sẽ bị ghi đè ở lần build sau.
 
 ## Sửa logic / giao diện
 
@@ -78,9 +93,14 @@ Không cần đụng tới file HTML hay `app.js`.
 
 - Các file được nạp bằng thẻ `<script>` thường (không phải ES module) nên app vẫn
   chạy khi mở trực tiếp bằng `file://`, không cần web server.
-- Thứ tự nạp bắt buộc: `registry.js` → `core-data.js` → các `lesson-*.js` →
-  `app.js`. `app.js` PHẢI nạp cuối (nó đọc các `const` toàn cục mà các file dữ
-  liệu khai báo — chỉ chạy đúng theo đúng thứ tự này).
+- Thứ tự nạp bắt buộc: `registry.js` → `core-data.js` → `manifest.js` → (bộ nạp
+  tự sinh các thẻ `lesson-*.js` theo `manifest.js`) → `app.js`. `app.js` PHẢI nạp
+  cuối (nó đọc các `const` toàn cục mà các file dữ liệu khai báo).
+- Bộ nạp trong mỗi file HTML dùng `document.write` để chèn thẻ `<script>` cho từng
+  bài **theo đúng thứ tự, đồng bộ** — chạy được cả trên `file://` (không thể quét
+  thư mục ở `file://`, nên `manifest.js` đóng vai danh sách bài). `sw.js` cũng
+  `importScripts('./data/lessons/manifest.js')` để dùng chung danh sách này, nên
+  thêm bài không phải sửa `sw.js`.
 - App gom dữ liệu qua `JPLessons.words()` / `.sentences()` / `.grammar()` /
   `.nums()` và dựng thành `LWORDS` / `LSENT` / `GRAM` / `ALL_LESSONS`, nên mọi
   logic luyện tập, thống kê, localStorage giữ nguyên không đổi.

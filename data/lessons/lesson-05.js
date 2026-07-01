@@ -1,7 +1,9 @@
-// ===== Minna no Nihongo - Bài 5 =====
-// words:     [ chu_hien_thi, romaji, nghia_tiengviet, hiragana ]
+// ===== Minna no Nihongo - Bai 5 =====
+// TU DONG SINH tu  data/lessons/csv/lesson-05-*.csv  boi  tools/build-lessons.ps1
+// DUNG SUA TRUC TIEP FILE NAY -- moi thay doi se bi ghi de. Hay sua CSV roi chay lai script.
+// words: [ chu_hien_thi, romaji, nghia_tiengviet, hiragana ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
-// grammar:   { p: tieu_de, g: giai_thich, ex: vi_du_nhat, exr: romaji, m: nghia }
+// grammar: { p: tieu_de, g: giai_thich, ex: vi_du_nhat, exr: romaji, m: nghia }
 registerLesson(5, {
   words: [
     ["いきます", "ikimasu", "đi", "いきます"],
