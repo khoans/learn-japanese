@@ -13,37 +13,47 @@ A single-page Japanese study/drill app (kana, vocabulary, kanji, numbers, counte
 
 ## Running & deploying
 
-- **Run locally:** open `kana_speed_trainer_v2.html` directly in a browser (`file://` works — scripts are plain `<script>` tags, not ES modules, specifically so no web server is needed). `index.html` just redirects there.
+- **Run locally:** open `index.html` directly in a browser (`file://` works — scripts are plain `<script>` tags, not ES modules, specifically so no web server is needed).
 - **No build, no lint, no tests.** There is no tooling/package manager; do not look for `npm`/`make` targets.
-- **Hosting:** deployed via GitHub Pages from branch `main`, `/ (root)`. `index.html` redirects to the app. Deploy = `git push`; Pages rebuilds automatically.
+- **Hosting:** deployed via GitHub Pages from branch `main`, `/ (root)`. Deploy = `git push`; Pages rebuilds automatically.
 
-### One UI shell + engine
-- `kana_speed_trainer_v2.html` — the app's single front-end (cool-azure UI; fonts via Google Fonts, system fallback offline). It `<script src>`-includes `app.js` (the entire drill engine — single source of truth) and the `data/` files.
-- `index.html` — a tiny redirect to `kana_speed_trainer_v2.html`.
+### Repo layout
+```
+index.html      the app — UI markup + CSS + the ordered <script> includes
+sw.js           service worker (MUST stay at root for its scope); reads the lesson manifest
+manifest.json   PWA manifest
+assets/         static assets (icon.svg)
+js/             the engine, split by concern (7 ordered classic scripts)
+data/           content data (registry, core-data, generated lessons, CSV source)
+tools/          build-lessons.ps1 (CSV → generated lesson .js)
+```
 
-**All logic lives in `app.js`.** *(History: there used to be a second "classic" shell `kana_speed_trainer.html` sharing `app.js`; it was removed.)*
+### The engine is `js/` (split classic scripts, shared global scope)
+`index.html` is the single UI; its logic lives in **seven ordered `<script src="js/…">` files** — plain classic scripts (NOT ES modules, so it runs on `file://`) sharing one global lexical scope. Split by concern, **load order matters**:
+`js/core.js` (data globals + JSDoc typedefs + utils) → `js/input-kana.js` (romaji→kana) → `js/kanji130.js` → `js/decks.js` (`$`, deck selection, `poolForKey`, canvas) → `js/drill.js` (card flow, speech, notes) → `js/stats.js` (summary, stats, preview) → `js/tools-init.js` (tab bar, stroke/writing, **all event wiring + init + PWA registration**).
+**Every top-level immediate-execution / init lives in `js/tools-init.js` (last)** so there are no cross-file hoisting hazards — keep it that way when editing. Any change to shared logic goes in the relevant `js/` file. *(History: this was one big `app.js`; earlier still there was a second "classic" HTML shell — both removed.)*
 
 ## Architecture
 
 ### Load order is load-bearing
-Data is split out of the HTML into `data/`, loaded by ordered `<script>` tags near the end of **each** UI shell. The order is mandatory and must be preserved:
+Data is split out of the HTML into `data/`, loaded by ordered `<script>` tags near the end of `index.html`. The order is mandatory and must be preserved:
 
 1. `data/registry.js` — defines `registerLesson()` and the `JPLessons` collector. **Must load first.**
 2. `data/core-data.js` — non-lesson data as global `const`s: kana tables (`H_BASIC`/`K_BASIC`/…), `WORDS` (N5), `KANJIV`, `KANJI130`, `NUMSET`, `COUNTSET`, `RADICALS`.
 3. `data/lessons/manifest.js` — sets globals `LEVELS = ["N5",…]` (ordered easy→hard) and `LESSON_MANIFEST = { "N5": [1,2,…] }` (lesson numbers per level), plus a flat `LESSON_NUMS` for legacy. Written to `window` **and** `self` so both the page and the service worker can read it. **Auto-generated** by `tools/build-lessons.ps1`.
 4. A tiny inline loader (in the HTML, right after `manifest.js`) iterates `LEVELS` × `LESSON_MANIFEST[level]` and `document.write`s a `<script src="data/lessons/<LEVEL>/lesson-NN.js">` for each — synchronous, in order, so it works on `file://` (you cannot list a directory over `file://`, hence the manifest). This replaces the old hand-maintained list of per-lesson `<script>` tags.
 5. `data/lessons/<LEVEL>/lesson-NN.js` — one file per lesson, each calls `registerLesson("<LEVEL>", N, {...})`. **Auto-generated from CSV** (see below) — do not hand-edit.
-6. `app.js` — the app itself, which reads everything back. Loads **last**. Note: top-level `const`s in the data scripts are shared with `app.js` via the global lexical scope (plain classic scripts), so this only works in this exact order.
+6. The engine — `js/core.js` → `input-kana.js` → `kanji130.js` → `decks.js` → `drill.js` → `stats.js` → `js/tools-init.js`, in that order, **last**. Note: top-level `const`s in the data scripts are shared with the `js/` files via the global lexical scope (plain classic scripts), so this only works in this exact order.
 
 ### Lessons are authored as CSV, not JS
 The source of truth for lesson content is **CSV files in `data/lessons/csv/<LEVEL>/lesson-NN/`** — one folder per lesson, each with `words.csv` (cols `tiengNhat,romaji,nghia,kana`), `sentences.csv` (cols `cau,romaji,nghia`), `grammar.csv` (cols `mau_cau,giai_thich,vi_du,vi_du_romaji,nghia`) — editable in Excel/Sheets by non-technical maintainers (Vietnamese column headers; the build maps grammar cols back to the internal `p/g/ex/exr/m` keys). `tools/build-lessons.ps1` (PowerShell 7, zero install) reads every CSV and **generates** `data/lessons/<LEVEL>/lesson-NN.js` + `data/lessons/manifest.js`, deletes generated `.js` whose CSV was removed (CSV is the single source of truth), and bumps the `sw.js` cache version. The generated `.js` files are committed/deployed (GitHub Pages serves `.js`, not CSV — CSV can't load over `file://`), but should never be hand-edited. `data/lessons/csv/_TEMPLATE/` is the copy-me lesson folder for new lessons.
 
 ### Levels (N5…N1)
-Lessons are grouped by JLPT level. Only **N5** exists today; N4…N1 are added by dropping a `csv/N4/lesson-NN/` folder and rebuilding — no code change. `registry.js` exposes `JPLessons.levels()` (ordered) and `JPLessons.numsOf(level)`. `buildLessonUI()` in `app.js` renders lesson buttons grouped under a per-level label, and each `[data-bai]` button also carries `[data-level]`. **Cross-level mixing UI is not built yet** (deferred): the deck keys and `poolForKey` still filter by lesson number only, so lesson numbers are assumed unique while a single level is active. When a second level ships, the selection/key system (and `GRAM` keying, currently by number) needs to become level-qualified.
+Lessons are grouped by JLPT level. Only **N5** exists today; N4…N1 are added by dropping a `csv/N4/lesson-NN/` folder and rebuilding — no code change. `registry.js` exposes `JPLessons.levels()` (ordered) and `JPLessons.numsOf(level)`. `buildLessonUI()` in `js/decks.js` renders lesson buttons grouped under a per-level label, and each `[data-bai]` button also carries `[data-level]`. **Cross-level mixing UI is not built yet** (deferred): the deck keys and `poolForKey` still filter by lesson number only, so lesson numbers are assumed unique while a single level is active. When a second level ships, the selection/key system (and `GRAM` keying, currently by number) needs to become level-qualified.
 
 ### Data flow: registry → app
 - Each lesson file registers its data with level + number stated **once** in `registerLesson("N5", N, {...})` (not repeated per row). `registerLesson` also accepts the legacy 2-arg `(N, {...})` form (treated as N5).
-- `registry.js` normalizes and concatenates all lessons. `app.js` pulls them at startup into the globals it uses everywhere: `LWORDS = JPLessons.words()`, `LSENT = JPLessons.sentences()`, `GRAM = JPLessons.grammar()`, `ALL_LESSONS = JPLessons.nums()`. `registry.js` also re-shapes rows (injects the lesson number, fills missing kana, **appends the level** as the last element) into the tuple shapes the app expects — when changing a row format, update both the lesson files **and** the mapping functions in `registry.js`.
+- `registry.js` normalizes and concatenates all lessons. `js/core.js` pulls them at startup into the globals the engine uses everywhere: `LWORDS = JPLessons.words()`, `LSENT = JPLessons.sentences()`, `GRAM = JPLessons.grammar()`, `ALL_LESSONS = JPLessons.nums()`. `registry.js` also re-shapes rows (injects the lesson number, fills missing kana, **appends the level** as the last element) into the tuple shapes the app expects — when changing a row format, update both the lesson files **and** the mapping functions in `registry.js`.
 
 ### Lesson row formats (positional arrays — order matters; level appended last)
 ```js
@@ -53,10 +63,10 @@ grammar:   { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
 ```
 
 ### Practice-deck system (`poolForKey`)
-Every drill mode is selected by a string "key" parsed in `poolForKey()` (in `app.js`). Format: an optional `W:`/`M:` prefix (input vs. multiple-choice mode) + `type|args` where `type` is one of `sent`, `lword`, `radical`, `kanji`, `kanji130`, `number`, `counter`. `poolForKey` filters the relevant global dataset by the args and maps each entry into a uniform 6-element row `[prompt, answer, extra, romajiAnswer, compareKey, kanjiForm]` that the drill engine consumes. Adding a new drill category = adding a `p[0]===...` branch here plus its dataset in `core-data.js`.
+Every drill mode is selected by a string "key" parsed in `poolForKey()` (in `js/decks.js`). Format: an optional `W:`/`M:` prefix (input vs. multiple-choice mode) + `type|args` where `type` is one of `sent`, `lword`, `radical`, `kanji`, `kanji130`, `number`, `counter`. `poolForKey` filters the relevant global dataset by the args and maps each entry into a uniform 6-element row `[prompt, answer, extra, romajiAnswer, compareKey, kanjiForm]` that the drill engine consumes. Adding a new drill category = adding a `p[0]===...` branch here plus its dataset in `core-data.js`.
 
 ### Stroke order & writing practice (hanzi-writer)
-Kanji and radical cards get two on-demand overlays in the shared `#strokeBox`, driven by [hanzi-writer](https://hanziwriter.org) lazy-loaded from CDN (`ensureHanziWriter()` in `app.js`) — **online-only**, with a Vietnamese offline fallback (`OFFLINE_MSG`):
+Kanji and radical cards get two on-demand overlays in the shared `#strokeBox`, driven by [hanzi-writer](https://hanziwriter.org) lazy-loaded from CDN (`ensureHanziWriter()` in `js/tools-init.js`) — **online-only**, with a Vietnamese offline fallback (`OFFLINE_MSG`):
 - **✍ Thứ tự nét** (`openStroke`): loops the stroke-order animation for each CJK char in `card[5] || card[0]` (`kanjiChars()` extracts them).
 - **✏️ Luyện viết** (`openWrite`): interactive `HanziWriter.quiz()` — user draws each stroke, validated per-stroke (hint after 2 misses). The in-box **Đúng ✓ / Sai ✕** buttons call `gradeFromWrite()` → `reveal()` + the normal `grade()` (so it respects `dontScore`/practice mode) and advance to the next card.
 

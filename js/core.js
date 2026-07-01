@@ -1,5 +1,5 @@
 // ============================================================
-//  App tiếng Nhật N5 — logic (giao diện: kana_speed_trainer_v2.html)
+//  App tiếng Nhật N5 — logic (giao diện: index.html)
 //  app.js cũ đã TÁCH thành nhiều file trong js/ (classic script, chung scope toàn cục).
 //  THỨ TỰ NẠP (trong HTML) — KHÔNG đổi:
 //    registry.js → core-data.js → manifest.js → lesson-*.js

@@ -13,20 +13,27 @@ or via GitHub Pages. All progress lives in `localStorage`.
 
 - Repo → GitHub Pages: `github.com/khoans/learn-japanese`, Pages from `main` `/`.
   **Deploy = `git push`.** No CI.
-- One UI: `kana_speed_trainer_v2.html` (azure) `<script src>`s `app.js` (the engine).
-  `index.html` just redirects there. **All logic is in `app.js`.** *(A former second
-  "classic" shell was removed.)*
+- One UI: `index.html` (azure) `<script src>`s the seven `js/*.js` engine files in order.
+  **All logic is in `js/` (was one `app.js`, now split by concern).** *(A former second
+  "classic" HTML shell was also removed.)*
 - The user (khoans) is Vietnamese, learning N5. Talk to them in Vietnamese;
   write AI-facing docs/code comments in English/ASCII-safe text.
 
 ## Where things live
 
 ```
-index.html                     tiny redirect → kana_speed_trainer_v2.html
-kana_speed_trainer_v2.html      THE app UI — markup/CSS + lesson loader + SW registration
-app.js                          THE ENGINE (single source of truth for all logic)
-sw.js                           service worker (offline); reads the lesson manifest
-manifest.json, icon.svg         PWA
+index.html                     THE app — UI markup/CSS + lesson loader + ordered <script> includes
+sw.js                          service worker (MUST be at root for scope); reads the lesson manifest
+manifest.json                  PWA manifest
+assets/icon.svg                static assets
+js/                            THE ENGINE, split by concern (classic scripts, shared global scope):
+  core.js                        data globals (LWORDS/LSENT/GRAM) + JSDoc typedefs + utils  — loads first
+  input-kana.js                  romaji → kana
+  kanji130.js                    edit meaning/notes for the 130 kanji
+  decks.js                       $, deck selection, poolForKey, canvas
+  drill.js                       card flow (nextCard/reveal/grade), speech, notes
+  stats.js                       session summary, stats/chart, preview
+  tools-init.js                  tab bar, stroke/writing, ALL event wiring + init + PWA  — loads last
 data/
   registry.js                   registerLesson() + JPLessons collector — loads FIRST
   core-data.js                  non-lesson data: kana, WORDS, KANJIV, KANJI130, NUMSET, COUNTSET, RADICALS
@@ -58,8 +65,8 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
 - `words.csv`     → `tiengNhat, romaji, nghia, kana`  (kana blank ⇒ uses tiengNhat)
 - `sentences.csv` → `cau, romaji, nghia`
 - `grammar.csv`   → `mau_cau, giai_thich, vi_du, vi_du_romaji, nghia`
-  (the build maps these back to the internal `p/g/ex/exr/m` keys app.js consumes —
-  so app.js never changes when you touch grammar CSV headers.)
+  (the build maps these back to the internal `p/g/ex/exr/m` keys the engine consumes —
+  so the `js/` code never changes when you touch grammar CSV headers.)
 
 ## Common tasks
 
@@ -72,7 +79,8 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   fill 3 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
 - **Add a level (N4…N1):** create `csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill,
   build. UI shows a per-level group automatically. See "levels" gotcha below.
-- **Change engine logic:** edit `app.js` only.
+- **Change engine logic:** edit the relevant `js/*.js` file. Keep all top-level
+  wiring/init in `js/tools-init.js` (last-loaded) to avoid cross-file hoisting bugs.
 - **Change one UI's look:** edit that HTML's `<style>`/markup; the other is unaffected.
 
 ## How to verify (no browser needed)
@@ -124,15 +132,23 @@ or `file://`** — don't rely on it. Instead:
   `showStrokeBtn()`. Lazy-loaded from CDN — **online-only**, offline fallback
   (`OFFLINE_MSG`). Data covers all N5 kanji+radicals (verified), but is
   Chinese-derived → a few kanji differ from Japanese stroke order/shape.
+- **`js/` split (classic scripts, ONE shared global scope):** the 7 engine files
+  concatenate to the old `app.js`. No `import`/`export`; **load order is fixed**. Only
+  top-level *immediate-execution* code is order-sensitive, and all of it (event wiring,
+  `initCanvas()`/`renderKeyLabels()`/… init calls, IIFEs, tool-relocation, PWA) lives in
+  `js/tools-init.js` (last). Put new wiring/init there. Verify a refactor with a Node
+  boot-sim (stub DOM, load registry+core-data+manifest+lessons + the 7 files in order).
 - **No tooling:** there is no npm/make/lint/test. Don't look for them.
 
 ## Current state (2026-07-02)
 
 - One level, **N5**, lessons **1–7**. 329 words, 51 grammar points.
   Sentences per lesson: 1:30, 2:30, 3:23, **4:46, 5:50, 6:67**, 7:20.
+- Single UI is now **`index.html`** (was `kana_speed_trainer_v2.html`); engine split into
+  `js/`; static layout (`assets/`, `js/`, `data/`, `tools/`).
 - Working tree clean (all pushed to `main`).
-- Recent commits: `03d5326` (group by JLPT level, per-lesson CSV folders, VN headers),
-  `7912830` (add sentences to Bài 4/5/6; add this HANDOFF.md),
+- Recent commits: `fc88659` (split app.js into js/ + JSDoc),
+  reorg to `index.html` + `assets/` + doc refresh (this),
   `1dd07e0` (interactive stroke-writing practice for kanji & radicals).
 - Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
   sentence practice for now).

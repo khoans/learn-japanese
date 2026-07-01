@@ -1,7 +1,7 @@
 /* Service worker — network-first (online luôn mới) + cache để chạy offline.
    Chỉ hoạt động trên http/https (GitHub Pages), KHÔNG chạy với file://.
    Khi đổi nội dung/app, bump CACHE để dọn cache cũ. */
-const CACHE = 'jp-n5-v7';
+const CACHE = 'jp-n5-v8';
 
 // Danh sach trinh do + so bai lay tu manifest (dung chung voi trang) -> them bai KHONG phai sua file nay.
 importScripts('./data/lessons/manifest.js'); // dat self.LEVELS + self.LESSON_MANIFEST
@@ -15,7 +15,6 @@ var LESSON_URLS = [];
 const CORE = [
   './',
   './index.html',
-  './kana_speed_trainer_v2.html',
   './js/core.js',
   './js/input-kana.js',
   './js/kanji130.js',
@@ -24,7 +23,7 @@ const CORE = [
   './js/stats.js',
   './js/tools-init.js',
   './manifest.json',
-  './icon.svg',
+  './assets/icon.svg',
   './data/registry.js',
   './data/core-data.js',
   './data/lessons/manifest.js'

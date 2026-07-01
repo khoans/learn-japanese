@@ -3,9 +3,14 @@
 ## Cây thư mục
 
 ```
-index.html                     ← chuyển hướng nhanh sang bản v2.
-kana_speed_trainer_v2.html     ← GIAO DIỆN app (xanh dương). Markup + CSS + nạp dữ liệu.
-app.js                         ← TOÀN BỘ logic của app. Sửa logic CHỈ sửa ở đây.
+index.html                     ← GIAO DIỆN app (xanh dương). Markup + CSS + nạp dữ liệu.
+sw.js                          ← service worker (chạy offline). PHẢI ở gốc.
+manifest.json                  ← khai báo PWA.
+assets/icon.svg                ← icon.
+js/                            ← TOÀN BỘ logic (tách theo chức năng, nạp đúng thứ tự):
+  core.js                        · biến toàn cục + typedef JSDoc + tiện ích (nạp đầu)
+  input-kana.js  kanji130.js  decks.js  drill.js  stats.js
+  tools-init.js                  · tab, viết chữ, GẮN SỰ KIỆN + init + PWA (nạp cuối)
 data/
   registry.js                  ← bộ gom dữ liệu các bài. PHẢI nạp đầu tiên.
   core-data.js                 ← dữ liệu KHÔNG theo bài: bảng kana, từ N5 (WORDS),
@@ -26,9 +31,9 @@ tools/
   build-lessons.ps1              ← chạy để sinh lesson-*.js + manifest.js từ CSV
 ```
 
-> Double-click `kana_speed_trainer_v2.html` để mở app (hoặc mở `index.html` sẽ tự
-> chuyển sang). App dùng `app.js` + thư mục `data/`, lưu tiến độ ở `localStorage`.
-> Phải giữ `app.js` và thư mục `data/` nằm cạnh file HTML (nạp bằng đường dẫn tương đối).
+> Double-click `index.html` để mở app. App dùng các file trong `js/` + `data/`,
+> lưu tiến độ ở `localStorage`.
+> Phải giữ thư mục `js/` và `data/` nằm cạnh `index.html` (nạp bằng đường dẫn tương đối).
 
 ## Trình độ (N5 → N1)
 
@@ -63,7 +68,7 @@ CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề c
 ## Thêm/sửa từ vựng cho bài đã có
 
 Mở file CSV tương ứng trong thư mục bài (ví dụ `data/lessons/csv/N5/lesson-06/words.csv`),
-thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đụng HTML/`app.js`.
+thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đụng HTML/`js/`.
 
 > **Lưu ý:** các file `data/lessons/<TRÌNH_ĐỘ>/lesson-*.js` và `manifest.js` là **tự
 > động sinh** từ CSV — đừng sửa trực tiếp, mọi thay đổi sẽ bị ghi đè ở lần build sau.
@@ -71,9 +76,10 @@ thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đ
 
 ## Sửa logic / giao diện
 
-- **Sửa logic** (cách luyện, thống kê, phím tắt, chấm điểm…): sửa trong `app.js`.
-- **Sửa giao diện:** sửa `<style>` + markup trong `kana_speed_trainer_v2.html`.
-- Phím tắt mặc định nằm trong `app.js` (biến `keys`); lưu cấu hình ở localStorage
+- **Sửa logic** (cách luyện, thống kê, phím tắt, chấm điểm…): sửa trong file `js/`
+  phù hợp. Giữ mọi phần gắn sự kiện/khởi tạo ở `js/tools-init.js` (nạp cuối).
+- **Sửa giao diện:** sửa `<style>` + markup trong `index.html`.
+- Phím tắt mặc định nằm trong `js/decks.js` (biến `keys`); lưu cấu hình ở localStorage
   khóa `jp_reader_keys_v2`.
 
 ## Lưu ý kỹ thuật
@@ -81,8 +87,9 @@ thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đ
 - Các file được nạp bằng thẻ `<script>` thường (không phải ES module) nên app vẫn
   chạy khi mở trực tiếp bằng `file://`, không cần web server.
 - Thứ tự nạp bắt buộc: `registry.js` → `core-data.js` → `manifest.js` → (bộ nạp
-  tự sinh các thẻ `<TRÌNH_ĐỘ>/lesson-*.js` theo `manifest.js`) → `app.js`. `app.js`
-  PHẢI nạp cuối (nó đọc các `const` toàn cục mà các file dữ liệu khai báo).
+  tự sinh các thẻ `<TRÌNH_ĐỘ>/lesson-*.js` theo `manifest.js`) → các file `js/`
+  (`core.js` → … → `tools-init.js`). Các file `js/` nạp CUỐI (đọc các `const` toàn
+  cục mà file dữ liệu khai báo) và chung một scope toàn cục — KHÔNG đổi thứ tự.
 - `manifest.js` đặt biến `LEVELS` (danh sách trình độ) và `LESSON_MANIFEST` (số bài
   theo từng trình độ). Bộ nạp trong mỗi file HTML dùng `document.write` để chèn thẻ
   `<script>` cho từng bài **theo đúng thứ tự, đồng bộ** — chạy được cả trên `file://`
