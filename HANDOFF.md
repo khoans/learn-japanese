@@ -125,10 +125,10 @@ or `file://`** — don't rely on it. Instead:
 
 - One level, **N5**, lessons **1–7**. 329 words, 51 grammar points.
   Sentences per lesson: 1:30, 2:30, 3:23, **4:46, 5:50, 6:67**, 7:20.
-- **Uncommitted:** added sentences to N5 lessons **4, 5, 6** (CSV + regenerated JS
-  + sw cache bump). Ask the user before committing/pushing.
+- Working tree clean (all pushed to `main`).
 - Recent commits: `364d62b` (author lessons as CSV + auto-loading manifest),
-  `03d5326` (group by JLPT level, per-lesson CSV folders, VN headers).
+  `03d5326` (group by JLPT level, per-lesson CSV folders, VN headers),
+  `7912830` (add sentences to Bài 4/5/6; add this HANDOFF.md).
 - Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
   sentence practice for now).
 
