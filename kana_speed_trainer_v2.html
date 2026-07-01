@@ -590,7 +590,14 @@ table{ width:100%; border-collapse:collapse; }
 })();
 </script>
 <!-- ===== HET PHAN BAI ===== -->
-<script src="app.js"></script>
+<!-- app.js da tach thanh nhieu file trong js/ — NAP DUNG THU TU (chung scope toan cuc, classic script) -->
+<script src="js/core.js"></script>
+<script src="js/input-kana.js"></script>
+<script src="js/kanji130.js"></script>
+<script src="js/decks.js"></script>
+<script src="js/drill.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/tools-init.js"></script>
 <script>
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
   window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
