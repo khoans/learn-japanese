@@ -1,6 +1,5 @@
 // ============================================================
-//  app.js — Logic dung chung cho ca 2 giao dien
-//  (kana_speed_trainer.html = ban goc, kana_speed_trainer_v2.html = ban moi)
+//  app.js — Toan bo logic cua app (giao dien: kana_speed_trainer_v2.html)
 //  PHAI nap SAU registry.js + core-data.js + cac file lesson-*.js
 // ============================================================
 /* ===== Du lieu theo bai duoc gop tu cac file trong data/lessons/ ===== */
@@ -2350,6 +2349,8 @@ function syncControls() {
     $('ngrpWrap').style.display = (mode === 'number') ? 'block' : 'none';
     $('lwordFormWrap').style.display = (mode === 'lword') ? 'block' : 'none';
     $('cgrpWrap').style.display = (mode === 'counter') ? 'block' : 'none';
+    // "Ẩn cách đọc" chỉ liên quan chế độ Bộ thủ -> chỉ hiện toggle này trên màn hình chính khi đó
+    if ($('hideReadingWrap')) $('hideReadingWrap').style.display = (mode === 'radical') ? 'inline-flex' : 'none';
 }
 
 function saveLimit() {
@@ -2464,7 +2465,7 @@ $('pickExclResBtn').addEventListener('click', function () {
     pickFiltered(false);
 });
 $('pickSearch').addEventListener('input', renderPickList);
-$('statBtn').addEventListener('click', function () {
+if ($('statBtn')) $('statBtn').addEventListener('click', function () {
     const b = $('statBox');
     const show = b.style.display === 'none';
     b.style.display = show ? 'block' : 'none';
@@ -2636,7 +2637,7 @@ function renderGram() {
     });
 }
 
-$('gramBtn').addEventListener('click', function () {
+if ($('gramBtn')) $('gramBtn').addEventListener('click', function () {
     const b = $('gramBox');
     const show = b.style.display === 'none';
     b.style.display = show ? 'block' : 'none';
@@ -2706,6 +2707,42 @@ if ($('previewBtn')) $('previewBtn').addEventListener('click', function () {
     $('previewBtn').textContent = 'Xem trước bài ' + (show ? '(▴)' : '(▾)');
     if (show) renderPreview();
 });
+
+/* ===== Thanh công cụ dạng tab (chỉ bản v2): gom Tùy chọn · Chọn từ · Sửa nghĩa ·
+        Thống kê · Ngữ pháp · Bảng kana · Xem trước vào 1 thanh dưới thẻ ===== */
+const TOOL_IDS = ['optGrp', 'pickGrp', 'masGrp', 'k130Grp', 'statBox', 'gramBox', 'kanaChartBox', 'previewBox'];
+let _activeTool = null;
+function renderTool(id) {
+    if (id === 'pickGrp') renderPickList();
+    else if (id === 'k130Grp') { renderK130List(); renderK130Hist(); }
+    else if (id === 'statBox') { populateSessionSelect(); refreshStatView(); }
+    else if (id === 'gramBox') renderGram();
+    else if (id === 'kanaChartBox') renderKanaChart();
+    else if (id === 'previewBox') renderPreview();
+    else if (id === 'masGrp') renderMasteryLists();
+    // optGrp: form tĩnh, không cần render
+}
+function showTool(id) {
+    const opening = (_activeTool !== id);   // bấm lại tab đang mở => đóng (kiểu accordion)
+    TOOL_IDS.forEach(function (t) {
+        const el = $(t);
+        if (!el) return;
+        el.style.display = 'none';
+        if (el.tagName === 'DETAILS') el.open = false;
+    });
+    document.querySelectorAll('.tool-tab').forEach(function (b) { b.classList.remove('active'); });
+    if (opening && $(id)) {
+        const el = $(id);
+        if (el.tagName === 'DETAILS') el.open = true;
+        el.style.display = 'block';
+        const tab = document.querySelector('.tool-tab[data-tool="' + id + '"]');
+        if (tab) tab.classList.add('active');
+        renderTool(id);
+        _activeTool = id;
+    } else {
+        _activeTool = null;
+    }
+}
 
 /* ===== Thứ tự nét (hanzi-writer, tải theo yêu cầu; CHỈ kanji, CẦN internet) ===== */
 let _hwLoading = null;
@@ -3087,6 +3124,27 @@ updateGoalProg();
 updatePhaseUI();
 renderPrev();
 syncKanaBar();
+
+/* Gom 7 panel vào thanh tab dưới thẻ (chỉ bản v2 có #toolHost). Chạy CUỐI CÙNG để mọi
+   listener của các panel đã gắn xong; appendChild chỉ dời node nên listener được giữ nguyên. */
+(function () {
+    const host = $('toolHost');
+    if (!host) return;   // bản classic không có -> giữ nguyên các nút/details cũ
+    TOOL_IDS.forEach(function (t) {
+        const el = $(t);
+        if (!el) return;
+        if (el.tagName === 'DETAILS') {
+            const s = el.querySelector('summary');
+            if (s) s.style.display = 'none';   // ẩn tiêu đề details, dùng tab thay thế
+            el.open = false;
+        }
+        el.style.display = 'none';
+        host.appendChild(el);
+    });
+    document.querySelectorAll('.tool-tab').forEach(function (b) {
+        b.addEventListener('click', function () { showTool(b.getAttribute('data-tool')); });
+    });
+})();
 
 /* ===== PWA: đăng ký service worker (chỉ trên http/https, bỏ qua file://) ===== */
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {

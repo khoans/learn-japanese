@@ -3,11 +3,9 @@
 ## Cây thư mục
 
 ```
-index.html                     ← trang chọn giao diện (link tới 2 bản).
-kana_speed_trainer.html        ← GIAO DIỆN gốc (xanh-xám). Chỉ markup + CSS.
-kana_speed_trainer_v2.html     ← GIAO DIỆN mới (xanh dương). Chỉ markup + CSS.
-app.js                         ← TOÀN BỘ logic dùng chung cho cả 2 giao diện.
-                                 Sửa logic CHỈ sửa ở đây.
+index.html                     ← chuyển hướng nhanh sang bản v2.
+kana_speed_trainer_v2.html     ← GIAO DIỆN app (xanh dương). Markup + CSS + nạp dữ liệu.
+app.js                         ← TOÀN BỘ logic của app. Sửa logic CHỈ sửa ở đây.
 data/
   registry.js                  ← bộ gom dữ liệu các bài. PHẢI nạp đầu tiên.
   core-data.js                 ← dữ liệu KHÔNG theo bài: bảng kana, từ N5 (WORDS),
@@ -29,11 +27,9 @@ tools/
   build-lessons.ps1              ← chạy để sinh lesson-*.js + manifest.js từ CSV
 ```
 
-> Mở `index.html` để chọn giao diện, hoặc double-click thẳng một trong hai file
-> `kana_speed_trainer*.html`. Mỗi bản có nút ở góc trên để **chuyển nhanh sang bản
-> kia**. Hai giao diện **dùng chung `app.js`, chung `data/`, chung tiến độ
-> (localStorage)** — đổi qua lại không mất dữ liệu. Phải giữ `app.js` và thư mục
-> `data/` nằm cạnh các file HTML (nạp bằng đường dẫn tương đối).
+> Double-click `kana_speed_trainer_v2.html` để mở app (hoặc mở `index.html` sẽ tự
+> chuyển sang). App dùng `app.js` + thư mục `data/`, lưu tiến độ ở `localStorage`.
+> Phải giữ `app.js` và thư mục `data/` nằm cạnh file HTML (nạp bằng đường dẫn tương đối).
 
 ## Trình độ (N5 → N1)
 
@@ -62,8 +58,8 @@ CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề c
 3. Chạy build: chuột phải `tools/build-lessons.ps1` → **Run with PowerShell**
    (hoặc `./tools/build-lessons.ps1` trong PowerShell ở thư mục gốc).
 4. Xong. Script tự sinh `data/lessons/N5/lesson-08.js` và cập nhật `manifest.js`; nút
-   **"Bài 8"** tự xuất hiện ở **cả hai giao diện** (không sửa file HTML nào), phần
-   ngữ pháp cũng tự hiện. Xem thêm `data/lessons/csv/README.md`.
+   **"Bài 8"** tự xuất hiện trong app (không sửa file HTML nào), phần ngữ pháp cũng
+   tự hiện. Xem thêm `data/lessons/csv/README.md`.
 
 ## Thêm/sửa từ vựng cho bài đã có
 
@@ -76,10 +72,8 @@ thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đ
 
 ## Sửa logic / giao diện
 
-- **Sửa logic** (cách luyện, thống kê, phím tắt, chấm điểm…): chỉ sửa trong
-  `app.js` — cả hai giao diện tự động dùng chung.
-- **Sửa giao diện một bản:** sửa `<style>` + markup trong đúng file HTML đó; không
-  ảnh hưởng bản kia.
+- **Sửa logic** (cách luyện, thống kê, phím tắt, chấm điểm…): sửa trong `app.js`.
+- **Sửa giao diện:** sửa `<style>` + markup trong `kana_speed_trainer_v2.html`.
 - Phím tắt mặc định nằm trong `app.js` (biến `keys`); lưu cấu hình ở localStorage
   khóa `jp_reader_keys_v2`.
 

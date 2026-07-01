@@ -9,20 +9,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A single-page Japanese study/drill app (kana, vocabulary, kanji, numbers, counters, sentences, grammar) following the **Minna no Nihongo** curriculum, with Vietnamese translations. Pure client-side: vanilla JS, no framework, no build step, no backend. All progress lives in `localStorage`.
 
-`HƯỚNG-DẪN.md` is the maintainer guide (in Vietnamese) and is the source of truth for how to add lessons.
+`README.md` is the maintainer guide (in Vietnamese) and is the source of truth for how to add lessons.
 
 ## Running & deploying
 
-- **Run locally:** open `index.html` (a chooser) or either UI shell directly in a browser (`file://` works — scripts are plain `<script>` tags, not ES modules, specifically so no web server is needed).
+- **Run locally:** open `kana_speed_trainer_v2.html` directly in a browser (`file://` works — scripts are plain `<script>` tags, not ES modules, specifically so no web server is needed). `index.html` just redirects there.
 - **No build, no lint, no tests.** There is no tooling/package manager; do not look for `npm`/`make` targets.
-- **Hosting:** deployed via GitHub Pages from branch `main`, `/ (root)`. `index.html` is a landing page linking to both UI versions. Deploy = `git push`; Pages rebuilds automatically.
+- **Hosting:** deployed via GitHub Pages from branch `main`, `/ (root)`. `index.html` redirects to the app. Deploy = `git push`; Pages rebuilds automatically.
 
-### Two UI shells, one shared engine
-There are **two interchangeable front-ends** that share the exact same logic and data:
-- `kana_speed_trainer.html` — original "classic" dark blue-grey UI.
-- `kana_speed_trainer_v2.html` — redesigned cool-azure UI (fonts via Google Fonts, system fallback offline).
+### One UI shell + engine
+- `kana_speed_trainer_v2.html` — the app's single front-end (cool-azure UI; fonts via Google Fonts, system fallback offline). It `<script src>`-includes `app.js` (the entire drill engine — single source of truth) and the `data/` files.
+- `index.html` — a tiny redirect to `kana_speed_trainer_v2.html`.
 
-Both `<script src>`-include the **same `app.js`** (the entire drill engine — single source of truth) and the same `data/` files, and each carries a header link to switch to the other. They share `localStorage`, so progress/keys/stats carry across both. **Any logic change goes in `app.js` once.** The only duplication is the markup (each shell has its own `<head>`/CSS/body) and the ordered list of `<script src="data/…">` includes.
+**All logic lives in `app.js`.** *(History: there used to be a second "classic" shell `kana_speed_trainer.html` sharing `app.js`; it was removed. A few `if ($('someClassicOnlyBtn'))` guards remain in `app.js` from that era — harmless.)*
 
 ## Architecture
 
@@ -32,7 +31,7 @@ Data is split out of the HTML into `data/`, loaded by ordered `<script>` tags ne
 1. `data/registry.js` — defines `registerLesson()` and the `JPLessons` collector. **Must load first.**
 2. `data/core-data.js` — non-lesson data as global `const`s: kana tables (`H_BASIC`/`K_BASIC`/…), `WORDS` (N5), `KANJIV`, `KANJI130`, `NUMSET`, `COUNTSET`, `RADICALS`.
 3. `data/lessons/manifest.js` — sets globals `LEVELS = ["N5",…]` (ordered easy→hard) and `LESSON_MANIFEST = { "N5": [1,2,…] }` (lesson numbers per level), plus a flat `LESSON_NUMS` for legacy. Written to `window` **and** `self` so both the page and the service worker can read it. **Auto-generated** by `tools/build-lessons.ps1`.
-4. A tiny inline loader (in each shell, right after `manifest.js`) iterates `LEVELS` × `LESSON_MANIFEST[level]` and `document.write`s a `<script src="data/lessons/<LEVEL>/lesson-NN.js">` for each — synchronous, in order, so it works on `file://` (you cannot list a directory over `file://`, hence the manifest). This replaces the old hand-maintained list of per-lesson `<script>` tags.
+4. A tiny inline loader (in the HTML, right after `manifest.js`) iterates `LEVELS` × `LESSON_MANIFEST[level]` and `document.write`s a `<script src="data/lessons/<LEVEL>/lesson-NN.js">` for each — synchronous, in order, so it works on `file://` (you cannot list a directory over `file://`, hence the manifest). This replaces the old hand-maintained list of per-lesson `<script>` tags.
 5. `data/lessons/<LEVEL>/lesson-NN.js` — one file per lesson, each calls `registerLesson("<LEVEL>", N, {...})`. **Auto-generated from CSV** (see below) — do not hand-edit.
 6. `app.js` — the app itself, which reads everything back. Loads **last**. Note: top-level `const`s in the data scripts are shared with `app.js` via the global lexical scope (plain classic scripts), so this only works in this exact order.
 
@@ -61,7 +60,7 @@ Kanji and radical cards get two on-demand overlays in the shared `#strokeBox`, d
 - **✍ Thứ tự nét** (`openStroke`): loops the stroke-order animation for each CJK char in `card[5] || card[0]` (`kanjiChars()` extracts them).
 - **✏️ Luyện viết** (`openWrite`): interactive `HanziWriter.quiz()` — user draws each stroke, validated per-stroke (hint after 2 misses). The in-box **Đúng ✓ / Sai ✕** buttons call `gradeFromWrite()` → `reveal()` + the normal `grade()` (so it respects `dontScore`/practice mode) and advance to the next card.
 
-Both `<button>`s (`strokeBtn`/`writeBtn`) live in each shell's markup and are toggled together by `showStrokeBtn()`. hanzi-writer data covers **all** current N5 kanji + radicals (verified), but is Chinese-derived — a few kanji show Chinese stroke order/shape rather than Japanese (acceptable for N5; KanjiVG would be the JP-accurate alternative).
+Both `<button>`s (`strokeBtn`/`writeBtn`) live in the shell's markup and are toggled together by `showStrokeBtn()`. hanzi-writer data covers **all** current N5 kanji + radicals (verified), but is Chinese-derived — a few kanji show Chinese stroke order/shape rather than Japanese (acceptable for N5; KanjiVG would be the JP-accurate alternative).
 
 ### State / persistence
 All state is `localStorage`, keys prefixed `jp_`: current deck & progress (`jp_reader_cur_v2`), history (`jp_reader_history_v2`), saved shortcut keys (`jp_reader_keys_v2`), limits (`jp_reader_limit_v1`), Kanji130 user edits (`jp_kanji130_edits_v1`), and UI prefs (`jp_reader_appw`/`_csize`/`_pen`). Access only through the `lsGet`/`lsSet`/`lsDel` wrappers (they swallow exceptions for `file://`/private-mode). The `_v1`/`_v2` suffixes are schema versions — bump the suffix rather than silently changing a stored value's shape.
@@ -70,7 +69,7 @@ All state is `localStorage`, keys prefixed `jp_`: current deck & progress (`jp_r
 
 **Add a new lesson (e.g. Bài 8 of N5):**
 1. Copy the folder `data/lessons/csv/_TEMPLATE/` → `data/lessons/csv/N5/lesson-08/`, fill in `words.csv` / `sentences.csv` / `grammar.csv` (Excel/Sheets, keep the header row, save as UTF-8 CSV).
-2. Run `tools/build-lessons.ps1`. It generates `data/lessons/N5/lesson-08.js`, updates `manifest.js` (so the loader in both shells picks it up), and bumps `sw.js`'s cache. **No HTML or `sw.js` edits needed** — the manifest is the single source of the file list, read by both the page loader and the SW's `importScripts`.
+2. Run `tools/build-lessons.ps1`. It generates `data/lessons/N5/lesson-08.js`, updates `manifest.js` (so the page loader picks it up), and bumps `sw.js`'s cache. **No HTML or `sw.js` edits needed** — the manifest is the single source of the file list, read by both the page loader and the SW's `importScripts`.
 3. Nothing else — the lesson button and its grammar section appear automatically.
 
 **Add a new level (e.g. N4):** create `data/lessons/csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill it in, run the build. The level and its lessons appear automatically (grouped under an "N4" label). See the *Levels* note above for the cross-level-mixing limitation.

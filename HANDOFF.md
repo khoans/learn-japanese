@@ -13,18 +13,17 @@ or via GitHub Pages. All progress lives in `localStorage`.
 
 - Repo → GitHub Pages: `github.com/khoans/learn-japanese`, Pages from `main` `/`.
   **Deploy = `git push`.** No CI.
-- Two UI shells share one engine: `kana_speed_trainer.html` (classic) and
-  `kana_speed_trainer_v2.html` (azure). Both `<script src>` the **same `app.js`**.
-  `index.html` is a chooser. **Any logic change goes in `app.js` once.**
+- One UI: `kana_speed_trainer_v2.html` (azure) `<script src>`s `app.js` (the engine).
+  `index.html` just redirects there. **All logic is in `app.js`.** *(A former second
+  "classic" shell was removed; a few `if ($('classicOnlyId'))` guards remain in `app.js`.)*
 - The user (khoans) is Vietnamese, learning N5. Talk to them in Vietnamese;
   write AI-facing docs/code comments in English/ASCII-safe text.
 
 ## Where things live
 
 ```
-index.html                     chooser / landing (+ SW registration)
-kana_speed_trainer.html         classic shell  — markup/CSS + the lesson loader block
-kana_speed_trainer_v2.html      azure shell    — markup/CSS + the lesson loader block
+index.html                     tiny redirect → kana_speed_trainer_v2.html
+kana_speed_trainer_v2.html      THE app UI — markup/CSS + lesson loader + SW registration
 app.js                          THE ENGINE (single source of truth for all logic)
 sw.js                           service worker (offline); reads the lesson manifest
 manifest.json, icon.svg         PWA
@@ -41,7 +40,7 @@ data/
       README.md                 maintainer guide (VN)
 tools/build-lessons.ps1         CSV -> generated .js + manifest.js (+ bumps sw cache)
 CLAUDE.md                       full architecture (English)
-HƯỚNG-DẪN.md                    maintainer guide (Vietnamese)
+README.md                       maintainer guide (Vietnamese)
 ```
 
 ## The golden rule
@@ -74,7 +73,7 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   fill 3 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
 - **Add a level (N4…N1):** create `csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill,
   build. UI shows a per-level group automatically. See "levels" gotcha below.
-- **Change engine logic:** edit `app.js` only (both shells share it).
+- **Change engine logic:** edit `app.js` only.
 - **Change one UI's look:** edit that HTML's `<style>`/markup; the other is unaffected.
 
 ## How to verify (no browser needed)
@@ -97,7 +96,7 @@ or `file://`** — don't rely on it. Instead:
 - **PowerShell variables are case-insensitive.** In `build-lessons.ps1`, a loop var
   like `$lDir` silently aliases the base `$LDir` and corrupts output paths. Keep
   loop/base names distinct. (This bug already bit once.)
-- **`document.write` loader:** each shell has an inline loader that `document.write`s
+- **`document.write` loader:** the shell has an inline loader that `document.write`s
   the lesson `<script>` tags from `LEVELS`/`LESSON_MANIFEST`, in order, synchronously
   — works on `file://` (can't list a dir over `file://`, hence the manifest). It runs
   during parse; don't make those scripts async/defer or it will wipe the document.

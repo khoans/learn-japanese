@@ -3,78 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luyện đọc nhanh tiếng Nhật N5 — Chọn giao diện</title>
+<title>Luyện đọc nhanh tiếng Nhật N5</title>
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0E151D"><link rel="apple-touch-icon" href="icon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<meta http-equiv="refresh" content="0; url=kana_speed_trainer_v2.html">
+<link rel="canonical" href="kana_speed_trainer_v2.html">
 <style>
-:root{
-  --bg:#0E151D; --card:#172430; --card2:#131D27; --line:#2A3C4C; --line-soft:#21303D;
-  --ink:#E7EFF6; --dim:#8D9DAD; --azure:#34A8EE; --azure-br:#5CC0F8; --azure-bg:#0F2A3E; --azure-line:#235B80;
-  --fui:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --fjp:'Noto Serif JP','Hiragino Mincho ProN',serif;
-}
-*{ box-sizing:border-box; }
-body{ margin:0; min-height:100vh; color:var(--ink); font-family:var(--fui);
-  background:var(--bg); background-image:radial-gradient(130% 80% at 50% -10%, #16283A 0%, var(--bg) 58%);
-  display:flex; align-items:center; justify-content:center; padding:32px 16px; }
-.wrap{ width:100%; max-width:680px; }
-.head{ display:flex; align-items:center; gap:14px; margin-bottom:8px; }
-.seal{ width:46px; height:46px; flex:0 0 auto; display:grid; place-items:center; font-family:var(--fjp);
-  font-size:25px; color:var(--azure); border:1.5px solid var(--azure-line); border-radius:10px;
-  background:var(--azure-bg); transform:rotate(-3deg); }
-h1{ font-size:22px; margin:0; font-weight:700; letter-spacing:.2px; }
-h1 .jp{ font-family:var(--fjp); color:var(--azure); margin-right:7px; }
-.sub{ color:var(--dim); font-size:13.5px; margin:0 0 24px 60px; }
-.grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-@media(max-width:560px){ .grid{ grid-template-columns:1fr; } .sub{ margin-left:0; } }
-.card{ display:block; text-decoration:none; color:inherit; background:var(--card);
-  border:1px solid var(--line); border-radius:16px; padding:22px; transition:border-color .15s ease, transform .15s ease, background .15s ease; }
-.card:hover{ border-color:var(--azure-line); transform:translateY(-3px); background:#1A2A38; }
-.card .tag{ font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--azure); }
-.card.classic .tag{ color:var(--dim); }
-.card h2{ font-size:18px; margin:8px 0 6px; font-weight:700; }
-.card p{ font-size:13px; color:var(--dim); line-height:1.55; margin:0 0 16px; }
-.swatch{ display:flex; gap:6px; margin-bottom:16px; }
-.swatch span{ width:22px; height:22px; border-radius:6px; border:1px solid rgba(255,255,255,.08); }
-.go{ font-size:13.5px; font-weight:600; color:var(--azure-br); }
-.card.classic .go{ color:#9ecbff; }
-.note{ margin-top:22px; font-size:12.5px; color:var(--dim); text-align:center; line-height:1.55; }
-.note b{ color:var(--ink); font-weight:600; }
+body{ margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:#0E151D; color:#E7EFF6; font-family:system-ui,-apple-system,'Segoe UI',sans-serif; }
+a{ color:#5CC0F8; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="head">
-    <span class="seal">速</span>
-    <h1><span class="jp">読</span>Luyện đọc nhanh N5</h1>
-  </div>
-  <p class="sub">Kana · Kanji · Từ vựng · Câu · Ngữ pháp — chọn giao diện bạn muốn dùng.</p>
-
-  <div class="grid">
-    <a class="card" href="kana_speed_trainer_v2.html">
-      <div class="tag">Mới · khuyên dùng</div>
-      <h2>Giao diện xanh dương</h2>
-      <p>Thiết kế lại theo gam xanh lạnh, các khu vực tương phản rõ, chữ Hán nét bút lông, con triện 朱.</p>
-      <div class="swatch"><span style="background:#34A8EE"></span><span style="background:#3FC0A2"></span><span style="background:#8FA6F2"></span><span style="background:#F0698A"></span><span style="background:#172430"></span></div>
-      <div class="go">Mở giao diện mới →</div>
-    </a>
-    <a class="card classic" href="kana_speed_trainer.html">
-      <div class="tag">Bản gốc</div>
-      <h2>Giao diện cổ điển</h2>
-      <p>Bản dark xanh-xám ban đầu, gọn nhẹ, đầy đủ chức năng quen thuộc.</p>
-      <div class="swatch"><span style="background:#2f6db5"></span><span style="background:#6ee7a0"></span><span style="background:#ffd27a"></span><span style="background:#ff8b8b"></span><span style="background:#181a1b"></span></div>
-      <div class="go">Mở giao diện gốc →</div>
-    </a>
-  </div>
-
-  <p class="note">Hai giao diện <b>dùng chung dữ liệu</b> (tiến độ, thống kê, phím tắt) và <b>chung mã nguồn</b> <code>app.js</code> — đổi qua lại bất cứ lúc nào, tiến độ không mất.</p>
-</div>
-<script>
-if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
-  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
-}
-</script>
+<p>Đang mở ứng dụng… nếu không tự chuyển, bấm <a href="kana_speed_trainer_v2.html">vào đây</a>.</p>
+<script>location.replace('kana_speed_trainer_v2.html');</script>
 </body>
 </html>
