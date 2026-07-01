@@ -1041,11 +1041,50 @@ function setCardButtons(state) {
     $('btnNext').style.display = state === 'next' ? 'block' : 'none';
 }
 
+/* ===== Đồng hồ đếm ngược trực quan (thanh vơi dần theo giới hạn thời gian) ===== */
+let _cdRaf = null;
+function stopCountdown() {
+    if (_cdRaf) {
+        cancelAnimationFrame(_cdRaf);
+        _cdRaf = null;
+    }
+}
+function hideCountdown() {
+    stopCountdown();
+    const wrap = $('countdownWrap');
+    if (wrap) wrap.style.visibility = 'hidden';
+}
+function tickCountdown() {
+    _cdRaf = null;
+    const bar = $('countdownBar');
+    if (!bar) return;
+    if (phase !== 'running' || isRevealed || isTimedOut || !$('limitOn').checked) return; // dừng/đóng băng
+    const total = limitMs();
+    let frac = 1 - (pausedMs + (performance.now() - cardStartMs)) / total;
+    if (frac < 0) frac = 0;
+    bar.style.width = (frac * 100) + '%';
+    bar.style.background = frac > 0.5 ? '#356394' : (frac > 0.2 ? '#8a6d3b' : '#7d3743');
+    if (frac > 0) _cdRaf = requestAnimationFrame(tickCountdown);
+}
+function startCountdown() {
+    stopCountdown();
+    const wrap = $('countdownWrap'), bar = $('countdownBar');
+    if (!wrap || !bar) return;
+    if ($('limitOn').checked && phase === 'running' && !isRevealed && !isTimedOut) {
+        wrap.style.visibility = 'visible';
+        bar.style.width = '100%';
+        _cdRaf = requestAnimationFrame(tickCountdown);
+    } else {
+        wrap.style.visibility = 'hidden';
+    }
+}
+
 function clearTimer() {
     if (limitTimerId) {
         clearTimeout(limitTimerId);
         limitTimerId = null;
     }
+    stopCountdown();
 }
 
 function startTimer(ms) {
@@ -1058,6 +1097,7 @@ function startTimer(ms) {
         }
         limitTimerId = setTimeout(doTimeout, d);
     }
+    startCountdown();
 }
 
 function updatePhaseUI() {
@@ -1408,6 +1448,7 @@ function onAnswerShown() {
 function reveal() {
     if (phase !== 'running' || isRevealed) return;
     clearTimer();
+    hideCountdown();
     answerMs = pausedMs + (performance.now() - cardStartMs);
     styleAnswer();
     showAnsKanji();
@@ -1466,6 +1507,7 @@ function grade(ok) {
 function doTimeout() {
     if (phase !== 'running' || isRevealed || isTimedOut) return;
     clearTimer();
+    hideCountdown();
     $('typeInput').style.display = 'none';
     isTimedOut = true;
     isRevealed = true;
@@ -1947,6 +1989,7 @@ function checkRomaji(typed, target) {
 function typingSubmit() {
     if (phase !== 'running' || isRevealed || !isTypingCard) return;
     clearTimer();
+    hideCountdown();
     answerMs = pausedMs + (performance.now() - cardStartMs);
     let typed = $('typeInput').value;
     if ($('romajiInput') && $('romajiInput').checked) typed = romajiToKana(typed, kanaOutKata(), true);
@@ -2051,6 +2094,7 @@ function pauseToggle() {
 function stopSession() {
     if (phase === 'idle') return;
     clearTimer();
+    hideCountdown();
     archiveIfData();
     session = {c: 0, w: 0, to: 0, streak: 0, best: 0, prev: 0, skip: [], excluded: [], times: [], byOption: {}};
     saveSession();
