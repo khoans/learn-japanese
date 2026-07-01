@@ -2653,6 +2653,44 @@ if ($('kanaChartBtn')) $('kanaChartBtn').addEventListener('click', function () {
     if (show) renderKanaChart();
 });
 
+/* ===== Xem trước danh sách: các mục (+ ngữ pháp nếu là bài) trước khi luyện ===== */
+function renderPreview() {
+    const box = $('previewList');
+    if (!box) return;
+    const items = poolForKey(deckKey());
+    let html = '<div style="font-size:12px; color:#9aa0a6; margin-bottom:8px;">Danh sách ' + items.length + ' mục trong lựa chọn hiện tại (đọc lướt trước khi luyện):</div>';
+    items.forEach(function (it) {
+        html += '<div style="display:flex; gap:10px; align-items:baseline; padding:5px 4px; border-bottom:1px solid #2c2f31; font-size:14px;">'
+            + '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff; min-width:64px;">' + escapeHtml(it[0]) + '</span>'
+            + '<span style="color:#9ecbff; min-width:90px;">' + escapeHtml(it[1] || '') + '</span>'
+            + '<span style="color:#c8c8c8; flex:1;">' + escapeHtml(it[2] || '') + '</span>'
+            + '</div>';
+    });
+    const mode = $('mode').value;
+    if (mode === 'lword' || mode === 'sent') {
+        selectedLessons().forEach(function (n) {
+            const g = GRAM[String(n)];
+            if (!g || !g.length) return;
+            html += '<div style="font-weight:600; color:#cfe6ff; margin:16px 0 6px; font-size:13px;">Ngữ pháp — Bài ' + n + '</div>';
+            g.forEach(function (gr) {
+                html += '<div style="margin-bottom:9px; font-size:13px; padding-bottom:7px; border-bottom:1px solid #2c2f31;">'
+                    + '<div style="color:#cfe6ff; font-weight:600;">' + escapeHtml(gr.p) + '</div>'
+                    + '<div style="color:#c8c8c8; line-height:1.5;">' + escapeHtml(gr.g) + '</div>'
+                    + (gr.ex ? '<div style="margin-top:3px;"><span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff;">' + escapeHtml(gr.ex) + '</span> <span style="color:#9ecbff;">' + escapeHtml(gr.exr) + '</span> <span style="color:#9aa0a6;">— ' + escapeHtml(gr.m) + '</span></div>' : '')
+                    + '</div>';
+            });
+        });
+    }
+    box.innerHTML = html;
+}
+if ($('previewBtn')) $('previewBtn').addEventListener('click', function () {
+    const b = $('previewBox');
+    const show = b.style.display === 'none';
+    b.style.display = show ? 'block' : 'none';
+    $('previewBtn').textContent = 'Xem trước bài ' + (show ? '(▴)' : '(▾)');
+    if (show) renderPreview();
+});
+
 /* ===== Thứ tự nét (hanzi-writer, tải theo yêu cầu; CHỈ kanji, CẦN internet) ===== */
 let _hwLoading = null;
 function ensureHanziWriter() {
