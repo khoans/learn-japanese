@@ -4,7 +4,7 @@
 (function (g) {
   g.LEVELS = ["N5"];
   g.LESSON_MANIFEST = {
-    "N5": [1, 2, 3, 4, 5, 6, 7, 8]
+    "N5": [1, 2, 3, 4, 5, 6, 7, 8, 9]
   };
-  g.LESSON_NUMS = [1, 2, 3, 4, 5, 6, 7, 8]; // gop phang (tuong thich cu)
+  g.LESSON_NUMS = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // gop phang (tuong thich cu)
 })(typeof window !== 'undefined' ? window : self);
