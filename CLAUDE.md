@@ -2,6 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **New session? Read `HANDOFF.md` first** — a fast navigation map + tribal knowledge
+> (gotchas, current state, how to verify without a browser). This file has the full detail.
+
 ## What this is
 
 A single-page Japanese study/drill app (kana, vocabulary, kanji, numbers, counters, sentences, grammar) following the **Minna no Nihongo** curriculum, with Vietnamese translations. Pure client-side: vanilla JS, no framework, no build step, no backend. All progress lives in `localStorage`.
