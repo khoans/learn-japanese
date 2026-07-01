@@ -761,6 +761,19 @@ function renderKeyLabels() {
     if (_lk) _lk.textContent = keyLabel(keys.kana);
     var _lkm = $('lblKanaMain');
     if (_lkm) _lkm.textContent = keyLabel(keys.kana);
+    // Badge phím tắt hiện ngay TRÊN nút (để dễ thấy)
+    var setKb = function (id, code) { var el = $(id); if (el) el.textContent = keyLabel(code); };
+    setKb('kbStart', keys.start);
+    setKb('kbPause', keys.pause);
+    setKb('kbStop', keys.stop);
+    setKb('kbReveal', keys.reveal);
+    setKb('kbCorrect', keys.correct);
+    setKb('kbWrong', keys.wrong);
+    setKb('kbNext', keys.reveal);   // nút "Tiếp theo" cũng đi bằng phím Hiện đáp án / Enter
+    setKb('kbFix', keys.fix);
+    setKb('kbSkip', keys.skip);
+    setKb('kbRedo', keys.redo);
+    setKb('kbClear', keys.clear);
 }
 
 // session = tiến độ phiên hiện tại. ĐƯỢC LƯU localStorage (LS_CUR) — KHÔNG đổi tên các field:
@@ -1115,20 +1128,20 @@ function updatePhaseUI() {
         $('startBtn').disabled = false;
         $('startBtn').style.display = '';
         $('pauseBtn').disabled = true;
-        $('pauseBtn').textContent = '⏸ Tạm dừng';
+        $('pauseLbl').textContent = '⏸ Tạm dừng';
         $('stopBtn').disabled = true;
         setCardButtons('none');
         $('cardPanel').classList.remove('dim');
     } else if (phase === 'running') {
         $('startBtn').disabled = true;
         $('pauseBtn').disabled = false;
-        $('pauseBtn').textContent = '⏸ Tạm dừng';
+        $('pauseLbl').textContent = '⏸ Tạm dừng';
         $('stopBtn').disabled = false;
         $('cardPanel').classList.remove('dim');
     } else if (phase === 'paused') {
         $('startBtn').disabled = true;
         $('pauseBtn').disabled = false;
-        $('pauseBtn').textContent = '▶ Tiếp tục';
+        $('pauseLbl').textContent = '▶ Tiếp tục';
         $('stopBtn').disabled = false;
         $('cardPanel').classList.add('dim');
     }

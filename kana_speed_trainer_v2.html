@@ -85,6 +85,9 @@ label.cap{ display:block; font-size:11px; color:var(--ink-dim); margin-bottom:7p
 #jp button.btn:hover{ background:var(--raise); border-color:#37506A; }
 #jp button.btn:active{ transform:translateY(1px); }
 #jp button.btn:disabled{ opacity:.38; cursor:not-allowed; }
+#jp .kb{ display:inline-block; margin-left:7px; padding:0 5px; font-size:.78em; font-weight:600;
+  line-height:1.5; border:1px solid currentColor; border-radius:4px; opacity:.6; vertical-align:middle; }
+#jp .kb:empty{ display:none; }
 #jp button.green{ background:var(--jade-bg); border-color:var(--jade-line); color:#bdf0d3; }
 #jp button.green:hover{ background:#123A33; }
 #jp button.red{ background:var(--clay-bg); border-color:var(--clay-line); color:#ffcabf; }
@@ -382,9 +385,9 @@ table{ width:100%; border-collapse:collapse; }
 </details>
 </div><div class="main">
 <div class="transport">
-  <button class="btn green" id="startBtn">▶ Bắt đầu</button>
-  <button class="btn amber" id="pauseBtn" disabled>⏸ Tạm dừng</button>
-  <button class="btn red" id="stopBtn" disabled>⏹ Dừng</button>
+  <button class="btn green" id="startBtn">▶ Bắt đầu<span class="kb" id="kbStart"></span></button>
+  <button class="btn amber" id="pauseBtn" disabled><span id="pauseLbl">⏸ Tạm dừng</span><span class="kb" id="kbPause"></span></button>
+  <button class="btn red" id="stopBtn" disabled>⏹ Dừng<span class="kb" id="kbStop"></span></button>
 </div>
 <div id="kanaBar" class="strip" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer;" title="Tắt nếu bạn dùng IME tiếng Nhật"><input type="checkbox" id="romajiInput"> Gõ romaji → kana</label>
@@ -450,7 +453,7 @@ table{ width:100%; border-collapse:collapse; }
     <button class="btn small active" data-size="m">Vừa</button>
     <button class="btn small" data-size="l">Lớn</button>
     <button class="btn small" data-size="xl">Rộng (câu)</button>
-    <button class="btn small" id="clearDraw">Xóa nét</button>
+    <button class="btn small" id="clearDraw">Xóa nét<span class="kb" id="kbClear"></span></button>
   </div>
   <div style="display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; margin-bottom:8px; font-size:12px;" class="muted">
     <span>Nét:</span><input type="range" id="penW" min="2" max="30" value="11" style="width:120px;"><span id="penWVal">11px</span>
@@ -466,16 +469,16 @@ table{ width:100%; border-collapse:collapse; }
     <span id="prevResult" style="margin-left:auto; font-weight:600;"></span>
   </div>
 </div>
-<div id="btnReveal" style="display:none; margin-bottom:14px;"><button class="btn primary" id="primary">Hiện đáp án</button></div>
+<div id="btnReveal" style="display:none; margin-bottom:14px;"><button class="btn primary" id="primary">Hiện đáp án<span class="kb" id="kbReveal"></span></button></div>
 <div id="btnGrade" style="display:none;">
-  <button class="btn red" id="wrong">✗ Sai</button>
-  <button class="btn green" id="correct">✓ Đúng</button>
+  <button class="btn red" id="wrong">✗ Sai<span class="kb" id="kbWrong"></span></button>
+  <button class="btn green" id="correct">✓ Đúng<span class="kb" id="kbCorrect"></span></button>
 </div>
-<div id="btnNext" style="display:none; margin-bottom:14px;"><button class="btn amber" id="nextBtn">Tiếp theo →</button></div>
+<div id="btnNext" style="display:none; margin-bottom:14px;"><button class="btn amber" id="nextBtn">Tiếp theo →<span class="kb" id="kbNext"></span></button></div>
 <div style="display:flex; gap:9px; align-items:center; margin-bottom:14px;">
-  <button class="btn" id="fixBtn" style="flex:1;">↩ Câu trước → Sai</button>
-  <button class="btn" id="skipBtn" style="flex:1;">✓ Đã thuộc (bỏ qua)</button>
-  <button class="btn" id="redoBtn" style="flex:1;">↺ Làm lại</button>
+  <button class="btn" id="fixBtn" style="flex:1;">↩ Câu trước → Sai<span class="kb" id="kbFix"></span></button>
+  <button class="btn" id="skipBtn" style="flex:1;">✓ Đã thuộc (bỏ qua)<span class="kb" id="kbSkip"></span></button>
+  <button class="btn" id="redoBtn" style="flex:1;">↺ Làm lại<span class="kb" id="kbRedo"></span></button>
   <span id="fixNote" style="font-size:12px; color:var(--gold); min-width:96px; text-align:right;"></span>
 </div>
 <div class="stat-grid">
