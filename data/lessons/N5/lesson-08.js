@@ -50,9 +50,45 @@ registerLesson("N5", 8, {
     ["仕事", "shigoto", "công việc", "しごと"]
   ],
   sentences: [
-
+    ["さくらは きれいです。", "Sakura wa kirei desu.", "Hoa anh đào đẹp."],
+    ["ふじさんは たかいです。", "Fujisan wa takai desu.", "Núi Phú Sĩ cao."],
+    ["この へやは おおきいです。", "Kono heya wa ookii desu.", "Phòng này to."],
+    ["にほんごは むずかしいです。", "Nihongo wa muzukashii desu.", "Tiếng Nhật khó."],
+    ["この ほんは おもしろいです。", "Kono hon wa omoshiroi desu.", "Cuốn sách này thú vị."],
+    ["きょうは あついです。", "Kyou wa atsui desu.", "Hôm nay nóng."],
+    ["この たべものは おいしいです。", "Kono tabemono wa oishii desu.", "Món ăn này ngon."],
+    ["きょうとは ゆうめいです。", "Kyouto wa yuumei desu.", "Kyoto nổi tiếng."],
+    ["ミラーさんは しんせつです。", "Miraa-san wa shinsetsu desu.", "Anh Miller tốt bụng."],
+    ["この くるまは たかいです。", "Kono kuruma wa takai desu.", "Chiếc xe này đắt."],
+    ["この ほんは おもしろくないです。", "Kono hon wa omoshirokunai desu.", "Cuốn sách này không thú vị."],
+    ["きょうは あつくないです。", "Kyou wa atsukunai desu.", "Hôm nay không nóng."],
+    ["この へやは きれいじゃ ありません。", "Kono heya wa kirei ja arimasen.", "Phòng này không sạch."],
+    ["にほんごは やさしくないです。", "Nihongo wa yasashikunai desu.", "Tiếng Nhật không dễ."],
+    ["この まちは しずかじゃ ありません。", "Kono machi wa shizuka ja arimasen.", "Thị trấn này không yên tĩnh."],
+    ["わたしの りょうは おおきくないです。", "Watashi no ryou wa ookikunai desu.", "Kí túc xá của tôi không to."],
+    ["あの みせは よくないです。", "Ano mise wa yokunai desu.", "Cửa hàng kia không tốt."],
+    ["たかい やまです。", "Takai yama desu.", "Là ngọn núi cao."],
+    ["きれいな さくらです。", "Kirei na sakura desu.", "Là hoa anh đào đẹp."],
+    ["しんせつな ひとです。", "Shinsetsu na hito desu.", "Là người tốt bụng."],
+    ["あたらしい くるまです。", "Atarashii kuruma desu.", "Là chiếc xe mới."],
+    ["にぎやかな まちです。", "Nigiyaka na machi desu.", "Là thị trấn náo nhiệt."],
+    ["この やまは とても たかいです。", "Kono yama wa totemo takai desu.", "Ngọn núi này rất cao."],
+    ["にほんごは あまり やさしくないです。", "Nihongo wa amari yasashikunai desu.", "Tiếng Nhật không dễ lắm."],
+    ["この しごとは あまり おもしろくないです。", "Kono shigoto wa amari omoshirokunai desu.", "Công việc này không thú vị lắm."],
+    ["にほんの せいかつは どうですか。", "Nihon no seikatsu wa dou desu ka.", "Cuộc sống ở Nhật thế nào?"],
+    ["…とても たのしいです。", "…Totemo tanoshii desu.", "…Rất vui."],
+    ["べんきょうは どうですか。", "Benkyou wa dou desu ka.", "Việc học thế nào?"],
+    ["にほんごは むずかしいですが、おもしろいです。", "Nihongo wa muzukashii desu ga, omoshiroi desu.", "Tiếng Nhật khó nhưng thú vị."],
+    ["きょうとは どんな まちですか。", "Kyouto wa donna machi desu ka.", "Kyoto là thị trấn thế nào?"],
+    ["…ふるい まちです。", "…Furui machi desu.", "…Là thị trấn cổ."]
   ],
   grammar: [
-
+    {"p": "① N は [tính từ] です", "g": "Câu miêu tả tính chất: [danh từ]は[tính từ]です. Tính từ đuôi い giữ nguyên (たかいです); tính từ đuôi な BỎ な khi đứng cuối câu (きれいです). Lịch sự thêm です.", "ex": "さくらは きれいです。", "exr": "Sakura wa kirei desu.", "m": "Hoa anh đào đẹp."},
+    {"p": "② Thể phủ định của tính từ", "g": "い-adj: bỏ い + くないです / くありません (たかい→たかくないです). な-adj: [tính từ]じゃ ありません / では ありません (きれい→きれいじゃ ありません). NGOẠI LỆ: いい→よくないです.", "ex": "この ほんは おもしろくないです。", "exr": "Kono hon wa omoshirokunai desu.", "m": "Cuốn sách này không thú vị."},
+    {"p": "③ [tính từ] + danh từ (bổ nghĩa)", "g": "Tính từ đứng TRƯỚC danh từ để bổ nghĩa. い-adj + N (たかい やま). な-adj + な + N (きれいな はな, しんせつな ひと).", "ex": "きれいな さくらです。", "exr": "Kirei na sakura desu.", "m": "Là hoa anh đào đẹp."},
+    {"p": "④ とても / あまり", "g": "とても = 'rất', đi với câu khẳng định (とても たかいです). あまり = 'không ~ lắm', LUÔN đi với câu PHỦ ĐỊNH (あまり たかくないです).", "ex": "にほんごは あまり やさしくないです。", "exr": "Nihongo wa amari yasashikunai desu.", "m": "Tiếng Nhật không dễ lắm."},
+    {"p": "⑤ ～は どうですか", "g": "Hỏi cảm nhận/ấn tượng về cái gì đó: [danh từ]は どうですか — '~ thế nào?'. Trả lời bằng một tính từ.", "ex": "にほんの せいかつは どうですか。", "exr": "Nihon no seikatsu wa dou desu ka.", "m": "Cuộc sống ở Nhật thế nào?"},
+    {"p": "⑥ どんな + danh từ", "g": "どんな + [danh từ] = 'danh từ ~ như thế nào'. Hỏi để đối phương miêu tả bằng tính từ.", "ex": "きょうとは どんな まちですか。", "exr": "Kyouto wa donna machi desu ka.", "m": "Kyoto là thị trấn thế nào?"},
+    {"p": "⑦ ～が (nhưng)", "g": "が đứng CUỐI vế trước, nối hai vế trái ngược nghĩa = 'nhưng': [vế 1]が、[vế 2].", "ex": "にほんごは むずかしいですが、おもしろいです。", "exr": "Nihongo wa muzukashii desu ga, omoshiroi desu.", "m": "Tiếng Nhật khó nhưng thú vị."}
   ]
 });
