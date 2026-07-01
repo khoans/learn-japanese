@@ -377,7 +377,6 @@ table{ width:100%; border-collapse:collapse; }
 <div class="strip" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="practiceOn"> Luyện thử (không tính điểm/thống kê)</label>
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="audioOn"> 🔊 Tự đọc khi hiện đáp án</label>
-  <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="furiOn"> Furigana (cách đọc trên kanji)</label>
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer;"><input type="checkbox" id="mistakesOn"> Chỉ ôn lỗi sai (sai/hết giờ)</label>
 </div>
 </div>
@@ -390,6 +389,7 @@ table{ width:100%; border-collapse:collapse; }
 </div>
 <div id="kanaBar" class="strip" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer;" title="Tắt nếu bạn dùng IME tiếng Nhật"><input type="checkbox" id="romajiInput"> Gõ romaji → kana</label>
+  <label style="display:flex; align-items:center; gap:7px; cursor:pointer;" title="Hiện cách đọc kana trên chữ kanji (chế độ Đọc)"><input type="checkbox" id="furiOn"> Furigana</label>
   <span id="kanaScriptWrap" style="display:none; align-items:center; gap:8px;">
     <select id="kanaScript" style="width:auto; padding:6px 9px; font-size:13px;"><option value="auto">Tự động</option><option value="hira">あ Hiragana</option><option value="kata">ア Katakana</option></select>
     <span class="muted" style="font-size:12px;">đổi: <span class="keycap" id="lblKanaMain">=</span></span>
