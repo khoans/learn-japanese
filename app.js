@@ -1236,6 +1236,10 @@ function nextCard(forced) {
     if (!pick) return;
     card = pick;
     cardDir = (dir === 'meaning' && !(pick[2] && pick[2].length > 0)) ? 'read' : dir;
+    if (mode === 'radical' && cardDir === 'meaning' && $('hideReading') && $('hideReading').checked) {
+        // Bộ thủ + ẩn cách đọc: đề chỉ hiện NGHĨA (vốn ở [1]); cách đọc (ở [2]) chỉ lộ khi lật
+        pick = card = [pick[0], pick[2], pick[1], pick[3], pick[4], pick[5]];
+    }
     const el = $('kana');
     let promptText = (cardDir === 'write') ? pick[1] : ((cardDir === 'meaning') ? (pick[2] || pick[1]) : pick[0]);
     if (cardDir === 'listen') promptText = '🔊';   // chế độ Nghe: ẩn chữ, chỉ phát âm
@@ -2351,6 +2355,7 @@ function saveLimit() {
         mistakes: $('mistakesOn') ? $('mistakesOn').checked : false,
         romaji: $('romajiInput') ? $('romajiInput').checked : false,
         kanaScript: $('kanaScript') ? $('kanaScript').value : 'auto',
+        hideReading: $('hideReading') ? $('hideReading').checked : false,
         lwf: $('lwordForm').value
     }));
 }
@@ -2889,6 +2894,7 @@ window.addEventListener('keydown', function (e) {
             if ($('mistakesOn')) $('mistakesOn').checked = !!o.mistakes;
             if ($('romajiInput')) $('romajiInput').checked = !!o.romaji;
             if ($('kanaScript') && o.kanaScript) $('kanaScript').value = o.kanaScript;
+            if ($('hideReading')) $('hideReading').checked = !!o.hideReading;
             if (o.lwf) $('lwordForm').value = o.lwf;
         } catch (e) {
         }
@@ -2933,6 +2939,10 @@ if ($('romajiInput')) $('romajiInput').addEventListener('change', function () {
     syncKanaBar();
 });
 if ($('kanaScript')) $('kanaScript').addEventListener('change', saveLimit);
+if ($('hideReading')) $('hideReading').addEventListener('change', function () {
+    saveLimit();
+    if (phase === 'running') nextCard();
+});
 if ($('typeInput')) $('typeInput').addEventListener('input', function () {
     if (!($('romajiInput') && $('romajiInput').checked)) return;
     const conv = romajiToKana(this.value, kanaOutKata(), false);
