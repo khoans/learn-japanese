@@ -2729,9 +2729,9 @@ function kanjiChars(s) {
     return out;
 }
 function showStrokeBtn() {
-    const btn = $('strokeBtn');
-    if (!btn) return;
-    btn.style.display = (card && phase === 'running' && kanjiChars(card[5] || card[0]).length) ? 'inline-block' : 'none';
+    const disp = (card && phase === 'running' && kanjiChars(card[5] || card[0]).length) ? 'inline-block' : 'none';
+    if ($('strokeBtn')) $('strokeBtn').style.display = disp;
+    if ($('writeBtn')) $('writeBtn').style.display = disp;
 }
 const OFFLINE_MSG = '⚠ Không xem được thứ tự nét: cần <b>kết nối internet</b> để tải dữ liệu, mà hiện không truy cập được. Hãy kiểm tra mạng rồi bấm "↻ Lặp lại".';
 function openStroke() {
@@ -2741,6 +2741,8 @@ function openStroke() {
     const box = $('strokeBox'), target = $('strokeTarget'), status = $('strokeStatus');
     if (!box) return;
     box.style.display = 'block';
+    if ($('strokeTitle')) $('strokeTitle').textContent = '✍ Thứ tự nét';
+    if ($('strokeReplay')) $('strokeReplay').style.display = '';
     target.innerHTML = '';
     status.innerHTML = 'Đang tải dữ liệu thứ tự nét…';
     ensureHanziWriter().then(function (ok) {
@@ -2777,7 +2779,115 @@ function openStroke() {
         });
     });
 }
+/* ===== Luyện viết có chấm điểm (HanziWriter.quiz — tự chấm từng nét; CHỈ kanji/bộ thủ, CẦN internet) ===== */
+let _writeWriters = [];
+function buildWriteQuiz(chars, msgNode) {
+    const target = $('strokeTarget');
+    target.innerHTML = '';
+    _writeWriters = [];
+    let done = 0;
+    chars.forEach(function (ch) {
+        const cell = document.createElement('div');
+        cell.style.cssText = 'margin:4px; text-align:center;';
+        const holder = document.createElement('div');
+        holder.style.cssText = 'background:#101213; border:1px solid #3a3f43; border-radius:8px; touch-action:none;';
+        cell.appendChild(holder);
+        const lbl = document.createElement('div');
+        lbl.style.cssText = 'font-size:11px; color:#9aa0a6; margin-top:3px; font-family:Hiragino Sans,Noto Sans JP,sans-serif;';
+        lbl.textContent = ch;
+        cell.appendChild(lbl);
+        target.appendChild(cell);
+        try {
+            const writer = window.HanziWriter.create(holder, ch, {
+                width: 110, height: 110, padding: 6,
+                showOutline: true, showCharacter: false,
+                strokeColor: '#9ecbff', radicalColor: '#6ee7a0', outlineColor: '#333',
+                drawingColor: '#ffd27a', drawingWidth: 24,
+                onLoadCharDataError: function () {
+                    if (msgNode) msgNode.innerHTML = OFFLINE_MSG;
+                    lbl.innerHTML = '<span style="color:#ff8b8b;">' + ch + ' ✕</span>';
+                }
+            });
+            _writeWriters.push(writer);
+            writer.quiz({
+                showHintAfterMisses: 2,
+                onComplete: function () {
+                    lbl.innerHTML = '<span style="color:#6ee7a0;">' + ch + ' ✓</span>';
+                    done++;
+                    if (msgNode) {
+                        if (done >= chars.length) msgNode.innerHTML = '<span style="color:#6ee7a0; font-weight:600;">Tuyệt vời! Bạn đã viết đúng ✓</span>';
+                        else msgNode.textContent = 'Đúng! Viết tiếp chữ bên cạnh →';
+                    }
+                }
+            });
+        } catch (e) {
+            if (msgNode) msgNode.innerHTML = OFFLINE_MSG;
+        }
+    });
+}
+function gradeFromWrite(ok) {
+    if (phase !== 'running') return;
+    if (!isRevealed) reveal();          // lộ đáp án + bật nút chấm (giống luồng thường)
+    const box = $('strokeBox');
+    if (box) box.style.display = 'none';
+    grade(ok);                          // ghi nhận đúng/sai (tôn trọng chế độ luyện tập) + qua thẻ sau
+}
+function openWrite() {
+    if (!card) return;
+    const chars = kanjiChars(card[5] || card[0]);
+    if (!chars.length) return;
+    const box = $('strokeBox'), status = $('strokeStatus');
+    if (!box) return;
+    box.style.display = 'block';
+    if ($('strokeTitle')) $('strokeTitle').textContent = '✏️ Luyện viết (tự chấm)';
+    if ($('strokeReplay')) $('strokeReplay').style.display = 'none';
+    $('strokeTarget').innerHTML = '';
+    status.innerHTML = 'Đang tải dữ liệu thứ tự nét…';
+    ensureHanziWriter().then(function (ok) {
+        if (!ok || !window.HanziWriter) { status.innerHTML = OFFLINE_MSG; return; }
+        status.innerHTML = '';
+        const msg = document.createElement('div');
+        msg.style.cssText = 'margin-bottom:6px;';
+        msg.textContent = 'Viết theo thứ tự nét bằng chuột/ngón tay. Viết sai sẽ hiện gợi ý.';
+        const bar = document.createElement('div');
+        bar.style.cssText = 'display:flex; gap:6px; justify-content:center;';
+        const demo = document.createElement('button');
+        demo.className = 'btn small';
+        demo.textContent = '▶ Xem mẫu';
+        demo.onclick = function () {
+            _writeWriters.forEach(function (wr, i) { try { setTimeout(function () { wr.animateCharacter(); }, i * 700); } catch (e) {} });
+        };
+        const redo = document.createElement('button');
+        redo.className = 'btn small';
+        redo.textContent = '↻ Viết lại';
+        redo.onclick = function () {
+            msg.textContent = 'Viết theo thứ tự nét bằng chuột/ngón tay. Viết sai sẽ hiện gợi ý.';
+            buildWriteQuiz(chars, msg);
+        };
+        bar.appendChild(demo);
+        bar.appendChild(redo);
+        const gbar = document.createElement('div');
+        gbar.style.cssText = 'display:flex; gap:6px; justify-content:center; margin-top:6px;';
+        const okB = document.createElement('button');
+        okB.className = 'btn small';
+        okB.style.cssText = 'background:#1f7a4d; border-color:#2e9e66; color:#eafff2;';
+        okB.textContent = 'Đúng ✓';
+        okB.onclick = function () { gradeFromWrite(true); };
+        const noB = document.createElement('button');
+        noB.className = 'btn small';
+        noB.style.cssText = 'background:#7a2b2b; border-color:#a53a3a; color:#ffecec;';
+        noB.textContent = 'Sai ✕';
+        noB.onclick = function () { gradeFromWrite(false); };
+        gbar.appendChild(okB);
+        gbar.appendChild(noB);
+        status.appendChild(msg);
+        status.appendChild(bar);
+        status.appendChild(gbar);
+        buildWriteQuiz(chars, msg);
+    });
+}
 if ($('strokeBtn')) $('strokeBtn').addEventListener('click', openStroke);
+if ($('writeBtn')) $('writeBtn').addEventListener('click', openWrite);
 if ($('strokeReplay')) $('strokeReplay').addEventListener('click', openStroke);
 if ($('strokeClose')) $('strokeClose').addEventListener('click', function () {
     if ($('strokeBox')) $('strokeBox').style.display = 'none';
