@@ -5,7 +5,8 @@
 const THEME_LIST = [
     ["do-vat", "Đồ vật trong nhà"],
     ["suc-khoe", "Sức khỏe & cơ thể"],
-    ["quoc-gia", "Quốc gia & ngôn ngữ"]
+    ["quoc-gia", "Quốc gia & ngôn ngữ"],
+    ["giao-thong", "Phương tiện giao thông"]
 ];
 const THEMEWORDS = [
     ["机", "tsukue", "cái bàn (làm việc)", "つくえ", "do-vat"],
@@ -90,5 +91,33 @@ const THEMEWORDS = [
     ["ロシア語", "roshiago", "tiếng Nga", "ロシアご", "quoc-gia"],
     ["タイ語", "taigo", "tiếng Thái", "タイご", "quoc-gia"],
     ["アラビア語", "arabiago", "tiếng Ả Rập", "アラビアご", "quoc-gia"],
-    ["ポルトガル語", "porutogarugo", "tiếng Bồ Đào Nha", "ポルトガルご", "quoc-gia"]
+    ["ポルトガル語", "porutogarugo", "tiếng Bồ Đào Nha", "ポルトガルご", "quoc-gia"],
+    ["車", "kuruma", "xe ô tô", "くるま", "giao-thong"],
+    ["電車", "densha", "tàu điện", "でんしゃ", "giao-thong"],
+    ["地下鉄", "chikatetsu", "tàu điện ngầm", "ちかてつ", "giao-thong"],
+    ["新幹線", "shinkansen", "tàu cao tốc Shinkansen", "しんかんせん", "giao-thong"],
+    ["バス", "basu", "xe buýt", "バス", "giao-thong"],
+    ["タクシー", "takushii", "taxi", "タクシー", "giao-thong"],
+    ["自転車", "jitensha", "xe đạp", "じてんしゃ", "giao-thong"],
+    ["バイク", "baiku", "xe máy", "バイク", "giao-thong"],
+    ["オートバイ", "ootobai", "mô tô", "オートバイ", "giao-thong"],
+    ["飛行機", "hikouki", "máy bay", "ひこうき", "giao-thong"],
+    ["船", "fune", "tàu thuyền", "ふね", "giao-thong"],
+    ["トラック", "torakku", "xe tải", "トラック", "giao-thong"],
+    ["救急車", "kyuukyuusha", "xe cứu thương", "きゅうきゅうしゃ", "giao-thong"],
+    ["消防車", "shoubousha", "xe cứu hỏa", "しょうぼうしゃ", "giao-thong"],
+    ["パトカー", "patokaa", "xe cảnh sát", "パトカー", "giao-thong"],
+    ["ヘリコプター", "herikoputaa", "trực thăng", "ヘリコプター", "giao-thong"],
+    ["駅", "eki", "nhà ga", "えき", "giao-thong"],
+    ["空港", "kuukou", "sân bay", "くうこう", "giao-thong"],
+    ["港", "minato", "cảng", "みなと", "giao-thong"],
+    ["バス停", "basutei", "bến xe buýt", "バスてい", "giao-thong"],
+    ["切符", "kippu", "vé", "きっぷ", "giao-thong"],
+    ["改札", "kaisatsu", "cửa soát vé", "かいさつ", "giao-thong"],
+    ["信号", "shingou", "đèn tín hiệu", "しんごう", "giao-thong"],
+    ["道", "michi", "con đường", "みち", "giao-thong"],
+    ["橋", "hashi", "cây cầu", "はし", "giao-thong"],
+    ["交差点", "kousaten", "ngã tư", "こうさてん", "giao-thong"],
+    ["運転手", "untenshu", "tài xế", "うんてんしゅ", "giao-thong"],
+    ["駐車場", "chuushajou", "bãi đỗ xe", "ちゅうしゃじょう", "giao-thong"]
 ];
