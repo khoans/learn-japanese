@@ -523,31 +523,76 @@ function isExcluded(cardKey) {
     return session.excluded && session.excluded.indexOf(exKey(cardKey)) >= 0;
 }
 
-function toggleExclude(cardKey) {
-    if (!session.excluded) session.excluded = [];
-    const exclKey = exKey(cardKey);
-    const i = session.excluded.indexOf(exclKey);
-    if (i >= 0) session.excluded.splice(i, 1); else session.excluded.push(exclKey);
-    saveSession();
-}
+// ===== Transfer-list (dual listbox) dùng chung: "Chọn từ" & "Đã thuộc" =====
+// Lựa chọn "dính" (bấm ra ngoài KHÔNG bỏ chọn), click/Ctrl bật-tắt 1 dòng, Shift chọn cả dải;
+// › / ‹ đẩy mục ĐÃ CHỌN, » / « đẩy TẤT CẢ đang hiện (tôn trọng ô tìm & "chỉ đã chọn").
+function tlVal(id) { const e = id && $(id); return ((e && e.value) || '').toLowerCase(); }
+function tlChk(id) { const e = id && $(id); return !!(e && e.checked); }
+function tlTxt(id, v) { const e = id && $(id); if (e) e.textContent = v; }
 
-function pickAll(inc) {
-    const pool = poolForKey(deckKey());
-    if (!session.excluded) session.excluded = [];
-    pool.forEach(function (item) {
-        const exclKey = exKey(item[0]);
-        const i = session.excluded.indexOf(exclKey);
-        if (inc) {
-            if (i >= 0) session.excluded.splice(i, 1);
+function makeTransfer(cfg) {
+    const leftSel = new Set(), rightSel = new Set();
+    let leftVis = [], rightVis = [], leftAnchor = null, rightAnchor = null;
+
+    function render() {
+        const L = $(cfg.leftList), R = $(cfg.rightList);
+        if (!L || !R) return;
+        const items = cfg.getItems();
+        const lq = tlVal(cfg.leftSearch), rq = tlVal(cfg.rightSearch);
+        const lSelOnly = tlChk(cfg.leftSelOnly), rSelOnly = tlChk(cfg.rightSelOnly);
+        L.innerHTML = ''; R.innerHTML = '';
+        leftVis = []; rightVis = [];
+        let lN = 0, rN = 0; const lValid = {}, rValid = {};
+        items.forEach(function (item) {
+            const key = item[0];
+            if (cfg.skip && cfg.skip(key)) return;
+            const right = cfg.isRight(key);
+            if (right) { rN++; rValid[key] = 1; } else { lN++; lValid[key] = 1; }
+            if (!itemMatches(item, right ? rq : lq)) return;
+            const sel = right ? rightSel : leftSel;
+            if ((right ? rSelOnly : lSelOnly) && !sel.has(key)) return;   // chỉ hiện đã chọn
+            (right ? rightVis : leftVis).push(key);
+            const row = document.createElement('div');
+            row.className = 'pickrow on' + (sel.has(key) ? ' sel' : '');
+            row.innerHTML = '<span class="pjp">' + escapeHtml(key) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
+            row.addEventListener('click', function (e) { rowClick(e, key, right ? 'r' : 'l'); });
+            (right ? R : L).appendChild(row);
+        });
+        leftSel.forEach(function (k) { if (!lValid[k]) leftSel.delete(k); });
+        rightSel.forEach(function (k) { if (!rValid[k]) rightSel.delete(k); });
+        tlTxt(cfg.leftN, lN); tlTxt(cfg.rightN, rN);
+        tlTxt(cfg.leftSelN, leftSel.size); tlTxt(cfg.rightSelN, rightSel.size);
+    }
+    function rowClick(e, key, side) {
+        const sel = side === 'l' ? leftSel : rightSel;
+        const vis = side === 'l' ? leftVis : rightVis;
+        const anchor = side === 'l' ? leftAnchor : rightAnchor;
+        if (e.shiftKey && anchor != null) {
+            let i1 = vis.indexOf(anchor), i2 = vis.indexOf(key);
+            if (i1 >= 0 && i2 >= 0) {
+                if (i1 > i2) { const t = i1; i1 = i2; i2 = t; }
+                for (let i = i1; i <= i2; i++) sel.add(vis[i]);   // thêm cả dải (không xoá cái đã chọn)
+            } else if (sel.has(key)) { sel.delete(key); } else { sel.add(key); }
         } else {
-            if (i < 0) session.excluded.push(exclKey);
+            // Click thường / Ctrl: bật-tắt đúng dòng đó (dính — không đụng các dòng khác).
+            if (sel.has(key)) sel.delete(key); else sel.add(key);
+            if (side === 'l') leftAnchor = key; else rightAnchor = key;
         }
-    });
-    saveSession();
-    renderPickList();
-    updateCoverage();
-    refreshMas();
-    if (phase === 'running') nextCard();
+        render();
+    }
+    function doMove(keys, toRight) {
+        if (!keys.length) return;
+        if (toRight) cfg.moveToRight(keys); else cfg.moveToLeft(keys);
+        (toRight ? leftSel : rightSel).clear();
+        if (toRight) leftAnchor = null; else rightAnchor = null;
+        if (cfg.afterMove) cfg.afterMove(toRight);
+        render();
+    }
+    return {
+        render: render,
+        moveSel: function (toRight) { doMove(Array.from(toRight ? leftSel : rightSel), toRight); },
+        moveAll: function (toRight) { doMove((toRight ? leftVis : rightVis).slice(), toRight); }
+    };
 }
 
 function escapeHtml(s) {
@@ -559,121 +604,77 @@ function itemMatches(item, q) {
     return (item[0] + ' ' + (item[1] || '') + ' ' + (item[2] || '')).toLowerCase().indexOf(q) >= 0;
 }
 
-function pickFiltered(inc) {
-    const query = (($('pickSearch') && $('pickSearch').value) || '').toLowerCase();
-    const items = poolForKey(deckKey()).filter(function (item) {
-        return itemMatches(item, query);
-    });
+function applyExclude(keys, excl) {
     if (!session.excluded) session.excluded = [];
-    items.forEach(function (item) {
-        const exclKey = exKey(item[0]);
-        const i = session.excluded.indexOf(exclKey);
-        if (inc) {
-            if (i >= 0) session.excluded.splice(i, 1);
-        } else {
-            if (i < 0) session.excluded.push(exclKey);
-        }
+    keys.forEach(function (k) {
+        const ek = exKey(k);
+        const i = session.excluded.indexOf(ek);
+        if (excl) { if (i < 0) session.excluded.push(ek); }
+        else if (i >= 0) session.excluded.splice(i, 1);
     });
     saveSession();
-    renderPickList();
-    updateCoverage();
-    refreshMas();
-    if (phase === 'running') nextCard();
 }
+// "Chọn từ": trái = Cần luyện (không loại), phải = Không cần luyện (đã loại).
+// Mặc định session.excluded rỗng -> tất cả nằm bên trái (luyện 100%).
+const pickTransfer = makeTransfer({
+    leftList: 'pickNeedList', rightList: 'pickSkipList',
+    leftN: 'pickNeedN', rightN: 'pickSkipN',
+    leftSearch: 'pickNeedSearch', rightSearch: 'pickSkipSearch',
+    leftSelOnly: 'pickNeedSelOnly', rightSelOnly: 'pickSkipSelOnly',
+    leftSelN: 'pickNeedSelN', rightSelN: 'pickSkipSelN',
+    getItems: function () { return poolForKey(deckKey()); },
+    isRight: function (key) { return isExcluded(key); },
+    moveToRight: function (keys) { applyExclude(keys, true); },
+    moveToLeft: function (keys) { applyExclude(keys, false); },
+    afterMove: function () {
+        updateCoverage();
+        refreshMas();
+        if (phase === 'running') nextCard();
+    }
+});
 
-function renderPickList() {
-    const box = $('pickList');
-    if (!box) return;
-    const query = (($('pickSearch') && $('pickSearch').value) || '').toLowerCase();
-    const items = poolForKey(deckKey());
-    const activeCount = items.filter(function (row) {
-        return !isExcluded(row[0]);
-    }).length;
-    const shown = items.filter(function (item) {
-        return itemMatches(item, query);
-    });
-    box.innerHTML = '';
-    shown.forEach(function (item) {
-        const cardKey = item[0];
-        const isOn = !isExcluded(cardKey);
-        const row = document.createElement('div');
-        row.className = 'pickrow' + (isOn ? ' isOn' : '');
-        row.innerHTML = '<span class="pchk">' + (isOn ? '\u2713' : '') + '</span><span class="pjp">' + escapeHtml(cardKey) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
-        row.addEventListener('click', function () {
-            toggleExclude(cardKey);
-            renderPickList();
-            updateCoverage();
-            refreshMas();
-            if (phase === 'running') nextCard();
-        });
-        box.appendChild(row);
-    });
-    $('pickCount').textContent = 'Đang luyện ' + activeCount + ' / ' + items.length + (query ? (' · tìm thấy ' + shown.length) : '');
-}
+function renderPickList() { pickTransfer.render(); }
 
 function refreshPick() {
     if ($('pickGrp') && $('pickGrp').open) renderPickList();
 }
 
-function renderMasteryLists() {
-    const items = poolForKey(deckKey());
-    const doneBox = $('masDoneList'), remainBox = $('masRemList');
-    if (!doneBox) return;
-    doneBox.innerHTML = '';
-    remainBox.innerHTML = '';
-    let doneCount = 0, remainCount = 0;
-    items.forEach(function (item) {
-        const cardKey = item[0];
-        if (isExcluded(cardKey)) return;
-        const row = document.createElement('div');
-        row.className = 'pickrow on';
-        row.innerHTML = '<span class="pjp">' + escapeHtml(cardKey) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
-        if (isSkipped(cardKey)) {
-            doneCount++;
-            row.addEventListener('click', function () {
-                unmaster(cardKey);
-            });
-            doneBox.appendChild(row);
-        } else {
-            remainCount++;
-            row.addEventListener('click', function () {
-                masterItem(cardKey);
-            });
-            remainBox.appendChild(row);
+// "Đã thuộc": trái = Chưa thuộc, phải = Đã thuộc. Bỏ qua mục đã loại khỏi luyện tập.
+function applySkip(keys, toDone) {
+    if (!session.skip) session.skip = [];
+    keys.forEach(function (k) {
+        const sk = skipKeyFor(k);
+        const i = session.skip.indexOf(sk);
+        if (toDone) {
+            if (i < 0) session.skip.push(sk);
+            if (phase === 'running') recordCorrectKey(k);
+        } else if (i >= 0) {
+            session.skip.splice(i, 1);
         }
     });
-    $('masDoneN').textContent = doneCount;
-    $('masRemN').textContent = remainCount;
-}
-
-function unmaster(cardKey) {
-    if (!session.skip) session.skip = [];
-    const i = session.skip.indexOf(skipKeyFor(cardKey));
-    if (i >= 0) {
-        session.skip.splice(i, 1);
-        saveSession();
-    }
-    updateCoverage();
-    renderMasteryLists();
-    if ($('pickGrp') && $('pickGrp').open) renderPickList();
-}
-
-function masterItem(cardKey) {
-    if (!session.skip) session.skip = [];
-    const skipKey = skipKeyFor(cardKey);
-    if (session.skip.indexOf(skipKey) < 0) session.skip.push(skipKey);
-    if (phase === 'running') recordCorrectKey(cardKey);
     saveSession();
-    updateStats();
-    updateStreak();
-    updateCoverage();
-    renderMasteryLists();
-    if ($('pickGrp') && $('pickGrp').open) renderPickList();
-    if (phase === 'running' && checkAllMastered()) {
-        finishMastered();
-    }
 }
-
+const masteryTransfer = makeTransfer({
+    leftList: 'masRemList', rightList: 'masDoneList',
+    leftN: 'masRemN', rightN: 'masDoneN',
+    leftSearch: 'masRemSearch', rightSearch: 'masDoneSearch',
+    leftSelOnly: 'masRemSelOnly', rightSelOnly: 'masDoneSelOnly',
+    leftSelN: 'masRemSelN', rightSelN: 'masDoneSelN',
+    getItems: function () { return poolForKey(deckKey()); },
+    skip: function (key) { return isExcluded(key); },
+    isRight: function (key) { return isSkipped(key); },
+    moveToRight: function (keys) { applySkip(keys, true); },
+    moveToLeft: function (keys) { applySkip(keys, false); },
+    afterMove: function (toRight) {
+        if (toRight) { updateStats(); updateStreak(); }
+        updateCoverage();
+        if ($('pickGrp') && $('pickGrp').open) renderPickList();
+        if (toRight && phase === 'running' && checkAllMastered()) finishMastered();
+    }
+});
+function renderMasteryLists() { masteryTransfer.render(); }
+function masMoveSelected(toDone) { masteryTransfer.moveSel(toDone); }
+function masMoveAll(toDone) { masteryTransfer.moveAll(toDone); }
 function refreshMas() {
     if ($('masGrp') && $('masGrp').open) renderMasteryLists();
 }

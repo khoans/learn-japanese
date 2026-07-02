@@ -197,6 +197,28 @@ label.cap{ display:block; font-size:11px; color:var(--ink-dim); margin-bottom:7p
 .pickrow .pinfo{ flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .pickrow .prd{ color:var(--slate); } .pickrow .pmn{ color:var(--ink-dim); }
 .pickrow:not(.on){ opacity:.4; }
+.pickrow.sel{ background:var(--jade); color:#0b1220; }
+.pickrow.sel .pjp, .pickrow.sel .prd, .pickrow.sel .pmn{ color:#0b1220; }
+
+/* ---- transfer list (đã thuộc / chưa thuộc) ---- */
+.xfer{ display:flex; align-items:stretch; gap:8px; }
+.xfer-pane{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; }
+.xfer-head{ font-size:12px; font-weight:700; margin:2px 0 5px; }
+.xfer-pane.rem .xfer-head{ color:var(--gold); }
+.xfer-pane.done .xfer-head{ color:var(--jade); }
+.xfer-search{ width:100%; box-sizing:border-box; margin-bottom:5px; padding:4px 7px;
+  font-size:12px; border:1px solid var(--line-soft); border-radius:6px;
+  background:var(--sunken); color:var(--ink); }
+.xfer-list{ flex:1; min-height:150px; max-height:230px; overflow-y:auto;
+  border:1px solid var(--line-soft); border-radius:6px; padding:2px;
+  user-select:none; -webkit-user-select:none; }
+.xfer-list .pickrow{ border-bottom:1px solid var(--line-soft); }
+.xfer-btns{ display:flex; flex-direction:column; justify-content:center; gap:6px; flex:0 0 auto; }
+.xfer-btns .btn{ min-width:38px; font-weight:700; padding:5px 8px; }
+.xfer-selonly{ display:flex; align-items:center; gap:5px; font-size:11px; color:var(--ink-dim);
+  margin-bottom:5px; cursor:pointer; user-select:none; }
+.xfer-selonly input{ cursor:pointer; }
+.xfer-hint{ font-size:11px; margin-top:7px; }
 
 /* ---- dist rows ---- */
 .distrow{ display:flex; align-items:center; gap:8px; padding:5px 2px;
@@ -315,19 +337,29 @@ table{ width:100%; border-collapse:collapse; }
   <div id="rgrpBtns" class="chips"></div>
   <label style="display:flex; align-items:center; gap:7px; cursor:pointer; margin-top:9px;" title="Chỉ luyện các bộ thủ hay gặp (bỏ bớt bộ hiếm)"><input type="checkbox" id="radCommon"> Chỉ bộ thủ phổ biến</label>
 </div>
-<details class="grp" id="pickGrp" style="display:none;"><summary>Chọn từ trong mục (loại bớt / chỉ chọn)</summary>
+<details class="grp" id="pickGrp" style="display:none;"><summary>Chọn từ: cần luyện / không cần luyện</summary>
   <div class="inner">
-    <input type="text" id="pickSearch" placeholder="Tìm (chữ / romaji / nghĩa)..." style="width:100%; margin-bottom:9px;">
-    <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-bottom:7px;">
-      <span style="font-size:11px;" class="muted">Toàn bộ:</span>
-      <button class="btn small green" id="pickAllBtn" title="Bật TẤT CẢ mục trong option">✓ tất cả</button>
-      <button class="btn small red" id="pickNoneBtn" title="Tắt TẤT CẢ mục trong option">✗ tất cả</button>
-      <span style="font-size:11px; margin-left:6px;" class="muted">Kết quả tìm:</span>
-      <button class="btn small green" id="pickInclResBtn" title="Chỉ bật các mục ĐANG KHỚP ô tìm kiếm">✓ kết quả</button>
-      <button class="btn small red" id="pickExclResBtn" title="Tắt các mục ĐANG KHỚP ô tìm kiếm">✗ kết quả</button>
+    <div class="xfer">
+      <div class="xfer-pane rem">
+        <div class="xfer-head">Cần luyện (<span id="pickNeedN">0</span>)</div>
+        <input id="pickNeedSearch" class="xfer-search" placeholder="Tìm trong cần luyện…">
+        <label class="xfer-selonly"><input type="checkbox" id="pickNeedSelOnly"> Chỉ đã chọn (<span id="pickNeedSelN">0</span>)</label>
+        <div id="pickNeedList" class="xfer-list"></div>
+      </div>
+      <div class="xfer-btns">
+        <button id="pickToAll" class="btn small" title="Đưa tất cả (đang hiện) sang Không cần luyện">&raquo;</button>
+        <button id="pickToSel" class="btn small" title="Đưa các mục đã chọn sang Không cần luyện">&rsaquo;</button>
+        <button id="pickFromSel" class="btn small" title="Đưa các mục đã chọn về Cần luyện">&lsaquo;</button>
+        <button id="pickFromAll" class="btn small" title="Đưa tất cả (đang hiện) về Cần luyện">&laquo;</button>
+      </div>
+      <div class="xfer-pane done">
+        <div class="xfer-head">Không cần luyện (<span id="pickSkipN">0</span>)</div>
+        <input id="pickSkipSearch" class="xfer-search" placeholder="Tìm trong không cần luyện…">
+        <label class="xfer-selonly"><input type="checkbox" id="pickSkipSelOnly"> Chỉ đã chọn (<span id="pickSkipSelN">0</span>)</label>
+        <div id="pickSkipList" class="xfer-list"></div>
+      </div>
     </div>
-    <div id="pickCount" style="font-size:12px; margin-bottom:7px;" class="muted"></div>
-    <div id="pickList" style="max-height:300px; overflow-y:auto;"></div>
+    <div class="xfer-hint muted">Mặc định tất cả đều Cần luyện. Chọn từ rồi bấm › để bỏ khỏi buổi luyện (sang Không cần luyện). Click chọn/bỏ · Ctrl+click chọn lẻ · Shift+click chọn dải · bấm ra ngoài không bỏ chọn.</div>
   </div>
 </details>
 <details class="grp" id="k130Grp" style="display:none;"><summary>✎ Sửa nghĩa &amp; ghi chú · Lịch sử (130 kanji)</summary>
@@ -504,12 +536,29 @@ table{ width:100%; border-collapse:collapse; }
   <span class="muted">Đã thuộc: </span><span id="masVal" style="color:var(--jade); font-weight:700;">0</span>
   <span class="muted">　·　Còn lại: </span><span id="masRem" style="color:var(--gold); font-weight:700;">0</span>
 </div>
-<details class="grp" id="masGrp" style="display:none;"><summary>Danh sách: đã thuộc / còn lại</summary>
+<details class="grp" id="masGrp" style="display:none;"><summary>Danh sách: chưa thuộc / đã thuộc</summary>
   <div class="inner">
-    <div style="font-size:12px; color:var(--jade); margin:2px 0 5px;">Đã thuộc (<span id="masDoneN">0</span>) — bấm để bỏ đánh dấu</div>
-    <div id="masDoneList" style="max-height:150px; overflow-y:auto; margin-bottom:8px;"></div>
-    <div style="font-size:12px; color:var(--gold); margin:2px 0 5px;">Còn lại (<span id="masRemN">0</span>) — bấm để đánh dấu đã thuộc</div>
-    <div id="masRemList" style="max-height:200px; overflow-y:auto;"></div>
+    <div class="xfer">
+      <div class="xfer-pane rem">
+        <div class="xfer-head">Chưa thuộc (<span id="masRemN">0</span>)</div>
+        <input id="masRemSearch" class="xfer-search" placeholder="Tìm trong chưa thuộc…">
+        <label class="xfer-selonly"><input type="checkbox" id="masRemSelOnly"> Chỉ đã chọn (<span id="masRemSelN">0</span>)</label>
+        <div id="masRemList" class="xfer-list"></div>
+      </div>
+      <div class="xfer-btns">
+        <button id="masToAll" class="btn small" title="Đưa tất cả (đang hiện) sang Đã thuộc">&raquo;</button>
+        <button id="masToSel" class="btn small" title="Đưa các mục đã chọn sang Đã thuộc">&rsaquo;</button>
+        <button id="masFromSel" class="btn small" title="Đưa các mục đã chọn về Chưa thuộc">&lsaquo;</button>
+        <button id="masFromAll" class="btn small" title="Đưa tất cả (đang hiện) về Chưa thuộc">&laquo;</button>
+      </div>
+      <div class="xfer-pane done">
+        <div class="xfer-head">Đã thuộc (<span id="masDoneN">0</span>)</div>
+        <input id="masDoneSearch" class="xfer-search" placeholder="Tìm trong đã thuộc…">
+        <label class="xfer-selonly"><input type="checkbox" id="masDoneSelOnly"> Chỉ đã chọn (<span id="masDoneSelN">0</span>)</label>
+        <div id="masDoneList" class="xfer-list"></div>
+      </div>
+    </div>
+    <div class="xfer-hint muted">Click để chọn/bỏ chọn · Ctrl+click chọn nhiều · Shift+click chọn dải · rồi bấm › (sang đã thuộc) hoặc ‹ (về chưa thuộc). Bấm ra ngoài không bỏ chọn.</div>
   </div>
 </details>
 <div class="strip streak" id="streakPanel">

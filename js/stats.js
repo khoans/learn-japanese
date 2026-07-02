@@ -685,25 +685,28 @@ $('nextBtn').addEventListener('click', function () {
 $('fixBtn').addEventListener('click', fixPrev);
 $('skipBtn').addEventListener('click', skipCurrent);
 $('redoBtn').addEventListener('click', redoCard);
-$('pickAllBtn').addEventListener('click', function () {
-    pickAll(true);
-});
-$('pickNoneBtn').addEventListener('click', function () {
-    pickAll(false);
-});
 $('pickGrp').addEventListener('toggle', function () {
     if ($('pickGrp').open) renderPickList();
 });
+if ($('pickToSel')) $('pickToSel').addEventListener('click', function () { pickTransfer.moveSel(true); });
+if ($('pickToAll')) $('pickToAll').addEventListener('click', function () { pickTransfer.moveAll(true); });
+if ($('pickFromSel')) $('pickFromSel').addEventListener('click', function () { pickTransfer.moveSel(false); });
+if ($('pickFromAll')) $('pickFromAll').addEventListener('click', function () { pickTransfer.moveAll(false); });
+if ($('pickNeedSearch')) $('pickNeedSearch').addEventListener('input', renderPickList);
+if ($('pickSkipSearch')) $('pickSkipSearch').addEventListener('input', renderPickList);
+if ($('pickNeedSelOnly')) $('pickNeedSelOnly').addEventListener('change', renderPickList);
+if ($('pickSkipSelOnly')) $('pickSkipSelOnly').addEventListener('change', renderPickList);
 $('masGrp').addEventListener('toggle', function () {
     if ($('masGrp').open) renderMasteryLists();
 });
-$('pickInclResBtn').addEventListener('click', function () {
-    pickFiltered(true);
-});
-$('pickExclResBtn').addEventListener('click', function () {
-    pickFiltered(false);
-});
-$('pickSearch').addEventListener('input', renderPickList);
+if ($('masToSel')) $('masToSel').addEventListener('click', function () { masMoveSelected(true); });
+if ($('masToAll')) $('masToAll').addEventListener('click', function () { masMoveAll(true); });
+if ($('masFromSel')) $('masFromSel').addEventListener('click', function () { masMoveSelected(false); });
+if ($('masFromAll')) $('masFromAll').addEventListener('click', function () { masMoveAll(false); });
+if ($('masRemSearch')) $('masRemSearch').addEventListener('input', renderMasteryLists);
+if ($('masDoneSearch')) $('masDoneSearch').addEventListener('input', renderMasteryLists);
+if ($('masRemSelOnly')) $('masRemSelOnly').addEventListener('change', renderMasteryLists);
+if ($('masDoneSelOnly')) $('masDoneSelOnly').addEventListener('change', renderMasteryLists);
 $('vSession').addEventListener('change', refreshStatView);
 $('vOption').addEventListener('change', renderDist);
 $('clearAll').addEventListener('click', clearAll);
