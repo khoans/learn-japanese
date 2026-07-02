@@ -48,9 +48,43 @@ registerLesson("N5", 10, {
     ["あいだ", "aida", "ở giữa (hai vật)", "あいだ"]
   ],
   sentences: [
-
+    ["テーブルの うえに ほんが あります。", "Teeburu no ue ni hon ga arimasu.", "Trên bàn có sách."],
+    ["へやに テレビが あります。", "Heya ni terebi ga arimasu.", "Trong phòng có TV."],
+    ["あそこに きっさてんが あります。", "Asoko ni kissaten ga arimasu.", "Đằng kia có quán cà phê."],
+    ["こうえんに いぬが います。", "Kouen ni inu ga imasu.", "Trong công viên có con chó."],
+    ["へやに おんなのこが います。", "Heya ni onna no ko ga imasu.", "Trong phòng có một bé gái."],
+    ["あそこに ミラーさんが います。", "Asoko ni Miraa-san ga imasu.", "Đằng kia có anh Miller."],
+    ["ミラーさんは じむしょに います。", "Miraa-san wa jimusho ni imasu.", "Anh Miller ở văn phòng."],
+    ["でんわは テーブルの うえに あります。", "Denwa wa teeburu no ue ni arimasu.", "Điện thoại ở trên bàn."],
+    ["たなかさんは いま どこに いますか。", "Tanaka-san wa ima doko ni imasu ka.", "Bây giờ anh Tanaka ở đâu?"],
+    ["…たなかさんは ぎんこうに います。", "…Tanaka-san wa ginkou ni imasu.", "…Anh Tanaka ở ngân hàng."],
+    ["かばんの なかに ノートが あります。", "Kaban no naka ni nooto ga arimasu.", "Trong cặp có quyển vở."],
+    ["ベッドの したに ねこが います。", "Beddo no shita ni neko ga imasu.", "Dưới giường có con mèo."],
+    ["びょういんの まえに スーパーが あります。", "Byouin no mae ni suupaa ga arimasu.", "Trước bệnh viện có siêu thị."],
+    ["うちの うしろに こうえんが あります。", "Uchi no ushiro ni kouen ga arimasu.", "Sau nhà có công viên."],
+    ["ほんやの みぎに きっさてんが あります。", "Hon'ya no migi ni kissaten ga arimasu.", "Bên phải hiệu sách có quán cà phê."],
+    ["えきの ひだりに ゆうびんきょくが あります。", "Eki no hidari ni yuubinkyoku ga arimasu.", "Bên trái nhà ga có bưu điện."],
+    ["くるまの なかに だれが いますか。", "Kuruma no naka ni dare ga imasu ka.", "Trong xe có ai?"],
+    ["…くるまの なかに おとこのひとが います。", "…Kuruma no naka ni otoko no hito ga imasu.", "…Trong xe có một người đàn ông."],
+    ["ぎんこうと ゆうびんきょくの あいだに ほんやが あります。", "Ginkou to yuubinkyoku no aida ni hon'ya ga arimasu.", "Giữa ngân hàng và bưu điện có hiệu sách."],
+    ["わたしは たなかさんと ミラーさんの あいだに います。", "Watashi wa Tanaka-san to Miraa-san no aida ni imasu.", "Tôi ở giữa anh Tanaka và anh Miller."],
+    ["テーブルの うえに ほんや かばんが あります。", "Teeburu no ue ni hon ya kaban ga arimasu.", "Trên bàn có sách, cặp v.v."],
+    ["かばんの なかに ほんや ノートが あります。", "Kaban no naka ni hon ya nooto ga arimasu.", "Trong cặp có sách, vở v.v."],
+    ["へやに だれが いますか。", "Heya ni dare ga imasu ka.", "Trong phòng có ai?"],
+    ["…やまださんが います。", "…Yamada-san ga imasu.", "…Có anh Yamada."],
+    ["はこの なかに なにが ありますか。", "Hako no naka ni nani ga arimasu ka.", "Trong hộp có gì?"],
+    ["…でんちが あります。", "…Denchi ga arimasu.", "…Có pin."],
+    ["デパートに レストランが あります。", "Depaato ni resutoran ga arimasu.", "Trong trung tâm thương mại có nhà hàng."],
+    ["まどの そとに きが あります。", "Mado no soto ni ki ga arimasu.", "Bên ngoài cửa sổ có cây."],
+    ["スイッチは ドアの みぎに あります。", "Suitchi wa doa no migi ni arimasu.", "Công tắc ở bên phải cửa."],
+    ["コンビニは えきの ちかくに あります。", "Konbini wa eki no chikaku ni arimasu.", "Cửa hàng tiện lợi ở gần nhà ga."]
   ],
   grammar: [
-
+    {"p": "① あります / います", "g": "Diễn tả sự tồn tại: あります dùng cho đồ vật, thực vật (vô tri); います dùng cho người, động vật (hữu tri, tự di chuyển). Đối tượng tồn tại dùng trợ từ が.", "ex": "つくえの うえに ほんが あります。", "exr": "Tsukue no ue ni hon ga arimasu.", "m": "Trên bàn có sách."},
+    {"p": "② 場所に N が あります／います", "g": "Nói ở một nơi có cái gì: [nơi chốn]に [đồ/người]が あります／います. Nơi chốn dùng trợ từ に. Hỏi: [nơi]に なにが ありますか／だれが いますか.", "ex": "へやに テレビが あります。", "exr": "Heya ni terebi ga arimasu.", "m": "Trong phòng có TV."},
+    {"p": "③ N は 場所に あります／います", "g": "Nói một vật／người xác định ở đâu: [chủ đề]は [nơi chốn]に あります／います. Đưa vật／người đã biết lên đầu làm chủ đề (は). Hỏi: ～は どこに ありますか／いますか.", "ex": "ミラーさんは じむしょに います。", "exr": "Miraa-san wa jimusho ni imasu.", "m": "Anh Miller ở văn phòng."},
+    {"p": "④ Từ chỉ vị trí", "g": "Vị trí tương đối: N1の うえ／した／まえ／うしろ／みぎ／ひだり／なか／そと／となり／ちかく + に. VD: つくえの したに (dưới bàn), えきの ちかくに (gần nhà ga).", "ex": "ねこは いすの したに います。", "exr": "Neko wa isu no shita ni imasu.", "m": "Con mèo ở dưới ghế."},
+    {"p": "⑤ N1 と N2 の あいだに", "g": "'Ở giữa hai vật／người': N1と N2の あいだに ～. Lưu ý dùng と (không dùng や) để nối hai mốc.", "ex": "ぎんこうと ゆうびんきょくの あいだに ほんやが あります。", "exr": "Ginkou to yuubinkyoku no aida ni hon'ya ga arimasu.", "m": "Giữa ngân hàng và bưu điện có hiệu sách."},
+    {"p": "⑥ N や N（など）", "g": "Liệt kê không đầy đủ (kể vài ví dụ tiêu biểu): N1や N2. Có thể thêm など ở cuối. Khác với と (liệt kê đầy đủ). VD: つくえの うえに ほんや ノートが あります.", "ex": "テーブルの うえに ほんや かばんが あります。", "exr": "Teeburu no ue ni hon ya kaban ga arimasu.", "m": "Trên bàn có sách, cặp v.v."}
   ]
 });
