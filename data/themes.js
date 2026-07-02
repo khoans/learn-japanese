@@ -4,7 +4,8 @@
 // THEMEWORDS: [ [chu_hien_thi, romaji, nghia, kana, themeId], ... ]
 const THEME_LIST = [
     ["do-vat", "Đồ vật trong nhà"],
-    ["suc-khoe", "Sức khỏe & cơ thể"]
+    ["suc-khoe", "Sức khỏe & cơ thể"],
+    ["quoc-gia", "Quốc gia & ngôn ngữ"]
 ];
 const THEMEWORDS = [
     ["机", "tsukue", "cái bàn (làm việc)", "つくえ", "do-vat"],
@@ -61,5 +62,33 @@ const THEMEWORDS = [
     ["医者", "isha", "bác sĩ", "いしゃ", "suc-khoe"],
     ["元気", "genki", "khỏe mạnh", "げんき", "suc-khoe"],
     ["痛い", "itai", "đau", "いたい", "suc-khoe"],
-    ["大丈夫", "daijoubu", "không sao, ổn", "だいじょうぶ", "suc-khoe"]
+    ["大丈夫", "daijoubu", "không sao, ổn", "だいじょうぶ", "suc-khoe"],
+    ["日本", "nihon", "Nhật Bản", "にほん", "quoc-gia"],
+    ["ベトナム", "betonamu", "Việt Nam", "ベトナム", "quoc-gia"],
+    ["アメリカ", "amerika", "Mỹ", "アメリカ", "quoc-gia"],
+    ["イギリス", "igirisu", "Anh (quốc gia)", "イギリス", "quoc-gia"],
+    ["中国", "chuugoku", "Trung Quốc", "ちゅうごく", "quoc-gia"],
+    ["韓国", "kankoku", "Hàn Quốc", "かんこく", "quoc-gia"],
+    ["フランス", "furansu", "Pháp", "フランス", "quoc-gia"],
+    ["ドイツ", "doitsu", "Đức", "ドイツ", "quoc-gia"],
+    ["スペイン", "supein", "Tây Ban Nha", "スペイン", "quoc-gia"],
+    ["イタリア", "itaria", "Ý", "イタリア", "quoc-gia"],
+    ["ロシア", "roshia", "Nga", "ロシア", "quoc-gia"],
+    ["タイ", "tai", "Thái Lan", "タイ", "quoc-gia"],
+    ["インド", "indo", "Ấn Độ", "インド", "quoc-gia"],
+    ["ブラジル", "burajiru", "Brazil", "ブラジル", "quoc-gia"],
+    ["オーストラリア", "oosutoraria", "Úc", "オーストラリア", "quoc-gia"],
+    ["日本語", "nihongo", "tiếng Nhật", "にほんご", "quoc-gia"],
+    ["ベトナム語", "betonamugo", "tiếng Việt", "ベトナムご", "quoc-gia"],
+    ["英語", "eigo", "tiếng Anh", "えいご", "quoc-gia"],
+    ["中国語", "chuugokugo", "tiếng Trung", "ちゅうごくご", "quoc-gia"],
+    ["韓国語", "kankokugo", "tiếng Hàn", "かんこくご", "quoc-gia"],
+    ["フランス語", "furansugo", "tiếng Pháp", "フランスご", "quoc-gia"],
+    ["ドイツ語", "doitsugo", "tiếng Đức", "ドイツご", "quoc-gia"],
+    ["スペイン語", "supeingo", "tiếng Tây Ban Nha", "スペインご", "quoc-gia"],
+    ["イタリア語", "itariago", "tiếng Ý", "イタリアご", "quoc-gia"],
+    ["ロシア語", "roshiago", "tiếng Nga", "ロシアご", "quoc-gia"],
+    ["タイ語", "taigo", "tiếng Thái", "タイご", "quoc-gia"],
+    ["アラビア語", "arabiago", "tiếng Ả Rập", "アラビアご", "quoc-gia"],
+    ["ポルトガル語", "porutogarugo", "tiếng Bồ Đào Nha", "ポルトガルご", "quoc-gia"]
 ];
