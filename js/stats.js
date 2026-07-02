@@ -583,7 +583,7 @@ function syncControls() {
     $('krowWrap').style.display = isKanji ? 'block' : 'none';
     $('kgrpWrap').style.display = (mode === 'kanji130') ? 'block' : 'none';
     $('ngrpWrap').style.display = (mode === 'number') ? 'block' : 'none';
-    $('lwordFormWrap').style.display = (mode === 'lword') ? 'block' : 'none';
+    $('lwordFormWrap').style.display = (mode === 'lword' || mode === 'theme') ? 'block' : 'none';
     $('cgrpWrap').style.display = (mode === 'counter') ? 'block' : 'none';
     // "Ẩn cách đọc" chỉ liên quan chế độ Bộ thủ -> chỉ hiện toggle này trên màn hình chính khi đó
     if ($('hideReadingWrap')) $('hideReadingWrap').style.display = (mode === 'radical') ? 'inline-flex' : 'none';

@@ -362,7 +362,7 @@ let isRevealed = false, isTimedOut = false, cardStartMs = 0, pausedMs = 0, answe
 function deckKey() {
     const m = $('mode').value;
     let base;
-    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'theme') base = 'theme|' + selectedThemes().join(','); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
+    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
@@ -384,7 +384,7 @@ function deckLabel(key) {
     if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
     if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
     if (parts[0] === 'lword') return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (parts[2] === 'K' ? ' (kanji)' : '');
-    if (parts[0] === 'theme') return prefix + 'Từ theo chủ đề' + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' chủ đề' : '');
+    if (parts[0] === 'theme') return prefix + 'Từ theo chủ đề' + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' chủ đề' : '') + (parts[2] === 'K' ? ' (kanji)' : '');
     if (parts[0] === 'word') return prefix + 'Đọc từ N5 · ' + scriptNames[parts[1]];
     const rangeNames = {basic: 'Cơ bản', full: 'Cơ bản+biến âm', yoon: 'Cơ bản+biến âm+ghép', tricky: 'Hay nhầm'};
     return prefix + 'Ký tự · ' + scriptNames[parts[1]] + ' · ' + rangeNames[parts[2]];
@@ -532,15 +532,21 @@ function poolForKey(key) {
     }
     if (parts[0] === 'theme') {
         const thset = parts[1] ? parts[1].split(',').filter(Boolean) : [];
+        const kanjiMode = (parts[2] === 'K');
         const src = (typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []);
         return src.filter(function (row) {
             return !thset.length || thset.indexOf(row[4]) >= 0;   // row[4] = themeId
         }).map(function (row) {
             var reading = row[3] || row[0];   // kana
-            var kanji = row[0];               // chữ hiển thị
+            var kanji = row[0];               // chữ hiển thị (kanji nếu có)
             var hasK = /[一-鿿]/.test(kanji);
             var kanjiForm = hasK ? kanji : '';
             var compareKey = hasK ? reading : kanji;
+            if (kanjiMode) {
+                var display = kanji;
+                var answer = (display !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
+                return [display, answer, row[2] || '', row[1], compareKey, kanjiForm];
+            }
             var hDisplay = hasK ? reading : kanji;
             var hAnswer = (hDisplay !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
             return [hDisplay, hAnswer, row[2] || '', row[1], compareKey, kanjiForm];
