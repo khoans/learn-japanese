@@ -6,7 +6,8 @@ const THEME_LIST = [
     ["do-vat", "Đồ vật trong nhà"],
     ["suc-khoe", "Sức khỏe & cơ thể"],
     ["quoc-gia", "Quốc gia & ngôn ngữ"],
-    ["giao-thong", "Phương tiện giao thông"]
+    ["giao-thong", "Phương tiện giao thông"],
+    ["nghe-nghiep", "Nghề nghiệp"]
 ];
 const THEMEWORDS = [
     ["机", "tsukue", "cái bàn (làm việc)", "つくえ", "do-vat"],
@@ -119,5 +120,33 @@ const THEMEWORDS = [
     ["橋", "hashi", "cây cầu", "はし", "giao-thong"],
     ["交差点", "kousaten", "ngã tư", "こうさてん", "giao-thong"],
     ["運転手", "untenshu", "tài xế", "うんてんしゅ", "giao-thong"],
-    ["駐車場", "chuushajou", "bãi đỗ xe", "ちゅうしゃじょう", "giao-thong"]
+    ["駐車場", "chuushajou", "bãi đỗ xe", "ちゅうしゃじょう", "giao-thong"],
+    ["先生", "sensei", "giáo viên (kính ngữ)", "せんせい", "nghe-nghiep"],
+    ["教師", "kyoushi", "giáo viên (nghề)", "きょうし", "nghe-nghiep"],
+    ["医者", "isha", "bác sĩ", "いしゃ", "nghe-nghiep"],
+    ["看護師", "kangoshi", "y tá", "かんごし", "nghe-nghiep"],
+    ["会社員", "kaishain", "nhân viên công ty", "かいしゃいん", "nghe-nghiep"],
+    ["公務員", "koumuin", "công chức", "こうむいん", "nghe-nghiep"],
+    ["銀行員", "ginkouin", "nhân viên ngân hàng", "ぎんこういん", "nghe-nghiep"],
+    ["店員", "ten'in", "nhân viên bán hàng", "てんいん", "nghe-nghiep"],
+    ["警察官", "keisatsukan", "cảnh sát", "けいさつかん", "nghe-nghiep"],
+    ["消防士", "shouboushi", "lính cứu hỏa", "しょうぼうし", "nghe-nghiep"],
+    ["弁護士", "bengoshi", "luật sư", "べんごし", "nghe-nghiep"],
+    ["学生", "gakusei", "học sinh, sinh viên", "がくせい", "nghe-nghiep"],
+    ["主婦", "shufu", "nội trợ", "しゅふ", "nghe-nghiep"],
+    ["コック", "kokku", "đầu bếp", "コック", "nghe-nghiep"],
+    ["農家", "nouka", "nông dân", "のうか", "nghe-nghiep"],
+    ["漁師", "ryoushi", "ngư dân", "りょうし", "nghe-nghiep"],
+    ["歌手", "kashu", "ca sĩ", "かしゅ", "nghe-nghiep"],
+    ["俳優", "haiyuu", "diễn viên", "はいゆう", "nghe-nghiep"],
+    ["画家", "gaka", "họa sĩ", "がか", "nghe-nghiep"],
+    ["作家", "sakka", "nhà văn", "さっか", "nghe-nghiep"],
+    ["記者", "kisha", "phóng viên", "きしゃ", "nghe-nghiep"],
+    ["エンジニア", "enjinia", "kỹ sư", "エンジニア", "nghe-nghiep"],
+    ["大工", "daiku", "thợ mộc", "だいく", "nghe-nghiep"],
+    ["美容師", "biyoushi", "thợ làm tóc", "びようし", "nghe-nghiep"],
+    ["パイロット", "pairotto", "phi công", "パイロット", "nghe-nghiep"],
+    ["デザイナー", "dezainaa", "nhà thiết kế", "デザイナー", "nghe-nghiep"],
+    ["社長", "shachou", "giám đốc công ty", "しゃちょう", "nghe-nghiep"],
+    ["通訳", "tsuuyaku", "thông dịch viên", "つうやく", "nghe-nghiep"]
 ];
