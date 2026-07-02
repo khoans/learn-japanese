@@ -47,7 +47,7 @@ function LevelRank([string]$lv) {
 }
 
 # --- Thu thap: trinh do -> danh sach so bai (theo thu tu) ---
-$levelDirs = Get-ChildItem -Path $CsvDir -Directory | Where-Object { $_.Name -ne '_TEMPLATE' }
+$levelDirs = Get-ChildItem -Path $CsvDir -Directory | Where-Object { $_.Name -ne '_TEMPLATE' -and $_.Name -ne 'themes' }
 $levels = $levelDirs | Sort-Object @{ Expression = { LevelRank $_.Name } }, Name
 if ($levels.Count -eq 0) { throw "Khong thay thu muc trinh do nao trong $CsvDir (vi du: csv\N5\)" }
 
@@ -148,6 +148,41 @@ $($rLines -join ",`r`n")
   [System.IO.File]::WriteAllText((Join-Path $Root 'data\radicals.js'), $radJs, $Utf8NoBom)
   Write-Host ("radicals.js: {0} bo thu" -f $rads.Count)
 }
+
+# --- Sinh data/themes.js tu csv/themes/ (tu vung theo CHU DE, tach roi he thong N5/N4) ---
+$themesRoot = Join-Path $CsvDir 'themes'
+$thList = @(); $thWords = @(); $thCount = 0
+if (Test-Path $themesRoot) {
+  $themesCsv = Join-Path $themesRoot 'themes.csv'
+  $themeDefs = if (Test-Path $themesCsv) { @(Import-Csv -Path $themesCsv -Encoding utf8) } else { @() }
+  foreach ($t in $themeDefs) {
+    $id = ([string]$t.id).Trim()
+    if (-not $id) { continue }
+    $ws = ImportCsvSafe (Join-Path $themesRoot (Join-Path $id 'words.csv'))
+    if ($ws.Count -eq 0) { Write-Host ("themes/{0}: 0 tu (bo qua)" -f $id) -ForegroundColor Yellow; continue }
+    $thList += '    [' + (Esc $id) + ', ' + (Esc $t.ten) + ']'
+    foreach ($r in $ws) {
+      $kana = if ([string]::IsNullOrWhiteSpace($r.kana)) { $r.tiengNhat } else { $r.kana }
+      $thWords += '    [' + (Esc $r.tiengNhat) + ', ' + (Esc $r.romaji) + ', ' + (Esc $r.nghia) + ', ' + (Esc $kana) + ', ' + (Esc $id) + ']'
+    }
+    $thCount += $ws.Count
+    Write-Host ("themes/{0}: {1} tu" -f $id, $ws.Count)
+  }
+}
+$themesJs = @"
+// TU DONG SINH tu  data/lessons/csv/themes/  boi  tools/build-lessons.ps1 -- DUNG SUA TAY.
+// Tu vung theo CHU DE, tach roi hoan toan he thong trinh do N5/N4.
+// THEME_LIST: [ [id, ten_hien_thi], ... ]
+// THEMEWORDS: [ [chu_hien_thi, romaji, nghia, kana, themeId], ... ]
+const THEME_LIST = [
+$($thList -join ",`r`n")
+];
+const THEMEWORDS = [
+$($thWords -join ",`r`n")
+];
+"@
+[System.IO.File]::WriteAllText((Join-Path $Root 'data\themes.js'), $themesJs, $Utf8NoBom)
+Write-Host ("themes.js: {0} chu de, {1} tu" -f $thList.Count, $thCount)
 
 # --- Sinh manifest.js (trang + service worker deu doc) ---
 $levelNames = @($manifest.Keys)

@@ -235,7 +235,7 @@ table{ width:100%; border-collapse:collapse; }
 </div>
 <div class="field-row">
   <div class="col"><label class="cap">Nội dung</label>
-    <select id="mode"><option value="char">Ký tự rời</option><option value="word">Đọc từ (N5)</option><option value="lword">Từ theo bài</option><option value="sent">Câu theo bài</option><option value="radical">Bộ thủ (thông dụng)</option><option value="kanji">Từ vựng Kanji N5</option><option value="kanji130">Kanji đơn N5 (130 chữ)</option><option value="number">Số đếm (kanji)</option><option value="counter">Đơn vị đếm</option></select></div>
+    <select id="mode"><option value="char">Ký tự rời</option><option value="word">Đọc từ (N5)</option><option value="lword">Từ theo bài</option><option value="theme">Từ theo chủ đề</option><option value="sent">Câu theo bài</option><option value="radical">Bộ thủ (thông dụng)</option><option value="kanji">Từ vựng Kanji N5</option><option value="kanji130">Kanji đơn N5 (130 chữ)</option><option value="number">Số đếm (kanji)</option><option value="counter">Đơn vị đếm</option></select></div>
   <div class="col" id="scriptWrap"><label class="cap">Bảng chữ</label>
     <select id="script"><option value="mix">Trộn cả hai</option><option value="hira">Chỉ Hiragana</option><option value="kata">Chỉ Katakana</option></select></div>
   <div class="col" id="rangeWrap"><label class="cap">Phạm vi</label>
@@ -305,6 +305,10 @@ table{ width:100%; border-collapse:collapse; }
 <div id="cgrpWrap" class="field" style="display:none;">
   <label class="cap">Loại đơn vị đếm (kết hợp được)</label>
   <div class="chips"><button class="btn small cgrp active" data-cgrp="1">つ</button><button class="btn small cgrp active" data-cgrp="2">人</button><button class="btn small cgrp active" data-cgrp="3">本</button><button class="btn small cgrp active" data-cgrp="4">枚</button><button class="btn small cgrp active" data-cgrp="5">匹</button><button class="btn small cgrp active" data-cgrp="6">個</button><button class="btn small cgrp active" data-cgrp="7">杯</button><button class="btn small cgrp active" data-cgrp="8">冊</button><button class="btn small cgrp active" data-cgrp="9">回</button><button class="btn small cgrp active" data-cgrp="10">階</button><button class="btn small cgrp active" data-cgrp="11">歳</button><button class="btn small cgrp active" data-cgrp="12">分</button><button class="btn small cgrp active" data-cgrp="13">時</button><button class="btn small cgrp active" data-cgrp="14">日</button><button class="btn small cgrp active" data-cgrp="15">月</button><button class="btn small cgrp active" data-cgrp="16">ヶ月</button></div>
+</div>
+<div id="thmWrap" class="field" style="display:none;">
+  <label class="cap">Chọn chủ đề (kết hợp được nhiều chủ đề)</label>
+  <div id="thmBtns" class="chips"></div>
 </div>
 <div id="rgrpWrap" class="field" style="display:none;">
   <label class="cap">Nhóm bộ thủ (chọn nhiều)</label>
@@ -579,6 +583,7 @@ table{ width:100%; border-collapse:collapse; }
 <script src="data/registry.js"></script>
 <script src="data/core-data.js"></script>
 <script src="data/radicals.js"></script>
+<script src="data/themes.js"></script>
 <!-- ===== BAI HOC: tu dong nap theo manifest (sinh boi tools/build-lessons.ps1). -->
 <!--     KHONG can them dong nao o day khi co bai moi - chi can chay build-lessons.ps1. -->
 <script src="data/lessons/manifest.js"></script>

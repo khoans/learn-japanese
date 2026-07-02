@@ -588,6 +588,7 @@ function syncControls() {
     // "Ẩn cách đọc" chỉ liên quan chế độ Bộ thủ -> chỉ hiện toggle này trên màn hình chính khi đó
     if ($('hideReadingWrap')) $('hideReadingWrap').style.display = (mode === 'radical') ? 'inline-flex' : 'none';
     if ($('rgrpWrap')) $('rgrpWrap').style.display = (mode === 'radical') ? 'block' : 'none';
+    if ($('thmWrap')) $('thmWrap').style.display = (mode === 'theme') ? 'block' : 'none';
 }
 
 function saveLimit() {
@@ -847,6 +848,16 @@ document.querySelectorAll('[data-cgrp]').forEach(function (b) {
 });
 // Nút nhóm bộ thủ (dựng động ở decks.js, đã có trước khi handler này chạy)
 document.querySelectorAll('[data-rgrp]').forEach(function (b) {
+    b.addEventListener('click', function () {
+        b.classList.toggle('active');
+        updateCoverage();
+        if (phase === 'running') nextCard();
+        refreshPick();
+        refreshMas();
+    });
+});
+// Nút chọn chủ đề (dựng động ở decks.js, đã có trước khi handler này chạy)
+document.querySelectorAll('[data-thm]').forEach(function (b) {
     b.addEventListener('click', function () {
         b.classList.toggle('active');
         updateCoverage();

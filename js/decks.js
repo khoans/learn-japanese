@@ -38,6 +38,7 @@ function buildLessonUI() {
 
 buildLessonUI();
 buildRadicalGroups();
+buildThemeGroups();
 let canvas = null, ctx = null, isDrawing = false, canvasSize = 'm', penWidth = 11, penColor = '#ffffff';
 const CANVAS_SIZES = {s: {fixed: 300, h: 300}, m: {frac: 0.55, h: 340}, l: {frac: 0.8, h: 430}, xl: {frac: 1.0, h: 340}};
 
@@ -361,7 +362,7 @@ let isRevealed = false, isTimedOut = false, cardStartMs = 0, pausedMs = 0, answe
 function deckKey() {
     const m = $('mode').value;
     let base;
-    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
+    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'theme') base = 'theme|' + selectedThemes().join(','); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
@@ -383,6 +384,7 @@ function deckLabel(key) {
     if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
     if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
     if (parts[0] === 'lword') return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (parts[2] === 'K' ? ' (kanji)' : '');
+    if (parts[0] === 'theme') return prefix + 'Từ theo chủ đề' + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' chủ đề' : '');
     if (parts[0] === 'word') return prefix + 'Đọc từ N5 · ' + scriptNames[parts[1]];
     const rangeNames = {basic: 'Cơ bản', full: 'Cơ bản+biến âm', yoon: 'Cơ bản+biến âm+ghép', tricky: 'Hay nhầm'};
     return prefix + 'Ký tự · ' + scriptNames[parts[1]] + ' · ' + rangeNames[parts[2]];
@@ -462,6 +464,26 @@ function selectedRGroups() {
     });
     return a; // rỗng = không lọc nhóm (tất cả)
 }
+// Nút chọn chủ đề (Từ theo chủ đề) — dựng động từ THEME_LIST, tách rời N5/N4.
+function buildThemeGroups() {
+    const box = $('thmBtns');
+    if (!box) return;
+    box.innerHTML = '';
+    (typeof THEME_LIST !== 'undefined' ? THEME_LIST : []).forEach(function (t) {
+        const btn = document.createElement('button');
+        btn.className = 'btn small thm active';
+        btn.setAttribute('data-thm', t[0]);
+        btn.textContent = t[1];
+        box.appendChild(btn);
+    });
+}
+function selectedThemes() {
+    const a = [];
+    document.querySelectorAll('[data-thm]').forEach(function (b) {
+        if (b.classList.contains('active')) a.push(b.getAttribute('data-thm'));
+    });
+    return a; // rỗng = không lọc (tất cả chủ đề)
+}
 
 // poolForKey() trả về mảng các "thẻ" để luyện. Mỗi thẻ (biến `card` / `item`) là mảng 6 phần tử:
 //   [0] prompt      — đề bài hiển thị (đồng thời là KHÓA định danh của mục)
@@ -506,6 +528,22 @@ function poolForKey(key) {
             var hDisplay = hasK ? reading : kanji;
             var hAnswer = (hDisplay !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
             return [hDisplay, hAnswer, row[3] || '', row[1], compareKey, kanjiForm];
+        });
+    }
+    if (parts[0] === 'theme') {
+        const thset = parts[1] ? parts[1].split(',').filter(Boolean) : [];
+        const src = (typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []);
+        return src.filter(function (row) {
+            return !thset.length || thset.indexOf(row[4]) >= 0;   // row[4] = themeId
+        }).map(function (row) {
+            var reading = row[3] || row[0];   // kana
+            var kanji = row[0];               // chữ hiển thị
+            var hasK = /[一-鿿]/.test(kanji);
+            var kanjiForm = hasK ? kanji : '';
+            var compareKey = hasK ? reading : kanji;
+            var hDisplay = hasK ? reading : kanji;
+            var hAnswer = (hDisplay !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
+            return [hDisplay, hAnswer, row[2] || '', row[1], compareKey, kanjiForm];
         });
     }
     if (parts[0] === 'radical') {
