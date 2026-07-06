@@ -312,21 +312,24 @@ function updateCoverage() {
     const key = deckKey();
     const pool = poolForKey(key);
     const bucket = session.byOption[key] || {};
-    let seen = 0, mast = 0, total = 0;
+    let seen = 0, masSes = 0, masPerm = 0, total = 0;
     for (let i = 0; i < pool.length; i++) {
         const cardKey = pool[i][0];
         if (isExcluded(cardKey)) continue;
         total++;
         const stat = bucket[cardKey];
-        const skipped = isSkipped(cardKey) || isMastered(cardKey);
-        if (skipped) mast++;
-        if ((stat && (stat.c + stat.w + (stat.t || 0) > 0)) || skipped) seen++;
+        const perm = isMastered(cardKey);       // cố định (đã ghi nhớ)
+        const ses = !perm && isSkipped(cardKey); // session (đã thuộc)
+        if (perm) masPerm++; else if (ses) masSes++;
+        const anyMast = perm || ses;
+        if ((stat && (stat.c + stat.w + (stat.t || 0) > 0)) || anyMast) seen++;
     }
     const pct = total ? Math.round(seen / total * 100) : 0;
     $('covVal').textContent = seen + ' / ' + total + ' (' + pct + '%)';
     if ($('masVal')) {
-        $('masVal').textContent = mast;
-        $('masRem').textContent = (total - mast);
+        $('masVal').textContent = masSes;
+        if ($('masMem')) $('masMem').textContent = masPerm;
+        $('masRem').textContent = (total - masSes - masPerm);
     }
 }
 
