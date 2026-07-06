@@ -379,6 +379,7 @@ function stopSession() {
     $('romaji').style.visibility = 'hidden';
     $('drawWrap').style.display = 'none';
     if ($('hwTag')) $('hwTag').style.display = 'none';
+    if ($('originTag')) $('originTag').textContent = '';
     $('timeNow').textContent = 'Bấm ▶ Bắt đầu để luyện';
     setCardButtons('none');
     updatePhaseUI();
@@ -736,6 +737,8 @@ $('masGrp').addEventListener('toggle', function () {
 ['masRemSelOnly', 'masSesSelOnly', 'masPermSelOnly'].forEach(function (id) {
     if ($(id)) $(id).addEventListener('change', renderMasteryLists);
 });
+if ($('lookupSearch')) $('lookupSearch').addEventListener('input', renderLookup);
+if ($('lookupFilter')) $('lookupFilter').addEventListener('change', renderLookup);
 if ($('hwSearch')) $('hwSearch').addEventListener('input', renderHwList);
 if ($('hwClear')) $('hwClear').addEventListener('click', function () {
     if (!handwrite.length) return;
@@ -954,6 +957,66 @@ function renderKanaChart() {
         + grid('Katakana — cơ bản', K_BASIC) + grid('Katakana — biến âm', K_DAKU) + grid('Katakana — âm ghép', K_YOON);
 }
 
+/* ===== Tra từ: toàn bộ từ vựng + bài & trình độ (hoặc chủ đề), có tìm & lọc ===== */
+function _vocabAll() {
+    var out = [];
+    LWORDS.forEach(function (w) { out.push({jp: w[0], r: w[1], kana: w[4], m: w[3], bai: w[2], level: w[5], theme: null}); });
+    (typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []).forEach(function (w) {
+        out.push({jp: w[0], r: w[1], kana: w[3], m: w[2], bai: null, level: null, theme: (THEME_NAME[w[4]] || w[4])});
+    });
+    return out;
+}
+
+function populateLookupFilter() {
+    var sel = $('lookupFilter');
+    if (!sel || sel._built) return;
+    var html = '<option value="all">Tất cả</option>';
+    (JPLessons.levels ? JPLessons.levels() : []).forEach(function (lv) {
+        html += '<optgroup label="' + escapeHtml(lv) + '">';
+        html += '<option value="lv:' + escapeHtml(lv) + '">' + escapeHtml(lv) + ' — tất cả bài</option>';
+        JPLessons.numsOf(lv).forEach(function (n) {
+            html += '<option value="bai:' + escapeHtml(lv) + ':' + n + '">' + escapeHtml(lv) + ' · Bài ' + n + '</option>';
+        });
+        html += '</optgroup>';
+    });
+    if (typeof THEME_LIST !== 'undefined' && THEME_LIST.length) {
+        html += '<optgroup label="Chủ đề">';
+        THEME_LIST.forEach(function (t) { html += '<option value="theme:' + escapeHtml(t[1]) + '">Chủ đề: ' + escapeHtml(t[1]) + '</option>'; });
+        html += '</optgroup>';
+    }
+    sel.innerHTML = html;
+    sel._built = true;
+}
+
+function renderLookup() {
+    var box = $('lookupList');
+    if (!box) return;
+    populateLookupFilter();
+    var q = ((($('lookupSearch') && $('lookupSearch').value) || '')).toLowerCase();
+    var f = ($('lookupFilter') && $('lookupFilter').value) || 'all';
+    var all = _vocabAll();
+    var rows = all.filter(function (v) {
+        if (f !== 'all') {
+            var p = f.split(':');
+            if (p[0] === 'lv' && v.level !== p[1]) return false;
+            if (p[0] === 'bai' && !(v.level === p[1] && String(v.bai) === p[2])) return false;
+            if (p[0] === 'theme' && v.theme !== p.slice(1).join(':')) return false;
+        }
+        if (q && ((v.jp + ' ' + (v.r || '') + ' ' + (v.kana || '') + ' ' + (v.m || '')).toLowerCase().indexOf(q) < 0)) return false;
+        return true;
+    });
+    var html = '<div style="font-size:12px; color:var(--ink-dim); margin-bottom:8px;">' + rows.length + ' / ' + all.length + ' từ</div>';
+    rows.forEach(function (v) {
+        var badge = v.theme ? ('Chủ đề: ' + v.theme) : ('Bài ' + v.bai + ' · ' + v.level);
+        html += '<div class="pickrow on" style="cursor:default;">'
+            + '<span class="pjp" style="min-width:70px;">' + escapeHtml(v.jp) + '</span>'
+            + '<span class="pinfo"><span class="prd">' + escapeHtml(v.r || '') + '</span> <span class="pmn">' + escapeHtml(v.m || '') + '</span></span>'
+            + '<span style="color:var(--ink-dim); font-size:12px; white-space:nowrap; flex:0 0 auto;">' + escapeHtml(badge) + '</span>'
+            + '</div>';
+    });
+    box.innerHTML = html;
+}
+
 /* ===== Xem trước danh sách: các mục (+ ngữ pháp nếu là bài) trước khi luyện ===== */
 function renderPreview() {
     const box = $('previewList');
@@ -961,10 +1024,12 @@ function renderPreview() {
     const items = poolForKey(deckKey());
     let html = '<div style="font-size:12px; color:#9aa0a6; margin-bottom:8px;">Danh sách ' + items.length + ' mục trong lựa chọn hiện tại (đọc lướt trước khi luyện):</div>';
     items.forEach(function (it) {
+        var _og = originLabel(it[0]);
         html += '<div style="display:flex; gap:10px; align-items:baseline; padding:5px 4px; border-bottom:1px solid #2c2f31; font-size:14px;">'
             + '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff; min-width:64px;">' + escapeHtml(it[0]) + '</span>'
             + '<span style="color:#9ecbff; min-width:90px;">' + escapeHtml(it[1] || '') + '</span>'
             + '<span style="color:#c8c8c8; flex:1;">' + escapeHtml(it[2] || '') + '</span>'
+            + (_og ? '<span style="color:#9aa0a6; font-size:12px; white-space:nowrap;">' + escapeHtml(_og) + '</span>' : '')
             + '</div>';
     });
     const mode = $('mode').value;

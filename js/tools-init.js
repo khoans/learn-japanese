@@ -1,6 +1,6 @@
 /* ===== Thanh công cụ dạng tab (chỉ bản v2): gom Tùy chọn · Chọn từ · Sửa nghĩa ·
         Thống kê · Ngữ pháp · Bảng kana · Xem trước vào 1 thanh dưới thẻ ===== */
-const TOOL_IDS = ['optGrp', 'pickGrp', 'masGrp', 'hwGrp', 'k130Grp', 'statBox', 'gramBox', 'kanaChartBox', 'previewBox'];
+const TOOL_IDS = ['optGrp', 'pickGrp', 'masGrp', 'hwGrp', 'lookupGrp', 'k130Grp', 'statBox', 'gramBox', 'kanaChartBox', 'previewBox'];
 let _activeTool = null;
 function renderTool(id) {
     if (id === 'pickGrp') renderPickList();
@@ -11,6 +11,7 @@ function renderTool(id) {
     else if (id === 'previewBox') renderPreview();
     else if (id === 'masGrp') renderMasteryLists();
     else if (id === 'hwGrp') renderHwList();
+    else if (id === 'lookupGrp') renderLookup();
     // optGrp: form tĩnh, không cần render
 }
 function showTool(id) {

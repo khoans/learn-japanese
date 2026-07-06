@@ -57,6 +57,30 @@ const GRAM = JPLessons.grammar();
 /** @type {number[]} */
 const ALL_LESSONS = JPLessons.nums();
 
+/* ===== Chỉ mục "từ vựng → bài / trình độ (hoặc chủ đề)" — dùng cho tra cứu, badge trên thẻ, báo cáo ===== */
+const THEME_NAME = {};
+(function () {
+    if (typeof THEME_LIST !== 'undefined') THEME_LIST.forEach(function (t) { THEME_NAME[t[0]] = t[1]; });
+})();
+// CARD_ORIGIN[khoá] = {bai, level} cho từ/câu theo bài, hoặc {theme} cho từ theo chủ đề.
+// Đăng ký khoá theo CẢ dạng kanji (w[0]) LẪN cách đọc kana (w[4]/w[3]) vì poolForKey có thể hiển
+// thị dạng kana làm card[0] (chế độ mặc định) hoặc kanji (chế độ "K"). Giữ mục ĐẦU TIÊN nếu trùng.
+const CARD_ORIGIN = {};
+function _setOrigin(key, o) { if (key && !(key in CARD_ORIGIN)) CARD_ORIGIN[key] = o; }
+LWORDS.forEach(function (w) { var o = {bai: w[2], level: w[5]}; _setOrigin(w[0], o); _setOrigin(w[4], o); });
+LSENT.forEach(function (s) { _setOrigin(s[0], {bai: s[2], level: s[4]}); });
+(typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []).forEach(function (w) {
+    var o = {theme: (THEME_NAME[w[4]] || w[4])}; _setOrigin(w[0], o); _setOrigin(w[3], o);
+});
+
+/** Nhãn nguồn gốc của một mục (theo chữ hiển thị card[0]); '' nếu không thuộc bài/chủ đề nào. */
+function originLabel(key) {
+    var o = CARD_ORIGIN[key];
+    if (!o) return '';
+    if (o.theme) return 'Chủ đề: ' + o.theme;
+    return 'Bài ' + o.bai + ' · ' + o.level;
+}
+
 function kanaSegToRomaji(s) {
     var Y = {
         'きゃ': 'kya',

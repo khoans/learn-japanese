@@ -290,6 +290,7 @@ function nextCard(forced) {
     if (cardDir === 'listen' && phase === 'running') speak(card[4] || card[0]);
     showStrokeBtn();
     showHwTag();
+    showOriginTag();
     startTimer();
 }
 
@@ -781,6 +782,12 @@ function isHandwrite(cardKey) {
 function showHwTag() {
     const t = $('hwTag');
     if (t) t.style.display = (card && isHandwrite(card[0])) ? '' : 'none';
+}
+
+// Badge nhỏ "Bài N · trình độ" (hoặc "Chủ đề: …") ở góc thẻ — biết từ đang học thuộc đâu.
+function showOriginTag() {
+    const t = $('originTag');
+    if (t) t.textContent = card ? originLabel(card[0]) : '';
 }
 
 function toggleHandwrite() {

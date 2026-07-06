@@ -447,6 +447,7 @@ table{ width:100%; border-collapse:collapse; }
   <label id="hideReadingWrap" style="display:none; align-items:center; gap:7px; cursor:pointer;" title="Bộ thủ · chiều Nghĩa→gõ: đề chỉ hiện nghĩa tiếng Việt, ẩn cách đọc (cách đọc lộ khi lật)"><input type="checkbox" id="hideReading"> Ẩn cách đọc (chỉ hiện nghĩa)</label>
 </div>
 <div class="panel" id="cardPanel">
+  <div id="originTag" style="text-align:right; font-size:11px; color:var(--ink-dim); min-height:14px; margin-bottom:2px; position:relative; z-index:1;"></div>
   <div id="countdownWrap" style="visibility:hidden; height:5px; background:var(--input); border-radius:3px; margin-bottom:14px; overflow:hidden; position:relative; z-index:1;"><div id="countdownBar" style="height:100%; width:100%; background:#356394; border-radius:3px;"></div></div>
   <div id="hwTag" style="display:none; text-align:center; margin-bottom:10px; position:relative; z-index:1;"><span style="display:inline-block; background:var(--gold); color:#0b1220; font-weight:800; font-size:13px; letter-spacing:.2px; padding:5px 13px; border-radius:999px; box-shadow:0 1px 5px rgba(0,0,0,.35);">✍️ Nên luyện viết tay trên giấy</span></div>
   <div id="furiHint" style="font-family:var(--fjps); font-size:18px; color:var(--slate); min-height:0; margin-bottom:2px; visibility:hidden; position:relative; z-index:1;"></div>
@@ -592,6 +593,16 @@ table{ width:100%; border-collapse:collapse; }
     <div style="margin-top:8px;"><button id="hwClear" class="btn small">Gỡ tất cả</button></div>
   </div>
 </details>
+<details class="grp" id="lookupGrp" style="display:none;"><summary>Tra từ: bài & trình độ</summary>
+  <div class="inner">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+      <input id="lookupSearch" class="xfer-search" style="flex:2 1 160px; margin:0;" placeholder="Tìm chữ / romaji / kana / nghĩa…">
+      <select id="lookupFilter" style="flex:1 1 150px;"><option value="all">Tất cả</option></select>
+    </div>
+    <div id="lookupList" class="xfer-list" style="max-height:340px;"></div>
+    <div class="xfer-hint muted">Toàn bộ từ vựng theo bài (N5…) và theo chủ đề, mỗi từ ghi rõ <b>Bài · Trình độ</b> (hoặc <b>Chủ đề</b>). Lọc bằng ô chọn hoặc gõ tìm.</div>
+  </div>
+</details>
 <div class="strip streak" id="streakPanel">
   <span><span class="muted">Đúng liên tiếp: </span><span id="streakCur" class="n" style="color:var(--jade);">0</span></span>
   <span><span class="muted">Chuỗi trước đó: </span><span id="streakPrev" class="n" style="color:var(--slate);">0</span></span>
@@ -624,6 +635,7 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn small tool-tab" data-tool="pickGrp" style="flex:1 1 auto;">✓ Chọn từ</button>
   <button class="btn small tool-tab" data-tool="masGrp" style="flex:1 1 auto;">🎯 Đã thuộc</button>
   <button class="btn small tool-tab" data-tool="hwGrp" style="flex:1 1 auto;">✍️ Cần viết tay</button>
+  <button class="btn small tool-tab" data-tool="lookupGrp" style="flex:1 1 auto;">🔍 Tra từ</button>
   <button class="btn small tool-tab" data-tool="k130Grp" style="flex:1 1 auto;">✎ Sửa nghĩa</button>
   <button class="btn small tool-tab" data-tool="statBox" style="flex:1 1 auto;">📊 Thống kê</button>
   <button class="btn small tool-tab" data-tool="gramBox" style="flex:1 1 auto;">文 Ngữ pháp</button>
