@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Từ vựng — theo Bài & Trình độ</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f1f3f6;
+  --ink:#1a1c22; --ink-2:#3d4250; --muted:#6b7180; --line:#e4e6ea;
+  --shu:#c8412f; --shu-soft:#f3e0dc; --ai:#2f5d8c; --ai-soft:#e2ebf4;
+  --jp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161b; --surface:#1c1f26; --surface-2:#22262f;
+    --ink:#e8eaef; --ink-2:#c3c8d2; --muted:#9aa0ad; --line:#2b2f39;
+    --shu:#e2705f; --shu-soft:#3a221e; --ai:#7aa8d8; --ai-soft:#1e2a38;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161b; --surface:#1c1f26; --surface-2:#22262f;
+  --ink:#e8eaef; --ink-2:#c3c8d2; --muted:#9aa0ad; --line:#2b2f39;
+  --shu:#e2705f; --shu-soft:#3a221e; --ai:#7aa8d8; --ai-soft:#1e2a38;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.navbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+.navbar a.back{color:var(--ai);text-decoration:none;font-size:14px;font-weight:600}
+.navbar a.back:hover{text-decoration:underline}
+.tbtn{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.tbtn:hover{border-color:var(--ai)}
+header.top{border-top:3px solid var(--shu);background:var(--bg);position:sticky;top:0;z-index:20;padding-top:16px;box-shadow:0 1px 0 var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--shu);font-weight:700}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(24px,3.6vw,38px);line-height:1.1;margin:8px 0 6px;text-wrap:balance;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:15px;max-width:60ch;margin:0 0 14px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;padding:0 0 14px;color:var(--ink-2);font-size:13px}
+.stats b{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.search{flex:1 1 220px;position:relative}
+.search input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit}
+.search input:focus{outline:2px solid var(--ai);outline-offset:1px;border-color:transparent}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5}
+.count{font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 14px}
+.chip{font:inherit;font-size:12.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:.12s}
+.chip:hover{border-color:var(--ai)}
+.chip:focus-visible{outline:2px solid var(--ai);outline-offset:1px}
+.chip[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#fff;font-weight:600}
+.chip.theme[aria-pressed="true"]{background:var(--shu);border-color:var(--shu)}
+main{padding:24px 0 60px}
+.levelhead{display:flex;align-items:baseline;gap:12px;margin:26px 0 14px}
+.levelhead .k{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--shu)}
+.levelhead .rule{flex:1;height:1px;background:var(--line)}
+.levelhead .n{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:13px;overflow:hidden;display:flex;flex-direction:column}
+.card>.head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:7px;background:var(--ai-soft);color:var(--ai);letter-spacing:.02em}
+.card.theme>.head .badge{background:var(--shu-soft);color:var(--shu)}
+.head .c{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rows{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:minmax(88px,1.1fr) minmax(78px,1fr) 1.4fr;gap:10px;align-items:baseline;padding:8px 14px;border-top:1px solid var(--line);font-size:14px}
+.row:first-child{border-top:0}
+.row .jp{font-family:var(--jp);font-weight:600;color:var(--ink);font-size:15.5px}
+.row .rd{font-family:var(--jp);color:var(--ai);font-size:13px}
+.row .mn{color:var(--ink-2)}
+mark{background:rgba(200,65,47,.20);color:inherit;border-radius:3px;padding:0 1px}
+:root[data-theme="dark"] mark{background:rgba(226,112,95,.28)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) mark{background:rgba(226,112,95,.28)}}
+.empty{padding:44px 0;text-align:center;color:var(--muted)}
+.hidden{display:none !important}
+footer{border-top:1px solid var(--line);padding:20px 0 50px;color:var(--muted);font-size:12.5px}
+@media (max-width:520px){
+  .row{grid-template-columns:1fr 1fr;gap:4px 10px}
+  .row .mn{grid-column:1 / -1;color:var(--muted);font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="navbar">
+      <a class="back" href="index.html">← Về app luyện tập</a>
+      <button class="tbtn" id="themeBtn" type="button" title="Đổi nền sáng/tối">🌓 Nền</button>
+    </div>
+    <div class="eyebrow">Minna no Nihongo · Bảng tra</div>
+    <h1>Từ vựng — mỗi từ thuộc bài nào, trình độ nào</h1>
+    <p class="sub">Toàn bộ từ vựng trong app, nhóm theo <strong>Trình độ → Bài</strong>, kèm khối từ theo <strong>chủ đề</strong>. Gõ để tìm chữ Nhật, cách đọc hoặc nghĩa tiếng Việt.</p>
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Tìm: たべます / tabemasu / ăn…" autocomplete="off" aria-label="Tìm từ vựng">
+      </div>
+      <div class="count" id="count"></div>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</header>
+
+<main class="wrap" id="main"></main>
+<footer class="wrap" id="foot"></footer>
+
+<!-- ===== Dữ liệu bài học (dùng chung với app; thêm bài/từ là trang này tự cập nhật) ===== -->
+<script src="data/registry.js"></script>
+<script src="data/themes.js"></script>
+<script src="data/lessons/manifest.js"></script>
+<script>
+(function () {
+  var man = window.LESSON_MANIFEST || {};
+  var levels = window.LEVELS || [];
+  for (var li = 0; li < levels.length; li++) {
+    var lv = levels[li], nums = man[lv] || [];
+    for (var i = 0; i < nums.length; i++) {
+      var nn = (nums[i] < 10 ? '0' : '') + nums[i];
+      document.write('<script src="data/lessons/' + lv + '/lesson-' + nn + '.js"><\/script>');
+    }
+  }
+})();
+</script>
+
+<script>
+/* ===== Xây dữ liệu báo cáo TRỰC TIẾP từ dữ liệu bài học đã nạp ===== */
+function buildDATA(){
+  var words = JPLessons.words();   // [display, romaji, lesson, meaning, kana, level]
+  var levels = [];
+  JPLessons.levels().forEach(function(lv){
+    var L={level:lv,lessons:[]};
+    JPLessons.numsOf(lv).forEach(function(n){
+      var ws = words.filter(function(w){return w[5]===lv && w[2]===n;})
+                    .map(function(w){return {jp:w[0], r:w[1], kana:w[4], m:w[3]};});
+      L.lessons.push({num:n, words:ws});
+    });
+    levels.push(L);
+  });
+  var themes=[];
+  (typeof THEME_LIST!=='undefined'?THEME_LIST:[]).forEach(function(t){
+    var ws=(typeof THEMEWORDS!=='undefined'?THEMEWORDS:[]).filter(function(w){return w[4]===t[0];})
+             .map(function(w){return {jp:w[0], r:w[1], kana:w[3], m:w[2]};});
+    themes.push({name:t[1], words:ws});
+  });
+  return {levels:levels, themes:themes};
+}
+var DATA = buildDATA();
+
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+let activeChip="all", query="";
+
+function totals(){
+  let lw=0,lessons=0; DATA.levels.forEach(L=>L.lessons.forEach(x=>{lw+=x.words.length;lessons++;}));
+  let tw=DATA.themes.reduce((a,t)=>a+t.words.length,0);
+  return {lw,lessons,tw,themes:DATA.themes.length};
+}
+function buildStats(){
+  const t=totals();
+  document.getElementById("stats").innerHTML=
+    "<span><b>"+(t.lw+t.tw)+"</b> từ</span>"+
+    "<span><b>"+t.lessons+"</b> bài</span>"+
+    "<span><b>"+t.lw+"</b> từ theo bài</span>"+
+    "<span><b>"+t.themes+"</b> chủ đề · <b>"+t.tw+"</b> từ</span>";
+  document.getElementById("foot").innerHTML=
+    "Cập nhật <strong>trực tiếp</strong> từ dữ liệu app — thêm bài/từ mới (rồi chạy build) là trang này tự đổi theo. "+
+    "<a href=\"index.html\" style=\"color:var(--ai)\">← Về app luyện tập</a>";
+}
+function buildChips(){
+  const c=document.getElementById("chips");
+  let h='<button class="chip" data-k="all" aria-pressed="true">Tất cả</button>';
+  DATA.levels.forEach(L=>L.lessons.forEach(x=>{
+    h+='<button class="chip" data-k="bai:'+L.level+':'+x.num+'" aria-pressed="false">'+L.level+' · Bài '+x.num+'</button>';
+  }));
+  DATA.themes.forEach((t,i)=>{
+    h+='<button class="chip theme" data-k="theme:'+i+'" aria-pressed="false">'+esc(t.name)+'</button>';
+  });
+  c.innerHTML=h;
+  c.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+    activeChip=b.dataset.k;
+    c.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    apply();
+  }));
+}
+function rowHtml(w){
+  const hay=(w.jp+" "+w.r+" "+(w.kana||"")+" "+w.m).toLowerCase();
+  return '<div class="row" data-h="'+esc(hay)+'">'+
+    '<span class="jp">'+esc(w.jp)+'</span><span class="rd">'+esc(w.r)+'</span><span class="mn">'+esc(w.m)+'</span></div>';
+}
+function buildMain(){
+  const m=document.getElementById("main");
+  let h="";
+  DATA.levels.forEach(L=>{
+    const tot=L.lessons.reduce((a,x)=>a+x.words.length,0);
+    h+='<section class="levelsec"><div class="levelhead"><span class="k">'+L.level+'</span><span class="rule"></span><span class="n">'+tot+' từ · '+L.lessons.length+' bài</span></div><div class="grid">';
+    L.lessons.forEach(x=>{
+      h+='<div class="card" data-k="bai:'+L.level+':'+x.num+'"><div class="head"><span class="badge">Bài '+x.num+'</span><span class="c">'+x.words.length+' từ</span></div><div class="rows">'+x.words.map(rowHtml).join("")+'</div></div>';
+    });
+    h+='</div></section>';
+  });
+  if(DATA.themes.length){
+    const tw=DATA.themes.reduce((a,t)=>a+t.words.length,0);
+    h+='<section class="levelsec"><div class="levelhead"><span class="k">Chủ đề</span><span class="rule"></span><span class="n">'+tw+' từ · '+DATA.themes.length+' nhóm</span></div><div class="grid">';
+    DATA.themes.forEach((t,i)=>{
+      h+='<div class="card theme" data-k="theme:'+i+'"><div class="head"><span class="badge">'+esc(t.name)+'</span><span class="c">'+t.words.length+' từ</span></div><div class="rows">'+t.words.map(rowHtml).join("")+'</div></div>';
+    });
+    h+='</div></section>';
+  }
+  h+='<div class="empty hidden" id="empty">Không tìm thấy từ nào khớp.</div>';
+  m.innerHTML=h;
+}
+function hi(txt,q){
+  if(!q) return esc(txt);
+  const low=txt.toLowerCase(); let out="",i=0;
+  while(true){ const p=low.indexOf(q,i); if(p<0){out+=esc(txt.slice(i));break;} out+=esc(txt.slice(i,p))+"<mark>"+esc(txt.slice(p,p+q.length))+"</mark>"; i=p+q.length; }
+  return out;
+}
+function apply(){
+  const q=query.trim().toLowerCase();
+  let shown=0;
+  document.querySelectorAll(".card").forEach(card=>{
+    const chipOk = activeChip==="all" || card.dataset.k===activeChip;
+    let vis=0;
+    card.querySelectorAll(".row").forEach(r=>{
+      const ok = chipOk && (!q || r.dataset.h.indexOf(q)>=0);
+      r.classList.toggle("hidden",!ok);
+      if(ok){
+        vis++;
+        const jp=r.querySelector(".jp"), rd=r.querySelector(".rd"), mn=r.querySelector(".mn");
+        jp.innerHTML=hi(jp.dataset.t||(jp.dataset.t=jp.textContent),q);
+        rd.innerHTML=hi(rd.dataset.t||(rd.dataset.t=rd.textContent),q);
+        mn.innerHTML=hi(mn.dataset.t||(mn.dataset.t=mn.textContent),q);
+      }
+    });
+    card.classList.toggle("hidden",vis===0);
+    const cc=card.querySelector(".head .c"); if(cc) cc.textContent=vis+" từ";
+    shown+=vis;
+  });
+  document.querySelectorAll(".levelsec").forEach(sec=>{
+    const any=[...sec.querySelectorAll(".card")].some(c=>!c.classList.contains("hidden"));
+    sec.classList.toggle("hidden",!any);
+  });
+  document.getElementById("empty").classList.toggle("hidden",shown>0);
+  document.getElementById("count").textContent=shown+" từ hiển thị";
+}
+
+/* ===== Nền sáng/tối (nhớ lựa chọn) ===== */
+(function(){
+  var saved=null; try{ saved=localStorage.getItem("jp_report_theme"); }catch(e){}
+  if(saved==="dark"||saved==="light") document.documentElement.setAttribute("data-theme",saved);
+  document.getElementById("themeBtn").addEventListener("click",function(){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var dark=window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;
+    var isDark = cur ? cur==="dark" : dark;
+    var next = isDark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme",next);
+    try{ localStorage.setItem("jp_report_theme",next); }catch(e){}
+  });
+})();
+
+buildStats(); buildChips(); buildMain(); apply();
+document.getElementById("q").addEventListener("input",e=>{query=e.target.value;apply();});
+</script>
+</body>
+</html>

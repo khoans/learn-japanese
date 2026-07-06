@@ -1,7 +1,7 @@
 /* Service worker — network-first (online luôn mới) + cache để chạy offline.
    Chỉ hoạt động trên http/https (GitHub Pages), KHÔNG chạy với file://.
    Khi đổi nội dung/app, bump CACHE để dọn cache cũ. */
-const CACHE = 'jp-n5-v31';
+const CACHE = 'jp-n5-v32';
 
 // Danh sach trinh do + so bai lay tu manifest (dung chung voi trang) -> them bai KHONG phai sua file nay.
 importScripts('./data/lessons/manifest.js'); // dat self.LEVELS + self.LESSON_MANIFEST
@@ -15,6 +15,7 @@ var LESSON_URLS = [];
 const CORE = [
   './',
   './index.html',
+  './report.html',
   './js/core.js',
   './js/input-kana.js',
   './js/kanji130.js',
