@@ -91,6 +91,27 @@ function skipCurrent() {
     nextCard();
 }
 
+// Đánh dấu thẻ hiện tại là "Đã thuộc CỐ ĐỊNH" (sống qua mọi session) — song song với skipCurrent (session).
+function masterCurrent() {
+    if (phase !== 'running' || !card) return;
+    setMasteryState([card[0]], 'perm');   // gỡ khỏi session.skip nếu có, thêm vào mastered, lưu cả hai
+    showFixNote('Đã thuộc cố định (📌): ' + card[0]);
+    updateStats();
+    updateStreak();
+    updateCoverage();
+    refreshMas();
+    if ($('statBox').style.display !== 'none' && $('vSession').value === 'cur') refreshStatView();
+    if (checkAllMastered()) {
+        finishMastered();
+        return;
+    }
+    if ($('goalOn').checked && sessionCount() >= goalTarget()) {
+        finishByGoal();
+        return;
+    }
+    nextCard();
+}
+
 function showFixNote(msg) {
     const el = $('fixNote');
     el.textContent = msg;
@@ -297,7 +318,7 @@ function updateCoverage() {
         if (isExcluded(cardKey)) continue;
         total++;
         const stat = bucket[cardKey];
-        const skipped = isSkipped(cardKey);
+        const skipped = isSkipped(cardKey) || isMastered(cardKey);
         if (skipped) mast++;
         if ((stat && (stat.c + stat.w + (stat.t || 0) > 0)) || skipped) seen++;
     }
@@ -684,6 +705,7 @@ $('nextBtn').addEventListener('click', function () {
 });
 $('fixBtn').addEventListener('click', fixPrev);
 $('skipBtn').addEventListener('click', skipCurrent);
+if ($('masterBtn')) $('masterBtn').addEventListener('click', masterCurrent);
 $('redoBtn').addEventListener('click', redoCard);
 $('pickGrp').addEventListener('toggle', function () {
     if ($('pickGrp').open) renderPickList();
@@ -699,14 +721,19 @@ if ($('pickSkipSelOnly')) $('pickSkipSelOnly').addEventListener('change', render
 $('masGrp').addEventListener('toggle', function () {
     if ($('masGrp').open) renderMasteryLists();
 });
-if ($('masToSel')) $('masToSel').addEventListener('click', function () { masMoveSelected(true); });
-if ($('masToAll')) $('masToAll').addEventListener('click', function () { masMoveAll(true); });
-if ($('masFromSel')) $('masFromSel').addEventListener('click', function () { masMoveSelected(false); });
-if ($('masFromAll')) $('masFromAll').addEventListener('click', function () { masMoveAll(false); });
-if ($('masRemSearch')) $('masRemSearch').addEventListener('input', renderMasteryLists);
-if ($('masDoneSearch')) $('masDoneSearch').addEventListener('input', renderMasteryLists);
-if ($('masRemSelOnly')) $('masRemSelOnly').addEventListener('change', renderMasteryLists);
-if ($('masDoneSelOnly')) $('masDoneSelOnly').addEventListener('change', renderMasteryLists);
+// 8 nút mũi tên giữa 3 cột: [id, from, to, moveAll?]
+[['masR2Sall', 'rem', 'ses', true], ['masR2Ssel', 'rem', 'ses', false],
+ ['masS2Rsel', 'ses', 'rem', false], ['masS2Rall', 'ses', 'rem', true],
+ ['masS2Pall', 'ses', 'perm', true], ['masS2Psel', 'ses', 'perm', false],
+ ['masP2Ssel', 'perm', 'ses', false], ['masP2Sall', 'perm', 'ses', true]].forEach(function (b) {
+    if ($(b[0])) $(b[0]).addEventListener('click', function () { masMove(b[1], b[2], b[3]); });
+});
+['masRemSearch', 'masSesSearch', 'masPermSearch'].forEach(function (id) {
+    if ($(id)) $(id).addEventListener('input', renderMasteryLists);
+});
+['masRemSelOnly', 'masSesSelOnly', 'masPermSelOnly'].forEach(function (id) {
+    if ($(id)) $(id).addEventListener('change', renderMasteryLists);
+});
 $('vSession').addEventListener('change', refreshStatView);
 $('vOption').addEventListener('change', renderDist);
 $('clearAll').addEventListener('click', clearAll);

@@ -198,7 +198,7 @@ function styleAnswer() {
 }
 
 const LS_HIST = 'jp_reader_history_v2', LS_KEYS = 'jp_reader_keys_v2', LS_CUR = 'jp_reader_cur_v2',
-    LS_LIMIT = 'jp_reader_limit_v2';
+    LS_LIMIT = 'jp_reader_limit_v2', LS_MASTERED = 'jp_mastered_v1';
 
 function lsGet(k) {
     try {
@@ -235,6 +235,7 @@ let keys = {
     penup: 'BracketRight',
     pendown: 'BracketLeft',
     skip: 'KeyM',
+    master: 'KeyL',
     redo: 'KeyR',
     kana: 'Equal'
 };
@@ -255,6 +256,7 @@ let keys = {
                 penup: 'BracketRight',
                 pendown: 'BracketLeft',
                 skip: 'KeyM',
+                master: 'KeyL',
                 redo: 'KeyR',
                 kana: 'Equal'
             }, o);
@@ -290,6 +292,8 @@ function renderKeyLabels() {
     $('lblPenDown').textContent = keyLabel(keys.pendown);
     var _ls = $('lblSkip');
     if (_ls) _ls.textContent = keyLabel(keys.skip);
+    var _lm = $('lblMaster');
+    if (_lm) _lm.textContent = keyLabel(keys.master);
     var _lr = $('lblRedo');
     if (_lr) _lr.textContent = keyLabel(keys.redo);
     var _lk = $('lblKana');
@@ -307,6 +311,7 @@ function renderKeyLabels() {
     setKb('kbNext', keys.reveal);   // nút "Tiếp theo" cũng đi bằng phím Hiện đáp án / Enter
     setKb('kbFix', keys.fix);
     setKb('kbSkip', keys.skip);
+    setKb('kbMaster', keys.master);
     setKb('kbRedo', keys.redo);
     setKb('kbClear', keys.clear);
 }
@@ -336,6 +341,24 @@ let session = {c: 0, w: 0, to: 0, streak: 0, best: 0, prev: 0, skip: [], exclude
 
 function saveSession() {
     lsSet(LS_CUR, JSON.stringify(session));
+}
+
+// mastered = kho "đã thuộc CỐ ĐỊNH": sống qua MỌI session (KHÔNG bị stopSession xoá như session.skip).
+// Lưu riêng ở LS_MASTERED. Mỗi phần tử là khoá "deckKey § cardKey" (cùng dạng với session.skip).
+let mastered = [];
+(function () {
+    const m = lsGet(LS_MASTERED);
+    if (m) {
+        try {
+            const a = JSON.parse(m);
+            if (Array.isArray(a)) mastered = a;
+        } catch (e) {
+        }
+    }
+})();
+
+function saveMastered() {
+    lsSet(LS_MASTERED, JSON.stringify(mastered));
 }
 
 function loadHist() {

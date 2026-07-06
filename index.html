@@ -219,6 +219,13 @@ label.cap{ display:block; font-size:11px; color:var(--ink-dim); margin-bottom:7p
   margin-bottom:5px; cursor:pointer; user-select:none; }
 .xfer-selonly input{ cursor:pointer; }
 .xfer-hint{ font-size:11px; margin-top:7px; }
+/* 3-column ("đã thuộc") variant: distinct color for the permanent column + narrower buttons */
+.xfer-pane.perm .xfer-head{ color:#8ea2ff; }
+.xfer.tri .xfer-btns .btn{ min-width:34px; padding:5px 6px; }
+@media (max-width:620px){
+  .xfer.tri{ flex-direction:column; }
+  .xfer.tri .xfer-btns{ flex-direction:row; justify-content:center; }
+}
 
 /* ---- dist rows ---- */
 .distrow{ display:flex; align-items:center; gap:8px; padding:5px 2px;
@@ -516,9 +523,10 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn green" id="correct">✓ Đúng<span class="kb" id="kbCorrect"></span></button>
 </div>
 <div id="btnNext" style="display:none; margin-bottom:14px;"><button class="btn amber" id="nextBtn">Tiếp theo →<span class="kb" id="kbNext"></span></button></div>
-<div style="display:flex; gap:9px; align-items:center; margin-bottom:14px;">
+<div style="display:flex; gap:9px; align-items:center; margin-bottom:14px; flex-wrap:wrap;">
   <button class="btn" id="fixBtn" style="flex:1;">↩ Câu trước → Sai<span class="kb" id="kbFix"></span></button>
   <button class="btn" id="skipBtn" style="flex:1;">✓ Đã thuộc (bỏ qua)<span class="kb" id="kbSkip"></span></button>
+  <button class="btn" id="masterBtn" style="flex:1;">📌 Thuộc cố định<span class="kb" id="kbMaster"></span></button>
   <button class="btn" id="redoBtn" style="flex:1;">↺ Làm lại<span class="kb" id="kbRedo"></span></button>
   <span id="fixNote" style="font-size:12px; color:var(--gold); min-width:96px; text-align:right;"></span>
 </div>
@@ -536,29 +544,41 @@ table{ width:100%; border-collapse:collapse; }
   <span class="muted">Đã thuộc: </span><span id="masVal" style="color:var(--jade); font-weight:700;">0</span>
   <span class="muted">　·　Còn lại: </span><span id="masRem" style="color:var(--gold); font-weight:700;">0</span>
 </div>
-<details class="grp" id="masGrp" style="display:none;"><summary>Danh sách: chưa thuộc / đã thuộc</summary>
+<details class="grp" id="masGrp" style="display:none;"><summary>Danh sách: chưa thuộc / đã thuộc (session) / đã thuộc (cố định)</summary>
   <div class="inner">
-    <div class="xfer">
+    <div class="xfer tri">
       <div class="xfer-pane rem">
         <div class="xfer-head">Chưa thuộc (<span id="masRemN">0</span>)</div>
-        <input id="masRemSearch" class="xfer-search" placeholder="Tìm trong chưa thuộc…">
+        <input id="masRemSearch" class="xfer-search" placeholder="Tìm…">
         <label class="xfer-selonly"><input type="checkbox" id="masRemSelOnly"> Chỉ đã chọn (<span id="masRemSelN">0</span>)</label>
         <div id="masRemList" class="xfer-list"></div>
       </div>
       <div class="xfer-btns">
-        <button id="masToAll" class="btn small" title="Đưa tất cả (đang hiện) sang Đã thuộc">&raquo;</button>
-        <button id="masToSel" class="btn small" title="Đưa các mục đã chọn sang Đã thuộc">&rsaquo;</button>
-        <button id="masFromSel" class="btn small" title="Đưa các mục đã chọn về Chưa thuộc">&lsaquo;</button>
-        <button id="masFromAll" class="btn small" title="Đưa tất cả (đang hiện) về Chưa thuộc">&laquo;</button>
+        <button id="masR2Sall" class="btn small" title="Tất cả (đang hiện) → Đã thuộc (session)">&raquo;</button>
+        <button id="masR2Ssel" class="btn small" title="Đã chọn → Đã thuộc (session)">&rsaquo;</button>
+        <button id="masS2Rsel" class="btn small" title="Đã chọn (session) → Chưa thuộc">&lsaquo;</button>
+        <button id="masS2Rall" class="btn small" title="Tất cả (session, đang hiện) → Chưa thuộc">&laquo;</button>
       </div>
-      <div class="xfer-pane done">
-        <div class="xfer-head">Đã thuộc (<span id="masDoneN">0</span>)</div>
-        <input id="masDoneSearch" class="xfer-search" placeholder="Tìm trong đã thuộc…">
-        <label class="xfer-selonly"><input type="checkbox" id="masDoneSelOnly"> Chỉ đã chọn (<span id="masDoneSelN">0</span>)</label>
-        <div id="masDoneList" class="xfer-list"></div>
+      <div class="xfer-pane done ses">
+        <div class="xfer-head">Đã thuộc · session (<span id="masSesN">0</span>)</div>
+        <input id="masSesSearch" class="xfer-search" placeholder="Tìm…">
+        <label class="xfer-selonly"><input type="checkbox" id="masSesSelOnly"> Chỉ đã chọn (<span id="masSesSelN">0</span>)</label>
+        <div id="masSesList" class="xfer-list"></div>
+      </div>
+      <div class="xfer-btns">
+        <button id="masS2Pall" class="btn small" title="Tất cả (session, đang hiện) → Cố định">&raquo;</button>
+        <button id="masS2Psel" class="btn small" title="Đã chọn (session) → Cố định">&rsaquo;</button>
+        <button id="masP2Ssel" class="btn small" title="Đã chọn (cố định) → session">&lsaquo;</button>
+        <button id="masP2Sall" class="btn small" title="Tất cả (cố định, đang hiện) → session">&laquo;</button>
+      </div>
+      <div class="xfer-pane done perm">
+        <div class="xfer-head">Đã thuộc · cố định (<span id="masPermN">0</span>)</div>
+        <input id="masPermSearch" class="xfer-search" placeholder="Tìm…">
+        <label class="xfer-selonly"><input type="checkbox" id="masPermSelOnly"> Chỉ đã chọn (<span id="masPermSelN">0</span>)</label>
+        <div id="masPermList" class="xfer-list"></div>
       </div>
     </div>
-    <div class="xfer-hint muted">Click để chọn/bỏ chọn · Ctrl+click chọn nhiều · Shift+click chọn dải · rồi bấm › (sang đã thuộc) hoặc ‹ (về chưa thuộc). Bấm ra ngoài không bỏ chọn.</div>
+    <div class="xfer-hint muted">3 cột loại trừ nhau: <b>Chưa thuộc</b> · <b>Đã thuộc (session)</b> — reset khi bắt đầu phiên mới · <b>Đã thuộc (cố định)</b> — giữ qua mọi phiên cho tới khi bạn chuyển về. Click chọn/bỏ chọn · Ctrl+click nhiều · Shift+click dải · rồi bấm › ‹ (đã chọn) hoặc » « (tất cả). Bấm ra ngoài không bỏ chọn.</div>
   </div>
 </details>
 <div class="strip streak" id="streakPanel">
@@ -581,6 +601,7 @@ table{ width:100%; border-collapse:collapse; }
     <div>Nét dày hơn: <span class="keycap" id="lblPenUp">]</span> <span class="keybtn" data-slot="penup">gán</span></div>
     <div>Nét mỏng hơn: <span class="keycap" id="lblPenDown">[</span> <span class="keybtn" data-slot="pendown">gán</span></div>
     <div>Đã thuộc (bỏ qua): <span class="keycap" id="lblSkip">M</span> <span class="keybtn" data-slot="skip">gán</span></div>
+    <div>Đã thuộc cố định (📌): <span class="keycap" id="lblMaster">L</span> <span class="keybtn" data-slot="master">gán</span></div>
     <div>Làm lại (không tính): <span class="keycap" id="lblRedo">R</span> <span class="keybtn" data-slot="redo">gán</span></div>
     <div>Đổi loại kana (khi gõ): <span class="keycap" id="lblKana">=</span> <span class="keybtn" data-slot="kana">gán</span></div>
   </div>

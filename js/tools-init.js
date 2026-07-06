@@ -297,6 +297,11 @@ window.addEventListener('keydown', function (e) {
         skipCurrent();
         return;
     }
+    if (e.code === keys.master) {
+        e.preventDefault();
+        masterCurrent();
+        return;
+    }
     if (e.code === keys.redo) {
         e.preventDefault();
         redoCard();

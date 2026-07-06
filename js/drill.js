@@ -127,7 +127,7 @@ function weightedPick(list, weights) {
  *  @returns {?Card} */
 function pickItem() {
     let pool = currentPool().filter(function (item) {
-        return !isSkipped(item[0]) && !isExcluded(item[0]);
+        return !isSkipped(item[0]) && !isExcluded(item[0]) && !isMastered(item[0]);
     });
     if (!pool.length) {
         pool = currentPool();
@@ -639,42 +639,118 @@ function refreshPick() {
     if ($('pickGrp') && $('pickGrp').open) renderPickList();
 }
 
-// "Đã thuộc": trái = Chưa thuộc, phải = Đã thuộc. Bỏ qua mục đã loại khỏi luyện tập.
-function applySkip(keys, toDone) {
+// ===== "Đã thuộc" 3 cột (3 trạng thái LOẠI TRỪ nhau) =====
+//   rem  = Chưa thuộc
+//   ses  = Đã thuộc (session)   -> nằm trong session.skip, bị stopSession xoá
+//   perm = Đã thuộc (cố định)   -> nằm trong mastered, sống qua mọi session
+function masteryStateOf(cardKey) {
+    if (isMastered(cardKey)) return 'perm';
+    if (isSkipped(cardKey)) return 'ses';
+    return 'rem';
+}
+function setMasteryState(keys, toState) {
     if (!session.skip) session.skip = [];
     keys.forEach(function (k) {
+        const wasRem = masteryStateOf(k) === 'rem';
         const sk = skipKeyFor(k);
-        const i = session.skip.indexOf(sk);
-        if (toDone) {
-            if (i < 0) session.skip.push(sk);
-            if (phase === 'running') recordCorrectKey(k);
-        } else if (i >= 0) {
-            session.skip.splice(i, 1);
-        }
+        let i = session.skip.indexOf(sk);
+        if (i >= 0) session.skip.splice(i, 1);
+        i = mastered.indexOf(sk);
+        if (i >= 0) mastered.splice(i, 1);
+        if (toState === 'ses') session.skip.push(sk);
+        else if (toState === 'perm') mastered.push(sk);
+        // Tính 1 câu "đúng" khi chuyển từ Chưa thuộc -> (session/cố định) trong lúc đang chạy.
+        if (wasRem && toState !== 'rem' && phase === 'running') recordCorrectKey(k);
     });
     saveSession();
+    saveMastered();
 }
-const masteryTransfer = makeTransfer({
-    leftList: 'masRemList', rightList: 'masDoneList',
-    leftN: 'masRemN', rightN: 'masDoneN',
-    leftSearch: 'masRemSearch', rightSearch: 'masDoneSearch',
-    leftSelOnly: 'masRemSelOnly', rightSelOnly: 'masDoneSelOnly',
-    leftSelN: 'masRemSelN', rightSelN: 'masDoneSelN',
+
+// Transfer-list 3 cột: mỗi cột có ô tìm + "chỉ đã chọn"; ›/‹ đẩy mục ĐÃ CHỌN, »/« đẩy TẤT CẢ
+// đang hiện, giữa hai cột kề nhau. Lựa chọn "dính" như bản 2 cột.
+function makeTriTransfer(cfg) {
+    const order = ['rem', 'ses', 'perm'];
+    const sel = {rem: new Set(), ses: new Set(), perm: new Set()};
+    const vis = {rem: [], ses: [], perm: []};
+    const anchor = {rem: null, ses: null, perm: null};
+    function render() {
+        if (!$(cfg.cols.rem.list)) return;
+        const items = cfg.getItems();
+        const q = {}, only = {}, count = {rem: 0, ses: 0, perm: 0}, valid = {rem: {}, ses: {}, perm: {}};
+        order.forEach(function (c) {
+            const L = $(cfg.cols[c].list); if (L) L.innerHTML = '';
+            vis[c] = [];
+            q[c] = tlVal(cfg.cols[c].search);
+            only[c] = tlChk(cfg.cols[c].selOnly);
+        });
+        items.forEach(function (item) {
+            const key = item[0];
+            if (cfg.skip && cfg.skip(key)) return;
+            const st = cfg.stateOf(key);
+            count[st]++; valid[st][key] = 1;
+            if (!itemMatches(item, q[st])) return;
+            if (only[st] && !sel[st].has(key)) return;
+            vis[st].push(key);
+            const row = document.createElement('div');
+            row.className = 'pickrow on' + (sel[st].has(key) ? ' sel' : '');
+            row.innerHTML = '<span class="pjp">' + escapeHtml(key) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(item[1] || '') + '</span> <span class="pmn">' + escapeHtml(item[2] || '') + '</span></span>';
+            row.addEventListener('click', function (e) { rowClick(e, key, st); });
+            $(cfg.cols[st].list).appendChild(row);
+        });
+        order.forEach(function (c) {
+            sel[c].forEach(function (k) { if (!valid[c][k]) sel[c].delete(k); });
+            tlTxt(cfg.cols[c].head, count[c]);
+            tlTxt(cfg.cols[c].selN, sel[c].size);
+        });
+    }
+    function rowClick(e, key, c) {
+        const s = sel[c], v = vis[c], a = anchor[c];
+        if (e.shiftKey && a != null) {
+            let i1 = v.indexOf(a), i2 = v.indexOf(key);
+            if (i1 >= 0 && i2 >= 0) {
+                if (i1 > i2) { const t = i1; i1 = i2; i2 = t; }
+                for (let i = i1; i <= i2; i++) s.add(v[i]);
+            } else if (s.has(key)) s.delete(key); else s.add(key);
+        } else {
+            if (s.has(key)) s.delete(key); else s.add(key);
+            anchor[c] = key;
+        }
+        render();
+    }
+    function move(keys, from, to) {
+        if (!keys.length) return;
+        cfg.setState(keys, to);
+        sel[from].clear();
+        anchor[from] = null;
+        if (cfg.afterMove) cfg.afterMove(to);
+        render();
+    }
+    return {
+        render: render,
+        moveSel: function (from, to) { move(Array.from(sel[from]), from, to); },
+        moveAll: function (from, to) { move(vis[from].slice(), from, to); }
+    };
+}
+
+const masteryTransfer = makeTriTransfer({
+    cols: {
+        rem: {list: 'masRemList', head: 'masRemN', search: 'masRemSearch', selOnly: 'masRemSelOnly', selN: 'masRemSelN'},
+        ses: {list: 'masSesList', head: 'masSesN', search: 'masSesSearch', selOnly: 'masSesSelOnly', selN: 'masSesSelN'},
+        perm: {list: 'masPermList', head: 'masPermN', search: 'masPermSearch', selOnly: 'masPermSelOnly', selN: 'masPermSelN'}
+    },
     getItems: function () { return poolForKey(deckKey()); },
     skip: function (key) { return isExcluded(key); },
-    isRight: function (key) { return isSkipped(key); },
-    moveToRight: function (keys) { applySkip(keys, true); },
-    moveToLeft: function (keys) { applySkip(keys, false); },
-    afterMove: function (toRight) {
-        if (toRight) { updateStats(); updateStreak(); }
+    stateOf: masteryStateOf,
+    setState: setMasteryState,
+    afterMove: function (toState) {
+        if (toState !== 'rem') { updateStats(); updateStreak(); }
         updateCoverage();
         if ($('pickGrp') && $('pickGrp').open) renderPickList();
-        if (toRight && phase === 'running' && checkAllMastered()) finishMastered();
+        if (toState !== 'rem' && phase === 'running' && checkAllMastered()) finishMastered();
     }
 });
 function renderMasteryLists() { masteryTransfer.render(); }
-function masMoveSelected(toDone) { masteryTransfer.moveSel(toDone); }
-function masMoveAll(toDone) { masteryTransfer.moveAll(toDone); }
+function masMove(from, to, all) { if (all) masteryTransfer.moveAll(from, to); else masteryTransfer.moveSel(from, to); }
 function refreshMas() {
     if ($('masGrp') && $('masGrp').open) renderMasteryLists();
 }
@@ -685,6 +761,10 @@ function skipKeyFor(cardKey) {
 
 function isSkipped(cardKey) {
     return session.skip && session.skip.indexOf(skipKeyFor(cardKey)) >= 0;
+}
+
+function isMastered(cardKey) {
+    return mastered.indexOf(skipKeyFor(cardKey)) >= 0;
 }
 
 function redoCard() {
@@ -711,7 +791,7 @@ function checkAllMastered() {
     if (!p.length) return false;
     for (var i = 0; i < p.length; i++) {
         var k = p[i][0];
-        if (!isExcluded(k) && !isSkipped(k)) return false;
+        if (!isExcluded(k) && !isSkipped(k) && !isMastered(k)) return false;
     }
     return true;
 }
