@@ -448,6 +448,7 @@ table{ width:100%; border-collapse:collapse; }
 </div>
 <div class="panel" id="cardPanel">
   <div id="countdownWrap" style="visibility:hidden; height:5px; background:var(--input); border-radius:3px; margin-bottom:14px; overflow:hidden; position:relative; z-index:1;"><div id="countdownBar" style="height:100%; width:100%; background:#356394; border-radius:3px;"></div></div>
+  <div id="hwTag" style="display:none; text-align:center; margin-bottom:10px; position:relative; z-index:1;"><span style="display:inline-block; background:var(--gold); color:#0b1220; font-weight:800; font-size:13px; letter-spacing:.2px; padding:5px 13px; border-radius:999px; box-shadow:0 1px 5px rgba(0,0,0,.35);">✍️ Nên luyện viết tay trên giấy</span></div>
   <div id="furiHint" style="font-family:var(--fjps); font-size:18px; color:var(--slate); min-height:0; margin-bottom:2px; visibility:hidden; position:relative; z-index:1;"></div>
   <div id="kana" style="font-size:96px;">ー</div>
   <div id="ansKanji" style="display:none; font-size:46px;"></div>
@@ -527,6 +528,7 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn" id="fixBtn" style="flex:1;">↩ Câu trước → Sai<span class="kb" id="kbFix"></span></button>
   <button class="btn" id="skipBtn" style="flex:1;">✓ Đã thuộc (bỏ qua)<span class="kb" id="kbSkip"></span></button>
   <button class="btn" id="masterBtn" style="flex:1;">📌 Thuộc cố định<span class="kb" id="kbMaster"></span></button>
+  <button class="btn" id="hwBtn" style="flex:1;">✍️ Luyện viết tay<span class="kb" id="kbHand"></span></button>
   <button class="btn" id="redoBtn" style="flex:1;">↺ Làm lại<span class="kb" id="kbRedo"></span></button>
   <span id="fixNote" style="font-size:12px; color:var(--gold); min-width:96px; text-align:right;"></span>
 </div>
@@ -602,6 +604,7 @@ table{ width:100%; border-collapse:collapse; }
     <div>Nét mỏng hơn: <span class="keycap" id="lblPenDown">[</span> <span class="keybtn" data-slot="pendown">gán</span></div>
     <div>Đã thuộc (bỏ qua): <span class="keycap" id="lblSkip">M</span> <span class="keybtn" data-slot="skip">gán</span></div>
     <div>Đã thuộc cố định (📌): <span class="keycap" id="lblMaster">L</span> <span class="keybtn" data-slot="master">gán</span></div>
+    <div>Đánh dấu luyện viết tay (✍️): <span class="keycap" id="lblHand">W</span> <span class="keybtn" data-slot="hand">gán</span></div>
     <div>Làm lại (không tính): <span class="keycap" id="lblRedo">R</span> <span class="keybtn" data-slot="redo">gán</span></div>
     <div>Đổi loại kana (khi gõ): <span class="keycap" id="lblKana">=</span> <span class="keybtn" data-slot="kana">gán</span></div>
   </div>

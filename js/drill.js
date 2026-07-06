@@ -289,6 +289,7 @@ function nextCard(forced) {
     }
     if (cardDir === 'listen' && phase === 'running') speak(card[4] || card[0]);
     showStrokeBtn();
+    showHwTag();
     startTimer();
 }
 
@@ -765,6 +766,31 @@ function isSkipped(cardKey) {
 
 function isMastered(cardKey) {
     return mastered.indexOf(skipKeyFor(cardKey)) >= 0;
+}
+
+// ===== Thẻ tag "nên luyện viết tay" — khoá theo chính từ (card[0]), độc lập bộ/chế độ =====
+function isHandwrite(cardKey) {
+    return handwrite.indexOf(cardKey) >= 0;
+}
+
+function showHwTag() {
+    const t = $('hwTag');
+    if (t) t.style.display = (card && isHandwrite(card[0])) ? '' : 'none';
+}
+
+function toggleHandwrite() {
+    if (phase !== 'running' || !card) return;
+    const k = card[0];
+    const i = handwrite.indexOf(k);
+    if (i >= 0) {
+        handwrite.splice(i, 1);
+        showFixNote('Đã gỡ thẻ luyện viết: ' + k);
+    } else {
+        handwrite.push(k);
+        showFixNote('✍️ Đánh dấu luyện viết tay: ' + k);
+    }
+    saveHandwrite();
+    showHwTag();
 }
 
 function redoCard() {

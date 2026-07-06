@@ -198,7 +198,7 @@ function styleAnswer() {
 }
 
 const LS_HIST = 'jp_reader_history_v2', LS_KEYS = 'jp_reader_keys_v2', LS_CUR = 'jp_reader_cur_v2',
-    LS_LIMIT = 'jp_reader_limit_v2', LS_MASTERED = 'jp_mastered_v1';
+    LS_LIMIT = 'jp_reader_limit_v2', LS_MASTERED = 'jp_mastered_v1', LS_HANDWRITE = 'jp_handwrite_v1';
 
 function lsGet(k) {
     try {
@@ -236,6 +236,7 @@ let keys = {
     pendown: 'BracketLeft',
     skip: 'KeyM',
     master: 'KeyL',
+    hand: 'KeyW',
     redo: 'KeyR',
     kana: 'Equal'
 };
@@ -257,6 +258,7 @@ let keys = {
                 pendown: 'BracketLeft',
                 skip: 'KeyM',
                 master: 'KeyL',
+                hand: 'KeyW',
                 redo: 'KeyR',
                 kana: 'Equal'
             }, o);
@@ -294,6 +296,8 @@ function renderKeyLabels() {
     if (_ls) _ls.textContent = keyLabel(keys.skip);
     var _lm = $('lblMaster');
     if (_lm) _lm.textContent = keyLabel(keys.master);
+    var _lh = $('lblHand');
+    if (_lh) _lh.textContent = keyLabel(keys.hand);
     var _lr = $('lblRedo');
     if (_lr) _lr.textContent = keyLabel(keys.redo);
     var _lk = $('lblKana');
@@ -312,6 +316,7 @@ function renderKeyLabels() {
     setKb('kbFix', keys.fix);
     setKb('kbSkip', keys.skip);
     setKb('kbMaster', keys.master);
+    setKb('kbHand', keys.hand);
     setKb('kbRedo', keys.redo);
     setKb('kbClear', keys.clear);
 }
@@ -359,6 +364,25 @@ let mastered = [];
 
 function saveMastered() {
     lsSet(LS_MASTERED, JSON.stringify(mastered));
+}
+
+// handwrite = thẻ tag "nên luyện viết tay trên giấy". Bền qua mọi session (lưu ở LS_HANDWRITE).
+// KHÁC mastered/skip: khoá theo CHÍNH từ (card[0]), KHÔNG kèm deckKey → tag theo dõi từ đó ở
+// mọi bộ/chế độ (gõ hay trắc nghiệm), đúng nghĩa "từ này tôi nên tự luyện viết".
+let handwrite = [];
+(function () {
+    const h = lsGet(LS_HANDWRITE);
+    if (h) {
+        try {
+            const a = JSON.parse(h);
+            if (Array.isArray(a)) handwrite = a;
+        } catch (e) {
+        }
+    }
+})();
+
+function saveHandwrite() {
+    lsSet(LS_HANDWRITE, JSON.stringify(handwrite));
 }
 
 function loadHist() {

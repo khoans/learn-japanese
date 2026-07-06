@@ -302,6 +302,11 @@ window.addEventListener('keydown', function (e) {
         masterCurrent();
         return;
     }
+    if (e.code === keys.hand) {
+        e.preventDefault();
+        toggleHandwrite();
+        return;
+    }
     if (e.code === keys.redo) {
         e.preventDefault();
         redoCard();

@@ -378,6 +378,7 @@ function stopSession() {
     $('kana').style.fontSize = '100px';
     $('romaji').style.visibility = 'hidden';
     $('drawWrap').style.display = 'none';
+    if ($('hwTag')) $('hwTag').style.display = 'none';
     $('timeNow').textContent = 'Bấm ▶ Bắt đầu để luyện';
     setCardButtons('none');
     updatePhaseUI();
@@ -706,6 +707,7 @@ $('nextBtn').addEventListener('click', function () {
 $('fixBtn').addEventListener('click', fixPrev);
 $('skipBtn').addEventListener('click', skipCurrent);
 if ($('masterBtn')) $('masterBtn').addEventListener('click', masterCurrent);
+if ($('hwBtn')) $('hwBtn').addEventListener('click', toggleHandwrite);
 $('redoBtn').addEventListener('click', redoCard);
 $('pickGrp').addEventListener('toggle', function () {
     if ($('pickGrp').open) renderPickList();
