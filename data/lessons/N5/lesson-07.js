@@ -65,13 +65,24 @@ registerLesson("N5", 7, {
     ["…はい、もう たべました。", "…Hai, mou tabemashita.", "…Vâng, tôi ăn rồi."],
     ["…いいえ、まだです。", "…Iie, mada desu.", "…Chưa, tôi chưa ăn."],
     ["やまだ先生に でんわを かけます。", "Yamada-sensei ni denwa o kakemasu.", "Tôi gọi điện cho thầy Yamada."],
-    ["りょこうの おみやげを もらいました。", "Ryokou no omiyage o moraimashita.", "Tôi được tặng quà chuyến du lịch."]
+    ["りょこうの おみやげを もらいました。", "Ryokou no omiyage o moraimashita.", "Tôi được tặng quà chuyến du lịch."],
+    ["かいしゃから おかねを もらいました。", "Kaisha kara okane o moraimashita.", "Tôi nhận tiền từ công ty."],
+    ["「Cảm ơn」は にほんごで なんですか。", "「Cảm ơn」wa nihongo de nan desu ka.", "「Cảm ơn」tiếng Nhật nói thế nào?"],
+    ["…「ありがとう」です。", "…“Arigatou” desu.", "…Là “Arigatou”."],
+    ["もう にもつを おくりましたか。", "Mou nimotsu o okurimashita ka.", "Bạn gửi hành lý chưa?"],
+    ["…いいえ、まだです。", "…Iie, mada desu.", "…Chưa, tôi vẫn chưa."],
+    ["もう きっぷを かいましたか。", "Mou kippu o kaimashita ka.", "Bạn mua vé chưa?"],
+    ["…はい、もう かいました。", "…Hai, mou kaimashita.", "…Vâng, tôi mua rồi."],
+    ["コーヒー、のみませんか。", "Koohii", "nomimasen ka."],
+    ["ごはん、たべましたか。", "Gohan", "tabemashita ka."]
   ],
   grammar: [
-    {"p": "① trợ từ で (công cụ / phương tiện)", "g": "[công cụ/cách thức]＋で = 'bằng ~': はしで たべます, はさみで きります. Cũng dùng với ngôn ngữ: にほんごで かきます (viết bằng tiếng Nhật).", "ex": "はしで ごはんを たべます。", "exr": "Hashi de gohan o tabemasu.", "m": "Tôi ăn cơm bằng đũa."},
-    {"p": "②「～」は～語で 何ですか", "g": "Hỏi cách nói một từ trong ngôn ngữ khác: 「ありがとう」は えいごで なんですか — '\"Arigatou\" tiếng Anh là gì?'. ～語 = tiếng nước ~ (えいご, にほんご).", "ex": "「ありがとう」は えいごで なんですか。", "exr": "“Arigatou” wa eigo de nan desu ka.", "m": "“Arigatou” tiếng Anh nói thế nào?"},
-    {"p": "③ [người]に [vật]を あげます", "g": "Cho/tặng AI cái gì: dùng に chỉ NGƯỜI NHẬN. Nhóm động từ cho đi: あげます, かします (cho mượn), おしえます (dạy), おくります (gửi), でんわを かけます.", "ex": "ともだちに はなを あげます。", "exr": "Tomodachi ni hana o agemasu.", "m": "Tôi tặng hoa cho bạn."},
-    {"p": "④ [người]に [vật]を もらいます", "g": "Nhận cái gì TỪ AI: dùng に (hoặc から) chỉ NGƯỜI CHO. Nhóm động từ nhận về: もらいます, かります (mượn), ならいます (học từ ai). Hỏi: だれに.", "ex": "やまださんに ほんを もらいました。", "exr": "Yamada-san ni hon o moraimashita.", "m": "Tôi nhận sách từ anh Yamada."},
-    {"p": "⑤ もう ～ました", "g": "もう＋[động từ]ました = 'đã … rồi'. Trả lời: はい、もう ～ました (rồi) hoặc いいえ、まだです (chưa). KHÔNG nói いいえ、まだ ～ませんでした.", "ex": "もう ひるごはんを たべましたか。", "exr": "Mou hirugohan o tabemashita ka.", "m": "Bạn ăn trưa chưa?"}
+    {"p": "① trợ từ で (công cụ / phương tiện)", "g": "[công cụ/cách thức]＋で = 'bằng ~': はしで たべます, はさみで きります. Cũng dùng với ngôn ngữ: にほんごで かきます (viết bằng tiếng Nhật). Phân biệt với で chỉ NƠI CHỐN ở bài 6.", "ex": "はしで ごはんを たべます。", "exr": "Hashi de gohan o tabemasu.", "m": "Tôi ăn cơm bằng đũa."},
+    {"p": "②「～」は～語で 何ですか", "g": "Hỏi cách nói một từ trong ngôn ngữ khác: 「ありがとう」は えいごで なんですか — '\"Arigatou\" tiếng Anh là gì?'. ～語 = tiếng nước ~ (えいご, にほんご). 何 ở đây đọc là なん.", "ex": "「ありがとう」は えいごで なんですか。", "exr": "“Arigatou” wa eigo de nan desu ka.", "m": "“Arigatou” tiếng Anh nói thế nào?"},
+    {"p": "③ [người]に [vật]を あげます", "g": "Cho/tặng AI cái gì: dùng に chỉ NGƯỜI NHẬN. Nhóm động từ cho đi: あげます, かします (cho mượn), おしえます (dạy), おくります (gửi), でんわを かけます (gọi điện).", "ex": "ともだちに はなを あげます。", "exr": "Tomodachi ni hana o agemasu.", "m": "Tôi tặng hoa cho bạn."},
+    {"p": "④ [người]に [vật]を もらいます", "g": "Nhận cái gì TỪ AI: dùng に (hoặc から) chỉ NGƯỜI CHO. Nhóm động từ nhận về: もらいます, かります (mượn), ならいます (học từ ai). ⚠️ Khi nguồn cho là TỔ CHỨC (công ty, trường học) thì CHỈ dùng から, không dùng に: かいしゃから もらいます. Hỏi: だれに.", "ex": "やまださんに ほんを もらいました。", "exr": "Yamada-san ni hon o moraimashita.", "m": "Tôi nhận sách từ anh Yamada."},
+    {"p": "⑤ もう ～ました", "g": "もう＋[động từ]ました = 'đã … rồi'. Câu hỏi もう ～ましたか = 'đã … chưa?'. Trả lời khẳng định: はい、もう ～ました. Trả lời phủ định xem mục ⑥.", "ex": "もう ひるごはんを たべましたか。", "exr": "Mou hirugohan o tabemashita ka.", "m": "Bạn ăn trưa chưa?"},
+    {"p": "⑥ まだです (chưa)", "g": "Trả lời PHỦ ĐỊNH cho câu hỏi もう ～ましたか: いいえ、まだです = 'chưa (vẫn chưa)'. ⚠️ KHÔNG trả lời bằng ～ませんでした — vì ～ませんでした nghĩa là 'đã KHÔNG làm (trong quá khứ)', chứ không phải 'CHƯA làm (nhưng sẽ làm)'.", "ex": "もう にもつを おくりましたか。…いいえ、まだです。", "exr": "Mou nimotsu o okurimashita ka. …Iie", "m": "mada desu."},
+    {"p": "⑦ Lược bỏ trợ từ (văn nói)", "g": "Trong hội thoại thân mật, các trợ từ を、へ (đôi khi cả は) thường được LƯỢC BỎ: コーヒー（を）のみませんか, にちようび どこ（へ）いきますか. Văn viết / văn lịch sự thì vẫn giữ đủ trợ từ.", "ex": "コーヒー、のみませんか。", "exr": "Koohii", "m": "nomimasen ka."}
   ]
 });
