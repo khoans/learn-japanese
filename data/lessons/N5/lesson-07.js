@@ -43,7 +43,13 @@ registerLesson("N5", 7, {
     ["旅行", "ryokou", "du lịch", "りょこう"],
     ["お土産", "omiyage", "quà (mua khi đi xa)", "おみやげ"],
     ["ヨーロッパ", "yooroppa", "Châu Âu", "よーろっぱ"],
-    ["スペイン", "supein", "Tây Ban Nha", "すぺいん"]
+    ["スペイン", "supein", "Tây Ban Nha", "すぺいん"],
+    ["いかがですか", "ikaga desu ka", "~ thế nào? / mời dùng ~ (lịch sự)", "いかがですか"],
+    ["どうぞ", "douzo", "xin mời", "どうぞ"],
+    ["いただきます", "itadakimasu", "tôi xin phép dùng (khi ăn/uống)", "いただきます"],
+    ["お茶", "ocha", "trà", "おちゃ"],
+    ["お水", "omizu", "nước (uống)", "おみず"],
+    ["飲み物", "nomimono", "đồ uống", "のみもの"]
   ],
   sentences: [
     ["はしで ごはんを たべます。", "Hashi de gohan o tabemasu.", "Tôi ăn cơm bằng đũa."],
@@ -74,7 +80,13 @@ registerLesson("N5", 7, {
     ["もう きっぷを かいましたか。", "Mou kippu o kaimashita ka.", "Bạn mua vé chưa?"],
     ["…はい、もう かいました。", "…Hai, mou kaimashita.", "…Vâng, tôi mua rồi."],
     ["コーヒー、のみませんか。", "Koohii", "nomimasen ka."],
-    ["ごはん、たべましたか。", "Gohan", "tabemashita ka."]
+    ["ごはん、たべましたか。", "Gohan", "tabemashita ka."],
+    ["おちゃは いかがですか。", "Ocha wa ikaga desu ka.", "Mời chị dùng trà nhé?"],
+    ["…ありがとうございます。いただきます。", "…Arigatou gozaimasu. Itadakimasu.", "…Cảm ơn ạ. Tôi xin phép dùng."],
+    ["コーヒーは いかがですか。", "Koohii wa ikaga desu ka.", "Anh dùng cà phê nhé?"],
+    ["おみずを どうぞ。", "Omizu o douzo.", "Mời anh dùng nước."],
+    ["のみものは いかがですか。", "Nomimono wa ikaga desu ka.", "Mời anh dùng đồ uống nhé?"],
+    ["これ、どうぞ。", "Kore, douzo.", "Cái này"]
   ],
   grammar: [
     {"p": "① trợ từ で (công cụ / phương tiện)", "g": "[công cụ/cách thức]＋で = 'bằng ~': はしで たべます, はさみで きります. Cũng dùng với ngôn ngữ: にほんごで かきます (viết bằng tiếng Nhật). Phân biệt với で chỉ NƠI CHỐN ở bài 6.", "ex": "はしで ごはんを たべます。", "exr": "Hashi de gohan o tabemasu.", "m": "Tôi ăn cơm bằng đũa."},
@@ -83,6 +95,7 @@ registerLesson("N5", 7, {
     {"p": "④ [người]に [vật]を もらいます", "g": "Nhận cái gì TỪ AI: dùng に (hoặc から) chỉ NGƯỜI CHO. Nhóm động từ nhận về: もらいます, かります (mượn), ならいます (học từ ai). ⚠️ Khi nguồn cho là TỔ CHỨC (công ty, trường học) thì CHỈ dùng から, không dùng に: かいしゃから もらいます. Hỏi: だれに.", "ex": "やまださんに ほんを もらいました。", "exr": "Yamada-san ni hon o moraimashita.", "m": "Tôi nhận sách từ anh Yamada."},
     {"p": "⑤ もう ～ました", "g": "もう＋[động từ]ました = 'đã … rồi'. Câu hỏi もう ～ましたか = 'đã … chưa?'. Trả lời khẳng định: はい、もう ～ました. Trả lời phủ định xem mục ⑥.", "ex": "もう ひるごはんを たべましたか。", "exr": "Mou hirugohan o tabemashita ka.", "m": "Bạn ăn trưa chưa?"},
     {"p": "⑥ まだです (chưa)", "g": "Trả lời PHỦ ĐỊNH cho câu hỏi もう ～ましたか: いいえ、まだです = 'chưa (vẫn chưa)'. ⚠️ KHÔNG trả lời bằng ～ませんでした — vì ～ませんでした nghĩa là 'đã KHÔNG làm (trong quá khứ)', chứ không phải 'CHƯA làm (nhưng sẽ làm)'.", "ex": "もう にもつを おくりましたか。…いいえ、まだです。", "exr": "Mou nimotsu o okurimashita ka. …Iie", "m": "mada desu."},
-    {"p": "⑦ Lược bỏ trợ từ (văn nói)", "g": "Trong hội thoại thân mật, các trợ từ を、へ (đôi khi cả は) thường được LƯỢC BỎ: コーヒー（を）のみませんか, にちようび どこ（へ）いきますか. Văn viết / văn lịch sự thì vẫn giữ đủ trợ từ.", "ex": "コーヒー、のみませんか。", "exr": "Koohii", "m": "nomimasen ka."}
+    {"p": "⑦ Lược bỏ trợ từ (văn nói)", "g": "Trong hội thoại thân mật, các trợ từ を、へ (đôi khi cả は) thường được LƯỢC BỎ: コーヒー（を）のみませんか, にちようび どこ（へ）いきますか. Văn viết / văn lịch sự thì vẫn giữ đủ trợ từ.", "ex": "コーヒー、のみませんか。", "exr": "Koohii", "m": "nomimasen ka."},
+    {"p": "⑧ [vật]は いかがですか (mời lịch sự)", "g": "Mẫu MỜI DÙNG lịch sự khi tiếp khách / ở quán: [đồ ăn/uống]は いかがですか = 'Mời anh/chị dùng ~ nhé?'. いかがですか là dạng lịch sự của どうですか. ⚠️ Phân biệt: ～は いかがですか = MỜI (chủ nhà mời khách dùng); còn ～ませんか (bài 6) = RỦ cùng làm ('cùng ~ nhé?'). Đáp lại khi nhận: ありがとうございます。いただきます (Cảm ơn, tôi xin phép dùng); có thể mời kèm どうぞ (xin mời).", "ex": "おちゃは いかがですか。", "exr": "Ocha wa ikaga desu ka.", "m": "Mời chị dùng trà nhé?"}
   ]
 });

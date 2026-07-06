@@ -62,7 +62,21 @@ registerLesson("N5", 5, {
     ["誕生日", "tanjoubi", "sinh nhật", "たんじょうび"],
     ["そうですね", "sou desu ne", "thế à!", "そうですね"],
     ["どうもありがとうございました", "doumo arigatou gozaimashita", "xin cảm ơn rất nhiều", "どうもありがとうございました"],
-    ["どういたしまして", "dou itashimashite", "không có gì đâu", "どういたしまして"]
+    ["どういたしまして", "dou itashimashite", "không có gì đâu", "どういたしまして"],
+    ["今度の月曜日", "kondo no getsuyoubi", "thứ hai kế tiếp", "こんどのげつようび"],
+    ["来週の月曜日", "raishuu no getsuyoubi", "thứ hai tuần sau", "らいしゅうのげつようび"],
+    ["今度の火曜日", "kondo no kayoubi", "thứ ba kế tiếp", "こんどのかようび"],
+    ["来週の火曜日", "raishuu no kayoubi", "thứ ba tuần sau", "らいしゅうのかようび"],
+    ["今度の水曜日", "kondo no suiyoubi", "thứ tư kế tiếp", "こんどのすいようび"],
+    ["来週の水曜日", "raishuu no suiyoubi", "thứ tư tuần sau", "らいしゅうのすいようび"],
+    ["今度の木曜日", "kondo no mokuyoubi", "thứ năm kế tiếp", "こんどのもくようび"],
+    ["来週の木曜日", "raishuu no mokuyoubi", "thứ năm tuần sau", "らいしゅうのもくようび"],
+    ["今度の金曜日", "kondo no kinyoubi", "thứ sáu kế tiếp", "こんどのきんようび"],
+    ["来週の金曜日", "raishuu no kinyoubi", "thứ sáu tuần sau", "らいしゅうのきんようび"],
+    ["今度の土曜日", "kondo no doyoubi", "thứ bảy kế tiếp", "こんどのどようび"],
+    ["来週の土曜日", "raishuu no doyoubi", "thứ bảy tuần sau", "らいしゅうのどようび"],
+    ["今度の日曜日", "kondo no nichiyoubi", "chủ nhật kế tiếp", "こんどのにちようび"],
+    ["来週の日曜日", "raishuu no nichiyoubi", "chủ nhật tuần sau", "らいしゅうのにちようび"]
   ],
   sentences: [
     ["がっこうへ いきます。", "Gakkou e ikimasu.", "Tôi đi đến trường."],
