@@ -49,7 +49,9 @@ registerLesson("N5", 7, {
     ["いただきます", "itadakimasu", "tôi xin phép dùng (khi ăn/uống)", "いただきます"],
     ["お茶", "ocha", "trà", "おちゃ"],
     ["お水", "omizu", "nước (uống)", "おみず"],
-    ["飲み物", "nomimono", "đồ uống", "のみもの"]
+    ["飲み物", "nomimono", "đồ uống", "のみもの"],
+    ["メール", "meeru", "thư điện tử (email)", "めーる"],
+    ["言葉", "kotoba", "từ ngữ / lời", "ことば"]
   ],
   sentences: [
     ["はしで ごはんを たべます。", "Hashi de gohan o tabemasu.", "Tôi ăn cơm bằng đũa."],
@@ -86,7 +88,12 @@ registerLesson("N5", 7, {
     ["コーヒーは いかがですか。", "Koohii wa ikaga desu ka.", "Anh dùng cà phê nhé?"],
     ["おみずを どうぞ。", "Omizu o douzo.", "Mời anh dùng nước."],
     ["のみものは いかがですか。", "Nomimono wa ikaga desu ka.", "Mời anh dùng đồ uống nhé?"],
-    ["これ、どうぞ。", "Kore, douzo.", "Cái này"]
+    ["これ、どうぞ。", "Kore, douzo.", "Cái này"],
+    ["このことばは にほんごで なんですか。", "Kono kotoba wa nihongo de nan desu ka.", "Từ này tiếng Nhật là gì?"],
+    ["このことばは えいごで なんですか。", "Kono kotoba wa eigo de nan desu ka.", "Từ này tiếng Anh là gì?"],
+    ["…「メール」です。", "…“Meeru” desu.", "…Là “Meeru” (mail)."],
+    ["ともだちに メールを おくります。", "Tomodachi ni meeru o okurimasu.", "Tôi gửi email cho bạn."],
+    ["パソコンで メールを おくります。", "Pasokon de meeru o okurimasu.", "Tôi gửi email bằng máy tính."]
   ],
   grammar: [
     {"p": "① trợ từ で (công cụ / phương tiện)", "g": "[công cụ/cách thức]＋で = 'bằng ~': はしで たべます, はさみで きります. Cũng dùng với ngôn ngữ: にほんごで かきます (viết bằng tiếng Nhật). Phân biệt với で chỉ NƠI CHỐN ở bài 6.", "ex": "はしで ごはんを たべます。", "exr": "Hashi de gohan o tabemasu.", "m": "Tôi ăn cơm bằng đũa."},
