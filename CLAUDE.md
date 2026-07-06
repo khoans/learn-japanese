@@ -20,12 +20,15 @@ A single-page Japanese study/drill app (kana, vocabulary, kanji, numbers, counte
 ### Repo layout
 ```
 index.html      the app — UI markup + CSS + the ordered <script> includes
+report.html     standalone vocabulary index (own page at root; reuses the SAME data
+                <script> chain as index.html, so it auto-updates on rebuild). Linked
+                from the in-app "🔍 Tra từ" tab; also cached by sw.js for offline.
 sw.js           service worker (MUST stay at root for its scope); reads the lesson manifest
 manifest.json   PWA manifest
 assets/         static assets (icon.svg)
 js/             the engine, split by concern (7 ordered classic scripts)
-data/           content data (registry, core-data, generated lessons, CSV source)
-tools/          build-lessons.ps1 (CSV → generated lesson .js)
+data/           content data (registry, core-data, radicals, themes, generated lessons, CSV source)
+tools/          build-lessons.ps1 (CSV → generated lesson .js, radicals.js, themes.js)
 ```
 
 ### The engine is `js/` (split classic scripts, shared global scope)
@@ -73,7 +76,7 @@ grammar:   { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
 ```
 
 ### Practice-deck system (`poolForKey`)
-Every drill mode is selected by a string "key" parsed in `poolForKey()` (in `js/decks.js`). Format: an optional `W:`/`M:` prefix (input vs. multiple-choice mode) + `type|args` where `type` is one of `sent`, `lword`, `radical`, `kanji`, `kanji130`, `number`, `counter`. `poolForKey` filters the relevant global dataset by the args and maps each entry into a uniform 6-element row `[prompt, answer, extra, romajiAnswer, compareKey, kanjiForm]` that the drill engine consumes. Adding a new drill category = adding a `p[0]===...` branch here plus its dataset in `core-data.js`.
+Every drill mode is selected by a string "key" parsed in `poolForKey()` (in `js/decks.js`). Format: an optional `W:`/`M:` prefix (input vs. multiple-choice mode) + `type|args` where `type` is one of `sent`, `lword`, `theme` (vocabulary by topic, from `data/themes.js`), `radical`, `kanji`, `kanji130`, `number`, `counter`. `poolForKey` filters the relevant global dataset by the args and maps each entry into a uniform 6-element row `[prompt, answer, extra, romajiAnswer, compareKey, kanjiForm]` that the drill engine consumes. Adding a new drill category = adding a `p[0]===...` branch here plus its dataset in `core-data.js`.
 
 ### Stroke order & writing practice (hanzi-writer)
 Kanji and radical cards get two on-demand overlays in the shared `#strokeBox`, driven by [hanzi-writer](https://hanziwriter.org) lazy-loaded from CDN (`ensureHanziWriter()` in `js/tools-init.js`) — **online-only**, with a Vietnamese offline fallback (`OFFLINE_MSG`):
@@ -83,7 +86,14 @@ Kanji and radical cards get two on-demand overlays in the shared `#strokeBox`, d
 Both `<button>`s (`strokeBtn`/`writeBtn`) live in the shell's markup and are toggled together by `showStrokeBtn()`. hanzi-writer data covers **all** current N5 kanji + radicals (verified), but is Chinese-derived — a few kanji show Chinese stroke order/shape rather than Japanese (acceptable for N5; KanjiVG would be the JP-accurate alternative).
 
 ### State / persistence
-All state is `localStorage`, keys prefixed `jp_`: current deck & progress (`jp_reader_cur_v2`), history (`jp_reader_history_v2`), saved shortcut keys (`jp_reader_keys_v2`), limits (`jp_reader_limit_v1`), Kanji130 user edits (`jp_kanji130_edits_v1`), and UI prefs (`jp_reader_appw`/`_csize`/`_pen`). Access only through the `lsGet`/`lsSet`/`lsDel` wrappers (they swallow exceptions for `file://`/private-mode). The `_v1`/`_v2` suffixes are schema versions — bump the suffix rather than silently changing a stored value's shape.
+All state is `localStorage`, keys prefixed `jp_`: current deck & progress (`jp_reader_cur_v2`), history (`jp_reader_history_v2`), saved shortcut keys (`jp_reader_keys_v2`), limits (`jp_reader_limit_v1`), Kanji130 user edits (`jp_kanji130_edits_v1`), **permanent-mastered store** (`jp_mastered_v1`), **handwrite-practice tags** (`jp_handwrite_v2`, array of `{k,r,m}`), the report page's theme (`jp_report_theme`), and UI prefs (`jp_reader_appw`/`_csize`/`_pen`). Access only through the `lsGet`/`lsSet`/`lsDel` wrappers (they swallow exceptions for `file://`/private-mode). The `_v1`/`_v2` suffixes are schema versions — bump the suffix rather than silently changing a stored value's shape.
+
+### Study aids (mastery buckets · handwrite tag · vocab lookup · report page)
+Layered on top of the drill; all persist in `localStorage` and are wired in `js/drill.js` + `js/stats.js`, tabs registered in `TOOL_IDS` (`js/tools-init.js`).
+- **Two "Đã thuộc" (mastered) buckets — 3-column transfer** (`masGrp`, `makeTriTransfer` in `js/drill.js`): *Chưa thuộc* | *Đã thuộc (session)* | *Đã thuộc (cố định)*, mutually exclusive, moved via `setMasteryState(keys,'rem'|'ses'|'perm')`. **session** = `session.skip` (in `jp_reader_cur_v2`, cleared by `stopSession`); **permanent** = `mastered` global in its own `jp_mastered_v1` (survives resets). Both keyed `deckKey() § cardKey` (`skipKeyFor`), both drop the card from the pool (`isSkipped`/`isMastered` in `pickItem`/`checkAllMastered`/`updateCoverage`). Card buttons/keys: **✓ Đã thuộc (bỏ qua)** = `M` → `skipCurrent()`; **📌 Thuộc cố định** = `L` → `masterCurrent()`.
+- **Handwrite tag** (“nên luyện viết tay trên giấy”): `handwrite` global in `jp_handwrite_v2`, keyed by the **word itself** (`card[0]`, NOT deck-scoped → follows the word across decks/modes). Toggle = **✍️ button / key `W`** → `toggleHandwrite()`; a gold badge (`#hwTag`) shows on tagged cards; the **✍️ Cần viết tay** tab (`hwGrp`, `renderHwList`) lists all tags with per-word remove.
+- **Vocab lookup + card origin** (`js/core.js`): `CARD_ORIGIN` maps a word's display **and** its kana reading → `{bai,level}` (or `{theme}`); both keys are registered because `poolForKey` shows kana in default mode and kanji in `K` mode. `originLabel(card[0])` powers the on-card badge (`#originTag`, `showOriginTag()`), the **🔍 Tra từ** tab (`lookupGrp`, `renderLookup`, searchable/filterable over `LWORDS`+`THEMEWORDS`), and the origin column in "Xem trước".
+- **`report.html`** — full-page vocabulary index grouped Trình độ → Bài (+ themes), built at runtime by `buildDATA()` from `JPLessons.words()`+`THEME_LIST`/`THEMEWORDS`, so it tracks the live data. Opened from the "🔍 Tra từ" tab's **↗ Trang báo cáo** link.
 
 ## Common changes
 

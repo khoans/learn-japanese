@@ -23,6 +23,8 @@ or via GitHub Pages. All progress lives in `localStorage`.
 
 ```
 index.html                     THE app — UI markup/CSS + lesson loader + ordered <script> includes
+report.html                    standalone vocab index page (root); reuses the same data <script>
+                               chain -> auto-updates on rebuild. Linked from the "🔍 Tra từ" tab.
 sw.js                          service worker (MUST be at root for scope); reads the lesson manifest
 manifest.json                  PWA manifest
 assets/icon.svg                static assets
@@ -38,6 +40,7 @@ data/
   registry.js                   registerLesson() + JPLessons collector — loads FIRST
   core-data.js                  non-lesson data: kana, WORDS, KANJIV, KANJI130, NUMSET, COUNTSET
   radicals.js                   GENERATED from csv/radicals.csv — RADICALS (214 Kangxi: [char,meaning,info,group,common])
+  themes.js                     GENERATED from csv/themes/ — THEME_LIST + THEMEWORDS (vocab by topic, no JLPT level)
   lessons/
     manifest.js                 GENERATED — LEVELS + LESSON_MANIFEST (nums per level)
     <LEVEL>/lesson-NN.js         GENERATED from CSV — e.g. N5/lesson-01.js — DO NOT hand-edit
@@ -143,6 +146,17 @@ or `file://`** — don't rely on it. Instead:
   Card actions: **✓ Đã thuộc (bỏ qua)** = key `M` → `skipCurrent()` (session);
   **📌 Thuộc cố định** = key `L` → `masterCurrent()` (permanent). Key slots are generic
   (`data-slot` + `keys.*`), so a new shortcut = add to both `keys` defaults + a label row.
+- **Handwrite tag + vocab lookup + report page (all this session).**
+  • **Handwrite tag** ("nên luyện viết tay"): `handwrite` global in **`jp_handwrite_v2`** (`{k,r,m}`),
+  keyed by the **word itself** (`card[0]`, NOT deck-scoped — unlike mastery) so it follows the word
+  everywhere. Toggle = **✍️ button / key `W`** → `toggleHandwrite()`; gold `#hwTag` badge on tagged
+  cards; **✍️ Cần viết tay** tab (`hwGrp`/`renderHwList`) lists+removes. Does NOT affect the pool.
+  • **Card origin + lookup:** `CARD_ORIGIN` in `js/core.js` maps a word's display **and** its kana
+  reading → `{bai,level}` / `{theme}` (both keys, because `poolForKey` shows kana in default mode,
+  kanji in `K` mode). `originLabel(card[0])` drives the on-card `#originTag` badge, the **🔍 Tra từ**
+  tab (`lookupGrp`/`renderLookup`, search+filter over `LWORDS`+`THEMEWORDS`), and the "Xem trước" column.
+  • **`report.html`** builds its data at runtime via `buildDATA()` from `JPLessons.words()`+themes →
+  stays live; opened from the "🔍 Tra từ" tab's **↗ Trang báo cáo** link; in `sw.js` CORE for offline.
 - **CRLF:** the PS build writes CRLF; git normalizes to LF on commit (warnings are harmless).
 - **sw cache:** the build auto-bumps `const CACHE = 'jp-n5-vN'`. If it drifts high from
   repeated test builds, reset to one bump over the deployed value before committing.
@@ -168,12 +182,14 @@ or `file://`** — don't rely on it. Instead:
   (buổi × ngày, "thứ … kế tiếp / tuần sau") and Bài 7 the polite-offer set (いかがですか…).
 - Single UI is **`index.html`**; engine split into `js/`; static layout
   (`assets/`, `js/`, `data/`, `tools/`).
-- **Two "Đã thuộc" buckets shipped** (see the gotcha above): 3-column mastery transfer
-  (session `session.skip` vs. permanent `jp_mastered_v1`) + **📌 Thuộc cố định** button /
-  key `L` (`masterCurrent`) alongside the session **M** / `skipCurrent`.
+- **Study aids shipped this session** (see the two gotchas above): 3-column mastery
+  (session vs. permanent `jp_mastered_v1`, key `L`); handwrite tag (`jp_handwrite_v2`,
+  key `W`, ✍️ badge + "Cần viết tay" tab); vocab lookup ("🔍 Tra từ" tab) + on-card
+  Bài·Trình độ badge (`CARD_ORIGIN`/`originLabel`); standalone live **`report.html`**.
 - Working tree clean (all pushed to `main`).
-- Recent commits: `9db0c5b` (3-column mastery + permanent-mastered key `L`),
-  `1dd07e0` (interactive stroke-writing practice for kanji & radicals).
+- Recent commits: `57aed65` (report.html integrated + linked), `5d1e155` (Tra từ tab +
+  origin badge), `2122df1` (Cần viết tay list), `9f1b61d` (handwrite tag),
+  `9db0c5b` (3-column mastery + key `L`).
 - Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
   sentence practice for now).
 - `references/` (third-party reference HTML) is intentionally **untracked** — not

@@ -4,6 +4,9 @@
 
 ```
 index.html                     ← GIAO DIỆN app (xanh dương). Markup + CSS + nạp dữ liệu.
+report.html                    ← TRANG BÁO CÁO từ vựng (theo Bài & Trình độ + chủ đề). Đọc
+                                 CÙNG dữ liệu với app nên TỰ CẬP NHẬT khi thêm từ. Mở từ
+                                 tab "🔍 Tra từ" trong app (nút ↗ Trang báo cáo).
 sw.js                          ← service worker (chạy offline). PHẢI ở gốc.
 manifest.json                  ← khai báo PWA.
 assets/icon.svg                ← icon.
@@ -17,9 +20,10 @@ data/
                                  kanji (KANJIV, KANJI130), số đếm (NUMSET),
                                  đơn vị đếm (COUNTSET)...
   radicals.js                  ← TỰ ĐỘNG SINH từ csv/radicals.csv: 214 bộ thủ (RADICALS)
+  themes.js                    ← TỰ ĐỘNG SINH từ csv/themes/: từ vựng theo CHỦ ĐỀ (THEME_LIST, THEMEWORDS)
   lessons/
     manifest.js                  ← DANH SÁCH trình độ + số bài (TỰ ĐỘNG SINH). Trang + sw.js đều đọc.
-    N5/lesson-01.js … lesson-07.js ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
+    N5/lesson-01.js … lesson-10.js ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
     csv/                         ← NGUỒN DỮ LIỆU GỐC — soạn ở đây bằng Excel/Sheets:
       N5/                          · một thư mục cho mỗi TRÌNH ĐỘ (N5, N4, N3…)
         lesson-01/                 · một thư mục cho mỗi BÀI, gồm 3 file:
@@ -82,6 +86,21 @@ thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đ
 - **Sửa giao diện:** sửa `<style>` + markup trong `index.html`.
 - Phím tắt mặc định nằm trong `js/decks.js` (biến `keys`); lưu cấu hình ở localStorage
   khóa `jp_reader_keys_v2`.
+
+## Công cụ học trong app (ngoài phần luyện)
+
+Tất cả đều lưu ở `localStorage` (khóa `jp_…`), không cần soạn nội dung gì thêm:
+
+- **Đã thuộc — 2 kho** (tab 🎯 Đã thuộc): bảng 3 cột *Chưa thuộc | Đã thuộc (session) |
+  Đã thuộc (cố định)*. Cột **session** reset khi bắt đầu phiên mới; cột **cố định** giữ
+  qua mọi phiên (`jp_mastered_v1`). Nút/phím khi luyện: **M** = đã thuộc session,
+  **L** = 📌 thuộc cố định. Cả hai đều loại thẻ khỏi vòng luyện.
+- **Luyện viết tay** (tag): bấm **W** (hoặc nút ✍️) để đánh dấu "từ này nên tự viết ra
+  giấy"; thẻ hiện badge ✍️. Xem lại toàn bộ ở tab **✍️ Cần viết tay** (`jp_handwrite_v2`).
+  Tag không ảnh hưởng vòng luyện, theo dõi theo TỪ (không phụ thuộc bộ/chế độ).
+- **Tra từ** (tab 🔍 Tra từ): tra mọi từ vựng kèm **Bài · Trình độ** (hoặc **Chủ đề**), có
+  tìm + lọc. Mỗi thẻ khi luyện cũng hiện badge nhỏ "Bài N · trình độ" (từ `CARD_ORIGIN`
+  trong `js/core.js`). Nút **↗ Trang báo cáo** mở `report.html`.
 
 ## Lưu ý kỹ thuật
 
