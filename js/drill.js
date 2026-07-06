@@ -769,8 +769,13 @@ function isMastered(cardKey) {
 }
 
 // ===== Thẻ tag "nên luyện viết tay" — khoá theo chính từ (card[0]), độc lập bộ/chế độ =====
+function hwIndexOf(cardKey) {
+    for (var i = 0; i < handwrite.length; i++) if (handwrite[i].k === cardKey) return i;
+    return -1;
+}
+
 function isHandwrite(cardKey) {
-    return handwrite.indexOf(cardKey) >= 0;
+    return hwIndexOf(cardKey) >= 0;
 }
 
 function showHwTag() {
@@ -781,16 +786,61 @@ function showHwTag() {
 function toggleHandwrite() {
     if (phase !== 'running' || !card) return;
     const k = card[0];
-    const i = handwrite.indexOf(k);
+    const i = hwIndexOf(k);
     if (i >= 0) {
         handwrite.splice(i, 1);
         showFixNote('Đã gỡ thẻ luyện viết: ' + k);
     } else {
-        handwrite.push(k);
+        handwrite.push({k: k, r: card[1] || '', m: card[2] || ''});
         showFixNote('✍️ Đánh dấu luyện viết tay: ' + k);
     }
     saveHandwrite();
     showHwTag();
+    refreshHwList();
+}
+
+function untagHandwrite(k) {
+    const i = hwIndexOf(k);
+    if (i < 0) return;
+    handwrite.splice(i, 1);
+    saveHandwrite();
+    renderHwList();
+    if (card && card[0] === k) showHwTag();
+}
+
+// Danh sách xem lại tất cả từ đã tag "luyện viết tay" (tab ✍️ Cần viết tay).
+function renderHwList() {
+    const L = $('hwList');
+    if (!L) return;
+    const q = ((($('hwSearch') && $('hwSearch').value) || '')).toLowerCase();
+    L.innerHTML = '';
+    let shown = 0;
+    handwrite.forEach(function (e) {
+        const k = e.k, r = e.r || '', m = e.m || '';
+        if (q && (k + ' ' + r + ' ' + m).toLowerCase().indexOf(q) < 0) return;
+        shown++;
+        const row = document.createElement('div');
+        row.className = 'pickrow on';
+        row.innerHTML = '<span class="pjp">' + escapeHtml(k) + '</span><span class="pinfo"><span class="prd">' + escapeHtml(r) + '</span> <span class="pmn">' + escapeHtml(m) + '</span></span>';
+        const x = document.createElement('button');
+        x.className = 'btn small';
+        x.textContent = '✕';
+        x.title = 'Gỡ khỏi danh sách';
+        x.style.cssText = 'margin-left:6px; flex:0 0 auto; padding:2px 9px;';
+        x.addEventListener('click', function () { untagHandwrite(k); });
+        row.appendChild(x);
+        L.appendChild(row);
+    });
+    if ($('hwN')) $('hwN').textContent = handwrite.length;
+    if (!shown) {
+        L.innerHTML = '<div class="muted" style="padding:9px; font-size:12px;">' +
+            (handwrite.length ? 'Không khớp tìm kiếm.' : 'Chưa có từ nào được đánh dấu. Khi luyện, bấm phím ✍️ (W) hoặc nút "Luyện viết tay" để thêm.') +
+            '</div>';
+    }
+}
+
+function refreshHwList() {
+    if ($('hwGrp') && $('hwGrp').style.display !== 'none') renderHwList();
 }
 
 function redoCard() {

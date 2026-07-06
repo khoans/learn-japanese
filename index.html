@@ -583,6 +583,15 @@ table{ width:100%; border-collapse:collapse; }
     <div class="xfer-hint muted">3 cột loại trừ nhau: <b>Chưa thuộc</b> · <b>Đã thuộc (session)</b> — reset khi bắt đầu phiên mới · <b>Đã thuộc (cố định)</b> — giữ qua mọi phiên cho tới khi bạn chuyển về. Click chọn/bỏ chọn · Ctrl+click nhiều · Shift+click dải · rồi bấm › ‹ (đã chọn) hoặc » « (tất cả). Bấm ra ngoài không bỏ chọn.</div>
   </div>
 </details>
+<details class="grp" id="hwGrp" style="display:none;"><summary>Danh sách: cần luyện viết tay</summary>
+  <div class="inner">
+    <div class="xfer-head" style="color:var(--gold);">✍️ Cần luyện viết tay (<span id="hwN">0</span>)</div>
+    <input id="hwSearch" class="xfer-search" placeholder="Tìm trong danh sách…">
+    <div id="hwList" class="xfer-list" style="max-height:300px;"></div>
+    <div class="xfer-hint muted">Các từ bạn đã đánh dấu bằng phím ✍️ (W) hoặc nút "Luyện viết tay". Bấm ✕ để gỡ từng từ. Danh sách được lưu qua mọi phiên.</div>
+    <div style="margin-top:8px;"><button id="hwClear" class="btn small">Gỡ tất cả</button></div>
+  </div>
+</details>
 <div class="strip streak" id="streakPanel">
   <span><span class="muted">Đúng liên tiếp: </span><span id="streakCur" class="n" style="color:var(--jade);">0</span></span>
   <span><span class="muted">Chuỗi trước đó: </span><span id="streakPrev" class="n" style="color:var(--slate);">0</span></span>
@@ -614,6 +623,7 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn small tool-tab" data-tool="optGrp" style="flex:1 1 auto;">⚙ Tùy chọn</button>
   <button class="btn small tool-tab" data-tool="pickGrp" style="flex:1 1 auto;">✓ Chọn từ</button>
   <button class="btn small tool-tab" data-tool="masGrp" style="flex:1 1 auto;">🎯 Đã thuộc</button>
+  <button class="btn small tool-tab" data-tool="hwGrp" style="flex:1 1 auto;">✍️ Cần viết tay</button>
   <button class="btn small tool-tab" data-tool="k130Grp" style="flex:1 1 auto;">✎ Sửa nghĩa</button>
   <button class="btn small tool-tab" data-tool="statBox" style="flex:1 1 auto;">📊 Thống kê</button>
   <button class="btn small tool-tab" data-tool="gramBox" style="flex:1 1 auto;">文 Ngữ pháp</button>

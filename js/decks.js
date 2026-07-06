@@ -198,7 +198,7 @@ function styleAnswer() {
 }
 
 const LS_HIST = 'jp_reader_history_v2', LS_KEYS = 'jp_reader_keys_v2', LS_CUR = 'jp_reader_cur_v2',
-    LS_LIMIT = 'jp_reader_limit_v2', LS_MASTERED = 'jp_mastered_v1', LS_HANDWRITE = 'jp_handwrite_v1';
+    LS_LIMIT = 'jp_reader_limit_v2', LS_MASTERED = 'jp_mastered_v1', LS_HANDWRITE = 'jp_handwrite_v2';
 
 function lsGet(k) {
     try {
@@ -369,15 +369,19 @@ function saveMastered() {
 // handwrite = thẻ tag "nên luyện viết tay trên giấy". Bền qua mọi session (lưu ở LS_HANDWRITE).
 // KHÁC mastered/skip: khoá theo CHÍNH từ (card[0]), KHÔNG kèm deckKey → tag theo dõi từ đó ở
 // mọi bộ/chế độ (gõ hay trắc nghiệm), đúng nghĩa "từ này tôi nên tự luyện viết".
+// Mỗi phần tử là {k: từ (card[0]), r: cách đọc/romaji, m: nghĩa} để danh sách xem lại có đủ info.
 let handwrite = [];
+function _normHw(a) { return Array.isArray(a) ? a.map(function (x) { return (typeof x === 'string') ? {k: x, r: '', m: ''} : x; }) : []; }
 (function () {
     const h = lsGet(LS_HANDWRITE);
     if (h) {
-        try {
-            const a = JSON.parse(h);
-            if (Array.isArray(a)) handwrite = a;
-        } catch (e) {
-        }
+        try { handwrite = _normHw(JSON.parse(h)); } catch (e) {}
+        return;
+    }
+    const old = lsGet('jp_handwrite_v1');   // di trú từ schema cũ (mảng chuỗi) -> [{k,r,m}]
+    if (old) {
+        try { handwrite = _normHw(JSON.parse(old)); } catch (e) {}
+        saveHandwrite();
     }
 })();
 

@@ -736,6 +736,16 @@ $('masGrp').addEventListener('toggle', function () {
 ['masRemSelOnly', 'masSesSelOnly', 'masPermSelOnly'].forEach(function (id) {
     if ($(id)) $(id).addEventListener('change', renderMasteryLists);
 });
+if ($('hwSearch')) $('hwSearch').addEventListener('input', renderHwList);
+if ($('hwClear')) $('hwClear').addEventListener('click', function () {
+    if (!handwrite.length) return;
+    if (confirm('Gỡ tất cả ' + handwrite.length + ' từ khỏi danh sách luyện viết tay?')) {
+        handwrite.length = 0;
+        saveHandwrite();
+        renderHwList();
+        showHwTag();
+    }
+});
 $('vSession').addEventListener('change', refreshStatView);
 $('vOption').addEventListener('change', renderDist);
 $('clearAll').addEventListener('click', clearAll);
