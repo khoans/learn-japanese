@@ -76,6 +76,12 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   that Minna lesson's grammar + vocabulary; write mostly hiragana (katakana for
   loanwords), space between bunsetsu, Q/A as separate rows with a leading `…` on
   the answer. Check the lesson's `grammar.csv`/`words.csv` first to stay in scope.
+- **N5 = write kana, not raw kanji (learner can't read kanji yet).** In grammar
+  `vi_du`/`giai_thich` examples **and** `sentences.csv`, write the Japanese in kana
+  (hiragana; katakana for loanwords) — e.g. `ごはんを たべます`, NOT `ご飯を食べます` — or
+  append the reading if a kanji must appear. This keeps every example readable at N5.
+  **Exception:** `words.csv` deliberately keeps the kanji in `tiengNhat` and the reading
+  in the `kana` column — leave the kanji there. Rule applies to the drill running-text.
 - **Add a lesson (e.g. N5 Bài 8):** copy `csv/_TEMPLATE/` → `csv/N5/lesson-08/`,
   fill 3 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
 - **Add a level (N4…N1):** create `csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill,

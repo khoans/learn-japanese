@@ -45,6 +45,16 @@ Data is split out of the HTML into `data/`, loaded by ordered `<script>` tags ne
 5. `data/lessons/<LEVEL>/lesson-NN.js` — one file per lesson, each calls `registerLesson("<LEVEL>", N, {...})`. **Auto-generated from CSV** (see below) — do not hand-edit.
 6. The engine — `js/core.js` → `input-kana.js` → `kanji130.js` → `decks.js` → `drill.js` → `stats.js` → `js/tools-init.js`, in that order, **last**. Note: top-level `const`s in the data scripts are shared with the `js/` files via the global lexical scope (plain classic scripts), so this only works in this exact order.
 
+### Writing convention for N5 content (learner reads kana, not raw kanji)
+The user is studying **N5** and cannot yet read most kanji. When authoring or editing
+lesson content — **grammar `vi_du`/`giai_thich` examples and `sentences.csv`** — write the
+Japanese **in kana** (hiragana, with katakana for loanwords), *not* bare kanji, so the
+reading is always visible. Either replace the kanji with its kana form (preferred, matching
+the existing Bài 1–7 style, e.g. `ごはんを たべます` not `ご飯を食べます`) or, if a kanji must
+appear, follow it with its reading. **`words.csv` is the exception** — it intentionally shows
+the kanji form in `tiengNhat` *and* the reading in the `kana` column, so keep the kanji there.
+The rule is about the running-text examples the learner drills on.
+
 ### Lessons are authored as CSV, not JS
 The source of truth for lesson content is **CSV files in `data/lessons/csv/<LEVEL>/lesson-NN/`** — one folder per lesson, each with `words.csv` (cols `tiengNhat,romaji,nghia,kana`), `sentences.csv` (cols `cau,romaji,nghia`), `grammar.csv` (cols `mau_cau,giai_thich,vi_du,vi_du_romaji,nghia`) — editable in Excel/Sheets by non-technical maintainers (Vietnamese column headers; the build maps grammar cols back to the internal `p/g/ex/exr/m` keys). `tools/build-lessons.ps1` (PowerShell 7, zero install) reads every CSV and **generates** `data/lessons/<LEVEL>/lesson-NN.js` + `data/lessons/manifest.js`, deletes generated `.js` whose CSV was removed (CSV is the single source of truth), and bumps the `sw.js` cache version. The generated `.js` files are committed/deployed (GitHub Pages serves `.js`, not CSV — CSV can't load over `file://`), but should never be hand-edited. `data/lessons/csv/_TEMPLATE/` is the copy-me lesson folder for new lessons.
 

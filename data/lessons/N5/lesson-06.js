@@ -47,6 +47,7 @@ registerLesson("N5", 6, {
     ["宿題", "shukudai", "bài tập về nhà", "しゅくだい"],
     ["テニス", "tenisu", "quần vợt", "てにす"],
     ["サッカー", "sakkaa", "bóng đá", "さっかー"],
+    ["パーティー", "paatii", "tiệc, bữa tiệc", "ぱーてぃー"],
     ["お花見", "ohanami", "ngắm hoa anh đào", "おはなみ"],
     ["何", "nani", "cái gì", "なに"],
     ["いっしょに", "isshoni", "cùng, cùng nhau", "いっしょに"],
@@ -129,15 +130,26 @@ registerLesson("N5", 6, {
     ["あした ともだちに あいます。", "Ashita tomodachi ni aimasu.", "Ngày mai tôi gặp bạn."],
     ["いつも あさごはんを たべます。", "Itsumo asagohan o tabemasu.", "Lúc nào tôi cũng ăn sáng."],
     ["ときどき サッカーを します。", "Tokidoki sakkaa o shimasu.", "Thỉnh thoảng tôi chơi bóng đá."],
-    ["しゅくだいを します。それから、テレビを みます。", "Shukudai o shimasu. Sorekara, terebi o mimasu.", "Tôi làm bài tập. Sau đó xem tivi."]
+    ["しゅくだいを します。それから、テレビを みます。", "Shukudai o shimasu. Sorekara, terebi o mimasu.", "Tôi làm bài tập. Sau đó xem tivi."],
+    ["パーティーを します。", "Paatii o shimasu.", "Tôi tổ chức tiệc."],
+    ["うちで パーティーを します。", "Uchi de paatii o shimasu.", "Tôi tổ chức tiệc ở nhà."],
+    ["にちようび なにを しますか。", "Nichiyoubi nani o shimasu ka.", "Chủ nhật bạn làm gì?"],
+    ["…テニスを します。", "…Tenisu o shimasu.", "…Tôi chơi quần vợt."],
+    ["としょかんで にほんごを べんきょうします。", "Toshokan de nihongo o benkyou shimasu.", "Tôi học tiếng Nhật ở thư viện."],
+    ["えきで しんぶんを かいます。", "Eki de shinbun o kaimasu.", "Tôi mua báo ở nhà ga."],
+    ["それは なんですか。", "Sore wa nan desu ka.", "Cái đó là gì? (何 đọc là なん)"],
+    ["…ざっしです。", "…Zasshi desu.", "…Là tạp chí."],
+    ["なんの ざっしですか。", "Nan no zasshi desu ka.", "Tạp chí về cái gì? (何 đọc là なん)"]
   ],
   grammar: [
     {"p": "① trợ từ を (tân ngữ)", "g": "[danh từ]＋を＋[động từ tha] = đối tượng chịu tác động của hành động: ごはんを たべます, てがみを かきます. を ở đây đọc là 'o'.", "ex": "ジュースを のみます。", "exr": "Juusu o nomimasu.", "m": "Tôi uống nước ép."},
-    {"p": "② なにを (làm gì)", "g": "Hỏi đối tượng của hành động dùng なにを ＋[động từ]＋か: なにを たべますか, なにを しますか.", "ex": "なにを たべますか。", "exr": "Nani o tabemasu ka.", "m": "Bạn ăn gì?"},
-    {"p": "③ なにも ～ません", "g": "なにも đi với động từ PHỦ ĐỊNH = 'không … gì cả': なにも たべません, なにも しませんでした. KHÔNG dùng với câu khẳng định.", "ex": "なにも たべません。", "exr": "Nani mo tabemasen.", "m": "Tôi không ăn gì cả."},
-    {"p": "④ trợ từ で (nơi hành động)", "g": "[nơi chốn]＋で = 'tại ~ (nơi diễn ra hành động)': レストランで たべます, みせで かいます. Phân biệt với で chỉ phương tiện ở bài 5. Hỏi nơi: どこで.", "ex": "レストランで ばんごはんを たべます。", "exr": "Resutoran de bangohan o tabemasu.", "m": "Tôi ăn cơm tối ở nhà hàng."},
-    {"p": "⑤ ～ませんか (rủ rê)", "g": "[động từ]ませんか = 'cùng … nhé / … không?', lời mời lịch sự: いっしょに たべませんか. Đồng ý: ええ、いいですね.", "ex": "いっしょに ばんごはんを たべませんか。", "exr": "Isshoni bangohan o tabemasen ka.", "m": "Cùng đi ăn cơm tối không?"},
-    {"p": "⑥ ～ましょう (đề nghị)", "g": "[động từ]ましょう = 'nào / hãy cùng …', dùng khi rủ và mong đối phương đồng ý, hoặc đáp lại lời mời: テニスを しましょう, ちょっと やすみましょう.", "ex": "いっしょに テニスを しましょう。", "exr": "Isshoni tenisu o shimashou.", "m": "Cùng chơi quần vợt nào."},
-    {"p": "⑦ それから", "g": "それから = 'sau đó, tiếp theo', nối hai hành động/câu theo thứ tự thời gian: ～ます。それから、～ます。", "ex": "ばんごはんを たべます。それから、テレビを みます。", "exr": "Bangohan o tabemasu. Sorekara, terebi o mimasu.", "m": "Tôi ăn cơm tối. Sau đó xem tivi."}
+    {"p": "② [danh từ] を します", "g": "Nhiều danh từ chỉ hoạt động / môn thể thao / sự kiện ghép với します = 'chơi / làm / tổ chức ~': サッカーを します, しゅくだいを します, パーティーを します (tổ chức tiệc), べんきょうを します. します là động từ 'làm' vạn năng.", "ex": "サッカーを します。", "exr": "Sakkaa o shimasu.", "m": "Tôi chơi bóng đá."},
+    {"p": "③ なにを (làm gì)", "g": "Hỏi đối tượng của hành động dùng なにを ＋[động từ]＋か: なにを たべますか, なにを しますか.", "ex": "なにを たべますか。", "exr": "Nani o tabemasu ka.", "m": "Bạn ăn gì?"},
+    {"p": "④ なにも ～ません", "g": "なにも đi với động từ PHỦ ĐỊNH = 'không … gì cả': なにも たべません, なにも しませんでした. KHÔNG dùng với câu khẳng định.", "ex": "なにも たべません。", "exr": "Nani mo tabemasen.", "m": "Tôi không ăn gì cả."},
+    {"p": "⑤ trợ từ で (nơi hành động)", "g": "[nơi chốn]＋で = 'tại ~ (nơi diễn ra hành động)': レストランで たべます, みせで かいます. Phân biệt với で chỉ phương tiện ở bài 5. Hỏi nơi: どこで.", "ex": "レストランで ばんごはんを たべます。", "exr": "Resutoran de bangohan o tabemasu.", "m": "Tôi ăn cơm tối ở nhà hàng."},
+    {"p": "⑥ ～ませんか (rủ rê)", "g": "[động từ]ませんか = 'cùng … nhé / … không?', lời mời lịch sự: いっしょに たべませんか. Đồng ý: ええ、いいですね.", "ex": "いっしょに ばんごはんを たべませんか。", "exr": "Isshoni bangohan o tabemasen ka.", "m": "Cùng đi ăn cơm tối không?"},
+    {"p": "⑦ ～ましょう (đề nghị)", "g": "[động từ]ましょう = 'nào / hãy cùng …', dùng khi rủ và mong đối phương đồng ý, hoặc đáp lại lời mời: テニスを しましょう, ちょっと やすみましょう.", "ex": "いっしょに テニスを しましょう。", "exr": "Isshoni tenisu o shimashou.", "m": "Cùng chơi quần vợt nào."},
+    {"p": "⑧ それから", "g": "それから = 'sau đó, tiếp theo', nối hai hành động/câu theo thứ tự thời gian: ～ます。それから、～ます。", "ex": "ばんごはんを たべます。それから、テレビを みます。", "exr": "Bangohan o tabemasu. Sorekara, terebi o mimasu.", "m": "Tôi ăn cơm tối. Sau đó xem tivi."},
+    {"p": "⑨ 何 đọc なん hay なに", "g": "何 (cái gì) có HAI cách đọc. Đọc なん khi đứng trước です hoặc trước phụ âm t / d / n (なんですか, なんの) và khi hỏi số đếm. Đọc なに trong các trường hợp còn lại, đặc biệt trước trợ từ を: なにを たべますか (nani o).", "ex": "なにを かいますか。/ それは なんですか。", "exr": "Nani o kaimasu ka. / Sore wa nan desu ka.", "m": "Bạn mua gì? (đọc なに) / Cái đó là gì? (đọc なん)"}
   ]
 });
