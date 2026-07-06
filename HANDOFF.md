@@ -2,7 +2,7 @@
 
 Read this first, then `CLAUDE.md` for the deep architecture. This file is the
 fast map + the tribal knowledge (gotchas, current state, how to verify) that
-isn't obvious from the code. Last updated: **2026-07-01**.
+isn't obvious from the code. Last updated: **2026-07-07**.
 
 ## 30-second orientation
 
@@ -129,6 +129,20 @@ or `file://`** — don't rely on it. Instead:
   `LSENT` row `[jp, romaji, lessonNum, nghia, level]`;
   `GRAM` = `{ "<num>": [ {p,g,ex,exr,m}, … ] }`. `poolForKey` emits a uniform 6-tuple
   `[prompt, answer, extra, romaji, compareKey, kanjiForm]`.
+- **Two "Đã thuộc" (mastered) buckets — session vs. permanent.** The mastery panel
+  (`masGrp`) is a **3-column transfer** (`makeTriTransfer` in `js/drill.js`):
+  *Chưa thuộc* | *Đã thuộc (session)* | *Đã thuộc (cố định)* — three **mutually
+  exclusive** states, moved via `setMasteryState(keys, 'rem'|'ses'|'perm')`.
+  • **session** = `session.skip` (lives in `jp_reader_cur_v2`), **cleared by `stopSession`**.
+  • **permanent** = the `mastered` global persisted to its **own** store **`jp_mastered_v1`**
+  (loaded/saved in `js/decks.js` via `saveMastered`) — **NOT** touched by session reset;
+  survives across every session until moved back. Both are keyed `deckKey() § cardKey`
+  (`skipKeyFor`) → **deck/mode-scoped** (input `W:` vs. MC `M:` are different decks, so
+  mastery doesn't carry across modes), and both remove the card from the drill: see
+  `isSkipped`/`isMastered` in `pickItem` (pool filter), `checkAllMastered`, `updateCoverage`.
+  Card actions: **✓ Đã thuộc (bỏ qua)** = key `M` → `skipCurrent()` (session);
+  **📌 Thuộc cố định** = key `L` → `masterCurrent()` (permanent). Key slots are generic
+  (`data-slot` + `keys.*`), so a new shortcut = add to both `keys` defaults + a label row.
 - **CRLF:** the PS build writes CRLF; git normalizes to LF on commit (warnings are harmless).
 - **sw cache:** the build auto-bumps `const CACHE = 'jp-n5-vN'`. If it drifts high from
   repeated test builds, reset to one bump over the deployed value before committing.
@@ -147,15 +161,18 @@ or `file://`** — don't rely on it. Instead:
   boot-sim (stub DOM, load registry+core-data+manifest+lessons + the 7 files in order).
 - **No tooling:** there is no npm/make/lint/test. Don't look for them.
 
-## Current state (2026-07-02)
+## Current state (2026-07-07)
 
-- One level, **N5**, lessons **1–7**. 329 words, 51 grammar points.
-  Sentences per lesson: 1:30, 2:30, 3:23, **4:46, 5:50, 6:67**, 7:20.
-- Single UI is now **`index.html`** (was `kana_speed_trainer_v2.html`); engine split into
-  `js/`; static layout (`assets/`, `js/`, `data/`, `tools/`).
+- One level, **N5**, lessons **1–10** (run `tools/build-lessons.ps1` — it prints the
+  current word/sentence/grammar totals). Bài 4/5/7 recently gained time-phrase vocab
+  (buổi × ngày, "thứ … kế tiếp / tuần sau") and Bài 7 the polite-offer set (いかがですか…).
+- Single UI is **`index.html`**; engine split into `js/`; static layout
+  (`assets/`, `js/`, `data/`, `tools/`).
+- **Two "Đã thuộc" buckets shipped** (see the gotcha above): 3-column mastery transfer
+  (session `session.skip` vs. permanent `jp_mastered_v1`) + **📌 Thuộc cố định** button /
+  key `L` (`masterCurrent`) alongside the session **M** / `skipCurrent`.
 - Working tree clean (all pushed to `main`).
-- Recent commits: `fc88659` (split app.js into js/ + JSDoc),
-  reorg to `index.html` + `assets/` + doc refresh (this),
+- Recent commits: `9db0c5b` (3-column mastery + permanent-mastered key `L`),
   `1dd07e0` (interactive stroke-writing practice for kanji & radicals).
 - Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
   sentence practice for now).

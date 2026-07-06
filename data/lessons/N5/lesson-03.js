@@ -22,6 +22,7 @@ registerLesson("N5", 3, {
     ["ロビー", "robii", "sảnh đợi", "ろびー"],
     ["部屋", "heya", "căn phòng", "へや"],
     ["トイレ", "toire", "nhà vệ sinh — lịch sự: おてあらい", "といれ"],
+    ["お手洗い", "otearai", "nhà vệ sinh (lịch sự của トイレ)", "おてあらい"],
     ["階段", "kaidan", "cầu thang", "かいだん"],
     ["エレベーター", "erebeetaa", "thang máy", "えれべーたー"],
     ["エスカレーター", "esukareetaa", "thang cuốn", "えすかれーたー"],
