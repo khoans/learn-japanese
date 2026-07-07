@@ -360,6 +360,16 @@ let mastered = [];
         } catch (e) {
         }
     }
+    // Di trú: khoá cũ theo bộ "deckKey§từ" -> theo chính TỪ (bỏ phần trước dấu §). Khử trùng lặp.
+    var changed = false, seen = {}, out = [];
+    mastered.forEach(function (k) {
+        var i = k.lastIndexOf('§');
+        var w = i >= 0 ? k.slice(i + 1) : k;
+        if (i >= 0) changed = true;
+        if (!seen[w]) { seen[w] = 1; out.push(w); }
+    });
+    mastered = out;
+    if (changed) saveMastered();
 })();
 
 function saveMastered() {

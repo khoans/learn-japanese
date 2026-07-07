@@ -139,10 +139,12 @@ or `file://`** — don't rely on it. Instead:
   • **session** = `session.skip` (lives in `jp_reader_cur_v2`), **cleared by `stopSession`**.
   • **permanent** = the `mastered` global persisted to its **own** store **`jp_mastered_v1`**
   (loaded/saved in `js/decks.js` via `saveMastered`) — **NOT** touched by session reset;
-  survives across every session until moved back. Both are keyed `deckKey() § cardKey`
-  (`skipKeyFor`) → **deck/mode-scoped** (input `W:` vs. MC `M:` are different decks, so
-  mastery doesn't carry across modes), and both remove the card from the drill: see
-  `isSkipped`/`isMastered` in `pickItem` (pool filter), `checkAllMastered`, `updateCoverage`.
+  survives across every session until moved back. **session** is keyed `deckKey() § cardKey`
+  (`skipKeyFor`, deck-scoped); **permanent** is keyed by the **word itself** (`card[0]`, NOT
+  deck-scoped — like the handwrite tag; old deck-scoped keys migrated on load in `js/decks.js`)
+  so "đã ghi nhớ" follows the word across every deck/direction. Both remove the card from the
+  drill: see `isSkipped`/`isMastered` in `pickItem` (pool filter), `checkAllMastered`,
+  `updateCoverage` (which shows **Đã thuộc** / **Còn lại** / **Đã ghi nhớ** counts).
   Card actions: **✓ Đã thuộc (bỏ qua)** = key `M` → `skipCurrent()` (session);
   **📌 Thuộc cố định** = key `L` → `masterCurrent()` (permanent). Key slots are generic
   (`data-slot` + `keys.*`), so a new shortcut = add to both `keys` defaults + a label row.

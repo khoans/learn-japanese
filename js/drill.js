@@ -654,13 +654,13 @@ function setMasteryState(keys, toState) {
     if (!session.skip) session.skip = [];
     keys.forEach(function (k) {
         const wasRem = masteryStateOf(k) === 'rem';
-        const sk = skipKeyFor(k);
+        const sk = skipKeyFor(k);           // session: theo bộ
         let i = session.skip.indexOf(sk);
         if (i >= 0) session.skip.splice(i, 1);
-        i = mastered.indexOf(sk);
+        i = mastered.indexOf(k);            // cố định: theo chính từ (card[0])
         if (i >= 0) mastered.splice(i, 1);
         if (toState === 'ses') session.skip.push(sk);
-        else if (toState === 'perm') mastered.push(sk);
+        else if (toState === 'perm') { if (mastered.indexOf(k) < 0) mastered.push(k); }
         // Tính 1 câu "đúng" khi chuyển từ Chưa thuộc -> (session/cố định) trong lúc đang chạy.
         if (wasRem && toState !== 'rem' && phase === 'running') recordCorrectKey(k);
     });
@@ -765,8 +765,10 @@ function isSkipped(cardKey) {
     return session.skip && session.skip.indexOf(skipKeyFor(cardKey)) >= 0;
 }
 
+// "Đã ghi nhớ" (cố định) khoá theo CHÍNH TỪ (card[0]) — KHÔNG kèm deckKey — nên nó xuyên suốt
+// mọi bộ/hướng (giống tag luyện viết), đúng nghĩa "đã nhớ từ này rồi". (session.skip vẫn theo bộ.)
 function isMastered(cardKey) {
-    return mastered.indexOf(skipKeyFor(cardKey)) >= 0;
+    return mastered.indexOf(cardKey) >= 0;
 }
 
 // ===== Thẻ tag "nên luyện viết tay" — khoá theo chính từ (card[0]), độc lập bộ/chế độ =====
