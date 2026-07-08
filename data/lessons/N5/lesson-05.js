@@ -76,7 +76,12 @@ registerLesson("N5", 5, {
     ["今度の土曜日", "kondo no doyoubi", "thứ bảy kế tiếp", "こんどのどようび"],
     ["来週の土曜日", "raishuu no doyoubi", "thứ bảy tuần sau", "らいしゅうのどようび"],
     ["今度の日曜日", "kondo no nichiyoubi", "chủ nhật kế tiếp", "こんどのにちようび"],
-    ["来週の日曜日", "raishuu no nichiyoubi", "chủ nhật tuần sau", "らいしゅうのにちようび"]
+    ["来週の日曜日", "raishuu no nichiyoubi", "chủ nhật tuần sau", "らいしゅうのにちようび"],
+    ["番線", "bansen", "đường ray / sân ga số ~ (vd 3番線)", "ばんせん"],
+    ["次の", "tsugi no", "tiếp theo / kế tiếp", "つぎの"],
+    ["普通", "futsuu", "tàu thường (dừng mọi ga); bình thường", "ふつう"],
+    ["急行", "kyuukou", "tàu tốc hành (nhanh hơn)", "きゅうこう"],
+    ["特急", "tokkyuu", "tàu siêu tốc (dừng rất ít ga)", "とっきゅう"]
   ],
   sentences: [
     ["がっこうへ いきます。", "Gakkou e ikimasu.", "Tôi đi đến trường."],
