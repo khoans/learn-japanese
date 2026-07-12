@@ -47,6 +47,7 @@ registerLesson("N5", 8, {
     ["スープ", "suupu", "súp", "スープ"],
     ["お菓子", "okashi", "bánh kẹo", "おかし"],
     ["ケーキ", "keeki", "bánh ngọt (bánh kem)", "ケーキ"],
+    ["りんご", "ringo", "quả táo", "りんご"],
     ["車", "kuruma", "xe ô tô", "くるま"],
     ["所", "tokoro", "nơi, chỗ", "ところ"],
     ["故郷", "furusato", "quê hương", "ふるさと"],
