@@ -42,6 +42,7 @@ registerLesson("N5", 8, {
     ["山", "yama", "núi", "やま"],
     ["空", "sora", "bầu trời", "そら"],
     ["町", "machi", "thị trấn", "まち"],
+    ["お寺", "otera", "ngôi chùa", "おてら"],
     ["食べ物", "tabemono", "đồ ăn", "たべもの"],
     ["スープ", "suupu", "súp", "スープ"],
     ["お菓子", "okashi", "bánh kẹo", "おかし"],
