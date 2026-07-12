@@ -19,6 +19,7 @@ registerLesson("N5", 8, {
     ["簡単", "kantan", "đơn giản, dễ (tính từ な)", "かんたん"],
     ["大きい", "ookii", "lớn, to", "おおきい"],
     ["小さい", "chiisai", "bé, nhỏ", "ちいさい"],
+    ["狭い", "semai", "chật, hẹp", "せまい"],
     ["新しい", "atarashii", "mới", "あたらしい"],
     ["古い", "furui", "cũ", "ふるい"],
     ["いい", "ii", "tốt", "いい"],
