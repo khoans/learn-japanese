@@ -52,6 +52,7 @@ registerLesson("N5", 8, {
     ["故郷", "furusato", "quê hương", "ふるさと"],
     ["寮", "ryou", "kí túc xá", "りょう"],
     ["勉強", "benkyou", "học", "べんきょう"],
+    ["問題", "mondai", "câu hỏi (vấn đề; bài toán)", "もんだい"],
     ["生活", "seikatsu", "cuộc sống", "せいかつ"],
     ["仕事", "shigoto", "công việc", "しごと"],
     ["どう", "dou", "thế nào?", "どう"],
