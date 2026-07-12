@@ -40,6 +40,7 @@ registerLesson("N5", 8, {
     ["青い", "aoi", "xanh da trời", "あおい"],
     ["桜", "sakura", "anh đào", "さくら"],
     ["山", "yama", "núi", "やま"],
+    ["空", "sora", "bầu trời", "そら"],
     ["町", "machi", "thị trấn", "まち"],
     ["食べ物", "tabemono", "đồ ăn", "たべもの"],
     ["スープ", "suupu", "súp", "スープ"],
