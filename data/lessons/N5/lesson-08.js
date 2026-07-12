@@ -176,7 +176,15 @@ registerLesson("N5", 8, {
     ["おおさかは どんな まちですか。", "Oosaka wa donna machi desu ka.", "Osaka là thành phố thế nào?"],
     ["…にぎやかな まちです。", "…Nigiyaka na machi desu.", "…Là thành phố náo nhiệt."],
     ["この へやは せまいですが、きれいです。", "Kono heya wa semai desu ga, kirei desu.", "Phòng này chật nhưng sạch."],
-    ["この みせは やすいです。そして、おいしいです。", "Kono mise wa yasui desu. Soshite, oishii desu.", "Cửa hàng này rẻ. Và ngon."]
+    ["この みせは やすいです。そして、おいしいです。", "Kono mise wa yasui desu. Soshite, oishii desu.", "Cửa hàng này rẻ. Và ngon."],
+    ["ミラーさんの かさは どれですか。", "Miraa-san no kasa wa dore desu ka.", "Cái ô của anh Miller là cái nào?"],
+    ["…あの あおい かさです。", "…Ano aoi kasa desu.", "…Là cái ô màu xanh kia."],
+    ["あなたの かばんは どれですか。", "Anata no kaban wa dore desu ka.", "Chiếc cặp của bạn là cái nào?"],
+    ["…この くろい かばんです。", "…Kono kuroi kaban desu.", "…Là chiếc cặp màu đen này."],
+    ["どれが やまださんの くるまですか。", "Dore ga Yamada-san no kuruma desu ka.", "Cái nào là xe của anh Yamada?"],
+    ["…あの しろい くるまです。", "…Ano shiroi kuruma desu.", "…Là chiếc xe màu trắng kia."],
+    ["どれが おいしいですか。", "Dore ga oishii desu ka.", "Cái nào ngon?"],
+    ["…その あかい りんごです。", "…Sono akai ringo desu.", "…Là quả táo màu đỏ đó."]
   ],
   grammar: [
     {"p": "① N は [tính từ] です", "g": "Câu miêu tả tính chất: [danh từ]は[tính từ]です. Tính từ đuôi い giữ nguyên (たかいです); tính từ đuôi な BỎ な khi đứng cuối câu (きれいです). Lịch sự thêm です.", "ex": "さくらは きれいです。", "exr": "Sakura wa kirei desu.", "m": "Hoa anh đào đẹp."},
@@ -185,6 +193,7 @@ registerLesson("N5", 8, {
     {"p": "④ とても / あまり", "g": "とても = 'rất', đi với câu khẳng định (とても たかいです). あまり = 'không ~ lắm', LUÔN đi với câu PHỦ ĐỊNH (あまり たかくないです).", "ex": "にほんごは あまり やさしくないです。", "exr": "Nihongo wa amari yasashikunai desu.", "m": "Tiếng Nhật không dễ lắm."},
     {"p": "⑤ ～は どうですか", "g": "Hỏi cảm nhận/ấn tượng về cái gì đó: [danh từ]は どうですか — '~ thế nào?'. Trả lời bằng một tính từ.", "ex": "にほんの せいかつは どうですか。", "exr": "Nihon no seikatsu wa dou desu ka.", "m": "Cuộc sống ở Nhật thế nào?"},
     {"p": "⑥ どんな + danh từ", "g": "どんな + [danh từ] = 'danh từ ~ như thế nào'. Hỏi để đối phương miêu tả bằng tính từ.", "ex": "きょうとは どんな まちですか。", "exr": "Kyouto wa donna machi desu ka.", "m": "Kyoto là thị trấn thế nào?"},
-    {"p": "⑦ ～が (nhưng)", "g": "が đứng CUỐI vế trước, nối hai vế trái ngược nghĩa = 'nhưng': [vế 1]が、[vế 2].", "ex": "にほんごは むずかしいですが、おもしろいです。", "exr": "Nihongo wa muzukashii desu ga, omoshiroi desu.", "m": "Tiếng Nhật khó nhưng thú vị."}
+    {"p": "⑦ ～が (nhưng)", "g": "が đứng CUỐI vế trước, nối hai vế trái ngược nghĩa = 'nhưng': [vế 1]が、[vế 2].", "ex": "にほんごは むずかしいですが、おもしろいです。", "exr": "Nihongo wa muzukashii desu ga, omoshiroi desu.", "m": "Tiếng Nhật khó nhưng thú vị."},
+    {"p": "⑧ どれ (cái nào)", "g": "どれ = 'cái nào' — hỏi để CHỌN 1 trong 3 vật trở lên (chọn giữa 2 vật thì dùng どちら). Mẫu: [vật]は どれですか / どれが [tính từ]ですか. Trả lời bằng これ／それ／あれ, thường kèm tính từ bổ nghĩa để chỉ rõ: あの あかい かさです. ⚠️ どれ đứng MỘT MÌNH (không kèm danh từ); nếu kèm danh từ phải dùng どの: どの かさ = 'cái ô nào'.", "ex": "ミラーさんの かさは どれですか。…あの あおい かさです。", "exr": "Miraa-san no kasa wa dore desu ka. …Ano aoi kasa desu.", "m": "Cái ô của anh Miller là cái nào? …Là cái ô màu xanh kia."}
   ]
 });
