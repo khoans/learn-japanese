@@ -44,6 +44,7 @@ registerLesson("N5", 8, {
     ["食べ物", "tabemono", "đồ ăn", "たべもの"],
     ["車", "kuruma", "xe ô tô", "くるま"],
     ["所", "tokoro", "nơi, chỗ", "ところ"],
+    ["故郷", "furusato", "quê hương", "ふるさと"],
     ["寮", "ryou", "kí túc xá", "りょう"],
     ["勉強", "benkyou", "học", "べんきょう"],
     ["生活", "seikatsu", "cuộc sống", "せいかつ"],
