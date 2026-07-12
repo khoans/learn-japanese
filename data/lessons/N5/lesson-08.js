@@ -7,10 +7,10 @@
 registerLesson("N5", 8, {
   words: [
     ["ハンサム", "hansamu", "đẹp trai", "ハンサム"],
-    ["きれい", "kirei", "đẹp, sạch", "きれい"],
+    ["きれい", "kirei", "đẹp, sạch (tính từ な — dù đuôi い; phủ định: きれいじゃ ありません)", "きれい"],
     ["しずか", "shizuka", "yên tĩnh", "しずか"],
     ["にぎやか", "nigiyaka", "náo nhiệt", "にぎやか"],
-    ["ゆうめい", "yuumei", "nổi tiếng", "ゆうめい"],
+    ["ゆうめい", "yuumei", "nổi tiếng (tính từ な — dù đuôi い; phủ định: ゆうめいじゃ ありません)", "ゆうめい"],
     ["しんせつ", "shinsetsu", "tốt bụng, thân thiện", "しんせつ"],
     ["げんき", "genki", "khỏe", "げんき"],
     ["ひま", "hima", "rảnh rỗi", "ひま"],
