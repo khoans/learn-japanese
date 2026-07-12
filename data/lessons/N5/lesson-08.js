@@ -63,6 +63,7 @@ registerLesson("N5", 8, {
     ["問題", "mondai", "câu hỏi (vấn đề; bài toán)", "もんだい"],
     ["生活", "seikatsu", "cuộc sống", "せいかつ"],
     ["仕事", "shigoto", "công việc", "しごと"],
+    ["慣れます", "naremasu", "làm quen, quen với (đi với trợ từ に)", "なれます"],
     ["どう", "dou", "thế nào?", "どう"],
     ["どんな", "donna", "~ như thế nào / loại ~ nào", "どんな"],
     ["とても", "totemo", "rất", "とても"],
