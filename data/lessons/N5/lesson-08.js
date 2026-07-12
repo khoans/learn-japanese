@@ -16,6 +16,7 @@ registerLesson("N5", 8, {
     ["ひま", "hima", "rảnh rỗi", "ひま"],
     ["べんり", "benri", "tiện lợi", "べんり"],
     ["すてき", "suteki", "đẹp, hay", "すてき"],
+    ["簡単", "kantan", "đơn giản, dễ (tính từ な)", "かんたん"],
     ["大きい", "ookii", "lớn, to", "おおきい"],
     ["小さい", "chiisai", "bé, nhỏ", "ちいさい"],
     ["新しい", "atarashii", "mới", "あたらしい"],
