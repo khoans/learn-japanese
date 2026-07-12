@@ -44,6 +44,7 @@ registerLesson("N5", 8, {
     ["町", "machi", "thị trấn", "まち"],
     ["お寺", "otera", "ngôi chùa", "おてら"],
     ["建物", "tatemono", "tòa nhà", "たてもの"],
+    ["猫", "neko", "con mèo", "ねこ"],
     ["食べ物", "tabemono", "đồ ăn (nói chung — mọi thứ ăn được: cơm, bánh, trái cây…; chưa/không cần nấu)", "たべもの"],
     ["料理", "ryouri", "món ăn (đã nấu, chế biến); cũng nghĩa là việc nấu ăn", "りょうり"],
     ["スープ", "suupu", "súp", "スープ"],
