@@ -93,6 +93,7 @@ registerLesson("N5", 8, {
     ["酸っぱい", "suppai", "chua", "すっぱい"],
     ["濃い", "koi", "đậm (đặc)", "こい"],
     ["薄い", "usui", "nhạt (mỏng)", "うすい"],
+    ["天気", "tenki", "thời tiết", "てんき"],
     ["春", "haru", "mùa xuân", "はる"],
     ["夏", "natsu", "mùa hè", "なつ"],
     ["秋", "aki", "mùa thu", "あき"],
