@@ -118,8 +118,8 @@ registerLesson("N5", 7, {
     ["…いいえ、まだです。", "…Iie, mada desu.", "…Chưa, tôi vẫn chưa."],
     ["もう きっぷを かいましたか。", "Mou kippu o kaimashita ka.", "Bạn mua vé chưa?"],
     ["…はい、もう かいました。", "…Hai, mou kaimashita.", "…Vâng, tôi mua rồi."],
-    ["コーヒー、のみませんか。", "Koohii", "nomimasen ka."],
-    ["ごはん、たべましたか。", "Gohan", "tabemashita ka."],
+    ["コーヒー、のみませんか。", "Koohii, nomimasen ka.", "Uống cà phê không? (lược bỏ trợ từ を)"],
+    ["ごはん、たべましたか。", "Gohan, tabemashita ka.", "Ăn cơm chưa? (lược bỏ trợ từ を)"],
     ["おちゃは いかがですか。", "Ocha wa ikaga desu ka.", "Mời chị dùng trà nhé?"],
     ["…ありがとうございます。いただきます。", "…Arigatou gozaimasu. Itadakimasu.", "…Cảm ơn ạ. Tôi xin phép dùng."],
     ["コーヒーは いかがですか。", "Koohii wa ikaga desu ka.", "Anh dùng cà phê nhé?"],
@@ -162,7 +162,7 @@ registerLesson("N5", 7, {
     {"p": "④ [người]に [vật]を もらいます", "g": "Nhận cái gì TỪ AI: dùng に (hoặc から) chỉ NGƯỜI CHO. Nhóm động từ nhận về: もらいます, かります (mượn), ならいます (học từ ai). ⚠️ Khi nguồn cho là TỔ CHỨC (công ty, trường học) thì CHỈ dùng から, không dùng に: かいしゃから もらいます. Hỏi: だれに.", "ex": "やまださんに ほんを もらいました。", "exr": "Yamada-san ni hon o moraimashita.", "m": "Tôi nhận sách từ anh Yamada."},
     {"p": "⑤ もう ～ました", "g": "もう＋[động từ]ました = 'đã … rồi'. Câu hỏi もう ～ましたか = 'đã … chưa?'. Trả lời khẳng định: はい、もう ～ました. Trả lời phủ định xem mục ⑥.", "ex": "もう ひるごはんを たべましたか。", "exr": "Mou hirugohan o tabemashita ka.", "m": "Bạn ăn trưa chưa?"},
     {"p": "⑥ まだです (chưa)", "g": "Trả lời PHỦ ĐỊNH cho câu hỏi もう ～ましたか: いいえ、まだです = 'chưa (vẫn chưa)'. ⚠️ KHÔNG trả lời bằng ～ませんでした — vì ～ませんでした nghĩa là 'đã KHÔNG làm (trong quá khứ)', chứ không phải 'CHƯA làm (nhưng sẽ làm)'.", "ex": "もう にもつを おくりましたか。…いいえ、まだです。", "exr": "Mou nimotsu o okurimashita ka. …Iie", "m": "mada desu."},
-    {"p": "⑦ Lược bỏ trợ từ (văn nói)", "g": "Trong hội thoại thân mật, các trợ từ を、へ (đôi khi cả は) thường được LƯỢC BỎ: コーヒー（を）のみませんか, にちようび どこ（へ）いきますか. Văn viết / văn lịch sự thì vẫn giữ đủ trợ từ.", "ex": "コーヒー、のみませんか。", "exr": "Koohii", "m": "nomimasen ka."},
+    {"p": "⑦ Lược bỏ trợ từ (văn nói)", "g": "Trong hội thoại thân mật, các trợ từ を、へ (đôi khi cả は) thường được LƯỢC BỎ: コーヒー（を）のみませんか, にちようび どこ（へ）いきますか. Văn viết / văn lịch sự thì vẫn giữ đủ trợ từ.", "ex": "コーヒー、のみませんか。", "exr": "Koohii, nomimasen ka.", "m": "Uống cà phê không? (lược bỏ trợ từ を)"},
     {"p": "⑧ [vật]は いかがですか (mời lịch sự)", "g": "Mẫu MỜI DÙNG lịch sự khi tiếp khách / ở quán: [đồ ăn/uống]は いかがですか = 'Mời anh/chị dùng ~ nhé?'. いかがですか là dạng lịch sự của どうですか. ⚠️ Phân biệt: ～は いかがですか = MỜI (chủ nhà mời khách dùng); còn ～ませんか (bài 6) = RỦ cùng làm ('cùng ~ nhé?'). Đáp lại khi nhận: ありがとうございます。いただきます (Cảm ơn, tôi xin phép dùng); có thể mời kèm どうぞ (xin mời).", "ex": "おちゃは いかがですか。", "exr": "Ocha wa ikaga desu ka.", "m": "Mời chị dùng trà nhé?"}
   ]
 });
