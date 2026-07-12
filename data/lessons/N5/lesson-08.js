@@ -228,7 +228,11 @@ registerLesson("N5", 8, {
     ["この レストランは きれいです。そして、しずかです。", "Kono resutoran wa kirei desu. Soshite, shizuka desu.", "Nhà hàng này sạch. Và yên tĩnh."],
     ["この ケーキは やすいです。そして、おいしいです。", "Kono keeki wa yasui desu. Soshite, oishii desu.", "Bánh kem này rẻ. Và ngon."],
     ["この まちは にぎやかです。そして、べんりです。", "Kono machi wa nigiyaka desu. Soshite, benri desu.", "Thị trấn này náo nhiệt. Và tiện lợi."],
-    ["かのじょは しんせつです。そして、げんきです。", "Kanojo wa shinsetsu desu. Soshite, genki desu.", "Cô ấy tốt bụng. Và khỏe khoắn."]
+    ["かのじょは しんせつです。そして、げんきです。", "Kanojo wa shinsetsu desu. Soshite, genki desu.", "Cô ấy tốt bụng. Và khỏe khoắn."],
+    ["さくらだいがくは おおきい だいがくでは ありませんか。", "Sakura daigaku wa ookii daigaku dewa arimasen ka.", "Trường đại học Sakura chẳng phải là trường đại học lớn sao?"],
+    ["この みせは ゆうめいでは ありませんか。", "Kono mise wa yuumei dewa arimasen ka.", "Cửa hàng này chẳng phải nổi tiếng sao?"],
+    ["きょうとは しずかな まちでは ありませんか。", "Kyouto wa shizuka na machi dewa arimasen ka.", "Kyoto chẳng phải là thành phố yên tĩnh sao?"],
+    ["あの ホテルは たかい ホテルでは ありませんか。", "Ano hoteru wa takai hoteru dewa arimasen ka.", "Khách sạn kia chẳng phải là khách sạn đắt sao?"]
   ],
   grammar: [
     {"p": "① N は [tính từ] です", "g": "Câu miêu tả tính chất: [danh từ]は[tính từ]です. Tính từ đuôi い giữ nguyên (たかいです); tính từ đuôi な BỎ な khi đứng cuối câu (きれいです). Lịch sự thêm です.", "ex": "さくらは きれいです。", "exr": "Sakura wa kirei desu.", "m": "Hoa anh đào đẹp."},
@@ -238,6 +242,7 @@ registerLesson("N5", 8, {
     {"p": "⑤ ～は どうですか", "g": "Hỏi cảm nhận/ấn tượng về cái gì đó: [danh từ]は どうですか — '~ thế nào?'. Trả lời bằng một tính từ.", "ex": "にほんの せいかつは どうですか。", "exr": "Nihon no seikatsu wa dou desu ka.", "m": "Cuộc sống ở Nhật thế nào?"},
     {"p": "⑥ どんな + danh từ", "g": "どんな + [danh từ] = 'danh từ ~ như thế nào'. Hỏi để đối phương miêu tả bằng tính từ.", "ex": "きょうとは どんな まちですか。", "exr": "Kyouto wa donna machi desu ka.", "m": "Kyoto là thị trấn thế nào?"},
     {"p": "⑦ ～が (nhưng)", "g": "が đứng CUỐI vế trước, nối hai vế trái ngược nghĩa = 'nhưng': [vế 1]が、[vế 2].", "ex": "にほんごは むずかしいですが、おもしろいです。", "exr": "Nihongo wa muzukashii desu ga, omoshiroi desu.", "m": "Tiếng Nhật khó nhưng thú vị."},
-    {"p": "⑧ どれ (cái nào)", "g": "どれ = 'cái nào' — hỏi để CHỌN 1 trong 3 vật trở lên (chọn giữa 2 vật thì dùng どちら). Mẫu: [vật]は どれですか / どれが [tính từ]ですか. Trả lời bằng これ／それ／あれ, thường kèm tính từ bổ nghĩa để chỉ rõ: あの あかい かさです. ⚠️ どれ đứng MỘT MÌNH (không kèm danh từ); nếu kèm danh từ phải dùng どの: どの かさ = 'cái ô nào'.", "ex": "ミラーさんの かさは どれですか。…あの あおい かさです。", "exr": "Miraa-san no kasa wa dore desu ka. …Ano aoi kasa desu.", "m": "Cái ô của anh Miller là cái nào? …Là cái ô màu xanh kia."}
+    {"p": "⑧ どれ (cái nào)", "g": "どれ = 'cái nào' — hỏi để CHỌN 1 trong 3 vật trở lên (chọn giữa 2 vật thì dùng どちら). Mẫu: [vật]は どれですか / どれが [tính từ]ですか. Trả lời bằng これ／それ／あれ, thường kèm tính từ bổ nghĩa để chỉ rõ: あの あかい かさです. ⚠️ どれ đứng MỘT MÌNH (không kèm danh từ); nếu kèm danh từ phải dùng どの: どの かさ = 'cái ô nào'.", "ex": "ミラーさんの かさは どれですか。…あの あおい かさです。", "exr": "Miraa-san no kasa wa dore desu ka. …Ano aoi kasa desu.", "m": "Cái ô của anh Miller là cái nào? …Là cái ô màu xanh kia."},
+    {"p": "⑨ ～では ありませんか (chẳng phải ~ sao?)", "g": "では ありません là dạng TRANG TRỌNG (văn viết/lịch sự) của じゃ ありません — phủ định của DANH TỪ và tính từ な (は đọc là 'wa'). Thêm か → CÂU HỎI XÁC NHẬN mang sắc thái 'chẳng phải là ~ sao? / ~ đúng không?': [N1]は [N2]では ありませんか. ⚠️ 大きい 大学 = 'trường đại học lớn' (tính từ い bổ nghĩa danh từ) → CẢ CỤM là danh từ, nên phủ định bằng では ありません, KHÔNG phải おおきくない.", "ex": "さくらだいがくは おおきい だいがくでは ありませんか。", "exr": "Sakura daigaku wa ookii daigaku dewa arimasen ka.", "m": "Trường đại học Sakura chẳng phải là trường đại học lớn sao?"}
   ]
 });
