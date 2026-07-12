@@ -282,7 +282,13 @@ table{ width:100%; border-collapse:collapse; }
     </select></div>
 </div>
 <div id="baiWrap" class="field" style="display:none;">
-  <label class="cap">Chọn bài (kết hợp được nhiều bài)</label>
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+    <label class="cap" style="margin:0;">Chọn bài (kết hợp được nhiều bài)</label>
+    <span class="chips" style="margin:0;">
+      <button type="button" id="baiAll" class="btn small">Chọn tất cả</button>
+      <button type="button" id="baiNone" class="btn small">Bỏ chọn tất cả</button>
+    </span>
+  </div>
   <div id="baiBtns" class="chips"></div>
 </div>
 <div id="lwordFormWrap" class="field" style="display:none;">

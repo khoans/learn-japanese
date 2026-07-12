@@ -817,6 +817,21 @@ document.querySelectorAll('[data-bai]').forEach(function (b) {
         refreshMas();
     });
 });
+function setAllBai(on) {
+    document.querySelectorAll('[data-bai]').forEach(function (b) {
+        b.classList.toggle('active', on);
+    });
+    updateCoverage();
+    if (phase === 'running') nextCard();
+    refreshPick();
+    refreshMas();
+}
+if ($('baiAll')) $('baiAll').addEventListener('click', function () {
+    setAllBai(true);
+});
+if ($('baiNone')) $('baiNone').addEventListener('click', function () {
+    setAllBai(false);
+});
 document.querySelectorAll('[data-krow]').forEach(function (b) {
     b.addEventListener('click', function () {
         b.classList.toggle('active');
