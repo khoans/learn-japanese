@@ -154,12 +154,16 @@ let activeChip="all", query="";
 function totals(){
   let lw=0,lessons=0; DATA.levels.forEach(L=>L.lessons.forEach(x=>{lw+=x.words.length;lessons++;}));
   let tw=DATA.themes.reduce((a,t)=>a+t.words.length,0);
-  return {lw,lessons,tw,themes:DATA.themes.length};
+  let sent=JPLessons.sentences().length;
+  let G=JPLessons.grammar(), gram=0; Object.keys(G).forEach(k=>{gram+=G[k].length;});
+  return {lw,lessons,tw,themes:DATA.themes.length,sent,gram};
 }
 function buildStats(){
   const t=totals();
   document.getElementById("stats").innerHTML=
     "<span><b>"+(t.lw+t.tw)+"</b> từ</span>"+
+    "<span><b>"+t.sent+"</b> câu</span>"+
+    "<span><b>"+t.gram+"</b> điểm ngữ pháp</span>"+
     "<span><b>"+t.lessons+"</b> bài</span>"+
     "<span><b>"+t.lw+"</b> từ theo bài</span>"+
     "<span><b>"+t.themes+"</b> chủ đề · <b>"+t.tw+"</b> từ</span>";
