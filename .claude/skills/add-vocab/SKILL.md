@@ -1,6 +1,6 @@
 ---
 name: add-vocab
-description: Thêm tự động MỘT bài Minna no Nihongo (N5) vào app — từ vựng + câu + ngữ pháp. Dùng khi người dùng gõ "/add-vocab <số bài>" (vd /add-vocab 10). Lấy DANH SÁCH TỪ VỰNG từ vnjpclub theo số bài, TỰ SOẠN câu + ngữ pháp theo mẫu chuẩn, sinh CSV rồi chạy build. KHÔNG dùng cho ngôn ngữ khác hay việc khác.
+description: Thêm tự động MỘT bài Minna no Nihongo (N5) vào app — từ vựng chính + phụ lục (参考語彙) + câu + ngữ pháp. Dùng khi người dùng gõ "/add-vocab <số bài>" (vd /add-vocab 10). Lấy DANH SÁCH TỪ VỰNG từ vnjpclub theo số bài (hay bị chặn → tự soạn theo giáo trình), TỰ SOẠN bảng phụ lục + câu + ngữ pháp theo mẫu chuẩn, sinh CSV rồi chạy build. KHÔNG dùng cho ngôn ngữ khác hay việc khác.
 ---
 
 # /add-vocab <số bài>
@@ -15,11 +15,28 @@ Nếu người dùng KHÔNG đưa số bài → hỏi lại số bài rồi mớ
 ### 1. Kiểm tra trùng
 Nếu `data/lessons/csv/N5/lesson-NN/` đã tồn tại → báo bài đã có, HỎI có ghi đè không; dừng nếu không.
 
-### 2. Lấy từ vựng (WebFetch — CHỈ danh sách từ)
-Fetch URL (thay X):
+### 2. Lấy từ vựng — 2 phần: **本冊語彙** (chính) + **参考語彙** (phụ lục)
+
+**2a. Từ vựng chính — thử WebFetch:**
 `https://jls.vnjpclub.com/tu-vung-minna-no-nihongo-bai-X.html`
 
 Prompt trích: *"Mỗi từ 4 trường ngăn bằng `|`: (1) chữ Nhật hiển thị, (2) romaji, (3) nghĩa tiếng Việt, (4) kana. Mỗi từ một dòng, không thêm gì khác."*
+
+> Trang này **hay bị Cloudflare chặn** (trả về "One moment, please… verifying"). Thử **tối đa 2
+> lần**, nếu vẫn chặn thì **tự soạn danh sách theo giáo trình Minna no Nihongo I** và NÓI RÕ
+> điều đó trong báo cáo cuối. Đừng lãng phí lượt tra nhiều nguồn khác: các trang tiếng Việt
+> (riki, mcbooks, trungtamnhatngu…) và cả trang giáo viên Nhật (langoal) **đều chỉ đăng từ
+> vựng chính**, không trang nào có phụ lục.
+
+**2b. Phụ lục (参考語彙) — KHÔNG có nguồn web, phải tự soạn + hỏi người dùng:**
+Mỗi bài Minna thường có 1 bảng 参考語彙 ở trang riêng (không nằm trong danh sách từ mới):
+vd bài 3 quầy bách hoá · 4 tổ hợp thời gian · 6 rau củ quả–thịt–cá · 7 xưng hô gia đình ·
+8 màu sắc–vị · 9 thể loại nhạc/phim/thể thao · 10 các phòng trong nhà · 11 thực đơn ·
+13 địa điểm trong thành phố · 14 nhà ga–loại tàu · 15 nghề nghiệp · 16 màn hình ATM ·
+17 triệu chứng bệnh–bộ phận cơ thể.
+→ **Tự soạn bảng phụ lục của Bài X** theo giáo trình, đưa vào cùng `words.csv` với `phuluc=1`.
+→ Ở bước 7 **CHỦ ĐỘNG mời người dùng dán danh sách từ vựng + phụ lục trong sách** để đối chiếu
+bổ sung (thực tế bảng tự soạn thường thiếu 20–60 từ so với sách).
 
 **Bản quyền:** chỉ lấy **danh sách từ vựng** (dữ liệu factual). **KHÔNG sao chép** câu ví dụ,
 giải thích ngữ pháp hay đoạn văn của trang — phần câu + ngữ pháp phải **tự soạn** (bước 4).
@@ -34,9 +51,10 @@ giải thích ngữ pháp hay đoạn văn của trang — phần câu + ngữ p
 Thư mục `data/lessons/csv/N5/lesson-NN/`. Ô nào chứa dấu phẩy `,` phải bọc nháy kép `"..."`.
 
 - **`words.csv`** — header `tiengNhat,romaji,nghia,kana,phuluc`. Mỗi từ 1 dòng (từ bước 2–3).
-  Cột `phuluc`: để TRỐNG với từ chính của bài; điền `1` với các từ thuộc **bảng phụ lục**
-  (参考語彙 — nghề nghiệp, nhà ga, địa điểm, triệu chứng bệnh, bộ phận cơ thể, màn hình ATM…)
-  để app hiện badge 📎 phụ lục và người học biết đó là từ tham khảo, không bắt buộc thuộc.
+  Cột `phuluc`: để TRỐNG với **từ chính** (本冊語彙, gồm cả từ phần 会話); điền `1` với các từ
+  thuộc **bảng phụ lục** (参考語彙 ở bước 2b) → app hiện badge 📎 phụ lục, người học biết đó là
+  từ tham khảo, không bắt buộc thuộc. **Xếp toàn bộ khối phụ lục xuống CUỐI file**, sau các từ
+  chính (giữ nhất quán với bài 3–17 hiện có, dễ rà lại sau này).
 - **`sentences.csv`** — header `cau,romaji,nghia`. **TỰ SOẠN ~25–30 câu** dùng đúng
   **từ vựng + mẫu ngữ pháp của Bài X**. Câu hỏi–đáp: dòng đáp án bắt đầu bằng `…`.
 - **`grammar.csv`** — header `mau_cau,giai_thich,vi_du,vi_du_romaji,nghia`. **TỰ SOẠN ~5–7 điểm
@@ -58,8 +76,11 @@ Không cần sửa HTML.
   số từ/câu tăng đúng.
 
 ### 7. Báo cáo & hỏi commit
-- Tóm tắt: “Bài X — A từ · B câu · C ngữ pháp”, liệt kê nhanh các mẫu ngữ pháp.
-- Nói rõ: **câu + ngữ pháp do tự soạn theo mẫu chuẩn; chỉ lấy danh sách từ vựng từ web.**
+- Tóm tắt: “Bài X — A từ (trong đó P từ phụ lục) · B câu · C ngữ pháp”, liệt kê nhanh các mẫu ngữ pháp
+  và tên khối phụ lục đã thêm.
+- Nói rõ nguồn: **câu + ngữ pháp luôn do tự soạn**; danh sách từ chính lấy từ web hay tự soạn
+  (nếu vnjpclub bị chặn); **bảng phụ lục luôn là tự soạn** vì không có nguồn web.
+- **MỜI người dùng dán danh sách từ vựng + phụ lục trong sách** để đối chiếu bổ sung.
 - **HỎI người dùng trước khi commit** (đừng tự commit/push trừ khi được yêu cầu).
 
 ## Phong cách (giữ nhất quán với các bài đã có: xem `data/lessons/csv/N5/lesson-08`, `lesson-09`)

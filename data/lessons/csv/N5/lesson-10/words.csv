@@ -1,59 +1,59 @@
-﻿tiengNhat,romaji,nghia,kana
-います,imasu,"có, ở (người/động vật)",います
-あります,arimasu,có (đồ vật),あります
-いろいろ,iroiro,"nhiều loại, đa dạng",いろいろ
-男の人,otoko no hito,người đàn ông,おとこのひと
-女の人,onna no hito,người phụ nữ,おんなのひと
-男の子,otoko no ko,bé trai,おとこのこ
-女の子,onna no ko,bé gái,おんなのこ
-いぬ,inu,con chó,いぬ
-ねこ,neko,con mèo,ねこ
-き,ki,cây,き
-もの,mono,"đồ vật, vật",もの
-でんち,denchi,pin,でんち
-はこ,hako,cái hộp,はこ
-スイッチ,suitchi,công tắc,スイッチ
-れいぞうこ,reizouko,tủ lạnh,れいぞうこ
-テーブル,teeburu,cái bàn,テーブル
-ベッド,beddo,giường,ベッド
-たな,tana,"kệ, giá",たな
-ドア,doa,cửa (ra vào),ドア
-まど,mado,cửa sổ,まど
-ポスト,posuto,hòm thư,ポスト
-ビル,biru,tòa nhà,ビル
-ＡＴＭ,ATM,máy ATM,ＡＴＭ
-コンビニ,konbini,cửa hàng tiện lợi,コンビニ
-こうえん,kouen,công viên,こうえん
-きっさてん,kissaten,quán cà phê,きっさてん
-ほんや,hon'ya,hiệu sách,ほんや
-のりば,noriba,"bến (xe, tàu)",のりば
-けん,ken,tỉnh,けん
-うえ,ue,phía trên,うえ
-した,shita,phía dưới,した
-まえ,mae,phía trước,まえ
-うしろ,ushiro,phía sau,うしろ
-みぎ,migi,bên phải,みぎ
-ひだり,hidari,bên trái,ひだり
-なか,naka,"trong, giữa",なか
-そと,soto,bên ngoài,そと
-となり,tonari,bên cạnh,となり
-ちかく,chikaku,gần,ちかく
-あいだ,aida,ở giữa (hai vật),あいだ
-パンダ,panda,con gấu trúc,パンダ
-象,zou,con voi,ぞう
-～屋,~ya,"tiệm ～, cửa hàng ～ (ほんや: hiệu sách)",～や
-～や～（など）,~ya~(nado),"～ và ～ v.v. (liệt kê không đầy đủ)",～や～（など）
-「どうも」すみません,[doumo] sumimasen,"Xin lỗi / Cảm ơn (khi được ai đó giúp)",「どうも」すみません
-ナンプラー,nanpuraa,nước mắm (Thái Lan),ナンプラー
-コーナー,koonaa,"quầy, góc (trong cửa hàng)",コーナー
-一番下,ichiban shita,dưới cùng,いちばんした
-東京ディズニーランド,Toukyou Dizuniirando,công viên Tokyo Disneyland,とうきょうディズニーランド
-玄関,genkan,"cửa ra vào, sảnh vào nhà",げんかん
-風呂場,furoba,phòng tắm,ふろば
-洗面所,senmenjo,"nơi rửa mặt, bồn rửa",せんめんじょ
-台所,daidokoro,bếp,だいどころ
-食堂,shokudou,"nhà ăn, phòng ăn",しょくどう
-居間,ima,"phòng khách, phòng sinh hoạt chung",いま
-寝室,shinshitsu,phòng ngủ,しんしつ
-廊下,rouka,hành lang,ろうか
-ベランダ,beranda,ban công,ベランダ
+﻿tiengNhat,romaji,nghia,kana,phuluc
+います,imasu,"có, ở (người/động vật)",います,
+あります,arimasu,có (đồ vật),あります,
+いろいろ,iroiro,"nhiều loại, đa dạng",いろいろ,
+男の人,otoko no hito,người đàn ông,おとこのひと,
+女の人,onna no hito,người phụ nữ,おんなのひと,
+男の子,otoko no ko,bé trai,おとこのこ,
+女の子,onna no ko,bé gái,おんなのこ,
+いぬ,inu,con chó,いぬ,
+ねこ,neko,con mèo,ねこ,
+き,ki,cây,き,
+もの,mono,"đồ vật, vật",もの,
+でんち,denchi,pin,でんち,
+はこ,hako,cái hộp,はこ,
+スイッチ,suitchi,công tắc,スイッチ,
+れいぞうこ,reizouko,tủ lạnh,れいぞうこ,
+テーブル,teeburu,cái bàn,テーブル,
+ベッド,beddo,giường,ベッド,
+たな,tana,"kệ, giá",たな,
+ドア,doa,cửa (ra vào),ドア,
+まど,mado,cửa sổ,まど,
+ポスト,posuto,hòm thư,ポスト,
+ビル,biru,tòa nhà,ビル,
+ＡＴＭ,ATM,máy ATM,ＡＴＭ,
+コンビニ,konbini,cửa hàng tiện lợi,コンビニ,
+こうえん,kouen,công viên,こうえん,
+きっさてん,kissaten,quán cà phê,きっさてん,
+ほんや,hon'ya,hiệu sách,ほんや,
+のりば,noriba,"bến (xe, tàu)",のりば,
+けん,ken,tỉnh,けん,
+うえ,ue,phía trên,うえ,
+した,shita,phía dưới,した,
+まえ,mae,phía trước,まえ,
+うしろ,ushiro,phía sau,うしろ,
+みぎ,migi,bên phải,みぎ,
+ひだり,hidari,bên trái,ひだり,
+なか,naka,"trong, giữa",なか,
+そと,soto,bên ngoài,そと,
+となり,tonari,bên cạnh,となり,
+ちかく,chikaku,gần,ちかく,
+あいだ,aida,ở giữa (hai vật),あいだ,
+パンダ,panda,con gấu trúc,パンダ,
+象,zou,con voi,ぞう,
+～屋,~ya,"tiệm ～, cửa hàng ～ (ほんや: hiệu sách)",～や,
+～や～（など）,~ya~(nado),～ và ～ v.v. (liệt kê không đầy đủ),～や～（など）,
+「どうも」すみません,[doumo] sumimasen,Xin lỗi / Cảm ơn (khi được ai đó giúp),「どうも」すみません,
+ナンプラー,nanpuraa,nước mắm (Thái Lan),ナンプラー,
+コーナー,koonaa,"quầy, góc (trong cửa hàng)",コーナー,
+一番下,ichiban shita,dưới cùng,いちばんした,
+東京ディズニーランド,Toukyou Dizuniirando,công viên Tokyo Disneyland,とうきょうディズニーランド,
+玄関,genkan,"cửa ra vào, sảnh vào nhà",げんかん,1
+風呂場,furoba,phòng tắm,ふろば,1
+洗面所,senmenjo,"nơi rửa mặt, bồn rửa",せんめんじょ,1
+台所,daidokoro,bếp,だいどころ,1
+食堂,shokudou,"nhà ăn, phòng ăn",しょくどう,1
+居間,ima,"phòng khách, phòng sinh hoạt chung",いま,1
+寝室,shinshitsu,phòng ngủ,しんしつ,1
+廊下,rouka,hành lang,ろうか,1
+ベランダ,beranda,ban công,ベランダ,1
