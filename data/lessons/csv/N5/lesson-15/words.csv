@@ -1,78 +1,78 @@
-﻿tiengNhat,romaji,nghia,kana
-覚えます,oboemasu,"nhớ, ghi nhớ",おぼえます
-忘れます,wasuremasu,quên,わすれます
-なくします,nakushimasu,"làm mất, đánh mất",なくします
-払います,haraimasu,trả tiền,はらいます
-返します,kaeshimasu,trả lại,かえします
-出かけます,dekakemasu,"đi ra ngoài, đi vắng",でかけます
-脱ぎます,nugimasu,"cởi (áo, giày)",ぬぎます
-持って いきます,motte ikimasu,mang đi,もって いきます
-持って きます,motte kimasu,mang đến,もって きます
-心配します,shinpai shimasu,lo lắng,しんぱいします
-残業します,zangyou shimasu,làm thêm giờ,ざんぎょうします
-出張します,shucchou shimasu,đi công tác,しゅっちょうします
-飲みます,nomimasu,uống (くすりを のみます: uống thuốc),のみます
-要ります,irimasu,cần (ビザが いります),いります
-置きます,okimasu,"đặt, để",おきます
-作ります,tsukurimasu,"làm, chế tạo, sản xuất",つくります
-売ります,urimasu,bán,うります
-知ります,shirimasu,biết,しります
-住みます,sumimasu,sống (おおさかに すみます),すみます
-研究します,kenkyuu shimasu,nghiên cứu,けんきゅうします
-思い出します,omoidashimasu,"nhớ lại, hồi tưởng lại",おもいだします
-いらっしゃいます,irasshaimasu,kính ngữ của います,いらっしゃいます
-資料,shiryou,"tài liệu, tư liệu",しりょう
-カタログ,katarogu,catalog,カタログ
-時刻表,jikokuhyou,bảng giờ chạy tàu,じこくひょう
-服,fuku,quần áo,ふく
-製品,seihin,sản phẩm,せいひん
-ソフト,sofuto,phần mềm,ソフト
-電子辞書,denshi jisho,kim từ điển,でんしじしょ
-経済,keizai,kinh tế,けいざい
-市役所,shiyakusho,"tòa thị chính, ủy ban thành phố",しやくしょ
-高校,koukou,"trường trung học phổ thông, cấp 3",こうこう
-職業,shokugyou,nghề nghiệp,しょくぎょう
-独身,dokushin,độc thân,どくしん
-ごめんなさい,gomennasai,xin lỗi,ごめんなさい
-皆さん,minasan,"các anh chị, quý vị",みなさん
-時間,jikan,"thời gian, thời giờ",じかん
-用事,youji,"việc bận, việc riêng",ようじ
-ダイエット,daietto,ăn kiêng,ダイエット
-ご家族,gokazoku,gia đình (của người khác),ごかぞく
-みんな,minna,tất cả mọi người,みんな
-これから,korekara,"từ giờ, sắp tới",これから
-ううん,uun,"không (cách nói thân mật của いいえ)",ううん
-～について,ni tsuite,về ~ (にほんに ついて はなします),について
-会社員,kaishain,nhân viên công ty,かいしゃいん
-駅員,ekiin,nhân viên nhà ga,えきいん
-郵便局員,yuubinkyokuin,nhân viên bưu điện,ゆうびんきょくいん
-コック,kokku,đầu bếp,コック
-理容師,riyoushi,thợ cắt tóc,りようし
-美容師,biyoushi,thợ làm tóc (mỹ viện),びようし
-外交官,gaikoukan,nhà ngoại giao,がいこうかん
-政治家,seijika,"chính khách, nhà chính trị",せいじか
-画家,gaka,họa sĩ,がか
-作家,sakka,nhà văn,さっか
-音楽家,ongakuka,nhạc sĩ,おんがくか
-建築家,kenchikuka,kiến trúc sư,けんちくか
-デザイナー,dezainaa,nhà thiết kế,デザイナー
-歌手,kashu,ca sĩ,かしゅ
-俳優,haiyuu,diễn viên,はいゆう
-スポーツ選手,supootsu senshu,vận động viên,スポーツせんしゅ
-医者,isha,bác sĩ,いしゃ
-歯医者,haisha,nha sĩ,はいしゃ
-看護師,kangoshi,y tá,かんごし
-教師,kyoushi,giáo viên (nói về mình/người nhà),きょうし
-研究者,kenkyuusha,nhà nghiên cứu,けんきゅうしゃ
-銀行員,ginkouin,nhân viên ngân hàng,ぎんこういん
-公務員,koumuin,công chức,こうむいん
-警察官,keisatsukan,cảnh sát,けいさつかん
-弁護士,bengoshi,luật sư,べんごし
-エンジニア,enjinia,kỹ sư,エンジニア
-秘書,hisho,thư ký,ひしょ
-記者,kisha,"nhà báo, phóng viên",きしゃ
-通訳,tsuuyaku,phiên dịch,つうやく
-主婦,shufu,nội trợ,しゅふ
-店員,ten'in,nhân viên bán hàng,てんいん
-運転手,untenshu,"tài xế, lái xe",うんてんしゅ
-パイロット,pairotto,phi công,パイロット
+﻿tiengNhat,romaji,nghia,kana,phuluc
+覚えます,oboemasu,"nhớ, ghi nhớ",おぼえます,
+忘れます,wasuremasu,quên,わすれます,
+なくします,nakushimasu,"làm mất, đánh mất",なくします,
+払います,haraimasu,trả tiền,はらいます,
+返します,kaeshimasu,trả lại,かえします,
+出かけます,dekakemasu,"đi ra ngoài, đi vắng",でかけます,
+脱ぎます,nugimasu,"cởi (áo, giày)",ぬぎます,
+持って いきます,motte ikimasu,mang đi,もって いきます,
+持って きます,motte kimasu,mang đến,もって きます,
+心配します,shinpai shimasu,lo lắng,しんぱいします,
+残業します,zangyou shimasu,làm thêm giờ,ざんぎょうします,
+出張します,shucchou shimasu,đi công tác,しゅっちょうします,
+飲みます,nomimasu,uống (くすりを のみます: uống thuốc),のみます,
+要ります,irimasu,cần (ビザが いります),いります,
+置きます,okimasu,"đặt, để",おきます,
+作ります,tsukurimasu,"làm, chế tạo, sản xuất",つくります,
+売ります,urimasu,bán,うります,
+知ります,shirimasu,biết,しります,
+住みます,sumimasu,sống (おおさかに すみます),すみます,
+研究します,kenkyuu shimasu,nghiên cứu,けんきゅうします,
+思い出します,omoidashimasu,"nhớ lại, hồi tưởng lại",おもいだします,
+いらっしゃいます,irasshaimasu,kính ngữ của います,いらっしゃいます,
+資料,shiryou,"tài liệu, tư liệu",しりょう,
+カタログ,katarogu,catalog,カタログ,
+時刻表,jikokuhyou,bảng giờ chạy tàu,じこくひょう,
+服,fuku,quần áo,ふく,
+製品,seihin,sản phẩm,せいひん,
+ソフト,sofuto,phần mềm,ソフト,
+電子辞書,denshi jisho,kim từ điển,でんしじしょ,
+経済,keizai,kinh tế,けいざい,
+市役所,shiyakusho,"tòa thị chính, ủy ban thành phố",しやくしょ,
+高校,koukou,"trường trung học phổ thông, cấp 3",こうこう,
+職業,shokugyou,nghề nghiệp,しょくぎょう,
+独身,dokushin,độc thân,どくしん,
+ごめんなさい,gomennasai,xin lỗi,ごめんなさい,
+皆さん,minasan,"các anh chị, quý vị",みなさん,
+時間,jikan,"thời gian, thời giờ",じかん,
+用事,youji,"việc bận, việc riêng",ようじ,
+ダイエット,daietto,ăn kiêng,ダイエット,
+ご家族,gokazoku,gia đình (của người khác),ごかぞく,
+みんな,minna,tất cả mọi người,みんな,
+これから,korekara,"từ giờ, sắp tới",これから,
+ううん,uun,không (cách nói thân mật của いいえ),ううん,
+～について,ni tsuite,về ~ (にほんに ついて はなします),について,
+会社員,kaishain,nhân viên công ty,かいしゃいん,1
+駅員,ekiin,nhân viên nhà ga,えきいん,1
+郵便局員,yuubinkyokuin,nhân viên bưu điện,ゆうびんきょくいん,1
+コック,kokku,đầu bếp,コック,1
+理容師,riyoushi,thợ cắt tóc,りようし,1
+美容師,biyoushi,thợ làm tóc (mỹ viện),びようし,1
+外交官,gaikoukan,nhà ngoại giao,がいこうかん,1
+政治家,seijika,"chính khách, nhà chính trị",せいじか,1
+画家,gaka,họa sĩ,がか,1
+作家,sakka,nhà văn,さっか,1
+音楽家,ongakuka,nhạc sĩ,おんがくか,1
+建築家,kenchikuka,kiến trúc sư,けんちくか,1
+デザイナー,dezainaa,nhà thiết kế,デザイナー,1
+歌手,kashu,ca sĩ,かしゅ,1
+俳優,haiyuu,diễn viên,はいゆう,1
+スポーツ選手,supootsu senshu,vận động viên,スポーツせんしゅ,1
+医者,isha,bác sĩ,いしゃ,1
+歯医者,haisha,nha sĩ,はいしゃ,
+看護師,kangoshi,y tá,かんごし,1
+教師,kyoushi,giáo viên (nói về mình/người nhà),きょうし,1
+研究者,kenkyuusha,nhà nghiên cứu,けんきゅうしゃ,1
+銀行員,ginkouin,nhân viên ngân hàng,ぎんこういん,1
+公務員,koumuin,công chức,こうむいん,1
+警察官,keisatsukan,cảnh sát,けいさつかん,1
+弁護士,bengoshi,luật sư,べんごし,1
+エンジニア,enjinia,kỹ sư,エンジニア,1
+秘書,hisho,thư ký,ひしょ,1
+記者,kisha,"nhà báo, phóng viên",きしゃ,1
+通訳,tsuuyaku,phiên dịch,つうやく,1
+主婦,shufu,nội trợ,しゅふ,1
+店員,ten'in,nhân viên bán hàng,てんいん,1
+運転手,untenshu,"tài xế, lái xe",うんてんしゅ,1
+パイロット,pairotto,phi công,パイロット,1

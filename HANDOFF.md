@@ -157,6 +157,11 @@ or `file://`** — don't rely on it. Instead:
   reading → `{bai,level}` / `{theme}` (both keys, because `poolForKey` shows kana in default mode,
   kanji in `K` mode). `originLabel(card[0])` drives the on-card `#originTag` badge, the **🔍 Tra từ**
   tab (`lookupGrp`/`renderLookup`, search+filter over `LWORDS`+`THEMEWORDS`), and the "Xem trước" column.
+  • **Appendix tag (📎 phụ lục):** optional 5th `words.csv` column **`phuluc`** (`1` = từ tham khảo,
+  không bắt buộc thuộc — các bảng 参考語彙 nghề nghiệp / nhà ga / địa điểm / triệu chứng / cơ thể / ATM).
+  Build → word row gets a 5th element → `registry.js` exposes it as `[6]` → `js/core.js` builds
+  `APPENDIX`/`isAppendix()` and `originLabel()` appends ` · 📎 phụ lục` (card badge + "Xem trước" free).
+  Lookup + `report.html` badge off the row's own flag. `APPENDIX` skips any word that is core elsewhere.
   • **`report.html`** builds its data at runtime via `buildDATA()` from `JPLessons.words()`+themes →
   stays live; opened from the "🔍 Tra từ" tab's **↗ Trang báo cáo** link; in `sw.js` CORE for offline.
 - **CRLF:** the PS build writes CRLF; git normalizes to LF on commit (warnings are harmless).

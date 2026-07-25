@@ -978,7 +978,7 @@ function renderKanaChart() {
 /* ===== Tra từ: toàn bộ từ vựng + bài & trình độ (hoặc chủ đề), có tìm & lọc ===== */
 function _vocabAll() {
     var out = [];
-    LWORDS.forEach(function (w) { out.push({jp: w[0], r: w[1], kana: w[4], m: w[3], bai: w[2], level: w[5], theme: null}); });
+    LWORDS.forEach(function (w) { out.push({jp: w[0], r: w[1], kana: w[4], m: w[3], bai: w[2], level: w[5], theme: null, apx: !!w[6]}); });
     (typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []).forEach(function (w) {
         out.push({jp: w[0], r: w[1], kana: w[3], m: w[2], bai: null, level: null, theme: (THEME_NAME[w[4]] || w[4])});
     });
@@ -1029,6 +1029,7 @@ function renderLookup() {
         html += '<div class="pickrow on" style="cursor:default;">'
             + '<span class="pjp" style="min-width:70px;">' + escapeHtml(v.jp) + '</span>'
             + '<span class="pinfo"><span class="prd">' + escapeHtml(v.r || '') + '</span> <span class="pmn">' + escapeHtml(v.m || '') + '</span></span>'
+            + (v.apx ? '<span title="Từ phụ lục — tham khảo, không bắt buộc thuộc" style="color:var(--gold); font-size:11px; white-space:nowrap; flex:0 0 auto;">📎 phụ lục</span>' : '')
             + '<span style="color:var(--ink-dim); font-size:12px; white-space:nowrap; flex:0 0 auto;">' + escapeHtml(badge) + '</span>'
             + '</div>';
     });

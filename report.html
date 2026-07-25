@@ -133,7 +133,7 @@ function buildDATA(){
     var L={level:lv,lessons:[]};
     JPLessons.numsOf(lv).forEach(function(n){
       var ws = words.filter(function(w){return w[5]===lv && w[2]===n;})
-                    .map(function(w){return {jp:w[0], r:w[1], kana:w[4], m:w[3]};});
+                    .map(function(w){return {jp:w[0], r:w[1], kana:w[4], m:w[3], apx:!!w[6]};});
       L.lessons.push({num:n, words:ws});
     });
     levels.push(L);
@@ -189,8 +189,9 @@ function buildChips(){
 }
 function rowHtml(w){
   const hay=(w.jp+" "+w.r+" "+(w.kana||"")+" "+w.m).toLowerCase();
+  const apx = w.apx ? '<span title="Từ phụ lục — tham khảo, không bắt buộc thuộc" style="color:#d9a441; font-size:11px; white-space:nowrap; margin-left:6px;">📎</span>' : '';
   return '<div class="row" data-h="'+esc(hay)+'">'+
-    '<span class="jp">'+esc(w.jp)+'</span><span class="rd">'+esc(w.r)+'</span><span class="mn">'+esc(w.m)+'</span></div>';
+    '<span class="jp">'+esc(w.jp)+'</span><span class="rd">'+esc(w.r)+'</span><span class="mn">'+esc(w.m)+apx+'</span></div>';
 }
 function buildMain(){
   const m=document.getElementById("main");

@@ -1,61 +1,61 @@
-﻿tiengNhat,romaji,nghia,kana
-乗ります,norimasu,lên (でんしゃに のります),のります
-降ります,orimasu,xuống (でんしゃを おります),おります
-乗り換えます,norikaemasu,"đổi tàu, chuyển xe",のりかえます
-浴びます,abimasu,tắm (シャワーを あびます),あびます
-入れます,iremasu,"cho vào, bỏ vào",いれます
-出します,dashimasu,"lấy ra, rút ra, gửi (thư)",だします
-押します,oshimasu,"ấn, bấm (ボタンを おします)",おします
-おろします,oroshimasu,rút (おかねを おろします),おろします
-入ります,hairimasu,vào (だいがくに はいります),はいります
-出ます,demasu,"ra, tốt nghiệp (だいがくを でます)",でます
-飲みます,nomimasu,"uống (おさけを のみます: uống rượu, bia)",のみます
-始めます,hajimemasu,bắt đầu,はじめます
-見学します,kengaku shimasu,"tham quan, kiến tập",けんがくします
-電話します,denwa shimasu,gọi điện thoại,でんわします
-若い,wakai,trẻ,わかい
-長い,nagai,dài,ながい
-短い,mijikai,ngắn,みじかい
-明るい,akarui,sáng,あかるい
-暗い,kurai,tối,くらい
-背が高い,se ga takai,cao (về người),せが たかい
-頭がいい,atama ga ii,thông minh,あたまが いい
-体,karada,cơ thể,からだ
-頭,atama,"đầu, trí óc",あたま
-髪,kami,tóc,かみ
-顔,kao,mặt,かお
-目,me,mắt,め
-耳,mimi,tai,みみ
-鼻,hana,mũi,はな
-歯,ha,răng,は
-口,kuchi,miệng,くち
-おなか,onaka,bụng,おなか
-足,ashi,"chân, bàn chân",あし
-背,se,chiều cao (cơ thể),せ
-サービス,saabisu,dịch vụ,サービス
-ジョギング,jogingu,chạy bộ,ジョギング
-シャワー,shawaa,vòi hoa sen,シャワー
-みどり,midori,"màu xanh lá, cây xanh",みどり
-お寺,otera,chùa,おてら
-神社,jinja,đền thờ đạo Thần,じんじゃ
-～番,ban,số ~ (いちばん せん: đường tàu số 1),ばん
-キャッシュカード,kyasshu kaado,thẻ rút tiền,キャッシュカード
-暗証番号,anshou bangou,mã PIN,あんしょうばんごう
-金額,kingaku,số tiền,きんがく
-確認,kakunin,xác nhận,かくにん
-ボタン,botan,nút bấm,ボタン
-ボタンを 押します,botan o oshimasu,ấn nút,ボタンを おします
-すごいですね,sugoi desu ne,"thật là tuyệt vời!, kinh quá nhỉ!",すごいですね
-まだまだです,madamada desu,"(không), tôi còn phải cố gắng nhiều (khiêm nhường khi được khen)",まだまだです
-お引き出しですか,ohikidashi desu ka,anh/chị rút tiền ạ?,おひきだしですか
-お引き出し,ohikidashi,rút tiền,おひきだし
-お預け入れ,oazukeire,gửi tiền vào tài khoản,おあずけいれ
-お振り込み,ofurikomi,chuyển tiền vào tài khoản người khác,おふりこみ
-お振替,ofurikae,chuyển khoản,おふりかえ
-通帳記入,tsuuchou kinyuu,ghi sao kê vào sổ,つうちょうきにゅう
-残高照会,zandaka shoukai,kiểm tra số tiền hiện có,ざんだかしょうかい
-まず,mazu,trước hết,まず
-次に,tsugi ni,tiếp theo,つぎに
-どうやって,dou yatte,"làm thế nào, bằng cách nào",どうやって
-どの,dono,~ nào (trong ba cái trở lên),どの
-どれ,dore,cái nào (trong ba cái trở lên),どれ
+﻿tiengNhat,romaji,nghia,kana,phuluc
+乗ります,norimasu,lên (でんしゃに のります),のります,
+降ります,orimasu,xuống (でんしゃを おります),おります,
+乗り換えます,norikaemasu,"đổi tàu, chuyển xe",のりかえます,
+浴びます,abimasu,tắm (シャワーを あびます),あびます,
+入れます,iremasu,"cho vào, bỏ vào",いれます,
+出します,dashimasu,"lấy ra, rút ra, gửi (thư)",だします,
+押します,oshimasu,"ấn, bấm (ボタンを おします)",おします,
+おろします,oroshimasu,rút (おかねを おろします),おろします,
+入ります,hairimasu,vào (だいがくに はいります),はいります,
+出ます,demasu,"ra, tốt nghiệp (だいがくを でます)",でます,
+飲みます,nomimasu,"uống (おさけを のみます: uống rượu, bia)",のみます,
+始めます,hajimemasu,bắt đầu,はじめます,
+見学します,kengaku shimasu,"tham quan, kiến tập",けんがくします,
+電話します,denwa shimasu,gọi điện thoại,でんわします,
+若い,wakai,trẻ,わかい,
+長い,nagai,dài,ながい,
+短い,mijikai,ngắn,みじかい,
+明るい,akarui,sáng,あかるい,
+暗い,kurai,tối,くらい,
+背が高い,se ga takai,cao (về người),せが たかい,
+頭がいい,atama ga ii,thông minh,あたまが いい,
+体,karada,cơ thể,からだ,
+頭,atama,"đầu, trí óc",あたま,
+髪,kami,tóc,かみ,
+顔,kao,mặt,かお,
+目,me,mắt,め,
+耳,mimi,tai,みみ,
+鼻,hana,mũi,はな,
+歯,ha,răng,は,
+口,kuchi,miệng,くち,
+おなか,onaka,bụng,おなか,
+足,ashi,"chân, bàn chân",あし,
+背,se,chiều cao (cơ thể),せ,
+サービス,saabisu,dịch vụ,サービス,
+ジョギング,jogingu,chạy bộ,ジョギング,
+シャワー,shawaa,vòi hoa sen,シャワー,
+みどり,midori,"màu xanh lá, cây xanh",みどり,
+お寺,otera,chùa,おてら,
+神社,jinja,đền thờ đạo Thần,じんじゃ,
+～番,ban,số ~ (いちばん せん: đường tàu số 1),ばん,
+キャッシュカード,kyasshu kaado,thẻ rút tiền,キャッシュカード,
+暗証番号,anshou bangou,mã PIN,あんしょうばんごう,
+金額,kingaku,số tiền,きんがく,
+確認,kakunin,xác nhận,かくにん,
+ボタン,botan,nút bấm,ボタン,
+ボタンを 押します,botan o oshimasu,ấn nút,ボタンを おします,1
+すごいですね,sugoi desu ne,"thật là tuyệt vời!, kinh quá nhỉ!",すごいですね,
+まだまだです,madamada desu,"(không), tôi còn phải cố gắng nhiều (khiêm nhường khi được khen)",まだまだです,
+お引き出しですか,ohikidashi desu ka,anh/chị rút tiền ạ?,おひきだしですか,
+お引き出し,ohikidashi,rút tiền,おひきだし,1
+お預け入れ,oazukeire,gửi tiền vào tài khoản,おあずけいれ,1
+お振り込み,ofurikomi,chuyển tiền vào tài khoản người khác,おふりこみ,1
+お振替,ofurikae,chuyển khoản,おふりかえ,1
+通帳記入,tsuuchou kinyuu,ghi sao kê vào sổ,つうちょうきにゅう,1
+残高照会,zandaka shoukai,kiểm tra số tiền hiện có,ざんだかしょうかい,1
+まず,mazu,trước hết,まず,
+次に,tsugi ni,tiếp theo,つぎに,
+どうやって,dou yatte,"làm thế nào, bằng cách nào",どうやって,
+どの,dono,~ nào (trong ba cái trở lên),どの,
+どれ,dore,cái nào (trong ba cái trở lên),どれ,

@@ -13,7 +13,9 @@
     4. Xong! Mo lai app, bai moi tu dong hien ra. Khong sua file HTML nao ca.
 
   Cot (dong tieu de) trong CSV:
-    words.csv     : tiengNhat, romaji, nghia, kana
+    words.csv     : tiengNhat, romaji, nghia, kana, phuluc (cot phuluc KHONG bat buoc:
+                    dien 1 / x neu do la tu PHU LUC - tham khao, khong bat buoc thuoc;
+                    de trong neu la tu chinh cua bai)
     sentences.csv : cau, romaji, nghia
     grammar.csv   : mau_cau, giai_thich, vi_du, vi_du_romaji, nghia
 
@@ -76,7 +78,10 @@ foreach ($lvDir in $levels) {
 
     $wLines = foreach ($r in $words) {
       $kana = if ([string]::IsNullOrWhiteSpace($r.kana)) { $r.tiengNhat } else { $r.kana }
-      '    [' + (Esc $r.tiengNhat) + ', ' + (Esc $r.romaji) + ', ' + (Esc $r.nghia) + ', ' + (Esc $kana) + ']'
+      # Cot "phuluc" khong bat buoc: co gia tri (1/x/co...) => danh dau tu PHU LUC (tham khao).
+      $pl = ''
+      if ($r.PSObject.Properties['phuluc'] -and -not [string]::IsNullOrWhiteSpace($r.phuluc)) { $pl = ', 1' }
+      '    [' + (Esc $r.tiengNhat) + ', ' + (Esc $r.romaji) + ', ' + (Esc $r.nghia) + ', ' + (Esc $kana) + $pl + ']'
     }
     $sLines = foreach ($r in $sentences) {
       '    [' + (Esc $r.cau) + ', ' + (Esc $r.romaji) + ', ' + (Esc $r.nghia) + ']'
@@ -90,7 +95,7 @@ foreach ($lvDir in $levels) {
 // ===== $level - Bai $num =====
 // TU DONG SINH tu  data/lessons/csv/$level/lesson-$nn/*.csv  boi  tools/build-lessons.ps1
 // DUNG SUA TRUC TIEP FILE NAY -- moi thay doi se bi ghi de. Hay sua CSV roi chay lai script.
-// words: [ chu_hien_thi, romaji, nghia_tiengviet, kana ]
+// words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
 registerLesson("$level", $num, {

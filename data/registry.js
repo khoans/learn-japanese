@@ -55,12 +55,13 @@
     return out.sort(function (a, b) { return a - b; });
   }
 
-  // -> [[display, romaji, lesson, meaning, kana, level], ...]  (dung format ma app can; [5]=level)
+  // -> [[display, romaji, lesson, meaning, kana, level, phuluc], ...]
+  //    [5]=level, [6]=1 neu la tu PHU LUC (tham khao, khong bat buoc thuoc) / 0 neu tu chinh.
   function words() {
     var out = [];
     ordered().forEach(function (L) {
       L.words.forEach(function (w) {
-        out.push([w[0], w[1], L.num, (w[2] != null ? w[2] : ''), (w[3] != null ? w[3] : w[0]), L.level]);
+        out.push([w[0], w[1], L.num, (w[2] != null ? w[2] : ''), (w[3] != null ? w[3] : w[0]), L.level, (w[4] ? 1 : 0)]);
       });
     });
     return out;

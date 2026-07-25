@@ -33,7 +33,10 @@ giải thích ngữ pháp hay đoạn văn của trang — phần câu + ngữ p
 ### 4. Tạo 3 CSV — UTF-8 **CÓ BOM** (bắt đầu bằng ký tự ﻿), header **tiếng Việt**
 Thư mục `data/lessons/csv/N5/lesson-NN/`. Ô nào chứa dấu phẩy `,` phải bọc nháy kép `"..."`.
 
-- **`words.csv`** — header `tiengNhat,romaji,nghia,kana`. Mỗi từ 1 dòng (từ bước 2–3).
+- **`words.csv`** — header `tiengNhat,romaji,nghia,kana,phuluc`. Mỗi từ 1 dòng (từ bước 2–3).
+  Cột `phuluc`: để TRỐNG với từ chính của bài; điền `1` với các từ thuộc **bảng phụ lục**
+  (参考語彙 — nghề nghiệp, nhà ga, địa điểm, triệu chứng bệnh, bộ phận cơ thể, màn hình ATM…)
+  để app hiện badge 📎 phụ lục và người học biết đó là từ tham khảo, không bắt buộc thuộc.
 - **`sentences.csv`** — header `cau,romaji,nghia`. **TỰ SOẠN ~25–30 câu** dùng đúng
   **từ vựng + mẫu ngữ pháp của Bài X**. Câu hỏi–đáp: dòng đáp án bắt đầu bằng `…`.
 - **`grammar.csv`** — header `mau_cau,giai_thich,vi_du,vi_du_romaji,nghia`. **TỰ SOẠN ~5–7 điểm

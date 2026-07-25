@@ -1,7 +1,7 @@
 // ===== N5 - Bai 16 =====
 // TU DONG SINH tu  data/lessons/csv/N5/lesson-16/*.csv  boi  tools/build-lessons.ps1
 // DUNG SUA TRUC TIEP FILE NAY -- moi thay doi se bi ghi de. Hay sua CSV roi chay lai script.
-// words: [ chu_hien_thi, romaji, nghia_tiengviet, kana ]
+// words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
 registerLesson("N5", 16, {
@@ -51,16 +51,16 @@ registerLesson("N5", 16, {
     ["金額", "kingaku", "số tiền", "きんがく"],
     ["確認", "kakunin", "xác nhận", "かくにん"],
     ["ボタン", "botan", "nút bấm", "ボタン"],
-    ["ボタンを 押します", "botan o oshimasu", "ấn nút", "ボタンを おします"],
+    ["ボタンを 押します", "botan o oshimasu", "ấn nút", "ボタンを おします", 1],
     ["すごいですね", "sugoi desu ne", "thật là tuyệt vời!, kinh quá nhỉ!", "すごいですね"],
     ["まだまだです", "madamada desu", "(không), tôi còn phải cố gắng nhiều (khiêm nhường khi được khen)", "まだまだです"],
     ["お引き出しですか", "ohikidashi desu ka", "anh/chị rút tiền ạ?", "おひきだしですか"],
-    ["お引き出し", "ohikidashi", "rút tiền", "おひきだし"],
-    ["お預け入れ", "oazukeire", "gửi tiền vào tài khoản", "おあずけいれ"],
-    ["お振り込み", "ofurikomi", "chuyển tiền vào tài khoản người khác", "おふりこみ"],
-    ["お振替", "ofurikae", "chuyển khoản", "おふりかえ"],
-    ["通帳記入", "tsuuchou kinyuu", "ghi sao kê vào sổ", "つうちょうきにゅう"],
-    ["残高照会", "zandaka shoukai", "kiểm tra số tiền hiện có", "ざんだかしょうかい"],
+    ["お引き出し", "ohikidashi", "rút tiền", "おひきだし", 1],
+    ["お預け入れ", "oazukeire", "gửi tiền vào tài khoản", "おあずけいれ", 1],
+    ["お振り込み", "ofurikomi", "chuyển tiền vào tài khoản người khác", "おふりこみ", 1],
+    ["お振替", "ofurikae", "chuyển khoản", "おふりかえ", 1],
+    ["通帳記入", "tsuuchou kinyuu", "ghi sao kê vào sổ", "つうちょうきにゅう", 1],
+    ["残高照会", "zandaka shoukai", "kiểm tra số tiền hiện có", "ざんだかしょうかい", 1],
     ["まず", "mazu", "trước hết", "まず"],
     ["次に", "tsugi ni", "tiếp theo", "つぎに"],
     ["どうやって", "dou yatte", "làm thế nào, bằng cách nào", "どうやって"],

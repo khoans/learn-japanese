@@ -73,12 +73,31 @@ LSENT.forEach(function (s) { _setOrigin(s[0], {bai: s[2], level: s[4]}); });
     var o = {theme: (THEME_NAME[w[4]] || w[4])}; _setOrigin(w[0], o); _setOrigin(w[3], o);
 });
 
+// APPENDIX[khoá] = true cho các từ PHỤ LỤC (tham khảo — không bắt buộc thuộc; cột `phuluc`
+// trong words.csv). Cùng quy ước khoá như CARD_ORIGIN: đăng ký cả dạng kanji lẫn kana.
+// Một từ có thể là phụ lục ở bài này nhưng là từ CHÍNH ở bài khác (vd 図書館, 体, 医者) —
+// khoá ở đây là bản thân từ nên chỉ đánh dấu khi từ đó KHÔNG phải từ chính ở bất kỳ bài nào.
+const APPENDIX = {};
+(function () {
+    var core = {};
+    LWORDS.forEach(function (w) { if (!w[6]) { core[w[0]] = true; core[w[4]] = true; } });
+    LWORDS.forEach(function (w) {
+        if (!w[6]) return;
+        if (w[0] && !core[w[0]]) APPENDIX[w[0]] = true;
+        if (w[4] && !core[w[4]]) APPENDIX[w[4]] = true;
+    });
+})();
+
+/** true nếu từ (theo chữ hiển thị card[0]) là từ phụ lục / tham khảo. */
+function isAppendix(key) { return !!APPENDIX[key]; }
+
 /** Nhãn nguồn gốc của một mục (theo chữ hiển thị card[0]); '' nếu không thuộc bài/chủ đề nào. */
 function originLabel(key) {
     var o = CARD_ORIGIN[key];
-    if (!o) return '';
-    if (o.theme) return 'Chủ đề: ' + o.theme;
-    return 'Bài ' + o.bai + ' · ' + o.level;
+    var apx = isAppendix(key) ? ' · 📎 phụ lục' : '';
+    if (!o) return apx ? '📎 phụ lục' : '';
+    if (o.theme) return 'Chủ đề: ' + o.theme + apx;
+    return 'Bài ' + o.bai + ' · ' + o.level + apx;
 }
 
 function kanaSegToRomaji(s) {

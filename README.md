@@ -27,7 +27,7 @@ data/
     csv/                         ← NGUỒN DỮ LIỆU GỐC — soạn ở đây bằng Excel/Sheets:
       N5/                          · một thư mục cho mỗi TRÌNH ĐỘ (N5, N4, N3…)
         lesson-01/                 · một thư mục cho mỗi BÀI, gồm 3 file:
-          words.csv                  – từ vựng (cột: tiengNhat, romaji, nghia, kana)
+          words.csv                  – từ vựng (cột: tiengNhat, romaji, nghia, kana, phuluc)
           sentences.csv              – câu     (cột: cau, romaji, nghia)
           grammar.csv                – ngữ pháp (cột: mau_cau, giai_thich, vi_du, vi_du_romaji, nghia)
       _TEMPLATE/                   · thư mục mẫu để chép khi tạo bài mới
@@ -51,12 +51,19 @@ nhóm nút "Trình độ N4". *(Chức năng học trộn nhiều trình độ s
 Mỗi bài là **một thư mục** trong `data/lessons/csv/<TRÌNH_ĐỘ>/lesson-NN/`, gồm 3 file
 CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề cột — ĐỪNG xoá**:
 
-- `words.csv` — cột `tiengNhat, romaji, nghia, kana`
+- `words.csv` — cột `tiengNhat, romaji, nghia, kana, phuluc`
 - `sentences.csv` — cột `cau, romaji, nghia`
 - `grammar.csv` — cột `mau_cau, giai_thich, vi_du, vi_du_romaji, nghia`
 
 > Cột `kana` để trống thì app dùng luôn phần `tiengNhat`. Bạn KHÔNG cần viết code —
 > `tools/build-lessons.ps1` sẽ tự chuyển CSV thành file `.js` cho app.
+
+> **Cột `phuluc` (không bắt buộc)** — điền `1` cho những từ thuộc **bảng phụ lục**
+> (参考語彙: nghề nghiệp, nhà ga, địa điểm, triệu chứng bệnh, bộ phận cơ thể, màn hình
+> ATM…), tức từ tham khảo, **không bắt buộc thuộc**. Để trống = từ chính của bài.
+> Từ có đánh dấu sẽ hiện badge **📎 phụ lục** trên thẻ khi luyện, trong tab **🔍 Tra từ**,
+> mục **Xem trước** và trang **báo cáo**. (Từ nào là từ chính ở một bài khác thì không
+> bị gắn badge trên thẻ.)
 
 ## Thêm bài mới (Bài 8, 9…) — soạn bằng CSV, KHÔNG đụng code
 
