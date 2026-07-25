@@ -234,6 +234,9 @@ document.querySelectorAll('.keybtn').forEach(function (btn) {
     });
 });
 window.addEventListener('keydown', function (e) {
+    // Có Ctrl/Alt/Cmd => là phím tắt của TRÌNH DUYỆT (Ctrl+Shift+R tải lại, Ctrl+F tìm,
+    // Ctrl+T tab mới…). Phím tắt của app chỉ dùng phím trần, nên nhường lại cho trình duyệt.
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (capturingSlot) {
         e.preventDefault();
         keys[capturingSlot] = e.code;

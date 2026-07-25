@@ -680,6 +680,7 @@ $('penColor').addEventListener('input', function () {
     }
 });
 $('typeInput').addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;  // nhường phím tắt trình duyệt (Ctrl+Shift+R…)
     if (e.code === keys.kana && romajiInputOn()) {   // đổi loại kana — chỉ khi đang dùng tự chuyển
         e.preventDefault();
         cycleKana();
