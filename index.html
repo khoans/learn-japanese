@@ -648,11 +648,16 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn small tool-tab" data-tool="statBox" style="flex:1 1 auto;">📊 Thống kê</button>
   <button class="btn small tool-tab" data-tool="gramBox" style="flex:1 1 auto;">文 Ngữ pháp</button>
   <button class="btn small tool-tab" data-tool="kanaChartBox" style="flex:1 1 auto;">あ Bảng kana</button>
+  <button class="btn small tool-tab" data-tool="imeBox" style="flex:1 1 auto;">⌨️ Cách gõ</button>
   <button class="btn small tool-tab" data-tool="previewBox" style="flex:1 1 auto;">👁 Xem trước</button>
 </div>
 <div id="toolHost"></div>
 <div id="kanaChartBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:13px;">
   <div id="kanaChartList"></div>
+</div></div>
+<div id="imeBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:13px;">
+  <input id="imeSearch" class="xfer-search" style="margin:0 0 9px;" placeholder="Tìm kana (ティ), cách gõ (thi) hoặc ghi chú…">
+  <div id="imeList" style="max-height:460px; overflow-y:auto;"></div>
 </div></div>
 <div id="previewBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:13px;">
   <div id="previewList" style="max-height:420px; overflow-y:auto;"></div>

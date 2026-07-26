@@ -741,6 +741,7 @@ $('masGrp').addEventListener('toggle', function () {
 ['masRemSelOnly', 'masSesSelOnly', 'masPermSelOnly'].forEach(function (id) {
     if ($(id)) $(id).addEventListener('change', renderMasteryLists);
 });
+if ($('imeSearch')) $('imeSearch').addEventListener('input', renderIme);
 if ($('lookupSearch')) $('lookupSearch').addEventListener('input', renderLookup);
 if ($('lookupFilter')) $('lookupFilter').addEventListener('change', renderLookup);
 if ($('hwSearch')) $('hwSearch').addEventListener('input', renderHwList);

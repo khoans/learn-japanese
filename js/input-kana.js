@@ -19,7 +19,19 @@ const ROMA2KANA = {
     da: 'だ', di: 'ぢ', du: 'づ', de: 'で', do: 'ど',
     ba: 'ば', bi: 'び', bu: 'ぶ', be: 'べ', bo: 'ぼ', bya: 'びゃ', byu: 'びゅ', byo: 'びょ',
     pa: 'ぱ', pi: 'ぴ', pu: 'ぷ', pe: 'ぺ', po: 'ぽ', pya: 'ぴゃ', pyu: 'ぴゅ', pyo: 'ぴょ',
-    '-': 'ー', xtsu: 'っ', ltsu: 'っ'
+    '-': 'ー', xtsu: 'っ', ltsu: 'っ', xtu: 'っ', ltu: 'っ',
+    // Kana nhỏ (gõ x… hoặc l…): dùng để ghép âm ngoại lai thủ công, vd te + xi = てぃ
+    xa: 'ぁ', xi: 'ぃ', xu: 'ぅ', xe: 'ぇ', xo: 'ぉ',
+    la: 'ぁ', li: 'ぃ', lu: 'ぅ', le: 'ぇ', lo: 'ぉ',
+    xya: 'ゃ', xyu: 'ゅ', xyo: 'ょ', lya: 'ゃ', lyu: 'ゅ', lyo: 'ょ', xwa: 'ゎ',
+    // Âm ngoại lai (katakana) — gõ như IME tiếng Nhật
+    thi: 'てぃ', the: 'てぇ', thu: 'てゅ', dhi: 'でぃ', dhu: 'でゅ',
+    twu: 'とぅ', dwu: 'どぅ',
+    che: 'ちぇ', cye: 'ちぇ', she: 'しぇ', sye: 'しぇ', je: 'じぇ', jye: 'じぇ',
+    tsa: 'つぁ', tsi: 'つぃ', tse: 'つぇ', tso: 'つぉ',
+    va: 'ゔぁ', vi: 'ゔぃ', vu: 'ゔ', ve: 'ゔぇ', vo: 'ゔぉ',
+    ye: 'いぇ', fya: 'ふゃ', fyu: 'ふゅ', fyo: 'ふょ', kwa: 'くぁ', gwa: 'ぐぁ',
+    wu: 'う'
 };
 function romajiToKana(s, kata, final) {
     s = String(s).toLowerCase();
@@ -27,7 +39,7 @@ function romajiToKana(s, kata, final) {
     const isVowel = function (ch) { return 'aiueo'.indexOf(ch) >= 0; };
     while (i < s.length) {
         const c = s[i];
-        const len = ROMA2KANA[s.substr(i, 3)] ? 3 : (ROMA2KANA[s.substr(i, 2)] ? 2 : (ROMA2KANA[s.substr(i, 1)] ? 1 : 0));
+        const len = ROMA2KANA[s.substr(i, 4)] ? 4 : (ROMA2KANA[s.substr(i, 3)] ? 3 : (ROMA2KANA[s.substr(i, 2)] ? 2 : (ROMA2KANA[s.substr(i, 1)] ? 1 : 0)));
         if (len) { out += ROMA2KANA[s.substr(i, len)]; i += len; continue; }  // tra bảng trước (gồm '-' -> ー)
         if (!/[a-z]/.test(c)) { out += c; i++; continue; }     // kana / dấu cách: giữ nguyên
         const n = s[i + 1];
@@ -44,6 +56,95 @@ function romajiToKana(s, kata, final) {
     if (kata) out = out.replace(/[ぁ-ゖ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) + 0x60); });
     return out;
 }
+/* ===== Bảng tra "cách gõ đặc biệt" (tab ⌨️ Cách gõ) =====
+   Mỗi mục: [kết quả, cách gõ, ghi chú]. Áp dụng cho CẢ bộ gõ trong app lẫn Microsoft IME
+   (chỗ nào khác nhau thì nói rõ trong ghi chú). */
+const IME_NOTES = [
+    {t: 'Âm ngoại lai — katakana (hay gõ sai nhất)', rows: [
+        ['ティ', 'thi', 'KHÔNG phải ti (ti → ち). スパゲッティ = supagetthi'],
+        ['ディ', 'dhi', 'ディズニー = dhizuni-'],
+        ['トゥ', 'twu', 'ドゥ = dwu'],
+        ['チェ', 'che', 'チェック = chekku'],
+        ['シェ', 'she', 'シェフ = shefu'],
+        ['ジェ', 'je', 'ジェット = jetto'],
+        ['ツァ ツィ ツェ ツォ', 'tsa tsi tse tso', 'ツアー = tsua-'],
+        ['ファ フィ フェ フォ', 'fa fi fe fo', 'フィルム = firumu'],
+        ['フュ', 'fyu', ''],
+        ['ヴァ ヴィ ヴ ヴェ ヴォ', 'va vi vu ve vo', 'ヴァイオリン = vaiorin'],
+        ['イェ', 'ye', ''],
+        ['ウィ ウェ', 'wi we', 'ウォ: app gõ uxo — MS-IME gõ who'],
+        ['クァ グァ', 'kwa gwa', '']
+    ]},
+    {t: 'Kana nhỏ (ghép tay khi cần)', rows: [
+        ['ぁ ぃ ぅ ぇ ぉ', 'xa xi xu xe xo', 'Gõ l… cũng được: la li lu le lo'],
+        ['ゃ ゅ ょ', 'xya xyu xyo', ''],
+        ['っ', 'xtu (hoặc xtsu)', 'Cách thường dùng hơn: gấp đôi phụ âm — kippu → きっぷ'],
+        ['ゎ', 'xwa', ''],
+        ['ティ ghép tay', 'te + xi', 'Tương đương thi; ディ = de + xi']
+    ]},
+    {t: 'っ (âm ngắt) và ん', rows: [
+        ['っ', 'gấp đôi phụ âm', 'きっぷ = kippu · がっこう = gakkou · とっきゅう = tokkyuu'],
+        ['ッチ', 'tchi hoặc cchi', 'マッチ = matchi · こっち = kocchi'],
+        ['ん cuối từ', 'nn', 'にほん = nihonn (app: gõ n cuối cũng ra ん)'],
+        ['ん trước nguyên âm/y', "nn (MS-IME: n')", "しんいち = shinnichi / shin'ichi — gõ shinichi sẽ ra しにち"],
+        ['ん trước phụ âm khác', 'n', 'かんじ = kanji · こんばん = konban']
+    ]},
+    {t: 'Trường âm & kana dễ nhầm', rows: [
+        ['ー (trường âm katakana)', 'phím -', 'コーヒー = ko-hi- · パーティー = pa-thi-'],
+        ['じ / ぢ', 'ji (hoặc zi) / di', 'はなぢ = hanadi'],
+        ['ず / づ', 'zu / du', 'つづき = tsuduki'],
+        ['を', 'wo', 'Trợ từ を'],
+        ['ふ', 'fu hoặc hu', ''],
+        ['し ち つ', 'shi/si · chi/ti · tsu/tu', 'Cả hai kiểu đều ra đúng']
+    ]},
+    {t: 'Microsoft IME — phím chức năng', rows: [
+        ['Chuyển sang katakana', 'F7', 'Gõ すぱげってぃ rồi F7 → スパゲッティ'],
+        ['Katakana nửa độ rộng', 'F8', ''],
+        ['Về hiragana', 'F6', ''],
+        ['Chữ Latin (full/half)', 'F9 / F10', ''],
+        ['Chuyển kanji', 'Space', 'Space nhiều lần để chọn ứng viên; Enter để xác nhận'],
+        ['Bật/tắt gõ tiếng Nhật', '半角/全角 (hoặc Alt + `)', 'Đổi bàn phím: Win + Space'],
+        ['Khoá hiragana / katakana', 'Ctrl + Caps / Alt + Caps', '']
+    ]},
+    {t: 'Microsoft IME — dấu câu & ký hiệu', rows: [
+        ['、（dấu phẩy）', 'phím ,', ''],
+        ['。（dấu chấm）', 'phím .', ''],
+        ['「 」', 'phím [ ]', ''],
+        ['・（chấm giữa）', 'phím /', ''],
+        ['〜 ／ ￥', 'gõ kara / suraQshu / en rồi Space', 'Hoặc dùng bảng ký hiệu của IME']
+    ]},
+    {t: 'Riêng bộ gõ trong app', rows: [
+        ['Bật/tắt gõ romaji', 'ô "gõ romaji" ở thanh trên', 'Tắt đi thì gõ thẳng bằng IME của Windows'],
+        ['Đổi hiragana ⇄ katakana ⇄ tự động', 'phím =', 'Phím này đổi được trong ⚙ Tùy chọn'],
+        ['Không có chuyển kanji', '—', 'App chỉ so kana/romaji, không cần bấm Space chuyển kanji']
+    ]}
+];
+
+/** Vẽ bảng tra cách gõ (tab ⌨️ Cách gõ); lọc theo ô tìm kiếm. */
+function renderIme() {
+    const box = $('imeList');
+    if (!box) return;
+    const q = ((($('imeSearch') && $('imeSearch').value) || '')).toLowerCase().trim();
+    let html = '', hit = 0;
+    IME_NOTES.forEach(function (sec) {
+        const rows = sec.rows.filter(function (r) {
+            return !q || (r[0] + ' ' + r[1] + ' ' + r[2] + ' ' + sec.t).toLowerCase().indexOf(q) >= 0;
+        });
+        if (!rows.length) return;
+        hit += rows.length;
+        html += '<div style="font-weight:600; color:var(--shu-bright); margin:14px 0 6px; font-size:13px;">' + escapeHtml(sec.t) + '</div>';
+        rows.forEach(function (r) {
+            html += '<div style="display:flex; gap:10px; align-items:baseline; padding:5px 4px; border-bottom:1px solid var(--line); font-size:14px;">'
+                + '<span style="font-family:var(--fjp); color:var(--ink); flex:0 0 116px;">' + escapeHtml(r[0]) + '</span>'
+                + '<span style="color:var(--gold); font-weight:700; flex:0 0 132px;">' + escapeHtml(r[1]) + '</span>'
+                + '<span style="color:var(--ink-dim); flex:1 1 160px; font-size:13px;">' + escapeHtml(r[2]) + '</span>'
+                + '</div>';
+        });
+    });
+    if (!hit) html = '<div class="muted" style="padding:8px 2px;">Không tìm thấy mục nào khớp.</div>';
+    box.innerHTML = html;
+}
+
 function readingIsKatakana() {
     return !!(card && card[4] && /[゠-ヿ]/.test(card[4]));
 }

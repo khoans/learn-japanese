@@ -105,6 +105,14 @@ Tất cả đều lưu ở `localStorage` (khóa `jp_…`), không cần soạn 
 - **Luyện viết tay** (tag): bấm **W** (hoặc nút ✍️) để đánh dấu "từ này nên tự viết ra
   giấy"; thẻ hiện badge ✍️. Xem lại toàn bộ ở tab **✍️ Cần viết tay** (`jp_handwrite_v2`).
   Tag không ảnh hưởng vòng luyện, theo dõi theo TỪ (không phụ thuộc bộ/chế độ).
+- **Cách gõ** (tab ⌨️ Cách gõ): bảng tra các trường hợp gõ đặc biệt — âm ngoại lai (ティ, ジェ,
+  ヴァ…), kana nhỏ, っ／ん, trường âm, phím F6–F10 và dấu câu của Microsoft IME. Có ô tìm kiếm.
+  Nội dung nằm ở `IME_NOTES` trong `js/input-kana.js` — sửa/bổ sung trực tiếp ở mảng đó.
+- **Gõ romaji → kana** (ô đánh máy, `js/input-kana.js`): gõ như IME tiếng Nhật. Ngoài âm
+  cơ bản còn có **âm ngoại lai** cho katakana: `thi`→ティ, `dhi`→ディ, `che`→チェ,
+  `she`→シェ, `je`→ジェ, `tsa/tse/tso`→ツァ/ツェ/ツォ, `va/vi/ve/vo`→ヴァ…, `fa/fi/fe/fo`→ファ…,
+  `ye`→イェ, `-`→ー; và **kana nhỏ** gõ bằng `x…`/`l…` (`xi`→ィ, `xya`→ャ, `xtu`→ッ).
+  Ví dụ: `supagetthi` → スパゲッティ, `pa-thi-` → パーティー, `dhizuni-rando` → ディズニーランド.
 - **Tra từ** (tab 🔍 Tra từ): tra mọi từ vựng kèm **Bài · Trình độ** (hoặc **Chủ đề**), có
   tìm + lọc. Mỗi thẻ khi luyện cũng hiện badge nhỏ "Bài N · trình độ" (từ `CARD_ORIGIN`
   trong `js/core.js`). Nút **↗ Trang báo cáo** mở `report.html`.
