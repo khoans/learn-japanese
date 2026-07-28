@@ -420,10 +420,20 @@ let isRevealed = false, isTimedOut = false, cardStartMs = 0, pausedMs = 0, answe
     statSort = 'count', limitTimerId = null, lastGraded = null, isTypingCard = false, typingDone = false, cardDir = 'read',
     dontScore = false;
 
+// Cờ phụ của deck "lword", gộp trong MỘT đoạn: 'K' = mặt trước kanji,
+// 'C' = chỉ từ chính, 'A' = chỉ từ phụ lục (không có cả hai = học cả 2).
+// Vd: "lword|1,2|KA". Khoá cũ dạng "lword|1,2|K" vẫn đọc được.
+function lwordFlags() {
+    var f = ($('lwordForm').value === 'kanji' ? 'K' : '');
+    var a = $('apxFilter') ? $('apxFilter').value : 'all';
+    if (a === 'core') f += 'C'; else if (a === 'apx') f += 'A';
+    return f ? '|' + f : '';
+}
+
 function deckKey() {
     const m = $('mode').value;
     let base;
-    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
+    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + lwordFlags(); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
@@ -444,7 +454,11 @@ function deckLabel(key) {
     if (parts[0] === 'kanji130') return prefix + '130 kanji N5 · nhóm ' + (parts[1] || 'all');
     if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
     if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
-    if (parts[0] === 'lword') return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (parts[2] === 'K' ? ' (kanji)' : '');
+    if (parts[0] === 'lword') {
+        var fl = parts[2] || '';
+        return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (fl.indexOf('K') >= 0 ? ' (kanji)' : '')
+            + (fl.indexOf('C') >= 0 ? ' · từ chính' : (fl.indexOf('A') >= 0 ? ' · 📎 phụ lục' : ''));
+    }
     if (parts[0] === 'theme') return prefix + 'Từ theo chủ đề' + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' chủ đề' : '') + (parts[2] === 'K' ? ' (kanji)' : '');
     if (parts[0] === 'word') return prefix + 'Đọc từ N5 · ' + scriptNames[parts[1]];
     const rangeNames = {basic: 'Cơ bản', full: 'Cơ bản+biến âm', yoon: 'Cơ bản+biến âm+ghép', tricky: 'Hay nhầm'};
@@ -572,9 +586,16 @@ function poolForKey(key) {
     }
     if (parts[0] === 'lword') {
         const lessons = parseLessons(parts[1]);
-        const kanjiMode = (parts[2] === 'K');
+        const flags = parts[2] || '';
+        const kanjiMode = (flags.indexOf('K') >= 0);
+        const onlyCore = (flags.indexOf('C') >= 0), onlyApx = (flags.indexOf('A') >= 0);
         return LWORDS.filter(function (row) {
-            return lessons.indexOf(row[2]) >= 0;
+            if (lessons.indexOf(row[2]) < 0) return false;
+            // Cùng quy ước với badge 📎: chỉ tính là phụ lục khi từ đó không phải từ chính ở bài nào khác.
+            var apx = !!row[6] && isAppendix(row[0]);
+            if (onlyCore && apx) return false;
+            if (onlyApx && !apx) return false;
+            return true;
         }).map(function (row) {
             var reading = row[4] || row[0];
             var kanji = row[0];
