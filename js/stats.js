@@ -969,6 +969,125 @@ function renderGram() {
 
 $('gramSel').addEventListener('change', renderGram);
 
+/* ===== Đọc hiểu (📖) + Hội thoại (💬) — luyện đọc theo bài ===== */
+let readShowVi = false, readShowAns = false, convShowVi = false;
+
+// "câu 1|câu 2" -> ["câu 1", "câu 2"]
+function splitLines(s) {
+    return String(s == null ? '' : s).split('|').map(function (x) { return x.trim(); }).filter(function (x) { return x !== ''; });
+}
+// Nút 🔊 đọc to một đoạn tiếng Nhật.
+function speakBtn(text) {
+    const b = document.createElement('button');
+    b.className = 'btn small';
+    b.textContent = '🔊';
+    b.title = 'Đọc to';
+    b.style.cssText = 'padding:2px 7px; font-size:12px; flex:0 0 auto;';
+    b.addEventListener('click', function (e) { e.stopPropagation(); speak(text); });
+    return b;
+}
+// Một dòng: chữ Nhật (bấm để nghe) + nghĩa tiếng Việt ẩn/hiện.
+function jpLine(jp, vi, showVi, prefix) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex; gap:7px; align-items:flex-start; margin:5px 0;';
+    const btn = speakBtn(jp);
+    const txt = document.createElement('div');
+    txt.style.cssText = 'flex:1 1 auto; cursor:pointer;';
+    let html = '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:15px; color:#fff; line-height:1.7;">';
+    if (prefix) html += '<span style="color:#9ecbff; font-weight:600;">' + escHtml(prefix) + '</span> ';
+    html += escHtml(jp) + '</span>';
+    if (vi) html += '<div class="rd-vi" style="font-size:12.5px; color:#9aa0a6; margin-top:1px; display:' + (showVi ? 'block' : 'none') + ';">' + escHtml(vi) + '</div>';
+    txt.innerHTML = html;
+    txt.addEventListener('click', function () { speak(jp); });
+    wrap.appendChild(btn);
+    wrap.appendChild(txt);
+    return wrap;
+}
+
+function renderRead() {
+    const sel = $('readSel');
+    const box = $('readList');
+    if (!sel || !box) return;
+    const items = READ[sel.value] || [];
+    box.innerHTML = '';
+    if (!items.length) {
+        box.innerHTML = '<div class="muted" style="font-size:13px;">Bài này chưa có bài đọc.</div>';
+        return;
+    }
+    items.forEach(function (r, i) {
+        const jp = splitLines(r.jp), vi = splitLines(r.vi);
+        const card = document.createElement('div');
+        card.style.cssText = 'margin-bottom:14px; padding:11px 12px; background:#1a1d1f; border:1px solid #2c2f31; border-radius:9px;';
+
+        const head = document.createElement('div');
+        head.style.cssText = 'display:flex; gap:7px; align-items:center; margin-bottom:7px;';
+        const title = document.createElement('div');
+        title.style.cssText = 'flex:1 1 auto; color:#cfe6ff; font-weight:600; font-size:13.5px;';
+        title.textContent = (i + 1) + '. ' + (r.t || 'Bài đọc');
+        head.appendChild(title);
+        head.appendChild(speakBtn(jp.join('')));
+        card.appendChild(head);
+
+        jp.forEach(function (line, k) { card.appendChild(jpLine(line, vi[k] || '', readShowVi)); });
+
+        if (r.q && r.q.length) {
+            const qh = document.createElement('div');
+            qh.style.cssText = 'margin-top:9px; padding-top:8px; border-top:1px solid #2c2f31; font-size:11px; letter-spacing:1px; opacity:.6;';
+            qh.textContent = 'CÂU HỎI';
+            card.appendChild(qh);
+            r.q.forEach(function (qa, k) {
+                const q = document.createElement('div');
+                q.style.cssText = 'margin-top:5px;';
+                q.innerHTML = '<div style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:14px; color:#e8e8e8;">' +
+                    (k + 1) + ') ' + escHtml(qa[0]) + '</div>' +
+                    '<div class="rd-ans" style="font-size:13px; color:#7fd88f; margin-top:2px; display:' + (readShowAns ? 'block' : 'none') + ';">→ ' + escHtml(qa[1] || '') + '</div>';
+                card.appendChild(q);
+            });
+        }
+        box.appendChild(card);
+    });
+}
+
+function renderConv() {
+    const sel = $('convSel');
+    const box = $('convList');
+    if (!sel || !box) return;
+    const items = CONV[sel.value] || [];
+    box.innerHTML = '';
+    if (!items.length) {
+        box.innerHTML = '<div class="muted" style="font-size:13px;">Bài này chưa có hội thoại.</div>';
+        return;
+    }
+    items.forEach(function (c, i) {
+        const jp = splitLines(c.jp), vi = splitLines(c.vi);
+        const card = document.createElement('div');
+        card.style.cssText = 'margin-bottom:14px; padding:11px 12px; background:#1a1d1f; border:1px solid #2c2f31; border-radius:9px;';
+
+        const head = document.createElement('div');
+        head.style.cssText = 'display:flex; gap:7px; align-items:center; margin-bottom:3px;';
+        const title = document.createElement('div');
+        title.style.cssText = 'flex:1 1 auto; color:#cfe6ff; font-weight:600; font-size:13.5px;';
+        title.textContent = (i + 1) + '. ' + (c.t || 'Hội thoại');
+        head.appendChild(title);
+        head.appendChild(speakBtn(jp.map(function (l) { return l.replace(/^[^：:]{1,12}[：:]/, ''); }).join('　')));
+        card.appendChild(head);
+
+        if (c.s) {
+            const ctx = document.createElement('div');
+            ctx.style.cssText = 'font-size:12px; color:#9aa0a6; margin-bottom:6px; font-style:italic;';
+            ctx.textContent = c.s;
+            card.appendChild(ctx);
+        }
+        jp.forEach(function (line, k) {
+            const m = /^([^：:]{1,12})[：:]\s*(.*)$/.exec(line);
+            const who = m ? m[1] + '：' : '';
+            const said = m ? m[2] : line;
+            card.appendChild(jpLine(said, vi[k] || '', convShowVi, who));
+        });
+        box.appendChild(card);
+    });
+}
+
 function renderKanaChart() {
     const box = $('kanaChartList');
     if (!box) return;

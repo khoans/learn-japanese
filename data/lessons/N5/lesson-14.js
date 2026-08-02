@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 14, {
   words: [
     ["つけます", "tsukemasu", "bật (điện, máy)", "つけます"],
@@ -149,5 +151,19 @@ registerLesson("N5", 14, {
     {"p": "⑥ Phân biệt ～ましょうか ／ ～ませんか ／ ～ましょう", "g": "～ましょうか = tôi làm giúp bạn nhé (một mình tôi làm). ～ませんか = rủ đối phương cùng làm (đề nghị nhẹ nhàng). ～ましょう = cùng làm thôi (đã thống nhất).", "ex": "いっしょに いきましょう。", "exr": "Issho ni ikimashou.", "m": "Chúng ta cùng đi nào."},
     {"p": "⑦ すみませんが、～ / ～が、…", "g": "が ở cuối vế đầu là lời rào đón, nối sang lời nhờ vả hay lời nói tiếp theo (không mang nghĩa \"nhưng\"). Hay dùng: すみませんが…／しつれいですが…", "ex": "すみませんが、しおを とって ください。", "exr": "Sumimasen ga, shio o totte kudasai.", "m": "Xin lỗi, cho tôi xin lọ muối."},
     {"p": "⑧ Chỉ đường: ～を ～へ まがって ください", "g": "Chỉ đường bằng thể て: [nơi]を [みぎ／ひだり]へ まがって ください（rẽ tại đâu, về hướng nào）; まっすぐ いって ください（đi thẳng）; ここで とめて ください（dừng ở đây）.", "ex": "あの しんごうを みぎへ まがって ください。", "exr": "Ano shingou o migi e magatte kudasai.", "m": "Xin hãy rẽ phải ở đèn tín hiệu kia."}
+  ],
+  readings: [
+    {"t": "Chỉ đường", "jp": "えきを でて、まっすぐ いって ください。|みっつめの しんごうを みぎへ まがって ください。|はしを わたって ください。|ゆうびんきょくの まえで とめて ください。|わたしの うちは その となりです。", "vi": "Ra khỏi ga rồi đi thẳng.|Rẽ phải ở đèn tín hiệu thứ ba.|Hãy đi qua cầu.|Hãy dừng trước bưu điện.|Nhà tôi ở ngay bên cạnh đó.", "q": [["えきを でて、どう いきますか。", "まっすぐ いきます。"], ["どこを みぎへ まがりますか。", "みっつめの しんごうを まがります。"], ["どこで とめますか。", "ゆうびんきょくの まえで とめます。"]]},
+    {"t": "Bây giờ đang làm gì", "jp": "いま ミラーさんは でんわを かけて います。|やまださんは しりょうを よんで います。|キムさんは ごはんを たべて います。|サントスさんは まって います。|わたしは レポートを かいて います。", "vi": "Bây giờ anh Miller đang gọi điện thoại.|Anh Yamada đang đọc tài liệu.|Chị Kim đang ăn cơm.|Anh Santos đang chờ.|Tôi đang viết báo cáo.", "q": [["ミラーさんは なにを して いますか。", "でんわを かけて います。"], ["キムさんは なにを して いますか。", "ごはんを たべて います。"], ["わたしは なにを して いますか。", "レポートを かいて います。"]]},
+    {"t": "Nhờ giúp một việc", "jp": "すみませんが、この にもつを もって ください。|それから、ドアを あけて ください。|エアコンを つけて ください。|でんきを けして ください。|ありがとうございます。", "vi": "Xin lỗi, hãy cầm giúp tôi hành lý này.|Rồi hãy mở cửa giúp.|Hãy bật điều hòa.|Hãy tắt đèn.|Cảm ơn anh/chị.", "q": [["なにを もちますか。", "にもつを もちます。"], ["エアコンを どう しますか。", "つけます。"], ["でんきを どう しますか。", "けします。"]]},
+    {"t": "Trên taxi", "jp": "タクシーに のりました。|「とうきょうえきまで おねがいします」と いいました。|「いそいで ください」と いいました。|うんてんしゅさんは はやく いきました。|じゅうごふんで つきました。", "vi": "Tôi lên taxi.|Tôi nói: cho tôi đến ga Tokyo.|Tôi nói: xin đi nhanh giúp.|Bác tài đã đi nhanh.|15 phút thì đến nơi.", "q": [["なにに のりましたか。", "タクシーに のりました。"], ["どこまで いきましたか。", "とうきょうえきまで いきました。"], ["なんぷんで つきましたか。", "じゅうごふんで つきました。"]]},
+    {"t": "Trời đang mưa", "jp": "いま あめが ふって います。|かさを もって いません。|えきで ともだちを まって います。|ともだちは まだ きて いません。|でんわを かけましょうか。", "vi": "Bây giờ trời đang mưa.|Tôi không mang ô.|Tôi đang đợi bạn ở ga.|Bạn tôi vẫn chưa đến.|Hay là gọi điện nhỉ?", "q": [["いま てんきは どうですか。", "あめが ふって います。"], ["かさを もって いますか。", "いいえ、もって いません。"], ["どこで まって いますか。", "えきで まって います。"]]}
+  ],
+  conversations: [
+    {"t": "Trên taxi", "s": "Chỉ đường cho tài xế.", "jp": "うんてんしゅ：どちらまで ですか。|ミラー：とうきょうホテルまで おねがいします。|うんてんしゅ：はい。|ミラー：すみません、いそいで ください。|うんてんしゅ：わかりました。|ミラー：あの しんごうを みぎへ まがって ください。", "vi": "Quý khách đi đâu ạ?|Cho tôi đến khách sạn Tokyo.|Vâng ạ.|Xin lỗi, đi nhanh giúp tôi.|Tôi hiểu rồi ạ.|Hãy rẽ phải ở đèn tín hiệu kia."},
+    {"t": "Nhờ giúp việc", "s": "Nhờ đồng nghiệp.", "jp": "やまだ：ミラーさん、ちょっと てつだって ください。|ミラー：はい、なんですか。|やまだ：この にもつを もって ください。|ミラー：はい、わかりました。|やまだ：それから、ドアを あけて ください。|ミラー：はい。", "vi": "Anh Miller, giúp tôi một chút.|Vâng, việc gì vậy?|Cầm giúp tôi hành lý này.|Vâng, tôi hiểu rồi.|Rồi mở cửa giúp tôi nữa.|Vâng."},
+    {"t": "Đang làm gì đấy?", "s": "Gọi điện hỏi thăm.", "jp": "キム：もしもし、いま なにを して いますか。|サントス：ばんごはんを たべて います。|キム：そうですか。あとで でんわしましょうか。|サントス：ええ、おねがいします。|キム：じゃ、はちじに かけます。|サントス：はい、まって います。", "vi": "A lô, bây giờ anh đang làm gì?|Tôi đang ăn tối.|Vậy à. Lát nữa tôi gọi lại nhé?|Vâng, phiền chị.|Vậy 8 giờ tôi gọi.|Vâng, tôi chờ."},
+    {"t": "Chỉ đường đến bưu điện", "s": "Hỏi đường trên phố.", "jp": "ワット：すみません、ゆうびんきょくは どこですか。|ひと：まっすぐ いって ください。|ワット：はい。|ひと：ふたつめの かどを ひだりへ まがって ください。|ワット：ふたつめの かどですね。|ひと：ええ、ぎんこうの となりに あります。|ワット：ありがとうございました。", "vi": "Xin lỗi, bưu điện ở đâu ạ?|Anh đi thẳng.|Vâng.|Rồi rẽ trái ở góc thứ hai.|Góc thứ hai phải không ạ.|Vâng, nó ở cạnh ngân hàng.|Cảm ơn anh/chị."},
+    {"t": "Bật điều hòa nhé?", "s": "Trong phòng họp.", "jp": "キム：ちょっと あついですね。|やまだ：エアコンを つけましょうか。|キム：ええ、おねがいします。|やまだ：まども あけましょうか。|キム：いいえ、けっこうです。|やまだ：わかりました。", "vi": "Hơi nóng nhỉ.|Tôi bật điều hòa nhé?|Vâng, phiền anh.|Mở cửa sổ luôn nhé?|Không, không cần đâu.|Tôi hiểu rồi."}
   ]
 });

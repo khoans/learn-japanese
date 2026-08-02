@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 3, {
   words: [
     ["ここ", "koko", "chỗ này", "ここ"],
@@ -101,5 +103,19 @@ registerLesson("N5", 3, {
     {"p": "⑤ どこの～ (xuất xứ)", "g": "どこの＋N hỏi xuất xứ/hãng: 'N của nước/hãng nào'. Trả lời bằng [nước]の＋N: にほんの くるまです.", "ex": "それは どこの くるまですか。", "exr": "Sore wa doko no kuruma desu ka.", "m": "Đó là xe của nước nào?"},
     {"p": "⑥ いくら (giá)", "g": "Hỏi giá: [N]は いくらですか. Trả lời bằng số ＋ えん (yên). ひゃく=trăm, せん=nghìn, まん=vạn.", "ex": "これは いくらですか。", "exr": "Kore wa ikura desu ka.", "m": "Cái này bao nhiêu tiền?"},
     {"p": "⑦ mua sắm", "g": "Cụm cố định khi mua bán: いらっしゃいませ (chào của người bán), ～を みせてください (cho tôi xem ~), ～を ください (cho tôi ~).", "ex": "いらっしゃいませ。", "exr": "Irasshaimase.", "m": "Xin chào quý khách."}
+  ],
+  readings: [
+    {"t": "Công ty của tôi", "jp": "ここは わたしの かいしゃです。|しょくどうは いっかいです。|じむしょは にかいです。|かいぎしつも にかいです。|トイレは あそこです。", "vi": "Đây là công ty của tôi.|Nhà ăn ở tầng 1.|Văn phòng ở tầng 2.|Phòng họp cũng ở tầng 2.|Nhà vệ sinh ở đằng kia.", "q": [["しょくどうは なんがいですか。", "いっかいです。"], ["じむしょは なんがいですか。", "にかいです。"], ["かいぎしつも にかいですか。", "はい、かいぎしつも にかいです。"]]},
+    {"t": "Trong siêu thị", "jp": "ここは スーパーです。|くつうりばは にかいです。|ワインうりばは ちかいっかいです。|エレベーターは あそこです。|エスカレーターは そこです。", "vi": "Đây là siêu thị.|Quầy giày ở tầng 2.|Quầy rượu vang ở tầng hầm 1.|Thang máy ở đằng kia.|Thang cuốn ở đó.", "q": [["くつうりばは なんがいですか。", "にかいです。"], ["ワインうりばは どこですか。", "ちかいっかいです。"], ["エレベーターは そこですか。", "いいえ、あそこです。"]]},
+    {"t": "Giá bao nhiêu", "jp": "この とけいは にまんえんです。|その とけいは さんまんえんです。|あの とけいは ごまんえんです。|この とけいは にほんのです。|あの とけいは スイスのです。", "vi": "Cái đồng hồ này 20.000 yên.|Cái đồng hồ đó 30.000 yên.|Cái đồng hồ kia 50.000 yên.|Cái này là của Nhật.|Cái kia là của Thụy Sĩ.", "q": [["この とけいは いくらですか。", "にまんえんです。"], ["あの とけいは いくらですか。", "ごまんえんです。"], ["この とけいは どこのですか。", "にほんのです。"]]},
+    {"t": "Anh Santos đến từ đâu", "jp": "サントスさんの くには ブラジルです。|かいしゃは アメリカの かいしゃです。|うちは おおさかです。|かいしゃは とうきょうです。|サントスさんの くるまは ドイツのです。", "vi": "Quê anh Santos là Brazil.|Công ty là công ty của Mỹ.|Nhà ở Osaka.|Công ty ở Tokyo.|Xe của anh Santos là xe của Đức.", "q": [["サントスさんの くには どこですか。", "ブラジルです。"], ["サントスさんの うちは どこですか。", "おおさかです。"], ["くるまは どこのですか。", "ドイツのです。"]]},
+    {"t": "Lễ tân", "jp": "ここは うけつけです。|うけつけは いっかいです。|ロビーも いっかいです。|でんわは そこです。|じどうはんばいきは あそこです。", "vi": "Đây là quầy lễ tân.|Lễ tân ở tầng 1.|Sảnh cũng ở tầng 1.|Điện thoại ở đó.|Máy bán hàng tự động ở đằng kia.", "q": [["うけつけは なんがいですか。", "いっかいです。"], ["ロビーも いっかいですか。", "はい、ロビーも いっかいです。"], ["じどうはんばいきは どこですか。", "あそこです。"]]}
+  ],
+  conversations: [
+    {"t": "Nhà vệ sinh ở đâu?", "s": "Hỏi đường trong tòa nhà công ty.", "jp": "ミラー：すみません。トイレは どこですか。|やまだ：あそこです。|ミラー：じむしょは なんがいですか。|やまだ：にかいです。|ミラー：どうも ありがとうございます。|やまだ：いいえ。", "vi": "Xin lỗi, nhà vệ sinh ở đâu ạ?|Ở đằng kia.|Văn phòng ở tầng mấy ạ?|Tầng 2.|Cảm ơn anh nhiều.|Không có gì."},
+    {"t": "Quầy giày ở tầng nào", "s": "Hỏi nhân viên siêu thị.", "jp": "きゃく：すみません。くつうりばは なんがいですか。|てんいん：にかいです。|きゃく：エスカレーターは どこですか。|てんいん：あちらです。|きゃく：どうも。|てんいん：ありがとうございます。", "vi": "Xin lỗi, quầy giày ở tầng mấy ạ?|Tầng 2 ạ.|Thang cuốn ở đâu ạ?|Ở đằng kia ạ.|Cảm ơn.|Xin cảm ơn quý khách."},
+    {"t": "Cái này bao nhiêu tiền?", "s": "Mua đồ ở cửa hàng.", "jp": "きゃく：すみません。これは いくらですか。|てんいん：さんぜんえんです。|きゃく：それは？|てんいん：これは ごせんえんです。|きゃく：じゃ、これを ください。|てんいん：はい、ありがとうございます。", "vi": "Xin lỗi, cái này bao nhiêu tiền?|3.000 yên ạ.|Còn cái đó?|Cái này 5.000 yên ạ.|Vậy cho tôi cái này.|Vâng, xin cảm ơn."},
+    {"t": "Hàng nước nào?", "s": "Hỏi xuất xứ sản phẩm.", "jp": "キム：この かばんは どこのですか。|てんいん：イタリアのです。|キム：いくらですか。|てんいん：いちまんごせんえんです。|キム：ちょっと たかいですね。|てんいん：そうですか。", "vi": "Cái cặp này là hàng nước nào ạ?|Của Ý ạ.|Bao nhiêu tiền ạ?|15.000 yên ạ.|Hơi đắt nhỉ.|Vậy ạ."},
+    {"t": "Nước của bạn ở đâu", "s": "Làm quen với đồng nghiệp mới.", "jp": "やまだ：キムさんの くには どこですか。|キム：かんこくです。|やまだ：かいしゃは どこですか。|キム：とうきょうです。|やまだ：うちも とうきょうですか。|キム：いいえ、うちは よこはまです。", "vi": "Quê chị Kim ở đâu?|Hàn Quốc.|Công ty ở đâu?|Ở Tokyo.|Nhà cũng ở Tokyo à?|Không, nhà tôi ở Yokohama."}
   ]
 });

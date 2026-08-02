@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 12, {
   words: [
     ["簡単", "kantan", "đơn giản, dễ (tính từ な)", "かんたん"],
@@ -121,5 +123,19 @@ registerLesson("N5", 12, {
     {"p": "⑥ N1 と N2 と どちらが ～ですか … N の ほうが ～です", "g": "Hỏi so sánh giữa HAI đối tượng, luôn dùng どちら (kể cả với người, địa điểm, đồ vật). Trả lời: [N]の ほうが ～です. Nếu ngang nhau: どちらも ～です.", "ex": "コーヒーと こうちゃと どちらが いいですか。", "exr": "Koohii to koucha to dochira ga ii desu ka.", "m": "Cà phê và hồng trà, bạn chọn cái nào?"},
     {"p": "⑦ N1［の なか］で なにが いちばん ～ですか", "g": "Hỏi so sánh nhất trong một PHẠM VI ba đối tượng trở lên. Từ để hỏi đổi theo loại: なに（もの）・だれ（người）・どこ（nơi chốn）・いつ（thời gian）. Trả lời: [N]が いちばん ～です.", "ex": "にほんりょうりの なかで なにが いちばん すきですか。", "exr": "Nihon ryouri no naka de nani ga ichiban suki desu ka.", "m": "Trong món ăn Nhật bạn thích món nào nhất?"},
     {"p": "⑧ ～は どうでしたか／いかがでしたか", "g": "Hỏi cảm tưởng về việc đã xảy ra: \"~ đã thế nào?\". いかがでしたか lịch sự hơn どうでしたか. Trả lời bằng câu quá khứ ở ①〜④.", "ex": "りょこうは どうでしたか。", "exr": "Ryokou wa dou deshita ka.", "m": "Chuyến du lịch thế nào?"}
+  ],
+  readings: [
+    {"t": "Lễ hội hôm qua", "jp": "きのう おまつりへ いきました。|とても にぎやかでした。|ひとが おおかったです。|てんきは よかったです。|たべものは あまり おいしくなかったです。", "vi": "Hôm qua tôi đã đi lễ hội.|Rất náo nhiệt.|Rất đông người.|Thời tiết đẹp.|Đồ ăn thì không ngon lắm.", "q": [["きのう どこへ いきましたか。", "おまつりへ いきました。"], ["おまつりは どうでしたか。", "とても にぎやかでした。"], ["たべものは おいしかったですか。", "いいえ、あまり おいしくなかったです。"]]},
+    {"t": "Mùa nào thích hơn?", "jp": "にほんの なつと ふゆと どちらが すきですか。|わたしは ふゆの ほうが すきです。|なつは あつくて たいへんです。|ふゆは さむいですが、ゆきが きれいです。|いちばん すきな きせつは はるです。", "vi": "Bạn thích mùa hè hay mùa đông ở Nhật hơn?|Tôi thích mùa đông hơn.|Mùa hè nóng nên vất vả.|Mùa đông lạnh nhưng tuyết đẹp.|Mùa tôi thích nhất là mùa xuân.", "q": [["なつと ふゆと どちらが すきですか。", "ふゆの ほうが すきです。"], ["なつは どうですか。", "あつくて たいへんです。"], ["いちばん すきな きせつは なんですか。", "はるです。"]]},
+    {"t": "Tokyo và Osaka", "jp": "とうきょうと おおさかと どちらが おおきいですか。|とうきょうの ほうが おおきいです。|でも、おおさかの ほうが たべものが おいしいです。|ひとは おおさかの ほうが しんせつです。|わたしは おおさかが いちばん すきです。", "vi": "Tokyo và Osaka, nơi nào lớn hơn?|Tokyo lớn hơn.|Nhưng đồ ăn ở Osaka ngon hơn.|Người Osaka thì thân thiện hơn.|Tôi thích Osaka nhất.", "q": [["どちらが おおきいですか。", "とうきょうの ほうが おおきいです。"], ["たべものは どちらが おいしいですか。", "おおさかの ほうが おいしいです。"], ["いちばん すきな まちは どこですか。", "おおさかです。"]]},
+    {"t": "Chuyến du lịch năm ngoái", "jp": "きょねん はじめて きょうとへ いきました。|しんかんせんで いきました。|しんかんせんは バスより はやいです。|でも、バスより たかいです。|りょこうは とても たのしかったです。", "vi": "Năm ngoái lần đầu tiên tôi đi Kyoto.|Tôi đi bằng Shinkansen.|Shinkansen nhanh hơn xe buýt.|Nhưng đắt hơn xe buýt.|Chuyến đi rất vui.", "q": [["いつ きょうとへ いきましたか。", "きょねん いきました。"], ["なんで いきましたか。", "しんかんせんで いきました。"], ["しんかんせんと バスと どちらが はやいですか。", "しんかんせんの ほうが はやいです。"]]},
+    {"t": "Thời tiết hôm nay", "jp": "きょうは あめです。|きのうは くもりでした。|おとといは いい てんきでした。|あしたは ゆきです。|ふゆの てんきは あまり よくないです。", "vi": "Hôm nay trời mưa.|Hôm qua trời nhiều mây.|Hôm kia thời tiết đẹp.|Ngày mai sẽ có tuyết.|Thời tiết mùa đông không tốt lắm.", "q": [["きょうの てんきは どうですか。", "あめです。"], ["きのうは どうでしたか。", "くもりでした。"], ["おとといは どうでしたか。", "いい てんきでした。"]]}
+  ],
+  conversations: [
+    {"t": "Lễ hội thế nào?", "s": "Nói chuyện sau kỳ nghỉ.", "jp": "やまだ：ミラーさん、きのうの おまつりは どうでしたか。|ミラー：とても にぎやかでした。|やまだ：ひとが おおかったですか。|ミラー：ええ、とても おおかったです。|やまだ：てんきは？|ミラー：よかったです。あつくなかったです。", "vi": "Anh Miller, lễ hội hôm qua thế nào?|Rất náo nhiệt.|Đông người không?|Vâng, rất đông.|Thời tiết thì sao?|Đẹp. Không nóng."},
+    {"t": "Cái nào ngon hơn?", "s": "So sánh món ăn.", "jp": "キム：てんぷらと すきやきと どちらが おいしいですか。|サントス：わたしは すきやきの ほうが すきです。|キム：どうしてですか。|サントス：にくが すきですから。|キム：わたしは てんぷらの ほうが すきです。|サントス：そうですか。", "vi": "Tempura và sukiyaki, món nào ngon hơn?|Tôi thích sukiyaki hơn.|Vì sao vậy?|Vì tôi thích thịt.|Tôi thì thích tempura hơn.|Vậy à."},
+    {"t": "Đi bằng gì nhanh hơn", "s": "Bàn cách đi lại.", "jp": "ワット：おおさかまで しんかんせんと ひこうきと どちらが はやいですか。|やまだ：ひこうきの ほうが はやいです。|ワット：ねだんは？|やまだ：しんかんせんの ほうが やすいです。|ワット：じゃ、しんかんせんで いきます。|やまだ：それが いいですね。", "vi": "Đến Osaka thì Shinkansen hay máy bay nhanh hơn?|Máy bay nhanh hơn.|Còn giá thì sao?|Shinkansen rẻ hơn.|Vậy tôi sẽ đi Shinkansen.|Thế thì tốt đấy."},
+    {"t": "Mùa nào thích nhất", "s": "Nói về các mùa.", "jp": "ミラー：やまださんは どの きせつが いちばん すきですか。|やまだ：あきが いちばん すきです。|ミラー：どうしてですか。|やまだ：すずしくて、たべものが おいしいですから。|ミラー：わたしも あきが すきです。|やまだ：いいですね。", "vi": "Anh Yamada thích mùa nào nhất?|Tôi thích mùa thu nhất.|Vì sao vậy?|Vì mát mẻ và đồ ăn ngon.|Tôi cũng thích mùa thu.|Hay nhỉ."},
+    {"t": "Kỳ thi thế nào?", "s": "Hỏi về kỳ thi đã qua.", "jp": "サントス：きのうの しけんは どうでしたか。|キム：ちょっと むずかしかったです。|サントス：ながかったですか。|キム：いいえ、ながくなかったです。にじかんでした。|サントス：かんじの もんだいは？|キム：かんじが いちばん むずかしかったです。", "vi": "Kỳ thi hôm qua thế nào?|Hơi khó.|Có dài không?|Không, không dài. 2 tiếng.|Câu hỏi về chữ Hán thì sao?|Chữ Hán là khó nhất."}
   ]
 });

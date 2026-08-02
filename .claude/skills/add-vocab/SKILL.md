@@ -47,7 +47,7 @@ giải thích ngữ pháp hay đoạn văn của trang — phần câu + ngữ p
 - Trường dạng "A/B" (`夫/主人`, `妻/家内`) → chọn 1 dạng thông dụng.
 - Bỏ trợ từ/ngữ pháp thuần khỏi cột từ vựng nếu đã đưa vào grammar (vd `～から`).
 
-### 4. Tạo 3 CSV — UTF-8 **CÓ BOM** (bắt đầu bằng ký tự ﻿), header **tiếng Việt**
+### 4. Tạo 5 CSV — UTF-8 **CÓ BOM** (bắt đầu bằng ký tự ﻿), header **tiếng Việt**
 Thư mục `data/lessons/csv/N5/lesson-NN/`. Ô nào chứa dấu phẩy `,` phải bọc nháy kép `"..."`.
 
 - **`words.csv`** — header `tiengNhat,romaji,nghia,kana,phuluc`. Mỗi từ 1 dòng (từ bước 2–3).
@@ -60,6 +60,20 @@ Thư mục `data/lessons/csv/N5/lesson-NN/`. Ô nào chứa dấu phẩy `,` ph�
 - **`grammar.csv`** — header `mau_cau,giai_thich,vi_du,vi_du_romaji,nghia`. **TỰ SOẠN ~5–7 điểm
   ngữ pháp CHUẨN của Bài X** (theo giáo trình Minna no Nihongo). Cột `giai_thich` thường có
   dấu phẩy → nhớ bọc nháy.
+
+- **`reading.csv`** — header `tieu_de,doan_van,nghia,cau_hoi1,dap_an1,cau_hoi2,dap_an2,cau_hoi3,dap_an3`.
+  **TỰ SOẠN ĐÚNG 5 bài đọc**, mỗi bài 4–5 câu, chỉ dùng từ vựng + ngữ pháp **đến Bài X**
+  (được dùng lại bài trước, KHÔNG dùng mẫu của bài sau). `tieu_de` viết **tiếng Việt**.
+  `doan_van` tách từng câu bằng `|`; `nghia` là bản dịch **cùng số dòng, cùng thứ tự**.
+  Mỗi bài đọc kèm **3 câu hỏi** tiếng Nhật + đáp án tiếng Nhật (trả lời được từ đoạn văn).
+- **`conversation.csv`** — header `tieu_de,boi_canh,hoi_thoai,nghia`. **TỰ SOẠN ĐÚNG 5 đoạn
+  hội thoại**, mỗi đoạn 6–7 lượt nói, tình huống đời thường đúng phạm vi Bài X.
+  `tieu_de` + `boi_canh` viết **tiếng Việt**. `hoi_thoai` tách từng lượt bằng `|`, mỗi lượt
+  dạng `TênNgười：câu nói` (dùng nhân vật Minna: ミラー・やまだ・サントス・キム・ワット…);
+  `nghia` cũng **cùng số dòng, cùng thứ tự**.
+
+> ⚠️ Số dòng `|` của `nghia` phải **bằng đúng** số dòng của `doan_van`/`hoi_thoai` — build
+> KHÔNG kiểm tra, lệch là bản dịch ghép sai câu.
 
 Ánh xạ nội bộ (build tự làm, đừng lo): grammar `mau_cau/giai_thich/vi_du/vi_du_romaji/nghia`
 → `p/g/ex/exr/m`.
@@ -76,7 +90,7 @@ Không cần sửa HTML.
   số từ/câu tăng đúng.
 
 ### 7. Báo cáo & hỏi commit
-- Tóm tắt: “Bài X — A từ (trong đó P từ phụ lục) · B câu · C ngữ pháp”, liệt kê nhanh các mẫu ngữ pháp
+- Tóm tắt: “Bài X — A từ (trong đó P từ phụ lục) · B câu · C ngữ pháp · 5 bài đọc · 5 hội thoại”, liệt kê nhanh các mẫu ngữ pháp
   và tên khối phụ lục đã thêm.
 - Nói rõ nguồn: **câu + ngữ pháp luôn do tự soạn**; danh sách từ chính lấy từ web hay tự soạn
   (nếu vnjpclub bị chặn); **bảng phụ lục luôn là tự soạn** vì không có nguồn web.

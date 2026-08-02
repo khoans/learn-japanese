@@ -7,7 +7,7 @@ bạn chỉ cần sửa ở đây, không cần đụng tới file code.
 ## Cấu trúc thư mục
 
 Dữ liệu được gom theo **trình độ** (N5, N4, N3, N2, N1), mỗi trình độ chứa nhiều
-**bài**, mỗi bài là **một thư mục riêng** gồm 3 file:
+**bài**, mỗi bài là **một thư mục riêng** gồm 5 file:
 
 ```
 csv/
@@ -16,6 +16,8 @@ csv/
       words.csv            ← từ vựng
       sentences.csv        ← câu ví dụ
       grammar.csv          ← ngữ pháp
+      reading.csv          ← bài đọc hiểu
+      conversation.csv     ← đoạn hội thoại
     lesson-02/
       ...
   N4/                      ← thêm trình độ mới = tạo thư mục N4, N3...
@@ -31,8 +33,17 @@ csv/
 | `words.csv`     | `tiengNhat, romaji, nghia, kana`                | Chữ hiển thị, romaji, nghĩa tiếng Việt, hiragana/katakana |
 | `sentences.csv` | `cau, romaji, nghia`                            | Câu Nhật, romaji, nghĩa tiếng Việt |
 | `grammar.csv`   | `mau_cau, giai_thich, vi_du, vi_du_romaji, nghia` | Tiêu đề mẫu câu, giải thích, ví dụ Nhật, ví dụ romaji, nghĩa |
+| `reading.csv`   | `tieu_de, doan_van, nghia, cau_hoi1, dap_an1, cau_hoi2, dap_an2, cau_hoi3, dap_an3` | Tiêu đề bài đọc, đoạn văn, bản dịch, tối đa 3 câu hỏi + đáp án |
+| `conversation.csv` | `tieu_de, boi_canh, hoi_thoai, nghia`        | Tiêu đề, mô tả tình huống (tiếng Việt), các lượt nói, bản dịch |
 
 > Cột `kana` để trống cũng được — khi đó app sẽ dùng luôn phần `tiengNhat`.
+
+> **Dấu `|` tách dòng** trong `reading.csv` và `conversation.csv`:
+> - `doan_van` — mỗi câu cách nhau bằng `|`; `nghia` là bản dịch **cùng số dòng, đúng thứ tự**.
+> - `hoi_thoai` — mỗi lượt nói viết `TênNgười：câu nói`, cách nhau bằng `|`; `nghia` cũng
+>   phải **cùng số dòng**.
+> - Các cặp `cau_hoiN` / `dap_anN` không bắt buộc; để trống thì bài đọc không có câu hỏi.
+> - Hai file này để trống (chỉ có dòng tiêu đề) cũng được — app chỉ ẩn phần đó đi.
 
 ## Cách thêm / sửa
 

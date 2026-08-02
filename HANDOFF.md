@@ -45,7 +45,7 @@ data/
     manifest.js                 GENERATED — LEVELS + LESSON_MANIFEST (nums per level)
     <LEVEL>/lesson-NN.js         GENERATED from CSV — e.g. N5/lesson-01.js — DO NOT hand-edit
     csv/                        *** SOURCE OF TRUTH ***  (edit here, in Excel/Sheets)
-      <LEVEL>/lesson-NN/words.csv|sentences.csv|grammar.csv
+      <LEVEL>/lesson-NN/words.csv|sentences.csv|grammar.csv|reading.csv|conversation.csv
       _TEMPLATE/                copy-me folder for a new lesson
       README.md                 maintainer guide (VN)
 tools/build-lessons.ps1         CSV -> generated .js + manifest.js (+ bumps sw cache)
@@ -71,6 +71,13 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
 - `grammar.csv`   → `mau_cau, giai_thich, vi_du, vi_du_romaji, nghia`
   (the build maps these back to the internal `p/g/ex/exr/m` keys the engine consumes —
   so the `js/` code never changes when you touch grammar CSV headers.)
+- `reading.csv`   → `tieu_de, doan_van, nghia, cau_hoi1, dap_an1, cau_hoi2, dap_an2, cau_hoi3, dap_an3`
+- `conversation.csv` → `tieu_de, boi_canh, hoi_thoai, nghia`
+  **Gotcha for these two:** lines are split on `|`, and `nghia` must have exactly as many
+  `|`-parts as `doan_van`/`hoi_thoai`, in the same order — otherwise the Vietnamese pairs
+  with the wrong Japanese line (the build does NOT check this). Each `hoi_thoai` turn must
+  start with `TênNgười：` (full-width or ASCII colon) or the speaker label won't render.
+  Both files are optional — a lesson without them just shows "chưa có bài đọc/hội thoại".
 
 ## Common tasks
 
@@ -86,7 +93,7 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   **Exception:** `words.csv` deliberately keeps the kanji in `tiengNhat` and the reading
   in the `kana` column — leave the kanji there. Rule applies to the drill running-text.
 - **Add a lesson (e.g. N5 Bài 8):** copy `csv/_TEMPLATE/` → `csv/N5/lesson-08/`,
-  fill 3 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
+  fill the 5 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
 - **Add a level (N4…N1):** create `csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill,
   build. UI shows a per-level group automatically. See "levels" gotcha below.
 - **Change engine logic:** edit the relevant `js/*.js` file. Keep all top-level

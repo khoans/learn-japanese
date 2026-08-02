@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 13, {
   words: [
     ["遊びます", "asobimasu", "chơi, đi chơi", "あそびます"],
@@ -140,5 +142,19 @@ registerLesson("N5", 13, {
     {"p": "⑥ どこか ／ なにか", "g": "どこか = nơi nào đó, なにか = cái gì đó. Sau どこか・なにか thường LƯỢC BỎ trợ từ へ・を. Trả lời có／không bằng はい・いいえ trước, rồi nói cụ thể.", "ex": "しゅうまつ どこか いきましたか。", "exr": "Shuumatsu dokoka ikimashita ka.", "m": "Cuối tuần bạn có đi đâu không?"},
     {"p": "⑦ Cách dùng ほしい・～たい", "g": "Chỉ dùng cho NGÔI THỨ NHẤT (hoặc hỏi ngôi thứ hai). Không dùng để mời rủ người trên — mời rủ dùng ～ませんか. Muốn nói về người thứ ba thì học ở bài sau.", "ex": "コーヒーが のみたいです。", "exr": "Koohii ga nomitai desu.", "m": "Tôi muốn uống cà phê."},
     {"p": "⑧ おなかが すきました ／ のどが かわきました", "g": "Trạng thái \"đói bụng／khát nước\" nói bằng thể QUÁ KHỨ ました dù đang nói hiện tại. Ngược lại: おなかが いっぱいです (no rồi).", "ex": "おなかが すきましたから、なにか たべませんか。", "exr": "Onaka ga sukimashita kara, nanika tabemasen ka.", "m": "Tôi đói bụng rồi, mình ăn gì đó nhé?"}
+  ],
+  readings: [
+    {"t": "Ngày nghỉ tôi muốn làm gì", "jp": "こんど の やすみに うみへ いきたいです。|うみで およぎたいです。|ともだちと いきたいです。|あたらしい みずぎが ほしいです。|でも、おかねが あまり ありません。", "vi": "Kỳ nghỉ tới tôi muốn đi biển.|Tôi muốn bơi ở biển.|Tôi muốn đi cùng bạn.|Tôi muốn có bộ đồ bơi mới.|Nhưng tôi không có nhiều tiền.", "q": [["こんどの やすみに どこへ いきたいですか。", "うみへ いきたいです。"], ["うみで なにを したいですか。", "およぎたいです。"], ["なにが ほしいですか。", "あたらしい みずぎが ほしいです。"]]},
+    {"t": "Ở nhà hàng", "jp": "きのう ともだちと しょくじに いきました。|わしょくの みせへ いきました。|てんぷらを たべたかったです。|でも、てんぷらは ありませんでした。|だから すきやきを たべました。", "vi": "Hôm qua tôi đi ăn với bạn.|Chúng tôi đến quán món Nhật.|Tôi đã muốn ăn tempura.|Nhưng không có tempura.|Vì thế tôi đã ăn sukiyaki.", "q": [["きのう だれと しょくじに いきましたか。", "ともだちと いきました。"], ["なにを たべたかったですか。", "てんぷらを たべたかったです。"], ["なにを たべましたか。", "すきやきを たべました。"]]},
+    {"t": "Cuối tuần bận rộn", "jp": "しゅうまつは とても つかれました。|どようびに かいものに いきました。|にちようびに こうえんへ さんぽに いきました。|よる ともだちが きました。|なにも したくないです。", "vi": "Cuối tuần tôi rất mệt.|Thứ bảy tôi đi mua sắm.|Chủ nhật tôi đi dạo ở công viên.|Buổi tối bạn tôi đến chơi.|Tôi không muốn làm gì cả.", "q": [["どようびに なにを しましたか。", "かいものに いきました。"], ["にちようびに どこへ いきましたか。", "こうえんへ さんぽに いきました。"], ["いま なにを したいですか。", "なにも したくないです。"]]},
+    {"t": "Muốn có gì?", "jp": "わたしは あたらしい パソコンが ほしいです。|くるまは ほしくないです。|でんしゃが べんりですから。|らいねん けっこんしたいです。|それから おおきい うちが ほしいです。", "vi": "Tôi muốn có máy tính mới.|Tôi không muốn có xe hơi.|Vì tàu điện tiện lợi.|Sang năm tôi muốn kết hôn.|Rồi tôi muốn có một ngôi nhà lớn.", "q": [["なにが ほしいですか。", "あたらしい パソコンが ほしいです。"], ["くるまが ほしいですか。", "いいえ、ほしくないです。"], ["らいねん なにを したいですか。", "けっこんしたいです。"]]},
+    {"t": "Đi đâu vào mùa hè", "jp": "なつやすみに きょうとへ あそびに いきたいです。|おてらを みたいです。|しゃしんも たくさん とりたいです。|ホテルは やすい ところが いいです。|いっしゅうかん ぐらい いたいです。", "vi": "Nghỉ hè tôi muốn đi chơi Kyoto.|Tôi muốn xem chùa.|Tôi cũng muốn chụp nhiều ảnh.|Khách sạn thì chỗ rẻ là tốt.|Tôi muốn ở khoảng một tuần.", "q": [["なつやすみに どこへ いきたいですか。", "きょうとへ いきたいです。"], ["なにを みたいですか。", "おてらを みたいです。"], ["どのくらい いたいですか。", "いっしゅうかん ぐらい いたいです。"]]}
+  ],
+  conversations: [
+    {"t": "Gọi món ở nhà hàng", "s": "Gọi món trong quán ăn Nhật.", "jp": "てんいん：ごちゅうもんは？|ミラー：てんぷらていしょくを おねがいします。|てんいん：おのみものは？|ミラー：ビールを おねがいします。|てんいん：かしこまりました。|キム：わたしは うなぎを おねがいします。", "vi": "Quý khách gọi món gì ạ?|Cho tôi suất cơm tempura.|Đồ uống thì sao ạ?|Cho tôi bia.|Vâng ạ.|Cho tôi món lươn."},
+    {"t": "Kỳ nghỉ muốn đi đâu", "s": "Nói về kế hoạch nghỉ.", "jp": "やまだ：なつやすみに どこか いきたいですか。|サントス：ええ、おきなわへ いきたいです。|やまだ：なにを したいですか。|サントス：うみで およぎたいです。|やまだ：いいですね。|サントス：やまださんも いっしょに いきませんか。|やまだ：ぜひ。", "vi": "Nghỉ hè anh có muốn đi đâu không?|Có, tôi muốn đi Okinawa.|Anh muốn làm gì?|Tôi muốn bơi ở biển.|Hay quá nhỉ.|Anh Yamada cùng đi không?|Nhất định rồi."},
+    {"t": "Mệt quá", "s": "Sau một ngày làm việc.", "jp": "キム：つかれましたね。|ミラー：ええ、とても つかれました。|キム：なにか のみたいですか。|ミラー：ええ、つめたい ビールが のみたいです。|キム：じゃ、いきましょう。|ミラー：いいですね。", "vi": "Mệt quá nhỉ.|Vâng, tôi rất mệt.|Anh có muốn uống gì không?|Có, tôi muốn uống bia lạnh.|Vậy đi thôi.|Hay quá."},
+    {"t": "Muốn mua gì?", "s": "Ở cửa hàng điện máy.", "jp": "てんいん：なにか おさがしですか。|ワット：パソコンが ほしいです。|てんいん：どんな パソコンが いいですか。|ワット：かるくて やすいのが いいです。|てんいん：じゃ、これは どうですか。|ワット：いいですね。これを ください。", "vi": "Quý khách đang tìm gì ạ?|Tôi muốn mua máy tính.|Quý khách muốn loại máy tính nào ạ?|Loại nhẹ và rẻ thì tốt.|Vậy cái này thì sao ạ?|Được đấy. Cho tôi cái này."},
+    {"t": "Đi mua sắm không?", "s": "Rủ đi chơi cuối tuần.", "jp": "サントス：どようびに かいものに いきませんか。|キム：いいですね。どこへ いきますか。|サントス：しんじゅくへ いきたいです。|キム：なにを かいたいですか。|サントス：あたらしい くつが ほしいです。|キム：じゃ、いっしょに いきましょう。", "vi": "Thứ bảy đi mua sắm không?|Hay đấy. Chúng ta đi đâu?|Tôi muốn đi Shinjuku.|Anh muốn mua gì?|Tôi muốn mua đôi giày mới.|Vậy cùng đi nhé."}
   ]
 });

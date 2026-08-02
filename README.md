@@ -26,10 +26,12 @@ data/
     N5/lesson-01.js … lesson-10.js ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
     csv/                         ← NGUỒN DỮ LIỆU GỐC — soạn ở đây bằng Excel/Sheets:
       N5/                          · một thư mục cho mỗi TRÌNH ĐỘ (N5, N4, N3…)
-        lesson-01/                 · một thư mục cho mỗi BÀI, gồm 3 file:
+        lesson-01/                 · một thư mục cho mỗi BÀI, gồm 5 file:
           words.csv                  – từ vựng (cột: tiengNhat, romaji, nghia, kana, phuluc)
           sentences.csv              – câu     (cột: cau, romaji, nghia)
           grammar.csv                – ngữ pháp (cột: mau_cau, giai_thich, vi_du, vi_du_romaji, nghia)
+          reading.csv                – bài đọc hiểu (cột: tieu_de, doan_van, nghia, cau_hoi1…3, dap_an1…3)
+          conversation.csv           – hội thoại (cột: tieu_de, boi_canh, hoi_thoai, nghia)
       _TEMPLATE/                   · thư mục mẫu để chép khi tạo bài mới
       README.md                    · hướng dẫn chi tiết cho người biên soạn
 tools/
@@ -48,12 +50,21 @@ nhóm nút "Trình độ N4". *(Chức năng học trộn nhiều trình độ s
 
 ## Mỗi bài được soạn thế nào (CSV)
 
-Mỗi bài là **một thư mục** trong `data/lessons/csv/<TRÌNH_ĐỘ>/lesson-NN/`, gồm 3 file
+Mỗi bài là **một thư mục** trong `data/lessons/csv/<TRÌNH_ĐỘ>/lesson-NN/`, gồm 5 file
 CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề cột — ĐỪNG xoá**:
 
 - `words.csv` — cột `tiengNhat, romaji, nghia, kana, phuluc`
 - `sentences.csv` — cột `cau, romaji, nghia`
 - `grammar.csv` — cột `mau_cau, giai_thich, vi_du, vi_du_romaji, nghia`
+- `reading.csv` — cột `tieu_de, doan_van, nghia, cau_hoi1, dap_an1, cau_hoi2, dap_an2, cau_hoi3, dap_an3`
+- `conversation.csv` — cột `tieu_de, boi_canh, hoi_thoai, nghia`
+
+> **Bài đọc & hội thoại tách dòng bằng dấu `|`.** Trong `reading.csv`, cột `doan_van`
+> viết từng câu cách nhau bằng `|`, cột `nghia` là bản dịch **đúng thứ tự từng câu**
+> (số dòng phải bằng nhau). Trong `conversation.csv`, cột `hoi_thoai` viết từng lượt
+> nói dạng `TênNgười：câu nói`, cũng cách nhau bằng `|`; `boi_canh` là mô tả tình huống
+> bằng tiếng Việt. Ba cặp `cau_hoiN/dap_anN` không bắt buộc — để trống thì bài đọc
+> không có câu hỏi.
 
 > Cột `kana` để trống thì app dùng luôn phần `tiengNhat`. Bạn KHÔNG cần viết code —
 > `tools/build-lessons.ps1` sẽ tự chuyển CSV thành file `.js` cho app.

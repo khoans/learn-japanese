@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 2, {
   words: [
     ["これ", "kore", "cái này", "これ"],
@@ -93,5 +95,19 @@ registerLesson("N5", 2, {
     {"p": "⑥ だれの (của ai)", "g": "だれ＋の để hỏi người sở hữu: これは だれの かばんですか (cặp của ai?). Trả lời bằng ～のです: わたしのです / ミラーさんのです.", "ex": "これは だれの かばんですか。", "exr": "Kore wa dare no kaban desu ka.", "m": "Đây là cặp của ai?"},
     {"p": "⑦ ～か、～か (lựa chọn)", "g": "Câu hỏi cho chọn giữa hai khả năng: [A]ですか、[B]ですか. Trả lời bằng cách nêu thẳng lựa chọn đúng — KHÔNG dùng はい/いいえ.", "ex": "それは えんぴつですか、ボールペンですか。", "exr": "Sore wa enpitsu desu ka, boorupen desu ka.", "m": "Đó là bút chì hay bút bi?"},
     {"p": "⑧ hội thoại", "g": "Các biểu hiện giao tiếp: あのう (à, ờ… — mở lời ngập ngừng), どうぞ (xin mời khi đưa đồ), どうも ありがとう ございます (cảm ơn), そうですか (thế à — đáp lại thông tin mới).", "ex": "あのう、それは なんですか。", "exr": "Anou, sore wa nan desu ka.", "m": "À, cái đó là gì vậy?"}
+  ],
+  readings: [
+    {"t": "Quyển sách này", "jp": "これは ほんです。|にほんごの ほんです。|わたしの ほんじゃ ありません。|ミラーさんの ほんです。|あれも ミラーさんの ほんです。", "vi": "Đây là quyển sách.|Là sách tiếng Nhật.|Không phải sách của tôi.|Là sách của anh Miller.|Kia cũng là sách của anh Miller.", "q": [["これは なんの ほんですか。", "にほんごの ほんです。"], ["これは だれの ほんですか。", "ミラーさんの ほんです。"], ["あれも ミラーさんの ほんですか。", "はい、あれも ミラーさんの ほんです。"]]},
+    {"t": "Danh thiếp", "jp": "これは めいしです。|わたしの めいしです。|わたしは IMCの しゃいんです。|それは サントスさんの めいしです。|あれは ワットさんの めいしです。", "vi": "Đây là danh thiếp.|Là danh thiếp của tôi.|Tôi là nhân viên công ty IMC.|Đó là danh thiếp của anh Santos.|Kia là danh thiếp của thầy Watt.", "q": [["これは なんですか。", "めいしです。"], ["それは だれの めいしですか。", "サントスさんの めいしです。"], ["あれも サントスさんの めいしですか。", "いいえ、ワットさんの めいしです。"]]},
+    {"t": "Quà lưu niệm", "jp": "これは にほんの おみやげです。|チョコレートです。|ドイツの チョコレートじゃ ありません。|にほんの チョコレートです。|ほんの きもちです。どうぞ。", "vi": "Đây là quà lưu niệm của Nhật.|Là sô-cô-la.|Không phải sô-cô-la của Đức.|Là sô-cô-la của Nhật.|Chút quà nhỏ, xin mời anh/chị.", "q": [["これは なんですか。", "にほんの おみやげ、チョコレートです。"], ["ドイツの チョコレートですか。", "いいえ、にほんの チョコレートです。"]]},
+    {"t": "Đồng hồ và ô", "jp": "その とけいは わたしのです。|この かさも わたしのです。|あの かばんは わたしのじゃ ありません。|やまださんのです。|あの ボールペンも やまださんのです。", "vi": "Cái đồng hồ đó là của tôi.|Cái ô này cũng của tôi.|Cái cặp kia không phải của tôi.|Là của anh Yamada.|Cái bút bi kia cũng của anh Yamada.", "q": [["その とけいは だれのですか。", "わたしのです。"], ["あの かばんは だれのですか。", "やまださんのです。"], ["あの ボールペンも やまださんのですか。", "はい、やまださんのです。"]]},
+    {"t": "Tạp chí và báo", "jp": "これは ざっしです。|にほんごの ざっしじゃ ありません。|えいごの ざっしです。|あれは しんぶんです。|にほんの しんぶんです。", "vi": "Đây là tạp chí.|Không phải tạp chí tiếng Nhật.|Là tạp chí tiếng Anh.|Kia là tờ báo.|Là báo của Nhật.", "q": [["これは なんですか。", "えいごの ざっしです。"], ["にほんごの ざっしですか。", "いいえ、えいごの ざっしです。"], ["あれは なんですか。", "にほんの しんぶんです。"]]}
+  ],
+  conversations: [
+    {"t": "Cái này là gì?", "s": "Hỏi về một vật để trên bàn.", "jp": "ミラー：やまださん、これは なんですか。|やまだ：それは めいしです。|ミラー：だれの めいしですか。|やまだ：サントスさんの めいしです。|ミラー：サントスさんも かいしゃいんですか。|やまだ：はい、そうです。", "vi": "Anh Yamada, cái này là gì vậy?|Đó là danh thiếp.|Danh thiếp của ai vậy?|Danh thiếp của anh Santos.|Anh Santos cũng là nhân viên công ty à?|Vâng, đúng vậy."},
+    {"t": "Tặng quà", "s": "Hàng xóm mới đến chào và tặng quà.", "jp": "サントス：あのう、これ、ほんの きもちです。どうぞ。|やまだ：どうも ありがとうございます。なんですか。|サントス：ブラジルの コーヒーです。|やまだ：わあ、ありがとうございます。|サントス：これから おせわに なります。|やまだ：こちらこそ よろしく おねがいします。", "vi": "Xin lỗi, đây là chút quà nhỏ, xin mời anh.|Cảm ơn anh nhiều. Cái gì vậy ạ?|Là cà phê của Brazil.|Ồ, cảm ơn anh.|Từ nay mong được anh giúp đỡ.|Tôi cũng mong được anh giúp đỡ."},
+    {"t": "Cái ô của ai", "s": "Hỏi xem cái ô là của ai.", "jp": "やまだ：ミラーさん、その かさは ミラーさんのですか。|ミラー：いいえ、わたしのじゃ ありません。|ミラー：サントスさんのです。|やまだ：じゃ、あの かさは？|ミラー：あれは わたしのです。|やまだ：そうですか。", "vi": "Anh Miller, cái ô đó là của anh à?|Không, không phải của tôi.|Là của anh Santos.|Vậy còn cái ô kia?|Cái kia là của tôi.|Ra vậy."},
+    {"t": "Sách tiếng gì?", "s": "Hỏi về quyển sách trên bàn.", "jp": "ワット：キムさん、この ほんは キムさんのですか。|キム：はい、わたしのです。|ワット：なんの ほんですか。|キム：にほんごの ほんです。|ワット：それは？|キム：これは えいごの ざっしです。", "vi": "Chị Kim, quyển sách này của chị à?|Vâng, của tôi.|Sách gì vậy?|Sách tiếng Nhật.|Còn cái đó?|Cái này là tạp chí tiếng Anh."},
+    {"t": "Ở cửa hàng", "s": "Hỏi người bán hàng về một món đồ.", "jp": "ミラー：すみません。それは シャープペンシルですか。|みせの ひと：いいえ、ちがいます。ボールペンです。|ミラー：そうですか。|ミラー：これは にほんの ボールペンですか。|みせの ひと：はい、にほんの ボールペンです。|ミラー：どうも ありがとう。", "vi": "Xin lỗi, cái đó là bút chì kim phải không?|Không, không phải. Là bút bi.|Ra vậy.|Cái này là bút bi của Nhật ạ?|Vâng, là bút bi của Nhật.|Cảm ơn."}
   ]
 });

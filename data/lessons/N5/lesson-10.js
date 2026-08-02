@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 10, {
   words: [
     ["います", "imasu", "có, ở (người/động vật)", "います"],
@@ -123,5 +125,19 @@ registerLesson("N5", 10, {
     {"p": "④ Từ chỉ vị trí", "g": "Vị trí tương đối: N1の うえ／した／まえ／うしろ／みぎ／ひだり／なか／そと／となり／ちかく + に. VD: つくえの したに (dưới bàn), えきの ちかくに (gần nhà ga).", "ex": "ねこは いすの したに います。", "exr": "Neko wa isu no shita ni imasu.", "m": "Con mèo ở dưới ghế."},
     {"p": "⑤ N1 と N2 の あいだに", "g": "'Ở giữa hai vật／người': N1と N2の あいだに ～. Lưu ý dùng と (không dùng や) để nối hai mốc.", "ex": "ぎんこうと ゆうびんきょくの あいだに ほんやが あります。", "exr": "Ginkou to yuubinkyoku no aida ni hon'ya ga arimasu.", "m": "Giữa ngân hàng và bưu điện có hiệu sách."},
     {"p": "⑥ N や N（など）", "g": "Liệt kê không đầy đủ (kể vài ví dụ tiêu biểu): N1や N2. Có thể thêm など ở cuối. Khác với と (liệt kê đầy đủ). VD: つくえの うえに ほんや ノートが あります.", "ex": "テーブルの うえに ほんや かばんが あります。", "exr": "Teeburu no ue ni hon ya kaban ga arimasu.", "m": "Trên bàn có sách, cặp v.v."}
+  ],
+  readings: [
+    {"t": "Trong phòng tôi", "jp": "わたしの へやに つくえと いすが あります。|つくえの うえに パソコンが あります。|つくえの したに かばんが あります。|ベッドの となりに たなが あります。|たなの なかに ほんや ざっしなどが あります。", "vi": "Trong phòng tôi có bàn và ghế.|Trên bàn có máy tính.|Dưới bàn có cái cặp.|Bên cạnh giường có cái kệ.|Trong kệ có sách, tạp chí, v.v.", "q": [["へやに なにが ありますか。", "つくえと いすが あります。"], ["つくえの うえに なにが ありますか。", "パソコンが あります。"], ["たなの なかに なにが ありますか。", "ほんや ざっしなどが あります。"]]},
+    {"t": "Gần nhà ga", "jp": "えきの まえに コンビニが あります。|コンビニの となりに きっさてんが あります。|きっさてんの うしろに こうえんが あります。|こうえんに おおきい きが あります。|ポストは コンビニの まえに あります。", "vi": "Trước ga có cửa hàng tiện lợi.|Bên cạnh cửa hàng tiện lợi có quán cà phê.|Phía sau quán cà phê có công viên.|Trong công viên có cây to.|Thùng thư ở trước cửa hàng tiện lợi.", "q": [["えきの まえに なにが ありますか。", "コンビニが あります。"], ["きっさてんは どこに ありますか。", "コンビニの となりに あります。"], ["ポストは どこに ありますか。", "コンビニの まえに あります。"]]},
+    {"t": "Ai ở trong phòng?", "jp": "かいぎしつに ひとが います。|やまださんと ミラーさんが います。|キムさんは いません。|キムさんは じむしょに います。|ねこは そとに います。", "vi": "Trong phòng họp có người.|Có anh Yamada và anh Miller.|Chị Kim thì không có.|Chị Kim đang ở văn phòng.|Con mèo thì ở bên ngoài.", "q": [["かいぎしつに だれが いますか。", "やまださんと ミラーさんが います。"], ["キムさんも かいぎしつに いますか。", "いいえ、じむしょに います。"], ["ねこは どこに いますか。", "そとに います。"]]},
+    {"t": "Gia đình tôi", "jp": "わたしの うちに よにん います。|ちちと ははと あにと わたしです。|いぬも いっぴき います。|ねこは いません。|いえは こうえんの ちかくに あります。", "vi": "Nhà tôi có 4 người.|Là bố, mẹ, anh trai và tôi.|Cũng có một con chó.|Không có mèo.|Nhà tôi ở gần công viên.", "q": [["うちに なんにん いますか。", "よにん います。"], ["いぬが いますか。", "はい、いっぴき います。"], ["いえは どこに ありますか。", "こうえんの ちかくに あります。"]]},
+    {"t": "Cửa hàng ở tầng nào", "jp": "デパートの いっかいに くつうりばが あります。|にかいに ふくうりばが あります。|ちかに スーパーが あります。|やねの うえに レストランが あります。|ATMは いっかいの エレベーターの よこに あります。", "vi": "Tầng 1 của cửa hàng bách hóa có quầy giày.|Tầng 2 có quầy quần áo.|Dưới hầm có siêu thị.|Trên sân thượng có nhà hàng.|Máy ATM ở cạnh thang máy tầng 1.", "q": [["くつうりばは なんがいに ありますか。", "いっかいに あります。"], ["スーパーは どこに ありますか。", "ちかに あります。"], ["ATMは どこに ありますか。", "いっかいの エレベーターの よこに あります。"]]}
+  ],
+  conversations: [
+    {"t": "Tìm cửa hàng tiện lợi", "s": "Hỏi đường trên phố.", "jp": "ミラー：すみません。この ちかくに コンビニが ありますか。|ひと：ええ、えきの まえに あります。|ミラー：えきは どこですか。|ひと：あそこです。|ミラー：どうも ありがとうございます。|ひと：いいえ。", "vi": "Xin lỗi, gần đây có cửa hàng tiện lợi không ạ?|Có, ở trước ga có.|Ga ở đâu ạ?|Ở đằng kia.|Cảm ơn anh/chị nhiều.|Không có gì."},
+    {"t": "Anh Yamada đâu rồi?", "s": "Tìm người trong công ty.", "jp": "キム：すみません、やまださんは いますか。|ミラー：いいえ、いません。|キム：どこに いますか。|ミラー：かいぎしつに いますよ。|キム：かいぎしつは どこですか。|ミラー：にかいです。|キム：ありがとうございます。", "vi": "Xin lỗi, anh Yamada có ở đây không?|Không, không có.|Anh ấy ở đâu?|Anh ấy đang ở phòng họp.|Phòng họp ở đâu ạ?|Ở tầng 2.|Cảm ơn anh."},
+    {"t": "Trong phòng có gì", "s": "Nói về phòng mới.", "jp": "サントス：あたらしい へやに なにが ありますか。|ミラー：ベッドと つくえが あります。|サントス：テレビは ありますか。|ミラー：いいえ、ありません。|サントス：れいぞうこは？|ミラー：れいぞうこは あります。ちいさいですが。", "vi": "Trong phòng mới có gì?|Có giường và bàn.|Có tivi không?|Không, không có.|Còn tủ lạnh?|Tủ lạnh thì có. Tuy nhỏ."},
+    {"t": "Hỏi về gia đình", "s": "Nói chuyện về gia đình.", "jp": "ワット：キムさんの うちに なんにん いますか。|キム：ごにん います。|ワット：どなたが いますか。|キム：ちちと ははと あねが ふたり、わたしです。|ワット：にぎやかですね。|キム：ええ、とても にぎやかです。", "vi": "Nhà chị Kim có mấy người?|Có 5 người.|Gồm những ai?|Bố, mẹ, hai chị gái và tôi.|Đông vui nhỉ.|Vâng, rất đông vui."},
+    {"t": "Chìa khóa ở đâu", "s": "Tìm đồ bị thất lạc.", "jp": "やまだ：あれ、かぎが ありません。|ミラー：かばんの なかに ありませんか。|やまだ：ありません。|ミラー：つくえの うえは？|やまだ：あ、ありました。パソコンの よこに あります。|ミラー：よかったですね。", "vi": "Ơ, không thấy chìa khóa đâu.|Trong cặp không có à?|Không có.|Trên bàn thì sao?|A, có rồi. Ở cạnh máy tính.|May quá nhỉ."}
   ]
 });

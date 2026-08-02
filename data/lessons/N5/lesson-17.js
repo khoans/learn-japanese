@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 17, {
   words: [
     ["覚えます", "oboemasu", "nhớ, ghi nhớ", "おぼえます"],
@@ -155,5 +157,19 @@ registerLesson("N5", 17, {
     {"p": "⑥ Đưa tân ngữ lên làm chủ đề: N は", "g": "Khi muốn nhấn mạnh／nêu chủ đề, tân ngữ được đưa lên đầu câu và を đổi thành は: レポートは あした だします.", "ex": "レポートは きんようびまでに ださなければ なりません。", "exr": "Repooto wa kinyoubi made ni dasanakereba narimasen.", "m": "Bài báo cáo thì phải nộp trước thứ sáu."},
     {"p": "⑦ ～までに", "g": "Chỉ HẠN CHÓT: phải hoàn thành trước thời điểm đó（きんようびまでに = trước thứ sáu）. Khác với まで (bài 4) là \"cho đến tận lúc đó\" (hành động kéo dài).", "ex": "5じまでに かえらなければ なりません。", "exr": "Go-ji made ni kaeranakereba narimasen.", "m": "Tôi phải về trước 5 giờ."},
     {"p": "⑧ Hội thoại khám bệnh", "g": "Bác sĩ hỏi: どう しましたか. Người bệnh: ～が いたいです／ねつが あります. Bác sĩ dặn: おふろに はいらないで ください・２、３にち やすんで ください. Chào tạm biệt: おだいじに.", "ex": "どう しましたか。 …のどが いたいです。", "exr": "Dou shimashita ka. …Nodo ga itai desu.", "m": "Bạn bị làm sao thế? …Tôi bị đau họng."}
+  ],
+  readings: [
+    {"t": "Ở bệnh viện", "jp": "きのうから ねつが あります。|びょういんへ いきました。|おいしゃさんは「おふろに はいらないで ください」と いいました。|くすりを のまなければ なりません。|あしたも やすまなければ なりません。", "vi": "Từ hôm qua tôi bị sốt.|Tôi đã đến bệnh viện.|Bác sĩ nói: đừng tắm bồn.|Tôi phải uống thuốc.|Ngày mai tôi cũng phải nghỉ.", "q": [["どうしましたか。", "ねつが あります。"], ["おふろに はいっても いいですか。", "いいえ、はいらないで ください。"], ["なにを しなければ なりませんか。", "くすりを のまなければ なりません。"]]},
+    {"t": "Quy định của công ty", "jp": "かいしゃに くるまで きては いけません。|でんしゃで こなければ なりません。|しごとは くじまでに はじめなければ なりません。|ざんぎょうは しなくても いいです。|しゅっちょうの ときは ぶちょうに いわなければ なりません。", "vi": "Không được đến công ty bằng xe hơi.|Phải đến bằng tàu điện.|Phải bắt đầu làm việc trước 9 giờ.|Không cần làm thêm giờ.|Khi đi công tác phải báo với trưởng phòng.", "q": [["くるまで きても いいですか。", "いいえ、きては いけません。"], ["なんじまでに しごとを はじめますか。", "くじまでに はじめます。"], ["ざんぎょうを しなければ なりませんか。", "いいえ、しなくても いいです。"]]},
+    {"t": "Đi công tác", "jp": "らいしゅう おおさかへ しゅっちょうします。|しんかんせんの していせきを かわなければ なりません。|パスポートは いりません。|しりょうを わすれないで ください。|ホテルは よやくしなくても いいです。", "vi": "Tuần sau tôi đi công tác Osaka.|Tôi phải mua vé ghế ngồi chỉ định của Shinkansen.|Không cần hộ chiếu.|Xin đừng quên tài liệu.|Khách sạn thì không cần đặt trước.", "q": [["いつ しゅっちょうしますか。", "らいしゅう しゅっちょうします。"], ["なにを かわなければ なりませんか。", "していせきを かわなければ なりません。"], ["ホテルを よやくしなければ なりませんか。", "いいえ、しなくても いいです。"]]},
+    {"t": "Bị cảm", "jp": "キムさんは かぜを ひきました。|きょうは かいしゃを やすみました。|くすりを のんで、はやく ねました。|しんぱいしないで ください。|あしたは だいじょうぶです。", "vi": "Chị Kim bị cảm.|Hôm nay chị ấy đã nghỉ làm.|Chị ấy uống thuốc rồi đi ngủ sớm.|Xin đừng lo lắng.|Ngày mai sẽ ổn thôi.", "q": [["キムさんは どうしましたか。", "かぜを ひきました。"], ["きょう かいしゃへ いきましたか。", "いいえ、やすみました。"], ["あしたは だいじょうぶですか。", "はい、だいじょうぶです。"]]},
+    {"t": "Vào nhà ở Nhật", "jp": "にほんの うちでは くつを ぬがなければ なりません。|くつで はいらないで ください。|スリッパを はいても いいです。|たたみの へやでは スリッパを ぬいで ください。|わすれないで ください。", "vi": "Ở nhà người Nhật thì phải cởi giày.|Đừng đi giày vào nhà.|Có thể đi dép trong nhà.|Ở phòng chiếu tatami thì hãy cởi dép.|Xin đừng quên.", "q": [["うちに はいる とき、なにを しますか。", "くつを ぬぎます。"], ["スリッパを はいても いいですか。", "はい、はいても いいです。"], ["たたみの へやでは どう しますか。", "スリッパを ぬぎます。"]]}
+  ],
+  conversations: [
+    {"t": "Khám bệnh", "s": "Ở phòng khám.", "jp": "いしゃ：どうしましたか。|ミラー：きのうから ねつが あります。|いしゃ：のどが いたいですか。|ミラー：はい、ちょっと いたいです。|いしゃ：きょうは おふろに はいらないで ください。|ミラー：はい。|いしゃ：この くすりを のんで、はやく ねて ください。", "vi": "Anh bị làm sao?|Từ hôm qua tôi bị sốt.|Cổ họng có đau không?|Vâng, hơi đau.|Hôm nay đừng tắm bồn nhé.|Vâng.|Hãy uống thuốc này rồi đi ngủ sớm."},
+    {"t": "Xin nghỉ vì ốm", "s": "Gọi điện đến công ty.", "jp": "ミラー：もしもし、ミラーです。|やまだ：おはようございます。|ミラー：すみません、かぜを ひきました。|ミラー：きょう やすまなければ なりません。|やまだ：わかりました。おだいじに。|ミラー：ありがとうございます。", "vi": "A lô, tôi là Miller.|Chào buổi sáng.|Xin lỗi, tôi bị cảm.|Hôm nay tôi phải nghỉ.|Tôi hiểu rồi. Giữ gìn sức khỏe nhé.|Cảm ơn anh."},
+    {"t": "Cần mang gì?", "s": "Chuẩn bị đi công tác.", "jp": "キム：しゅっちょうに なにを もって いかなければ なりませんか。|やまだ：しりょうと めいしを もって いって ください。|キム：パスポートも いりますか。|やまだ：いいえ、いりません。|キム：ホテルは よやくしますか。|やまだ：よやくしなくても いいですよ。|キム：わかりました。", "vi": "Đi công tác phải mang gì ạ?|Hãy mang tài liệu và danh thiếp.|Có cần hộ chiếu không ạ?|Không, không cần.|Khách sạn có phải đặt không ạ?|Không cần đặt đâu.|Tôi hiểu rồi."},
+    {"t": "Ở nhà người Nhật", "s": "Đến chơi nhà người Nhật.", "jp": "やまだ：どうぞ、はいって ください。|サントス：おじゃまします。|やまだ：あ、くつを ぬいで ください。|サントス：すみません。|やまだ：スリッパを どうぞ。|サントス：ありがとうございます。", "vi": "Xin mời vào.|Xin phép làm phiền.|À, anh cởi giày giúp nhé.|Xin lỗi.|Mời anh đi dép này.|Cảm ơn anh."},
+    {"t": "Đừng quên", "s": "Dặn dò trước cuộc họp.", "jp": "ぶちょう：あしたの かいぎ、わすれないで ください。|ワット：はい、だいじょうぶです。|ぶちょう：しりょうを じゅうぶ コピーしなければ なりません。|ワット：もう コピーしました。|ぶちょう：はやいですね。|ワット：じゃ、あした くじに。", "vi": "Đừng quên cuộc họp ngày mai nhé.|Vâng, không sao đâu ạ.|Phải photo tài liệu 10 bản.|Tôi đã photo rồi ạ.|Nhanh nhỉ.|Vậy hẹn 9 giờ ngày mai."}
   ]
 });

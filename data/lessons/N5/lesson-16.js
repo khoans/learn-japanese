@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 16, {
   words: [
     ["乗ります", "norimasu", "lên (でんしゃに のります)", "のります"],
@@ -128,5 +130,19 @@ registerLesson("N5", 16, {
     {"p": "⑥ どうやって", "g": "Hỏi CÁCH THỨC làm gì hoặc cách đi đến đâu. Trả lời bằng chuỗi thể て: ～に のって、～で おりて、….", "ex": "えきへ どうやって いきますか。", "exr": "Eki e dou yatte ikimasu ka.", "m": "Bạn đi đến nhà ga bằng cách nào?"},
     {"p": "⑦ どの N ／ どれ", "g": "Chọn trong BA đối tượng trở lên: どの＋danh từ（どの ひと）, どれ đứng một mình（どれが ミラーさんの かさですか）. Nếu chỉ có hai thì dùng どちら (bài 12).", "ex": "ミラーさんは どの ひとですか。", "exr": "Miraa-san wa dono hito desu ka.", "m": "Anh Miller là người nào?"},
     {"p": "⑧ まず・次に・それから", "g": "Trình bày các bước theo thứ tự: まず (trước hết) → つぎに (tiếp theo) → それから (sau đó). Rất hay dùng khi hướng dẫn cách sử dụng máy móc.", "ex": "まず ボタンを おして、つぎに カードを いれて ください。", "exr": "Mazu botan o oshite, tsugi ni kaado o irete kudasai.", "m": "Trước hết hãy bấm nút, tiếp theo hãy cho thẻ vào."}
+  ],
+  readings: [
+    {"t": "Buổi sáng của tôi", "jp": "あさ ろくじに おきて、シャワーを あびます。|それから あさごはんを たべて、しんぶんを よみます。|しちじに うちを でて、えきへ いきます。|でんしゃに のって、かいしゃへ いきます。|かいしゃに ついてから、コーヒーを のみます。", "vi": "Sáng tôi dậy lúc 6 giờ rồi tắm.|Sau đó ăn sáng và đọc báo.|7 giờ tôi ra khỏi nhà và đi đến ga.|Tôi lên tàu rồi đến công ty.|Sau khi đến công ty, tôi uống cà phê.", "q": [["あさ なんじに おきますか。", "ろくじに おきます。"], ["おきてから、なにを しますか。", "シャワーを あびます。"], ["かいしゃに ついてから、なにを しますか。", "コーヒーを のみます。"]]},
+    {"t": "Cách đi đến công ty", "jp": "うちを でて、えきまで あるきます。|えきで でんしゃに のります。|しんじゅくで ちかてつに のりかえます。|とうきょうえきで おります。|ぜんぶで いちじかん かかります。", "vi": "Tôi ra khỏi nhà và đi bộ đến ga.|Tôi lên tàu ở ga.|Tôi đổi sang tàu điện ngầm ở Shinjuku.|Tôi xuống ở ga Tokyo.|Tổng cộng mất một tiếng.", "q": [["えきまで どう いきますか。", "あるいて いきます。"], ["どこで のりかえますか。", "しんじゅくで のりかえます。"], ["ぜんぶで どのくらい かかりますか。", "いちじかん かかります。"]]},
+    {"t": "Anh Miller là người thế nào", "jp": "ミラーさんは せが たかくて、わかいです。|かみが みじかいです。|めが おおきいです。|とても しんせつで、あたまが いいです。|にほんごが じょうずです。", "vi": "Anh Miller cao và trẻ.|Tóc anh ấy ngắn.|Mắt anh ấy to.|Anh ấy rất tốt bụng và thông minh.|Anh ấy giỏi tiếng Nhật.", "q": [["ミラーさんは せが たかいですか。", "はい、たかいです。"], ["かみは ながいですか。", "いいえ、みじかいです。"], ["にほんごが じょうずですか。", "はい、じょうずです。"]]},
+    {"t": "Cách dùng máy", "jp": "この きかいは つかいかたが かんたんです。|まず ボタンを おします。|つぎに おかねを いれます。|それから きっぷを とります。|さいごに おつりを とって ください。", "vi": "Cái máy này cách dùng đơn giản.|Trước tiên hãy ấn nút.|Tiếp theo cho tiền vào.|Sau đó lấy vé.|Cuối cùng hãy lấy tiền thừa.", "q": [["まず なにを しますか。", "ボタンを おします。"], ["つぎに なにを しますか。", "おかねを いれます。"], ["さいごに なにを とりますか。", "おつりを とります。"]]},
+    {"t": "Thành phố này thế nào", "jp": "この まちは たてものが あたらしいです。|こうえんが ひろくて、みどりが おおいです。|よるは しずかです。|えきから ちかくて、べんりです。|わたしは この まちが だいすきです。", "vi": "Thành phố này nhà cửa mới.|Công viên rộng và nhiều cây xanh.|Buổi tối thì yên tĩnh.|Gần ga nên tiện lợi.|Tôi rất thích thành phố này.", "q": [["たてものは どうですか。", "あたらしいです。"], ["こうえんは どうですか。", "ひろくて、みどりが おおいです。"], ["よるは にぎやかですか。", "いいえ、しずかです。"]]}
+  ],
+  conversations: [
+    {"t": "Đi đến đó thế nào?", "s": "Hỏi cách đi.", "jp": "ミラー：すみません、とうきょうえきまで どうやって いきますか。|やまだ：まず この えきで でんしゃに のって ください。|ミラー：はい。|やまだ：しんじゅくで ちかてつに のりかえて ください。|ミラー：それから？|やまだ：みっつめの えきで おりて ください。|ミラー：ありがとうございます。", "vi": "Xin lỗi, đến ga Tokyo thì đi thế nào ạ?|Trước tiên hãy lên tàu ở ga này.|Vâng.|Rồi đổi sang tàu điện ngầm ở Shinjuku.|Sau đó ạ?|Hãy xuống ở ga thứ ba.|Cảm ơn anh."},
+    {"t": "Cách dùng máy bán vé", "s": "Hướng dẫn dùng máy.", "jp": "キム：この きかいの つかいかたが わかりません。|やまだ：まず ここを おして ください。|キム：はい。|やまだ：つぎに おかねを いれて ください。|キム：それから きっぷを とりますか。|やまだ：ええ、おつりも とって ください。|キム：わかりました。ありがとうございます。", "vi": "Tôi không biết cách dùng cái máy này.|Trước tiên hãy ấn vào đây.|Vâng.|Tiếp theo hãy cho tiền vào.|Rồi lấy vé phải không?|Vâng, nhớ lấy cả tiền thừa nữa.|Tôi hiểu rồi. Cảm ơn anh."},
+    {"t": "Người đó thế nào?", "s": "Hỏi về người quen.", "jp": "ワット：あたらしい しゃいんは どんな ひとですか。|サントス：せが たかくて、わかい ひとです。|ワット：しんせつですか。|サントス：ええ、とても しんせつです。|ワット：にほんごは？|サントス：じょうずですよ。", "vi": "Nhân viên mới là người thế nào?|Là người cao và trẻ.|Có tốt bụng không?|Có, rất tốt bụng.|Còn tiếng Nhật?|Giỏi đấy."},
+    {"t": "Buổi sáng làm gì", "s": "Nói về thói quen.", "jp": "やまだ：ミラーさんは あさ なにを しますか。|ミラー：おきて、シャワーを あびます。|やまだ：あさごはんは？|ミラー：たべます。それから しんぶんを よみます。|やまだ：なんじに うちを でますか。|ミラー：しちじに でます。", "vi": "Anh Miller buổi sáng làm gì?|Tôi dậy rồi tắm.|Bữa sáng thì sao?|Tôi có ăn. Sau đó đọc báo.|Mấy giờ anh ra khỏi nhà?|7 giờ tôi ra khỏi nhà."},
+    {"t": "Thành phố này thế nào", "s": "Nói về nơi ở.", "jp": "サントス：この まちは どうですか。|キム：しずかで、べんりです。|サントス：えきから とおいですか。|キム：いいえ、あるいて ごふんです。|サントス：いいですね。|キム：ええ、こうえんも ひろくて きれいです。", "vi": "Thành phố này thế nào?|Yên tĩnh và tiện lợi.|Có xa ga không?|Không, đi bộ 5 phút.|Tốt nhỉ.|Vâng, công viên cũng rộng và đẹp."}
   ]
 });

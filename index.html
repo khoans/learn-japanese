@@ -655,6 +655,8 @@ table{ width:100%; border-collapse:collapse; }
   <button class="btn small tool-tab" data-tool="k130Grp" style="flex:1 1 auto;">✎ Sửa nghĩa</button>
   <button class="btn small tool-tab" data-tool="statBox" style="flex:1 1 auto;">📊 Thống kê</button>
   <button class="btn small tool-tab" data-tool="gramBox" style="flex:1 1 auto;">文 Ngữ pháp</button>
+  <button class="btn small tool-tab" data-tool="readBox" style="flex:1 1 auto;">📖 Đọc hiểu</button>
+  <button class="btn small tool-tab" data-tool="convBox" style="flex:1 1 auto;">💬 Hội thoại</button>
   <button class="btn small tool-tab" data-tool="kanaChartBox" style="flex:1 1 auto;">あ Bảng kana</button>
   <button class="btn small tool-tab" data-tool="imeBox" style="flex:1 1 auto;">⌨️ Cách gõ</button>
   <button class="btn small tool-tab" data-tool="previewBox" style="flex:1 1 auto;">👁 Xem trước</button>
@@ -674,6 +676,23 @@ table{ width:100%; border-collapse:collapse; }
   <label class="cap">Điểm ngữ pháp của bài</label>
   <select id="gramSel"></select>
   <div id="gramList" style="margin-top:12px;"></div>
+</div></div>
+<div id="readBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:13px;">
+  <label class="cap">Bài đọc hiểu (luyện đọc theo bài)</label>
+  <div style="display:flex; gap:7px; align-items:center; flex-wrap:wrap;">
+    <select id="readSel" style="flex:1 1 130px;"></select>
+    <button class="btn small" id="readViToggle">🇻🇳 Hiện nghĩa</button>
+    <button class="btn small" id="readAnsToggle">💡 Hiện đáp án</button>
+  </div>
+  <div id="readList" style="margin-top:12px; max-height:520px; overflow-y:auto;"></div>
+</div></div>
+<div id="convBox" style="display:none; margin-bottom:10px;" class="panel"><div style="padding:13px;">
+  <label class="cap">Hội thoại (luyện đọc theo bài)</label>
+  <div style="display:flex; gap:7px; align-items:center; flex-wrap:wrap;">
+    <select id="convSel" style="flex:1 1 130px;"></select>
+    <button class="btn small" id="convViToggle">🇻🇳 Hiện nghĩa</button>
+  </div>
+  <div id="convList" style="margin-top:12px; max-height:520px; overflow-y:auto;"></div>
 </div></div>
 <div id="statBox" style="display:none; margin-top:4px;" class="panel"><div style="padding:13px;">
   <div style="display:flex; gap:11px; flex-wrap:wrap; margin-bottom:11px;">

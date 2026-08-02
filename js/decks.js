@@ -22,18 +22,30 @@ function buildLessonUI() {
             });
         });
     }
-    var gramSelect = $('gramSel');
-    if (gramSelect) {
-        gramSelect.innerHTML = '';
-        Object.keys(GRAM).map(Number).sort(function (a, btn) {
-            return a - btn;
-        }).forEach(function (num) {
-            var opt = document.createElement('option');
-            opt.value = num;
-            opt.textContent = 'Bài ' + num;
-            gramSelect.appendChild(opt);
-        });
+    fillLessonSelect('gramSel', GRAM);
+    fillLessonSelect('readSel', READ);
+    fillLessonSelect('convSel', CONV);
+}
+
+/* Đổ danh sách "Bài N" vào một <select>, chỉ những bài thực sự có dữ liệu. */
+function fillLessonSelect(selId, dataByNum) {
+    var sel = $(selId);
+    if (!sel) return;
+    sel.innerHTML = '';
+    var nums = Object.keys(dataByNum || {}).map(Number).sort(function (a, b) { return a - b; });
+    if (!nums.length) {
+        var none = document.createElement('option');
+        none.value = '';
+        none.textContent = '(chưa có dữ liệu)';
+        sel.appendChild(none);
+        return;
     }
+    nums.forEach(function (num) {
+        var opt = document.createElement('option');
+        opt.value = num;
+        opt.textContent = 'Bài ' + num;
+        sel.appendChild(opt);
+    });
 }
 
 buildLessonUI();

@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 8, {
   words: [
     ["ハンサム", "hansamu", "đẹp trai", "ハンサム"],
@@ -245,5 +247,19 @@ registerLesson("N5", 8, {
     {"p": "⑦ ～が (nhưng)", "g": "が đứng CUỐI vế trước, nối hai vế trái ngược nghĩa = 'nhưng': [vế 1]が、[vế 2].", "ex": "にほんごは むずかしいですが、おもしろいです。", "exr": "Nihongo wa muzukashii desu ga, omoshiroi desu.", "m": "Tiếng Nhật khó nhưng thú vị."},
     {"p": "⑧ どれ (cái nào)", "g": "どれ = 'cái nào' — hỏi để CHỌN 1 trong 3 vật trở lên (chọn giữa 2 vật thì dùng どちら). Mẫu: [vật]は どれですか / どれが [tính từ]ですか. Trả lời bằng これ／それ／あれ, thường kèm tính từ bổ nghĩa để chỉ rõ: あの あかい かさです. ⚠️ どれ đứng MỘT MÌNH (không kèm danh từ); nếu kèm danh từ phải dùng どの: どの かさ = 'cái ô nào'.", "ex": "ミラーさんの かさは どれですか。…あの あおい かさです。", "exr": "Miraa-san no kasa wa dore desu ka. …Ano aoi kasa desu.", "m": "Cái ô của anh Miller là cái nào? …Là cái ô màu xanh kia."},
     {"p": "⑨ ～では ありませんか (chẳng phải ~ sao?)", "g": "では ありません là dạng TRANG TRỌNG (văn viết/lịch sự) của じゃ ありません — phủ định của DANH TỪ và tính từ な (は đọc là 'wa'). Thêm か → CÂU HỎI XÁC NHẬN mang sắc thái 'chẳng phải là ~ sao? / ~ đúng không?': [N1]は [N2]では ありませんか. ⚠️ 大きい 大学 = 'trường đại học lớn' (tính từ い bổ nghĩa danh từ) → CẢ CỤM là danh từ, nên phủ định bằng では ありません, KHÔNG phải おおきくない.", "ex": "さくらだいがくは おおきい だいがくでは ありませんか。", "exr": "Sakura daigaku wa ookii daigaku dewa arimasen ka.", "m": "Trường đại học Sakura chẳng phải là trường đại học lớn sao?"}
+  ],
+  readings: [
+    {"t": "Thành phố của tôi", "jp": "わたしの まちは とても しずかです。|おおきい まちじゃ ありません。|ちいさくて きれいな まちです。|ふるい おてらが ゆうめいです。|ひとは とても しんせつです。", "vi": "Thành phố của tôi rất yên tĩnh.|Không phải thành phố lớn.|Là một thành phố nhỏ và đẹp.|Ngôi chùa cổ thì nổi tiếng.|Người ở đây rất tốt bụng.", "q": [["わたしの まちは しずかですか。", "はい、とても しずかです。"], ["おおきい まちですか。", "いいえ、ちいさい まちです。"], ["なにが ゆうめいですか。", "ふるい おてらが ゆうめいです。"]]},
+    {"t": "Món ăn Nhật", "jp": "にほんの たべものは とても おいしいです。|さしみは おいしいです。|でも、ちょっと たかいです。|ラーメンは やすくて おいしいです。|わたしは ラーメンが すきです。", "vi": "Món ăn Nhật rất ngon.|Sashimi ngon.|Nhưng hơi đắt.|Mì ramen vừa rẻ vừa ngon.|Tôi thích ramen.", "q": [["にほんの たべものは どうですか。", "とても おいしいです。"], ["さしみは やすいですか。", "いいえ、ちょっと たかいです。"], ["ラーメンは どうですか。", "やすくて おいしいです。"]]},
+    {"t": "Công việc của tôi", "jp": "わたしの しごとは とても いそがしいです。|でも、たのしいです。|かいしゃは あたらしくて きれいです。|ひとは みんな しんせつです。|きゅうりょうは あまり たかくないです。", "vi": "Công việc của tôi rất bận.|Nhưng vui.|Công ty vừa mới vừa đẹp.|Mọi người đều tốt bụng.|Lương thì không cao lắm.", "q": [["しごとは いそがしいですか。", "はい、とても いそがしいです。"], ["かいしゃは どうですか。", "あたらしくて きれいです。"], ["きゅうりょうは たかいですか。", "いいえ、あまり たかくないです。"]]},
+    {"t": "Thời tiết Nhật Bản", "jp": "にほんの なつは とても あついです。|ふゆは さむいです。|はるは あたたかくて いいです。|さくらは とても きれいです。|わたしは はるが すきです。", "vi": "Mùa hè ở Nhật rất nóng.|Mùa đông thì lạnh.|Mùa xuân ấm áp và dễ chịu.|Hoa anh đào rất đẹp.|Tôi thích mùa xuân.", "q": [["にほんの なつは どうですか。", "とても あついです。"], ["はるは どうですか。", "あたたかくて いいです。"], ["どの きせつが すきですか。", "はるが すきです。"]]},
+    {"t": "Tiếng Nhật khó không?", "jp": "にほんごは ちょっと むずかしいです。|かんじは とても むずかしいです。|でも、ひらがなは やさしいです。|べんきょうは おもしろいです。|わたしの せんせいは とても しんせつです。", "vi": "Tiếng Nhật hơi khó.|Chữ Hán rất khó.|Nhưng hiragana thì dễ.|Việc học thì thú vị.|Thầy giáo của tôi rất tốt bụng.", "q": [["にほんごは むずかしいですか。", "はい、ちょっと むずかしいです。"], ["ひらがなは どうですか。", "やさしいです。"], ["べんきょうは おもしろいですか。", "はい、おもしろいです。"]]}
+  ],
+  conversations: [
+    {"t": "Osaka thế nào?", "s": "Hỏi cảm nhận về thành phố.", "jp": "やまだ：ミラーさん、おおさかは どうですか。|ミラー：とても にぎやかな まちですね。|やまだ：たべものは どうですか。|ミラー：おいしいです。でも、ちょっと たかいです。|やまだ：そうですね。|ミラー：でも、ひとは とても しんせつです。", "vi": "Anh Miller, Osaka thế nào?|Là một thành phố rất nhộn nhịp.|Đồ ăn thì sao?|Ngon. Nhưng hơi đắt.|Đúng vậy nhỉ.|Nhưng người ở đây rất tốt bụng."},
+    {"t": "Có khỏe không?", "s": "Gặp lại người quen sau một thời gian.", "jp": "キム：ワットさん、おげんきですか。|ワット：はい、げんきです。キムさんは？|キム：わたしも げんきです。|ワット：しごとは いそがしいですか。|キム：はい、とても いそがしいです。|ワット：たいへんですね。", "vi": "Thầy Watt, thầy có khỏe không?|Vâng, tôi khỏe. Còn chị Kim?|Tôi cũng khỏe.|Công việc có bận không?|Vâng, rất bận.|Vất vả nhỉ."},
+    {"t": "Căn phòng mới", "s": "Nói về nhà mới.", "jp": "サントス：あたらしい へやは どうですか。|ミラー：ひろくて あかるいです。|サントス：しずかですか。|ミラー：いいえ、あまり しずかじゃ ありません。|サントス：そうですか。|ミラー：でも、えきから ちかいです。", "vi": "Căn phòng mới thế nào?|Vừa rộng vừa sáng.|Có yên tĩnh không?|Không, không yên tĩnh lắm.|Vậy à.|Nhưng gần ga."},
+    {"t": "Bộ phim hôm qua", "s": "Nói về phim đã xem.", "jp": "やまだ：きのうの えいがは どうでしたか。|キム：とても おもしろかったです。|やまだ：ながかったですか。|キム：いいえ、ながくなかったです。|やまだ：いいですね。|キム：やまださんも みませんか。", "vi": "Bộ phim hôm qua thế nào?|Rất thú vị.|Có dài không?|Không, không dài.|Hay nhỉ.|Anh Yamada cũng xem không?"},
+    {"t": "Chuyến đi thế nào", "s": "Hỏi về chuyến du lịch.", "jp": "ワット：きょうとの りょこうは どうでしたか。|サントス：とても たのしかったです。|ワット：てんきは よかったですか。|サントス：いいえ、あまり よくなかったです。|ワット：ざんねんですね。|サントス：でも、しゃしんを たくさん とりました。", "vi": "Chuyến đi Kyoto thế nào?|Rất vui.|Thời tiết có tốt không?|Không, không tốt lắm.|Tiếc nhỉ.|Nhưng tôi đã chụp rất nhiều ảnh."}
   ]
 });

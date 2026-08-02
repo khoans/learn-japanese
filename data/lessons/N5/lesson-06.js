@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 6, {
   words: [
     ["食べます", "tabemasu", "ăn", "たべます"],
@@ -209,5 +211,19 @@ registerLesson("N5", 6, {
     {"p": "⑦ ～ましょう (đề nghị)", "g": "[động từ]ましょう = 'nào / hãy cùng …', dùng khi rủ và mong đối phương đồng ý, hoặc đáp lại lời mời: テニスを しましょう, ちょっと やすみましょう.", "ex": "いっしょに テニスを しましょう。", "exr": "Isshoni tenisu o shimashou.", "m": "Cùng chơi quần vợt nào."},
     {"p": "⑧ それから", "g": "それから = 'sau đó, tiếp theo', nối hai hành động/câu theo thứ tự thời gian: ～ます。それから、～ます。", "ex": "ばんごはんを たべます。それから、テレビを みます。", "exr": "Bangohan o tabemasu. Sorekara, terebi o mimasu.", "m": "Tôi ăn cơm tối. Sau đó xem tivi."},
     {"p": "⑨ 何 đọc なん hay なに", "g": "何 (cái gì) có HAI cách đọc. Đọc なん khi đứng trước です hoặc trước phụ âm t / d / n (なんですか, なんの) và khi hỏi số đếm. Đọc なに trong các trường hợp còn lại, đặc biệt trước trợ từ を: なにを たべますか (nani o).", "ex": "なにを かいますか。/ それは なんですか。", "exr": "Nani o kaimasu ka. / Sore wa nan desu ka.", "m": "Bạn mua gì? (đọc なに) / Cái đó là gì? (đọc なん)"}
+  ],
+  readings: [
+    {"t": "Bữa sáng của tôi", "jp": "わたしは まいあさ パンを たべます。|ぎゅうにゅうを のみます。|たまごも たべます。|コーヒーは のみません。|あさごはんは しちじに たべます。", "vi": "Sáng nào tôi cũng ăn bánh mì.|Tôi uống sữa.|Tôi cũng ăn trứng.|Tôi không uống cà phê.|Tôi ăn sáng lúc 7 giờ.", "q": [["まいあさ なにを たべますか。", "パンと たまごを たべます。"], ["なにを のみますか。", "ぎゅうにゅうを のみます。"], ["コーヒーを のみますか。", "いいえ、のみません。"]]},
+    {"t": "Ngày chủ nhật", "jp": "にちようび ミラーさんは えいがを みました。|それから ともだちと ばんごはんを たべました。|レストランで さかなを たべました。|ビールを のみました。|とても たのしかったです。", "vi": "Chủ nhật anh Miller đã xem phim.|Sau đó anh ấy ăn tối với bạn.|Anh ấy đã ăn cá ở nhà hàng.|Anh ấy đã uống bia.|Rất vui.", "q": [["にちようび なにを しましたか。", "えいがを みました。"], ["どこで ばんごはんを たべましたか。", "レストランで たべました。"], ["なにを のみましたか。", "ビールを のみました。"]]},
+    {"t": "Ở thư viện", "jp": "わたしは ときどき としょかんで ほんを よみます。|しんぶんも よみます。|うちで レポートを かきます。|としょかんでは たばこを すいません。|としょかんは しずかです。", "vi": "Thỉnh thoảng tôi đọc sách ở thư viện.|Tôi cũng đọc báo.|Tôi viết báo cáo ở nhà.|Ở thư viện thì tôi không hút thuốc.|Thư viện rất yên tĩnh.", "q": [["どこで ほんを よみますか。", "としょかんで よみます。"], ["どこで レポートを かきますか。", "うちで かきます。"], ["としょかんで たばこを すいますか。", "いいえ、すいません。"]]},
+    {"t": "Bữa trưa", "jp": "ひるやすみに しょくどうで ひるごはんを たべます。|いつも やさいと にくを たべます。|おちゃを のみます。|ときどき ミラーさんと いっしょに たべます。|ばんごはんは うちで たべます。", "vi": "Giờ nghỉ trưa tôi ăn trưa ở nhà ăn.|Tôi luôn ăn rau và thịt.|Tôi uống trà.|Thỉnh thoảng tôi ăn cùng anh Miller.|Bữa tối tôi ăn ở nhà.", "q": [["どこで ひるごはんを たべますか。", "しょくどうで たべます。"], ["なにを たべますか。", "やさいと にくを たべます。"], ["ばんごはんは どこで たべますか。", "うちで たべます。"]]},
+    {"t": "Chụp ảnh ở Kyoto", "jp": "きのう きょうとで しゃしんを たくさん とりました。|ともだちに てがみを かきました。|よる ホテルで テレビを みました。|それから おさけを のみました。|きょうは なにも しません。", "vi": "Hôm qua tôi đã chụp rất nhiều ảnh ở Kyoto.|Tôi đã viết thư cho bạn.|Buổi tối tôi xem tivi ở khách sạn.|Sau đó tôi uống rượu.|Hôm nay tôi không làm gì cả.", "q": [["きょうとで なにを しましたか。", "しゃしんを たくさん とりました。"], ["よる なにを しましたか。", "ホテルで テレビを みました。"], ["きょうは なにを しますか。", "なにも しません。"]]}
+  ],
+  conversations: [
+    {"t": "Cùng đi ăn trưa nhé", "s": "Rủ đồng nghiệp đi ăn.", "jp": "やまだ：ミラーさん、いっしょに ひるごはんを たべませんか。|ミラー：ええ、いいですね。|やまだ：しょくどうへ いきましょう。|ミラー：なにを たべますか。|やまだ：わたしは さかなを たべます。|ミラー：じゃ、わたしも さかなを たべます。", "vi": "Anh Miller, cùng đi ăn trưa nhé?|Vâng, hay quá.|Chúng ta đến nhà ăn nào.|Anh sẽ ăn gì?|Tôi ăn cá.|Vậy tôi cũng ăn cá."},
+    {"t": "Chủ nhật đã làm gì?", "s": "Nói chuyện sáng thứ hai.", "jp": "キム：サントスさん、にちようび なにを しましたか。|サントス：ともだちと サッカーを しました。|キム：どこで しましたか。|サントス：こうえんで しました。|キム：それから？|サントス：それから いっしょに ビールを のみました。|キム：たのしかったですね。", "vi": "Anh Santos, chủ nhật anh đã làm gì?|Tôi đã đá bóng với bạn.|Anh đá ở đâu?|Ở công viên.|Rồi sau đó?|Sau đó chúng tôi cùng uống bia.|Vui nhỉ."},
+    {"t": "Rủ đi xem phim", "s": "Rủ nhau cuối tuần.", "jp": "ワット：どようび いっしょに えいがを みませんか。|やまだ：ええ、みましょう。|ワット：なんじに あいますか。|やまだ：ろくじは どうですか。|ワット：いいですよ。|やまだ：じゃ、えきで あいましょう。", "vi": "Thứ bảy cùng đi xem phim nhé?|Vâng, đi xem đi.|Mấy giờ mình gặp nhau?|6 giờ được không?|Được đấy.|Vậy gặp nhau ở ga nhé."},
+    {"t": "Ở quán", "s": "Gọi đồ uống.", "jp": "てんいん：いらっしゃいませ。|ミラー：コーヒーを おねがいします。|てんいん：はい。おきゃくさまは？|キム：わたしは こうちゃを おねがいします。|てんいん：かしこまりました。|ミラー：それから、サンドイッチも おねがいします。", "vi": "Xin mời quý khách.|Cho tôi cà phê.|Vâng. Còn quý khách?|Cho tôi trà đen.|Vâng ạ.|Và cho tôi thêm bánh sandwich nữa."},
+    {"t": "Hôm nay không được", "s": "Từ chối lời rủ.", "jp": "サントス：ミラーさん、きょう いっしょに おさけを のみませんか。|ミラー：すみません。きょうは ちょっと…|サントス：そうですか。|ミラー：あした レポートを かきます。|サントス：じゃ、あさっては どうですか。|ミラー：あさっては いいですよ。", "vi": "Anh Miller, hôm nay cùng đi uống rượu nhé?|Xin lỗi, hôm nay hơi bận…|Vậy à.|Ngày mai tôi phải viết báo cáo.|Vậy ngày kia thì sao?|Ngày kia thì được."}
   ]
 });

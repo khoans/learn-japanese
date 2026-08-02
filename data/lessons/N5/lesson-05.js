@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 5, {
   words: [
     ["いきます", "ikimasu", "đi", "いきます"],
@@ -162,5 +164,19 @@ registerLesson("N5", 5, {
     {"p": "④ trợ từ に (ngày tháng)", "g": "Gắn に sau MỐC ngày/tháng cụ thể: くがつ ふつかに. Mốc tương đối (らいげつ, きょねん, あした) KHÔNG cần に.", "ex": "らいげつ にほんへ いきます。", "exr": "Raigetsu Nihon e ikimasu.", "m": "Tháng sau tôi đi Nhật."},
     {"p": "⑤ いつ (khi nào)", "g": "いつ hỏi thời điểm 'khi nào', KHÔNG đi với に: いつ きましたか.", "ex": "たんじょうびは いつですか。", "exr": "Tanjoubi wa itsu desu ka.", "m": "Sinh nhật khi nào?"},
     {"p": "⑥ kết hợp", "g": "Trật tự thường gặp: [thời gian] [người]と [nơi]へ いきます — VD あした ともだちと えきへ いきます.", "ex": "あした だれと どこへ いきますか。", "exr": "Ashita dare to doko e ikimasu ka.", "m": "Ngày mai bạn đi đâu, với ai?"}
+  ],
+  readings: [
+    {"t": "Đi làm bằng gì", "jp": "わたしは まいあさ でんしゃで かいしゃへ いきます。|えきまで あるいて いきます。|かいしゃは とうきょうです。|ろくじに うちへ かえります。|どようびは かいしゃへ いきません。", "vi": "Sáng nào tôi cũng đi tàu điện đến công ty.|Tôi đi bộ đến ga.|Công ty ở Tokyo.|6 giờ tôi về nhà.|Thứ bảy tôi không đến công ty.", "q": [["なんで かいしゃへ いきますか。", "でんしゃで いきます。"], ["えきまで なんで いきますか。", "あるいて いきます。"], ["どようびも かいしゃへ いきますか。", "いいえ、いきません。"]]},
+    {"t": "Chuyến đi Kyoto", "jp": "せんしゅうの どようび きょうとへ いきました。|しんかんせんで いきました。|ともだちと いきました。|にちようびに かえりました。|とても たのしかったです。", "vi": "Thứ bảy tuần trước tôi đã đi Kyoto.|Tôi đi bằng tàu Shinkansen.|Tôi đi cùng bạn.|Chủ nhật tôi đã về.|Rất vui.", "q": [["いつ きょうとへ いきましたか。", "せんしゅうの どようびに いきました。"], ["なんで いきましたか。", "しんかんせんで いきました。"], ["だれと いきましたか。", "ともだちと いきました。"]]},
+    {"t": "Sinh nhật", "jp": "わたしの たんじょうびは くがつ ここのかです。|やまださんの たんじょうびは しがつ ついたちです。|キムさんの たんじょうびは じゅうにがつ はつかです。|らいげつ ミラーさんの たんじょうびです。|みんなで パーティーです。", "vi": "Sinh nhật của tôi là ngày 9 tháng 9.|Sinh nhật anh Yamada là ngày 1 tháng 4.|Sinh nhật chị Kim là ngày 20 tháng 12.|Tháng sau là sinh nhật anh Miller.|Mọi người sẽ tổ chức tiệc.", "q": [["わたしの たんじょうびは いつですか。", "くがつ ここのかです。"], ["やまださんの たんじょうびは いつですか。", "しがつ ついたちです。"], ["キムさんの たんじょうびは なんがつですか。", "じゅうにがつです。"]]},
+    {"t": "Về nước", "jp": "サントスさんは らいねん ブラジルへ かえります。|ひこうきで かえります。|ひとりで かえります。|ことしは かえりません。|きょねんも かえりませんでした。", "vi": "Anh Santos sang năm sẽ về Brazil.|Anh ấy về bằng máy bay.|Anh ấy về một mình.|Năm nay anh ấy không về.|Năm ngoái cũng không về.", "q": [["サントスさんは いつ ブラジルへ かえりますか。", "らいねん かえります。"], ["なんで かえりますか。", "ひこうきで かえります。"], ["だれと かえりますか。", "ひとりで かえります。"]]},
+    {"t": "Ngày mai đi đâu", "jp": "あしたは やすみです。|ともだちと おおさかへ いきます。|バスで いきます。|あさ はちじに いきます。|よる かえります。", "vi": "Ngày mai là ngày nghỉ.|Tôi sẽ đi Osaka với bạn.|Tôi đi bằng xe buýt.|8 giờ sáng đi.|Buổi tối sẽ về.", "q": [["あした どこへ いきますか。", "おおさかへ いきます。"], ["なんで いきますか。", "バスで いきます。"], ["なんじに いきますか。", "あさ はちじに いきます。"]]}
+  ],
+  conversations: [
+    {"t": "Cuối tuần đi đâu?", "s": "Nói chuyện trong giờ nghỉ.", "jp": "やまだ：ミラーさん、にちようび どこへ いきますか。|ミラー：きょうとへ いきます。|やまだ：だれと いきますか。|ミラー：ともだちと いきます。|やまだ：なんで いきますか。|ミラー：しんかんせんで いきます。|やまだ：いいですね。", "vi": "Anh Miller, chủ nhật anh đi đâu?|Tôi đi Kyoto.|Anh đi với ai?|Tôi đi với bạn.|Anh đi bằng gì?|Tôi đi bằng Shinkansen.|Hay quá nhỉ."},
+    {"t": "Ở nhà ga", "s": "Hỏi nhân viên nhà ga.", "jp": "きゃく：すみません。この でんしゃは とうきょうへ いきますか。|えきいん：はい、いきます。|きゃく：なんじに つきますか。|えきいん：じゅうじはんです。|きゃく：どうも ありがとうございます。|えきいん：いいえ。", "vi": "Xin lỗi, tàu này có đi Tokyo không ạ?|Vâng, có ạ.|Mấy giờ đến ạ?|10 giờ rưỡi ạ.|Cảm ơn anh nhiều.|Không có gì."},
+    {"t": "Sinh nhật là khi nào?", "s": "Hỏi ngày sinh nhật.", "jp": "キム：ミラーさんの たんじょうびは いつですか。|ミラー：ろくがつ とおかです。キムさんは？|キム：わたしは じゅうにがつ はつかです。|ミラー：もうすぐですね。|キム：はい。|ミラー：たんじょうびに どこへ いきますか。|キム：ともだちと レストランへ いきます。", "vi": "Sinh nhật anh Miller là khi nào?|Ngày 10 tháng 6. Còn chị Kim?|Tôi là ngày 20 tháng 12.|Sắp đến rồi nhỉ.|Vâng.|Sinh nhật chị sẽ đi đâu?|Tôi sẽ đi nhà hàng với bạn."},
+    {"t": "Đi làm bằng gì", "s": "Nói chuyện về đường đi làm.", "jp": "ワット：サントスさんは なんで かいしゃへ きますか。|サントス：じてんしゃで きます。|ワット：えきまでも じてんしゃですか。|サントス：いいえ、えきまでは あるいて いきます。|ワット：そうですか。|サントス：ワットさんは？|ワット：わたしは ちかてつで きます。", "vi": "Anh Santos đến công ty bằng gì?|Tôi đi xe đạp.|Đến ga cũng bằng xe đạp à?|Không, đến ga thì tôi đi bộ.|Ra vậy.|Còn thầy Watt?|Tôi đi bằng tàu điện ngầm."},
+    {"t": "Tuần trước đã đi đâu", "s": "Kể chuyện ngày nghỉ đã qua.", "jp": "やまだ：せんしゅうの にちようび どこか いきましたか。|キム：はい、おおさかへ いきました。|やまだ：だれと いきましたか。|キム：ひとりで いきました。|やまだ：なんで いきましたか。|キム：バスで いきました。|やまだ：たいへんでしたね。", "vi": "Chủ nhật tuần trước chị có đi đâu không?|Có, tôi đã đi Osaka.|Chị đi với ai?|Tôi đi một mình.|Chị đi bằng gì?|Tôi đi bằng xe buýt.|Vất vả nhỉ."}
   ]
 });

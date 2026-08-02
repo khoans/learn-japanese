@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 15, {
   words: [
     ["覚えます", "oboemasu", "nhớ, ghi nhớ", "おぼえます"],
@@ -153,5 +155,19 @@ registerLesson("N5", 15, {
     {"p": "⑥ Nói về nghề nghiệp／nơi làm việc", "g": "Dùng ～て います để nói việc đang làm lâu dài: [nơi làm]で はたらいて います (làm việc ở ~) hoặc [nghề]を して います.", "ex": "あには ぎんこうで はたらいて います。", "exr": "Ani wa ginkou de hataraite imasu.", "m": "Anh trai tôi làm việc ở ngân hàng."},
     {"p": "⑦ V て います (thói quen lặp lại)", "g": "Diễn tả việc làm ĐỀU ĐẶN trong một khoảng thời gian dài: まいあさ・まいにち・いつも ＋ ～て います.", "ex": "まいあさ こうえんを さんぽして います。", "exr": "Maiasa kouen o sanpo shite imasu.", "m": "Sáng nào tôi cũng đi dạo ở công viên."},
     {"p": "⑧ 持って いきます ／ 持って きます", "g": "もって いきます = mang (cái gì) ĐI (rời khỏi chỗ người nói); もって きます = mang (cái gì) ĐẾN (lại chỗ người nói). Tương tự: つれて いきます／つれて きます với người.", "ex": "あめですから、かさを もって いきます。", "exr": "Ame desu kara, kasa o motte ikimasu.", "m": "Vì trời mưa nên tôi mang theo ô."}
+  ],
+  readings: [
+    {"t": "Gia đình anh Santos", "jp": "サントスさんは ブラジルから きました。|いま おおさかに すんで います。|でんきの かいしゃで はたらいて います。|おくさんも はたらいて います。|こどもが ふたり います。", "vi": "Anh Santos đến từ Brazil.|Bây giờ anh ấy đang sống ở Osaka.|Anh ấy làm việc ở công ty điện.|Vợ anh ấy cũng đi làm.|Anh ấy có hai người con.", "q": [["サントスさんは どこに すんで いますか。", "おおさかに すんで います。"], ["どこで はたらいて いますか。", "でんきの かいしゃで はたらいて います。"], ["こどもが なんにん いますか。", "ふたり います。"]]},
+    {"t": "Trong bảo tàng", "jp": "びじゅつかんで しゃしんを とっては いけません。|たばこも すっては いけません。|でも、メモを とっても いいです。|ちいさい こえで はなしても いいです。|かばんは うけつけに おいて ください。", "vi": "Trong bảo tàng không được chụp ảnh.|Cũng không được hút thuốc.|Nhưng có thể ghi chép.|Có thể nói nhỏ.|Hãy để cặp ở quầy lễ tân.", "q": [["しゃしんを とっても いいですか。", "いいえ、とっては いけません。"], ["メモを とっても いいですか。", "はい、とっても いいです。"], ["かばんは どこに おきますか。", "うけつけに おきます。"]]},
+    {"t": "Chị Kim làm nghề gì", "jp": "キムさんは かんこくじんです。|とうきょうに すんで います。|びょういんで はたらいて います。|しごとは つうやくです。|にほんごと かんこくごと えいごが できます。", "vi": "Chị Kim là người Hàn Quốc.|Chị ấy sống ở Tokyo.|Chị ấy làm việc ở bệnh viện.|Công việc của chị là phiên dịch.|Chị ấy biết tiếng Nhật, tiếng Hàn và tiếng Anh.", "q": [["キムさんは どこに すんで いますか。", "とうきょうに すんで います。"], ["どこで はたらいて いますか。", "びょういんで はたらいて います。"], ["しごとは なんですか。", "つうやくです。"]]},
+    {"t": "Xin phép nghỉ", "jp": "すみませんが、あした やすんでも いいですか。|びょういんへ いきますから。|しごとは あさってまでに おわります。|しりょうは もう つくりました。|よろしく おねがいします。", "vi": "Xin lỗi, ngày mai tôi nghỉ có được không ạ?|Vì tôi phải đi bệnh viện.|Công việc sẽ xong trước ngày kia.|Tài liệu tôi đã làm xong rồi.|Mong anh/chị giúp đỡ.", "q": [["あした なにを しますか。", "びょういんへ いきます。"], ["しごとは いつ おわりますか。", "あさってまでに おわります。"], ["しりょうは もう つくりましたか。", "はい、もう つくりました。"]]},
+    {"t": "Ở căn hộ", "jp": "この アパートに ペットを かっては いけません。|よる おおきい こえで うたっては いけません。|ともだちを よんでも いいです。|ごみは かようびに だして ください。|わたしは ここに さんねん すんで います。", "vi": "Ở chung cư này không được nuôi thú cưng.|Buổi tối không được hát to.|Có thể mời bạn đến chơi.|Rác thì hãy đổ vào thứ ba.|Tôi đã sống ở đây ba năm.", "q": [["ペットを かっても いいですか。", "いいえ、かっては いけません。"], ["ともだちを よんでも いいですか。", "はい、よんでも いいです。"], ["ごみは なんようびに だしますか。", "かようびに だします。"]]}
+  ],
+  conversations: [
+    {"t": "Chụp ảnh được không?", "s": "Trong bảo tàng.", "jp": "ミラー：すみません、しゃしんを とっても いいですか。|かかり：いいえ、いけません。|ミラー：そうですか。メモは？|かかり：メモは とっても いいです。|ミラー：わかりました。|かかり：かばんは あそこに おいて ください。", "vi": "Xin lỗi, tôi chụp ảnh được không ạ?|Không, không được ạ.|Vậy à. Còn ghi chép?|Ghi chép thì được ạ.|Tôi hiểu rồi.|Cặp thì xin để ở đằng kia."},
+    {"t": "Sống ở đâu?", "s": "Làm quen với người mới.", "jp": "やまだ：サントスさんは どこに すんで いますか。|サントス：おおさかに すんで います。|やまだ：ごかぞくは？|サントス：つまと こどもが ふたり います。|やまだ：おくさんも はたらいて いますか。|サントス：ええ、びょういんで はたらいて います。", "vi": "Anh Santos sống ở đâu?|Tôi sống ở Osaka.|Còn gia đình?|Tôi có vợ và hai con.|Vợ anh cũng đi làm à?|Vâng, cô ấy làm ở bệnh viện."},
+    {"t": "Xin nghỉ phép", "s": "Xin phép cấp trên.", "jp": "ミラー：ぶちょう、ちょっと よろしいですか。|ぶちょう：はい、なんですか。|ミラー：あした やすんでも いいですか。|ぶちょう：どうしましたか。|ミラー：びょういんへ いきますから。|ぶちょう：わかりました。おだいじに。|ミラー：ありがとうございます。", "vi": "Trưởng phòng, cho tôi hỏi một chút được không ạ?|Vâng, việc gì vậy?|Ngày mai tôi nghỉ có được không ạ?|Có chuyện gì vậy?|Vì tôi phải đi bệnh viện.|Tôi hiểu rồi. Giữ gìn sức khỏe nhé.|Cảm ơn anh."},
+    {"t": "Làm nghề gì?", "s": "Hỏi về công việc.", "jp": "ワット：キムさんは どんな しごとを して いますか。|キム：びょういんで つうやくを して います。|ワット：たいへんですね。|キム：ええ、でも おもしろいです。|ワット：なんねん はたらいて いますか。|キム：ごねん はたらいて います。", "vi": "Chị Kim làm công việc gì?|Tôi làm phiên dịch ở bệnh viện.|Vất vả nhỉ.|Vâng, nhưng thú vị.|Chị làm được mấy năm rồi?|Tôi làm được 5 năm."},
+    {"t": "Ở đây hút thuốc được không", "s": "Hỏi nội quy quán.", "jp": "サントス：すみません、ここで たばこを すっても いいですか。|てんいん：すみません、ここでは いけません。|サントス：どこで すっても いいですか。|てんいん：そとに きつえんじょが あります。|サントス：わかりました。|てんいん：もうしわけ ありません。", "vi": "Xin lỗi, ở đây hút thuốc được không ạ?|Xin lỗi, ở đây thì không được ạ.|Hút ở đâu thì được ạ?|Bên ngoài có khu vực hút thuốc ạ.|Tôi hiểu rồi.|Thành thật xin lỗi quý khách."}
   ]
 });

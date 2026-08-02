@@ -1,12 +1,14 @@
 /* ===== Thanh công cụ dạng tab (chỉ bản v2): gom Tùy chọn · Chọn từ · Sửa nghĩa ·
         Thống kê · Ngữ pháp · Bảng kana · Xem trước vào 1 thanh dưới thẻ ===== */
-const TOOL_IDS = ['optGrp', 'pickGrp', 'masGrp', 'hwGrp', 'lookupGrp', 'k130Grp', 'statBox', 'gramBox', 'kanaChartBox', 'imeBox', 'previewBox'];
+const TOOL_IDS = ['optGrp', 'pickGrp', 'masGrp', 'hwGrp', 'lookupGrp', 'k130Grp', 'statBox', 'gramBox', 'readBox', 'convBox', 'kanaChartBox', 'imeBox', 'previewBox'];
 let _activeTool = null;
 function renderTool(id) {
     if (id === 'pickGrp') renderPickList();
     else if (id === 'k130Grp') { renderK130List(); renderK130Hist(); }
     else if (id === 'statBox') { populateSessionSelect(); refreshStatView(); }
     else if (id === 'gramBox') renderGram();
+    else if (id === 'readBox') renderRead();
+    else if (id === 'convBox') renderConv();
     else if (id === 'kanaChartBox') renderKanaChart();
     else if (id === 'imeBox') renderIme();
     else if (id === 'previewBox') renderPreview();
@@ -432,6 +434,31 @@ updateGoalProg();
 updatePhaseUI();
 renderPrev();
 syncKanaBar();
+
+/* ===== Đọc hiểu / Hội thoại: chọn bài + bật/tắt nghĩa, đáp án ===== */
+(function () {
+    function on(id, ev, fn) { const el = $(id); if (el) el.addEventListener(ev, fn); }
+    on('readSel', 'change', renderRead);
+    on('convSel', 'change', renderConv);
+    on('readViToggle', 'click', function () {
+        readShowVi = !readShowVi;
+        this.textContent = readShowVi ? '🇻🇳 Ẩn nghĩa' : '🇻🇳 Hiện nghĩa';
+        this.classList.toggle('active', readShowVi);
+        renderRead();
+    });
+    on('readAnsToggle', 'click', function () {
+        readShowAns = !readShowAns;
+        this.textContent = readShowAns ? '💡 Ẩn đáp án' : '💡 Hiện đáp án';
+        this.classList.toggle('active', readShowAns);
+        renderRead();
+    });
+    on('convViToggle', 'click', function () {
+        convShowVi = !convShowVi;
+        this.textContent = convShowVi ? '🇻🇳 Ẩn nghĩa' : '🇻🇳 Hiện nghĩa';
+        this.classList.toggle('active', convShowVi);
+        renderConv();
+    });
+})();
 
 /* Gom 7 panel vào thanh tab dưới thẻ (chỉ bản v2 có #toolHost). Chạy CUỐI CÙNG để mọi
    listener của các panel đã gắn xong; appendChild chỉ dời node nên listener được giữ nguyên. */

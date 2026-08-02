@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 7, {
   words: [
     ["切ります", "kirimasu", "cắt", "きります"],
@@ -164,5 +166,19 @@ registerLesson("N5", 7, {
     {"p": "⑥ まだです (chưa)", "g": "Trả lời PHỦ ĐỊNH cho câu hỏi もう ～ましたか: いいえ、まだです = 'chưa (vẫn chưa)'. ⚠️ KHÔNG trả lời bằng ～ませんでした — vì ～ませんでした nghĩa là 'đã KHÔNG làm (trong quá khứ)', chứ không phải 'CHƯA làm (nhưng sẽ làm)'.", "ex": "もう にもつを おくりましたか。…いいえ、まだです。", "exr": "Mou nimotsu o okurimashita ka. …Iie, mada desu.", "m": "Bạn gửi hành lý chưa? …Chưa, tôi vẫn chưa."},
     {"p": "⑦ Lược bỏ trợ từ (văn nói)", "g": "Trong hội thoại thân mật, các trợ từ を、へ (đôi khi cả は) thường được LƯỢC BỎ: コーヒー（を）のみませんか, にちようび どこ（へ）いきますか. Văn viết / văn lịch sự thì vẫn giữ đủ trợ từ.", "ex": "コーヒー、のみませんか。", "exr": "Koohii, nomimasen ka.", "m": "Uống cà phê không? (lược bỏ trợ từ を)"},
     {"p": "⑧ [vật]は いかがですか (mời lịch sự)", "g": "Mẫu MỜI DÙNG lịch sự khi tiếp khách / ở quán: [đồ ăn/uống]は いかがですか = 'Mời anh/chị dùng ~ nhé?'. いかがですか là dạng lịch sự của どうですか. ⚠️ Phân biệt: ～は いかがですか = MỜI (chủ nhà mời khách dùng); còn ～ませんか (bài 6) = RỦ cùng làm ('cùng ~ nhé?'). Đáp lại khi nhận: ありがとうございます。いただきます (Cảm ơn, tôi xin phép dùng); có thể mời kèm どうぞ (xin mời).", "ex": "おちゃは いかがですか。", "exr": "Ocha wa ikaga desu ka.", "m": "Mời chị dùng trà nhé?"}
+  ],
+  readings: [
+    {"t": "Quà Giáng sinh", "jp": "クリスマスに ともだちに プレゼントを あげました。|はなを あげました。|ともだちに カードを もらいました。|わたしは とても うれしかったです。|らいねんも プレゼントを あげます。", "vi": "Giáng sinh tôi đã tặng quà cho bạn.|Tôi tặng hoa.|Tôi nhận được thiệp từ bạn.|Tôi rất vui.|Năm sau tôi cũng sẽ tặng quà.", "q": [["ともだちに なにを あげましたか。", "はなを あげました。"], ["ともだちに なにを もらいましたか。", "カードを もらいました。"], ["らいねんも プレゼントを あげますか。", "はい、あげます。"]]},
+    {"t": "Học tiếng Nhật", "jp": "わたしは やまださんに にほんごを ならいました。|やまださんは わたしに にほんごを おしえました。|わたしは やまださんに えいごを おしえました。|まいしゅう かようびに べんきょうします。|とても たのしいです。", "vi": "Tôi học tiếng Nhật với anh Yamada.|Anh Yamada dạy tiếng Nhật cho tôi.|Tôi dạy tiếng Anh cho anh Yamada.|Chúng tôi học vào thứ ba hằng tuần.|Rất vui.", "q": [["だれに にほんごを ならいましたか。", "やまださんに ならいました。"], ["やまださんに なにを おしえましたか。", "えいごを おしえました。"], ["なんようびに べんきょうしますか。", "かようびに べんきょうします。"]]},
+    {"t": "Mượn và cho mượn", "jp": "きのう ミラーさんに ほんを かりました。|ミラーさんは わたしに CDも かしました。|わたしは ミラーさんに かさを かしました。|あした ほんを かえします。|ミラーさんは しんせつです。", "vi": "Hôm qua tôi đã mượn sách của anh Miller.|Anh Miller cũng cho tôi mượn CD.|Tôi cho anh Miller mượn ô.|Ngày mai tôi sẽ trả sách.|Anh Miller rất tốt bụng.", "q": [["だれに ほんを かりましたか。", "ミラーさんに かりました。"], ["ミラーさんに なにを かしましたか。", "かさを かしました。"], ["いつ ほんを かえしますか。", "あした かえします。"]]},
+    {"t": "Gửi thư", "jp": "まいつき くにの ちちと ははに てがみを かきます。|ときどき メールも おくります。|しゃしんも おくります。|でんわで はなします。|らいげつ くにへ かえります。", "vi": "Hằng tháng tôi viết thư cho bố mẹ ở quê.|Thỉnh thoảng tôi cũng gửi email.|Tôi cũng gửi ảnh.|Tôi nói chuyện qua điện thoại.|Tháng sau tôi sẽ về nước.", "q": [["だれに てがみを かきますか。", "ちちと ははに かきます。"], ["なにを おくりますか。", "メールと しゃしんを おくります。"], ["いつ くにへ かえりますか。", "らいげつ かえります。"]]},
+    {"t": "Ăn bằng gì", "jp": "にほんじんは はしで ごはんを たべます。|わたしは スプーンで たべます。|ナイフと フォークは つかいません。|はしは むずかしいです。|でも、まいにち れんしゅうします。", "vi": "Người Nhật ăn cơm bằng đũa.|Tôi ăn bằng thìa.|Tôi không dùng dao và nĩa.|Đũa thì khó.|Nhưng ngày nào tôi cũng luyện tập.", "q": [["にほんじんは なんで ごはんを たべますか。", "はしで たべます。"], ["わたしは なんで たべますか。", "スプーンで たべます。"], ["ナイフと フォークを つかいますか。", "いいえ、つかいません。"]]}
+  ],
+  conversations: [
+    {"t": "Cái này dùng thế nào", "s": "Hỏi tên và cách dùng một vật.", "jp": "ミラー：やまださん、これは にほんごで なんですか。|やまだ：はさみです。|ミラー：はさみ… なにを しますか。|やまだ：かみを きります。|ミラー：わかりました。ありがとうございます。|やまだ：いいえ。", "vi": "Anh Yamada, cái này tiếng Nhật gọi là gì?|Là cái kéo.|Kéo… dùng để làm gì?|Để cắt giấy.|Tôi hiểu rồi. Cảm ơn anh.|Không có gì."},
+    {"t": "Mượn từ điển", "s": "Mượn đồ của đồng nghiệp.", "jp": "キム：すみません、じしょを かして ください。|ミラー：はい、どうぞ。|キム：ありがとうございます。|ミラー：いつ かえしますか。|キム：あした かえします。|ミラー：はい、いいですよ。", "vi": "Xin lỗi, cho tôi mượn từ điển với.|Vâng, đây.|Cảm ơn anh.|Khi nào chị trả?|Ngày mai tôi trả.|Vâng, được thôi."},
+    {"t": "Tặng quà sinh nhật", "s": "Nói về quà sinh nhật.", "jp": "サントス：たんじょうびに なにを もらいましたか。|ミラー：ちちに とけいを もらいました。|サントス：いいですね。|ミラー：ははには かばんを もらいました。|サントス：わたしは ともだちに ほんを あげました。|ミラー：そうですか。", "vi": "Sinh nhật anh nhận được gì?|Tôi nhận được đồng hồ từ bố.|Hay quá nhỉ.|Từ mẹ thì tôi nhận được cái cặp.|Tôi thì đã tặng bạn quyển sách.|Ra vậy."},
+    {"t": "Gửi fax", "s": "Nhờ việc ở văn phòng.", "jp": "やまだ：ミラーさん、この しりょうを おおさかへ おくって ください。|ミラー：はい。ファクスで おくりますか。|やまだ：いいえ、メールで おくって ください。|ミラー：わかりました。いつまでですか。|やまだ：きょうの ごご さんじまでです。|ミラー：はい。", "vi": "Anh Miller, gửi tài liệu này đi Osaka giúp tôi.|Vâng. Gửi bằng fax ạ?|Không, hãy gửi bằng email.|Tôi hiểu rồi. Đến khi nào ạ?|Đến 3 giờ chiều hôm nay.|Vâng."},
+    {"t": "Học tiếng Nhật với ai", "s": "Hỏi về việc học.", "jp": "ワット：キムさんは だれに にほんごを ならいましたか。|キム：やまださんに ならいました。|ワット：どこで べんきょうしましたか。|キム：かいしゃで べんきょうしました。|ワット：わたしも にほんごを ならいたいです。|キム：じゃ、やまださんに はなしましょう。", "vi": "Chị Kim học tiếng Nhật với ai vậy?|Tôi học với anh Yamada.|Chị học ở đâu?|Tôi học ở công ty.|Tôi cũng muốn học tiếng Nhật.|Vậy mình nói với anh Yamada nhé."}
   ]
 });

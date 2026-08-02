@@ -56,6 +56,10 @@ const LSENT = JPLessons.sentences();
 const GRAM = JPLessons.grammar();
 /** @type {number[]} */
 const ALL_LESSONS = JPLessons.nums();
+/** Bài đọc hiểu theo bài: { "1": [ {t, jp, vi, q, bai, level}, ... ] } */
+const READ = JPLessons.readings();
+/** Hội thoại theo bài: { "1": [ {t, s, jp, vi, bai, level}, ... ] } */
+const CONV = JPLessons.conversations();
 
 /* ===== Chỉ mục "từ vựng → bài / trình độ (hoặc chủ đề)" — dùng cho tra cứu, badge trên thẻ, báo cáo ===== */
 const THEME_NAME = {};

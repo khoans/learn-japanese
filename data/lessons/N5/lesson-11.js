@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 11, {
   words: [
     ["います", "imasu", "có (con cái), ở (một nơi)", "います"],
@@ -185,5 +187,19 @@ registerLesson("N5", 11, {
     {"p": "⑤ 期間に ～かい V", "g": "Tần suất: [khoảng thời gian]に [số lần]かい + động từ = trong khoảng thời gian đó làm mấy lần.", "ex": "いっしゅうかんに にかい テニスを します。", "exr": "Isshuukan ni nikai tenisu o shimasu.", "m": "Một tuần tôi chơi tennis 2 lần."},
     {"p": "⑥ 数量 ぐらい ／ だけ ／ ぜんぶで", "g": "～ぐらい = khoảng (đặt SAU lượng từ: さんじかんぐらい). ～だけ = chỉ, chỉ có (ひとつだけ). ぜんぶで = tổng cộng, dùng khi tính tổng số／tổng tiền.", "ex": "コーヒーを いっぱいだけ のみました。", "exr": "Koohii o ippai dake nomimashita.", "m": "Tôi chỉ uống một cốc cà phê thôi."},
     {"p": "⑦ N が います／あります (số lượng người trong gia đình)", "g": "Nói có mấy người／mấy cái: [N]が [lượng từ] います／あります. Người và động vật dùng います, đồ vật dùng あります. Hỏi: なんにん いますか／いくつ ありますか.", "ex": "きょうだいが ふたり います。", "exr": "Kyoudai ga futari imasu.", "m": "Tôi có hai anh chị em."}
+  ],
+  readings: [
+    {"t": "Ở bưu điện", "jp": "ゆうびんきょくで きってを ごまい かいました。|はがきも さんまい かいました。|ふうとうを いつつ かいました。|ぜんぶで せんえんでした。|くにへ てがみを おくりました。", "vi": "Tôi mua 5 con tem ở bưu điện.|Tôi cũng mua 3 tấm bưu thiếp.|Tôi mua 5 cái phong bì.|Tổng cộng là 1.000 yên.|Tôi đã gửi thư về nước.", "q": [["きってを なんまい かいましたか。", "ごまい かいました。"], ["はがきを なんまい かいましたか。", "さんまい かいました。"], ["ぜんぶで いくらでしたか。", "せんえんでした。"]]},
+    {"t": "Ở lớp học", "jp": "わたしの クラスに がくせいが じゅうごにん います。|がいこくじんは ごにんです。|せんせいは ふたり います。|じゅぎょうは いっしゅうかんに さんかい あります。|いっかい にじかんです。", "vi": "Lớp tôi có 15 học sinh.|Người nước ngoài là 5 người.|Có 2 giáo viên.|Một tuần có 3 buổi học.|Mỗi buổi 2 tiếng.", "q": [["がくせいが なんにん いますか。", "じゅうごにん います。"], ["せんせいは なんにん いますか。", "ふたり います。"], ["じゅぎょうは いっしゅうかんに なんかい ありますか。", "さんかい あります。"]]},
+    {"t": "Mua trái cây", "jp": "スーパーで りんごを みっつ かいました。|みかんを やっつ かいました。|たまごも じゅっこ かいました。|ぜんぶで にせんえんでした。|おもかったです。", "vi": "Tôi mua 3 quả táo ở siêu thị.|Tôi mua 8 quả quýt.|Tôi cũng mua 10 quả trứng.|Tổng cộng 2.000 yên.|Nặng quá.", "q": [["りんごを いくつ かいましたか。", "みっつ かいました。"], ["みかんを いくつ かいましたか。", "やっつ かいました。"], ["ぜんぶで いくらでしたか。", "にせんえんでした。"]]},
+    {"t": "Học tiếng Nhật bao lâu rồi", "jp": "わたしは にほんに いちねん います。|にほんごを はちかげつ べんきょうしました。|まいにち にじかん べんきょうします。|いっしゅうかんに いっかい やまださんに ならいます。|らいねん しけんを うけます。", "vi": "Tôi ở Nhật được một năm.|Tôi đã học tiếng Nhật 8 tháng.|Mỗi ngày tôi học 2 tiếng.|Một tuần một lần tôi học với anh Yamada.|Sang năm tôi sẽ thi.", "q": [["にほんに どのくらい いますか。", "いちねん います。"], ["まいにち なんじかん べんきょうしますか。", "にじかん べんきょうします。"], ["いっしゅうかんに なんかい ならいますか。", "いっかい ならいます。"]]},
+    {"t": "Có bao nhiêu xe", "jp": "かいしゃに くるまが よんだい あります。|バスは いちだい あります。|じてんしゃも ごだい あります。|しゃいんは ろくじゅうにん います。|がいこくじんの しゃいんは じゅうにんです。", "vi": "Công ty có 4 chiếc xe hơi.|Có 1 chiếc xe buýt.|Cũng có 5 chiếc xe đạp.|Nhân viên có 60 người.|Nhân viên người nước ngoài là 10 người.", "q": [["くるまが なんだい ありますか。", "よんだい あります。"], ["じてんしゃは なんだい ありますか。", "ごだい あります。"], ["しゃいんは なんにん いますか。", "ろくじゅうにん います。"]]}
+  ],
+  conversations: [
+    {"t": "Ở bưu điện", "s": "Mua tem và gửi thư.", "jp": "きゃく：すみません。きってを ごまい ください。|きょくいん：はい、ごまいですね。|きゃく：はがきも さんまい おねがいします。|きょくいん：ぜんぶで はっぴゃくえんです。|きゃく：はい。|きょくいん：ありがとうございました。", "vi": "Xin lỗi, cho tôi 5 con tem.|Vâng, 5 con tem phải không ạ.|Cho tôi thêm 3 tấm bưu thiếp nữa.|Tổng cộng 800 yên ạ.|Đây ạ.|Xin cảm ơn quý khách."},
+    {"t": "Mất bao lâu?", "s": "Hỏi thời gian đi lại.", "jp": "ミラー：えきから かいしゃまで どのくらい かかりますか。|やまだ：あるいて じゅうごふん ぐらいです。|ミラー：バスも ありますか。|やまだ：ええ、バスで ごふんです。|ミラー：バスは いっかい いくらですか。|やまだ：にひゃくえんです。", "vi": "Từ ga đến công ty mất bao lâu?|Đi bộ khoảng 15 phút.|Có xe buýt không?|Có, đi xe buýt là 5 phút.|Một lượt xe buýt bao nhiêu tiền?|200 yên."},
+    {"t": "Mua bao nhiêu?", "s": "Mua đồ ở siêu thị.", "jp": "てんいん：いらっしゃいませ。|きゃく：りんごを みっつ ください。|てんいん：はい。ほかには？|きゃく：たまごを じゅっこ おねがいします。|てんいん：ぜんぶで せんにひゃくえんです。|きゃく：はい、どうぞ。", "vi": "Xin mời quý khách.|Cho tôi 3 quả táo.|Vâng. Còn gì nữa không ạ?|Cho tôi 10 quả trứng.|Tổng cộng 1.200 yên ạ.|Vâng, đây ạ."},
+    {"t": "Có mấy người?", "s": "Hỏi về công ty.", "jp": "ワット：やまださんの かいしゃに しゃいんが なんにん いますか。|やまだ：ろくじゅうにん ぐらい います。|ワット：がいこくじんも いますか。|やまだ：ええ、じゅうにん ぐらい います。|ワット：おおきい かいしゃですね。|やまだ：いいえ、あまり おおきくないです。", "vi": "Công ty anh Yamada có bao nhiêu nhân viên?|Khoảng 60 người.|Có người nước ngoài không?|Có, khoảng 10 người.|Công ty lớn nhỉ.|Không, không lớn lắm đâu."},
+    {"t": "Học bao lâu rồi", "s": "Hỏi về việc học tiếng Nhật.", "jp": "キム：ミラーさんは にほんごを どのくらい べんきょうしましたか。|ミラー：はちかげつ べんきょうしました。|キム：まいにち べんきょうしますか。|ミラー：ええ、にじかん ぐらい します。|キム：すごいですね。|ミラー：いいえ、まだまだです。", "vi": "Anh Miller học tiếng Nhật bao lâu rồi?|Tôi học được 8 tháng.|Ngày nào anh cũng học à?|Vâng, khoảng 2 tiếng.|Giỏi quá nhỉ.|Không đâu, còn kém lắm."}
   ]
 });

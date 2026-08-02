@@ -18,6 +18,14 @@
                     de trong neu la tu chinh cua bai)
     sentences.csv : cau, romaji, nghia
     grammar.csv   : mau_cau, giai_thich, vi_du, vi_du_romaji, nghia
+    reading.csv   : tieu_de, doan_van, nghia, cau_hoi1, dap_an1, ... cau_hoi3, dap_an3
+                    (doan_van = bai doc, TACH TUNG CAU bang dau  |  ; nghia = ban dich
+                     tieng Viet, cung tach bang  |  theo DUNG thu tu cau. Cot cau hoi
+                     KHONG bat buoc, toi da 3 cau hoi moi bai doc.)
+    conversation.csv : tieu_de, boi_canh, hoi_thoai, nghia
+                    (hoi_thoai = tung luot noi tach bang  |  , moi luot ghi
+                     "TenNguoi：cau noi"; nghia = ban dich, tach bang  |  theo dung
+                     thu tu luot noi. boi_canh = mo ta tinh huong bang tieng Viet.)
 
   Script sinh:  data\lessons\<TRINH_DO>\lesson-NN.js  va  data\lessons\manifest.js
   va tu tang so phien ban cache trong  sw.js .
@@ -54,7 +62,13 @@ $levels = $levelDirs | Sort-Object @{ Expression = { LevelRank $_.Name } }, Name
 if ($levels.Count -eq 0) { throw "Khong thay thu muc trinh do nao trong $CsvDir (vi du: csv\N5\)" }
 
 $manifest = [ordered]@{}   # ten trinh do -> mang so bai
-$totW = 0; $totS = 0; $totG = 0
+$totW = 0; $totS = 0; $totG = 0; $totR = 0; $totC = 0
+
+# Lay gia tri mot cot CSV an toan (cot co the khong ton tai trong file cu).
+function Col($row, [string]$name) {
+  if ($row.PSObject.Properties[$name]) { return [string]$row.$name }
+  return ''
+}
 
 foreach ($lvDir in $levels) {
   $level = $lvDir.Name
@@ -75,6 +89,8 @@ foreach ($lvDir in $levels) {
     $words     = ImportCsvSafe (Join-Path $lessonDir.FullName 'words.csv')
     $sentences = ImportCsvSafe (Join-Path $lessonDir.FullName 'sentences.csv')
     $grammar   = ImportCsvSafe (Join-Path $lessonDir.FullName 'grammar.csv')
+    $readings  = ImportCsvSafe (Join-Path $lessonDir.FullName 'reading.csv')
+    $convs     = ImportCsvSafe (Join-Path $lessonDir.FullName 'conversation.csv')
 
     $wLines = foreach ($r in $words) {
       $kana = if ([string]::IsNullOrWhiteSpace($r.kana)) { $r.tiengNhat } else { $r.kana }
@@ -90,6 +106,19 @@ foreach ($lvDir in $levels) {
     $gLines = foreach ($r in $grammar) {
       '    {"p": ' + (Esc $r.mau_cau) + ', "g": ' + (Esc $r.giai_thich) + ', "ex": ' + (Esc $r.vi_du) + ', "exr": ' + (Esc $r.vi_du_romaji) + ', "m": ' + (Esc $r.nghia) + '}'
     }
+    # Bai doc hieu: cau van / ban dich tach bang "|", kem toi da 3 cau hoi.
+    $rdLines = foreach ($r in $readings) {
+      $qs = @()
+      foreach ($i in 1, 2, 3) {
+        $q = (Col $r "cau_hoi$i").Trim()
+        if ($q) { $qs += '[' + (Esc $q) + ', ' + (Esc (Col $r "dap_an$i")) + ']' }
+      }
+      '    {"t": ' + (Esc $r.tieu_de) + ', "jp": ' + (Esc $r.doan_van) + ', "vi": ' + (Esc $r.nghia) + ', "q": [' + ($qs -join ', ') + ']}'
+    }
+    # Hoi thoai: tung luot noi tach bang "|", moi luot "TenNguoi：cau noi".
+    $cvLines = foreach ($r in $convs) {
+      '    {"t": ' + (Esc $r.tieu_de) + ', "s": ' + (Esc (Col $r 'boi_canh')) + ', "jp": ' + (Esc $r.hoi_thoai) + ', "vi": ' + (Esc $r.nghia) + '}'
+    }
 
     $js = @"
 // ===== $level - Bai $num =====
@@ -98,6 +127,8 @@ foreach ($lvDir in $levels) {
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("$level", $num, {
   words: [
 $($wLines -join ",`r`n")
@@ -107,12 +138,19 @@ $($sLines -join ",`r`n")
   ],
   grammar: [
 $($gLines -join ",`r`n")
+  ],
+  readings: [
+$($rdLines -join ",`r`n")
+  ],
+  conversations: [
+$($cvLines -join ",`r`n")
   ]
 });
 "@
     [System.IO.File]::WriteAllText((Join-Path $outDir "lesson-$nn.js"), $js, $Utf8NoBom)
     $totW += $words.Count; $totS += $sentences.Count; $totG += $grammar.Count
-    Write-Host ("{0}/lesson-{1}: {2} tu, {3} cau, {4} ngu phap" -f $level, $nn, $words.Count, $sentences.Count, $grammar.Count)
+    $totR += $readings.Count; $totC += $convs.Count
+    Write-Host ("{0}/lesson-{1}: {2} tu, {3} cau, {4} ngu phap, {5} bai doc, {6} hoi thoai" -f $level, $nn, $words.Count, $sentences.Count, $grammar.Count, $readings.Count, $convs.Count)
   }
   $manifest[$level] = $nums
 }
@@ -222,5 +260,5 @@ if (Test-Path $swPath) {
 }
 
 Write-Host ""
-Write-Host ("XONG. {0} trinh do, {1} bai | {2} tu, {3} cau, {4} ngu phap." -f $levelNames.Count, ($manifest.Values | ForEach-Object { $_.Count } | Measure-Object -Sum).Sum, $totW, $totS, $totG) -ForegroundColor Green
+Write-Host ("XONG. {0} trinh do, {1} bai | {2} tu, {3} cau, {4} ngu phap, {5} bai doc, {6} hoi thoai." -f $levelNames.Count, ($manifest.Values | ForEach-Object { $_.Count } | Measure-Object -Sum).Sum, $totW, $totS, $totG, $totR, $totC) -ForegroundColor Green
 foreach ($lv in $levelNames) { Write-Host ("  {0}: bai {1}" -f $lv, (($manifest[$lv]) -join ', ')) }

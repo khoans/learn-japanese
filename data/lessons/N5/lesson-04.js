@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 4, {
   words: [
     ["おきます", "okimasu", "thức dậy", "おきます"],
@@ -191,5 +193,19 @@ registerLesson("N5", 4, {
     {"p": "⑤ hỏi giờ", "g": "Hỏi mốc bắt đầu/kết thúc bằng なんじ ＋ から/まで: なんじから なんじまでですか.", "ex": "しごとは なんじから なんじまでですか。", "exr": "Shigoto wa nanji kara nanji made desu ka.", "m": "Công việc từ mấy giờ đến mấy giờ?"},
     {"p": "⑥ từ thời gian + động từ", "g": "Từ chỉ thời gian (あさ, ばん, きのう, あした…) đặt ĐẦU câu, không cần trợ từ に.", "ex": "あさ べんきょうします。", "exr": "Asa benkyou shimasu.", "m": "Buổi sáng tôi học."},
     {"p": "⑦ tiểu từ ～ね", "g": "～ね đặt cuối câu để tìm sự đồng tình, dịch 'nhỉ/nhỉ': たいへんですね (vất vả nhỉ).", "ex": "たいへんですね。", "exr": "Taihen desu ne.", "m": "Vất vả nhỉ."}
+  ],
+  readings: [
+    {"t": "Một ngày của tôi", "jp": "わたしは まいあさ ろくじに おきます。|くじから ごじまで はたらきます。|ひるやすみは じゅうにじから いちじまでです。|よる じゅうじに ねます。|どようびと にちようびは やすみです。", "vi": "Tôi thức dậy lúc 6 giờ mỗi sáng.|Tôi làm việc từ 9 giờ đến 5 giờ.|Giờ nghỉ trưa từ 12 giờ đến 1 giờ.|Buổi tối tôi đi ngủ lúc 10 giờ.|Thứ bảy và chủ nhật là ngày nghỉ.", "q": [["なんじに おきますか。", "ろくじに おきます。"], ["しごとは なんじから なんじまでですか。", "くじから ごじまでです。"], ["やすみは なんようびですか。", "どようびと にちようびです。"]]},
+    {"t": "Giờ làm việc", "jp": "ぎんこうは くじから さんじまでです。|ゆうびんきょくは くじから ごじまでです。|としょかんは じゅうじから ろくじまでです。|びじゅつかんの やすみは げつようびです。|デパートは まいにち やすみじゃ ありません。", "vi": "Ngân hàng làm việc từ 9 giờ đến 3 giờ.|Bưu điện từ 9 giờ đến 5 giờ.|Thư viện từ 10 giờ đến 6 giờ.|Bảo tàng mỹ thuật nghỉ thứ hai.|Cửa hàng bách hóa thì ngày nào cũng mở.", "q": [["ぎんこうは なんじまでですか。", "さんじまでです。"], ["としょかんは なんじからですか。", "じゅうじからです。"], ["びじゅつかんの やすみは なんようびですか。", "げつようびです。"]]},
+    {"t": "Mỗi ngày của anh Miller", "jp": "ミラーさんは まいあさ ろくじはんに おきます。|かいしゃは くじからです。|しごとは ろくじに おわります。|まいばん じゅうにじに ねます。|にちようびは はたらきません。", "vi": "Anh Miller thức dậy lúc 6 giờ rưỡi mỗi sáng.|Công ty bắt đầu từ 9 giờ.|Công việc kết thúc lúc 6 giờ.|Tối nào anh ấy cũng ngủ lúc 12 giờ.|Chủ nhật anh ấy không làm việc.", "q": [["ミラーさんは なんじに おきますか。", "ろくじはんに おきます。"], ["しごとは なんじに おわりますか。", "ろくじに おわります。"], ["にちようびも はたらきますか。", "いいえ、はたらきません。"]]},
+    {"t": "Hôm nay là thứ mấy", "jp": "きょうは げつようびです。|きのうは にちようびでした。|あしたは かようびです。|げつようびから きんようびまで はたらきます。|どようびと にちようびは やすみます。", "vi": "Hôm nay là thứ hai.|Hôm qua là chủ nhật.|Ngày mai là thứ ba.|Tôi làm việc từ thứ hai đến thứ sáu.|Thứ bảy và chủ nhật tôi nghỉ.", "q": [["きのうは なんようびでしたか。", "にちようびでした。"], ["あしたは なんようびですか。", "かようびです。"], ["なんようびから なんようびまで はたらきますか。", "げつようびから きんようびまでです。"]]},
+    {"t": "Học tiếng Nhật", "jp": "にほんごの べんきょうは まいしゅう かようびと もくようびです。|くじに はじまります。|じゅうにじに おわります。|せんせいは ワットさんです。|まいばん べんきょうします。", "vi": "Việc học tiếng Nhật vào thứ ba và thứ năm hằng tuần.|Bắt đầu lúc 9 giờ.|Kết thúc lúc 12 giờ.|Giáo viên là thầy Watt.|Tối nào tôi cũng học.", "q": [["べんきょうは なんようびですか。", "かようびと もくようびです。"], ["なんじに はじまりますか。", "くじに はじまります。"], ["せんせいは だれですか。", "ワットさんです。"]]}
+  ],
+  conversations: [
+    {"t": "Bây giờ là mấy giờ?", "s": "Hỏi giờ ở văn phòng.", "jp": "ミラー：すみません。いま なんじですか。|やまだ：じゅうじはんです。|ミラー：かいぎは なんじからですか。|やまだ：じゅういちじからです。|ミラー：そうですか。ありがとうございます。|やまだ：いいえ。", "vi": "Xin lỗi, bây giờ là mấy giờ?|10 giờ rưỡi.|Cuộc họp bắt đầu từ mấy giờ?|Từ 11 giờ.|Ra vậy. Cảm ơn anh.|Không có gì."},
+    {"t": "Ngân hàng mở đến mấy giờ", "s": "Hỏi giờ làm việc của ngân hàng.", "jp": "キム：やまださん、ぎんこうは なんじから なんじまでですか。|やまだ：くじから さんじまでです。|キム：やすみは なんようびですか。|やまだ：どようびと にちようびです。|キム：わかりました。ありがとうございます。|やまだ：いいえ。", "vi": "Anh Yamada, ngân hàng làm việc từ mấy giờ đến mấy giờ?|Từ 9 giờ đến 3 giờ.|Nghỉ vào thứ mấy?|Thứ bảy và chủ nhật.|Tôi hiểu rồi. Cảm ơn anh.|Không có gì."},
+    {"t": "Mấy giờ thức dậy", "s": "Nói chuyện về sinh hoạt hằng ngày.", "jp": "サントス：ミラーさんは まいあさ なんじに おきますか。|ミラー：ろくじはんに おきます。|サントス：はやいですね。なんじに ねますか。|ミラー：じゅうにじに ねます。|サントス：わたしは しちじに おきます。|ミラー：そうですか。", "vi": "Anh Miller thức dậy lúc mấy giờ mỗi sáng?|Tôi dậy lúc 6 giờ rưỡi.|Sớm nhỉ. Anh ngủ lúc mấy giờ?|Tôi ngủ lúc 12 giờ.|Tôi thì dậy lúc 7 giờ.|Ra vậy."},
+    {"t": "Gọi điện hỏi giờ mở cửa", "s": "Gọi điện đến bảo tàng.", "jp": "きゃく：もしもし、びじゅつかんですか。|びじゅつかん：はい、そうです。|きゃく：なんじから なんじまでですか。|びじゅつかん：ごぜん くじから ごご ごじまでです。|きゃく：やすみは なんようびですか。|びじゅつかん：げつようびです。|きゃく：どうも ありがとうございました。", "vi": "A lô, bảo tàng mỹ thuật phải không ạ?|Vâng, đúng rồi ạ.|Mở cửa từ mấy giờ đến mấy giờ ạ?|Từ 9 giờ sáng đến 5 giờ chiều ạ.|Nghỉ vào thứ mấy ạ?|Thứ hai ạ.|Cảm ơn anh/chị nhiều."},
+    {"t": "Cuối tuần", "s": "Hỏi về ngày nghỉ.", "jp": "ワット：やまださんは どようびも はたらきますか。|やまだ：いいえ、はたらきません。やすみます。|ワット：にちようびは？|やまだ：にちようびも やすみです。|ワット：いいですね。|やまだ：ワットさんの やすみは いつですか。|ワット：わたしも どようびと にちようびです。", "vi": "Anh Yamada thứ bảy cũng làm việc à?|Không, tôi không làm. Tôi nghỉ.|Còn chủ nhật?|Chủ nhật cũng nghỉ.|Tốt nhỉ.|Ngày nghỉ của thầy Watt là khi nào?|Tôi cũng thứ bảy và chủ nhật."}
   ]
 });

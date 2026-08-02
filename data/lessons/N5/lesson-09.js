@@ -4,6 +4,8 @@
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
+// readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
+// conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
 registerLesson("N5", 9, {
   words: [
     ["わかります", "wakarimasu", "hiểu, nắm được", "わかります"],
@@ -145,5 +147,19 @@ registerLesson("N5", 9, {
     {"p": "⑤ どうして ～ / ～から (vì)", "g": "Hỏi lý do bằng どうして. Trả lời / nêu lý do bằng から đặt ở CUỐI vế lý do: [lý do]から. Nối câu: [lý do]から、[kết quả].", "ex": "どうして きのう やすみましたか。", "exr": "Doushite kinou yasumimashita ka.", "m": "Sao hôm qua bạn nghỉ?"},
     {"p": "⑥ Trạng từ mức độ", "g": "よく / だいたい / たくさん / すこし đi với câu KHẲNG ĐỊNH; あまり / ぜんぜん đi với câu PHỦ ĐỊNH. VD: よく みます / あまり みません / ぜんぜん みません.", "ex": "わたしは よく えいがを みます。", "exr": "Watashi wa yoku eiga o mimasu.", "m": "Tôi thường xem phim."},
     {"p": "⑦ Mời rủ & từ chối khéo (hội thoại)", "g": "Mời: [N]に いっしょに いかがですか (cùng … nhé?). Đồng ý: いいですね / いいですよ. Từ chối khéo: nêu thời gian + は ちょっと… rồi ざんねんですが… / また こんど おねがいします. Nhờ mượn: [N]を かして ください.", "ex": "いっしょに コンサートに いかがですか。", "exr": "Issho ni konsaato ni ikaga desu ka.", "m": "Cùng đi buổi hòa nhạc nhé?"}
+  ],
+  readings: [
+    {"t": "Sở thích của tôi", "jp": "わたしは おんがくが すきです。|とくに クラシックが すきです。|ジャズは あまり すきじゃ ありません。|うたは へたです。|でも、カラオケは たのしいです。", "vi": "Tôi thích âm nhạc.|Đặc biệt là nhạc cổ điển.|Nhạc jazz thì tôi không thích lắm.|Tôi hát dở.|Nhưng karaoke thì vui.", "q": [["なにが すきですか。", "おんがくが すきです。"], ["ジャズが すきですか。", "いいえ、あまり すきじゃ ありません。"], ["うたが じょうずですか。", "いいえ、へたです。"]]},
+    {"t": "Anh Miller giỏi tiếng Nhật", "jp": "ミラーさんは にほんごが じょうずです。|かんじも すこし わかります。|ひらがなと カタカナは よく わかります。|えいごも フランスごも できます。|とても あたまが いいです。", "vi": "Anh Miller giỏi tiếng Nhật.|Anh ấy cũng hiểu một chút chữ Hán.|Hiragana và katakana thì anh ấy hiểu rõ.|Anh ấy biết cả tiếng Anh lẫn tiếng Pháp.|Anh ấy rất thông minh.", "q": [["ミラーさんは にほんごが じょうずですか。", "はい、じょうずです。"], ["かんじが わかりますか。", "すこし わかります。"], ["えいごが できますか。", "はい、できます。"]]},
+    {"t": "Hôm nay không đi được", "jp": "きょうは ようじが あります。|だから パーティーへ いきません。|じかんが ありませんから、ざんねんです。|あしたは やすみです。|あした ともだちに あいます。", "vi": "Hôm nay tôi có việc bận.|Vì thế tôi không đi dự tiệc.|Vì không có thời gian nên tiếc quá.|Ngày mai là ngày nghỉ.|Ngày mai tôi sẽ gặp bạn.", "q": [["きょう パーティーへ いきますか。", "いいえ、いきません。"], ["どうして いきませんか。", "ようじが ありますから。"], ["あした なにを しますか。", "ともだちに あいます。"]]},
+    {"t": "Thể thao", "jp": "サントスさんは スポーツが すきです。|サッカーが とても じょうずです。|やきゅうは あまり しません。|まいしゅう にちようびに サッカーを します。|わたしは スポーツが あまり すきじゃ ありません。", "vi": "Anh Santos thích thể thao.|Anh ấy chơi bóng đá rất giỏi.|Bóng chày thì anh ấy ít chơi.|Chủ nhật hằng tuần anh ấy chơi bóng đá.|Tôi thì không thích thể thao lắm.", "q": [["サントスさんは なにが すきですか。", "スポーツが すきです。"], ["なにが じょうずですか。", "サッカーが じょうずです。"], ["いつ サッカーを しますか。", "まいしゅう にちようびに します。"]]},
+    {"t": "Không có tiền lẻ", "jp": "こまかい おかねが ありません。|でも、チケットを かいます。|ぎんこうは もう しまりました。|だから ATMへ いきます。|ATMは えきの ちかくに あります。", "vi": "Tôi không có tiền lẻ.|Nhưng tôi muốn mua vé.|Ngân hàng đã đóng cửa rồi.|Vì thế tôi đến máy ATM.|Máy ATM ở gần ga.", "q": [["こまかい おかねが ありますか。", "いいえ、ありません。"], ["どうして ATMへ いきますか。", "こまかい おかねが ありませんから。"], ["ATMは どこに ありますか。", "えきの ちかくに あります。"]]}
+  ],
+  conversations: [
+    {"t": "Thích món gì?", "s": "Nói chuyện về đồ ăn.", "jp": "やまだ：ミラーさんは にほんの りょうりが すきですか。|ミラー：はい、だいすきです。|やまだ：さしみは どうですか。|ミラー：さしみは ちょっと…|やまだ：そうですか。てんぷらは？|ミラー：てんぷらは とても すきです。", "vi": "Anh Miller có thích món ăn Nhật không?|Vâng, tôi rất thích.|Sashimi thì sao?|Sashimi thì hơi…|Vậy à. Còn tempura?|Tempura thì tôi rất thích."},
+    {"t": "Từ chối lời mời", "s": "Từ chối vì có việc bận.", "jp": "キム：あした いっしょに コンサートへ いきませんか。|サントス：すみません。あしたは ちょっと…|キム：ようじが ありますか。|サントス：ええ、しごとが あります。|キム：ざんねんですね。|サントス：また こんど おねがいします。", "vi": "Ngày mai cùng đi xem hòa nhạc không?|Xin lỗi, ngày mai hơi bận…|Anh có việc à?|Vâng, tôi có việc làm.|Tiếc quá nhỉ.|Lần sau nhé."},
+    {"t": "Hiểu tiếng Nhật không?", "s": "Hỏi về khả năng ngôn ngữ.", "jp": "ワット：キムさんは かんじが わかりますか。|キム：すこし わかります。|ワット：この かんじは？|キム：すみません、わかりません。|ワット：これは「やま」です。|キム：ああ、わかりました。ありがとうございます。", "vi": "Chị Kim có hiểu chữ Hán không?|Tôi hiểu một chút.|Chữ Hán này thì sao?|Xin lỗi, tôi không hiểu.|Đây là 「やま」(núi).|À, tôi hiểu rồi. Cảm ơn thầy."},
+    {"t": "Vì sao không đi?", "s": "Hỏi lý do.", "jp": "やまだ：どうして きのう パーティーへ きませんでしたか。|ミラー：じかんが ありませんでしたから。|やまだ：しごとでしたか。|ミラー：ええ、よる はちじまで はたらきました。|やまだ：たいへんでしたね。|ミラー：ええ、でも きょうは ひまです。", "vi": "Sao hôm qua anh không đến bữa tiệc?|Vì tôi không có thời gian.|Anh làm việc à?|Vâng, tôi làm đến 8 giờ tối.|Vất vả nhỉ.|Vâng, nhưng hôm nay tôi rảnh."},
+    {"t": "Có tiền lẻ không?", "s": "Hỏi mượn tiền lẻ ở máy bán hàng.", "jp": "サントス：すみません、こまかい おかねが ありますか。|ミラー：ええ、ありますよ。|サントス：ひゃくえん ありますか。|ミラー：はい、どうぞ。|サントス：どうも ありがとうございます。|ミラー：いいえ。", "vi": "Xin lỗi, anh có tiền lẻ không?|Có, tôi có đấy.|Anh có 100 yên không?|Có, đây.|Cảm ơn anh nhiều.|Không có gì."}
   ]
 });

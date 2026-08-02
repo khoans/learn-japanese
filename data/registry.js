@@ -16,7 +16,9 @@
       num: num,
       words:     data.words     || [],
       sentences: data.sentences || [],
-      grammar:   data.grammar   || []
+      grammar:   data.grammar   || [],
+      readings:      data.readings      || [],
+      conversations: data.conversations || []
     });
   }
 
@@ -87,10 +89,30 @@
     return out;
   }
 
+  // Bai doc hieu / hoi thoai -> { "1": [ {t,jp,vi,q,level,bai}, ... ], ... } (khoa theo so bai)
+  function byLessonNum(field) {
+    var out = {};
+    ordered().forEach(function (L) {
+      var rows = L[field];
+      if (!rows || !rows.length) return;
+      var key = String(L.num);
+      out[key] = (out[key] || []).concat(rows.map(function (r) {
+        var o = {};
+        for (var k in r) if (Object.prototype.hasOwnProperty.call(r, k)) o[k] = r[k];
+        o.bai = L.num; o.level = L.level;
+        return o;
+      }));
+    });
+    return out;
+  }
+  function readings()      { return byLessonNum('readings'); }
+  function conversations() { return byLessonNum('conversations'); }
+
   global.registerLesson = registerLesson;             // tien cho cac file bai
   global.JPLessons = {
     register: registerLesson,
     nums: nums, words: words, sentences: sentences, grammar: grammar,
+    readings: readings, conversations: conversations,
     levels: levels, numsOf: numsOf,
     _raw: LESSONS
   };
