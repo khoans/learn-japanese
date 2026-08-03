@@ -75,7 +75,7 @@ Quy ước trong cột `bo_thu`:
 > âm Hán Việt + bộ thủ + các từ trong bài chứa chữ đó. Chữ nào chưa có trong file này thì
 > chưa xuất hiện trong chế độ đó.
 
-> Danh sách này **soạn dần theo từng bài**: hiện đã đủ kanji của **Bài 1–4** (117 chữ). Chữ nào chưa có
+> Danh sách này **soạn dần theo từng bài**: hiện đã đủ kanji của **Bài 1–5** (148 chữ). Chữ nào chưa có
 > trong file thì app hiện bình thường, không có tooltip — thêm dòng vào file rồi chạy
 > build là chữ đó có tooltip ngay.
 

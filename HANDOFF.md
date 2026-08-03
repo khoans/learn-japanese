@@ -136,7 +136,7 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   `|`-separated, `*` = Kangxi radical, `char=nghĩa` for components outside the 214 radicals)
   → generates `data/kanji-parts.js` (`KANJI_PARTS`). Powers the hover-a-kanji-see-its-radicals
   tooltip (`js/kanji-tip.js`, loaded by index.html **and** report.html). **Filled in lesson by
-  lesson — Bài 1–4 (117 kanji) so far; see the status table under "Current state"**; kanji missing from it just render without a tooltip.
+  lesson — Bài 1–5 (148 kanji) so far; see the status table under "Current state"**; kanji missing from it just render without a tooltip.
   It also feeds the **"Kanji theo bài" drill mode** (`lkanji`), which has **two card kinds**
   picked by the `#lkanjiForm` select → deck key `lkanji|<lessons>|C` or `|W`:
   • **`C` = chữ rời** (single characters). Pool = `KANJI_LESSON` (built in `js/core.js`), which
@@ -310,7 +310,8 @@ or `file://`** — don't rely on it. Instead:
 | 2 | 18 | 53 | ✅ |
 | 3 | 37 | 90 | ✅ |
 | 4 | 27 | 117 | ✅ |
-| 5–17 | — | — | ❌ **not started** |
+| 5 | 31 | 148 | ✅ |
+| 6–17 | — | — | ❌ **not started** |
 
   Kanji absent from this file have no hover tooltip and don't appear as `lkanji` *chữ rời*
   cards; they still appear as *từ ghép* cards, just without the per-character gloss.
