@@ -40,6 +40,7 @@ data/
   registry.js                   registerLesson() + JPLessons collector — loads FIRST
   core-data.js                  non-lesson data: kana, WORDS, KANJIV, KANJI130, NUMSET, COUNTSET
   radicals.js                   GENERATED from csv/radicals.csv — RADICALS (214 Kangxi: [char,meaning,info,group,common])
+  kanji-parts.js                GENERATED from csv/kanji-parts.csv — KANJI_PARTS (kanji -> its component radicals)
   themes.js                     GENERATED from csv/themes/ — THEME_LIST + THEMEWORDS (vocab by topic, no JLPT level)
   lessons/
     manifest.js                 GENERATED — LEVELS + LESSON_MANIFEST (nums per level)
@@ -81,6 +82,11 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   **Furigana** = reading in square brackets right after the kanji (`私[わたし]は`) → `<ruby>`;
   shown on hover (CSS), pinned by the `ふ` button. `plainJp()` strips brackets before TTS —
   if you add code that speaks or compares these strings, run it through `plainJp()` first.
+- `csv/kanji-parts.csv` → `kanji, am_han_viet, nghia, bo_thu` (one row per kanji; components
+  `|`-separated, `*` = Kangxi radical, `char=nghĩa` for components outside the 214 radicals)
+  → generates `data/kanji-parts.js` (`KANJI_PARTS`). Powers the hover-a-kanji-see-its-radicals
+  tooltip (`js/kanji-tip.js`, loaded by index.html **and** report.html). **Filled in lesson by
+  lesson — only Bài 1's 35 kanji so far**; kanji missing from it just render without a tooltip.
 
 ## Common tasks
 

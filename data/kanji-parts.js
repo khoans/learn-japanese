@@ -1,0 +1,41 @@
+// TU DONG SINH tu  data/lessons/csv/kanji-parts.csv  boi  tools/build-lessons.ps1 -- DUNG SUA TAY.
+// Bo thu cau tao nen tung chu kanji (dung cho tooltip khi ro chuot vao chu).
+// KANJI_PARTS[chu] = { hv: am_han_viet, ngh: nghia, parts: [ [chu_thanh_phan, nghia_tu_ghi, la_bo_chinh], ... ] }
+// nghia_tu_ghi de trong => tra trong RADICALS (214 bo thu).
+const KANJI_PARTS = {
+  "私": {"hv": "Tư", "ngh": "tôi; riêng tư", "parts": [["禾", "", true], ["厶", "", false]]},
+  "先": {"hv": "Tiên", "ngh": "trước, đầu tiên", "parts": [["土", "", false], ["儿", "", true]]},
+  "生": {"hv": "Sinh", "ngh": "sinh, sống; tươi sống", "parts": [["生", "", true]]},
+  "学": {"hv": "Học", "ngh": "học", "parts": [["⺌", "ba nét nhỏ", false], ["冖", "", false], ["子", "", true]]},
+  "校": {"hv": "Hiệu", "ngh": "trường học", "parts": [["木", "", true], ["交", "giao nhau", false]]},
+  "大": {"hv": "Đại", "ngh": "to, lớn", "parts": [["大", "", true]]},
+  "病": {"hv": "Bệnh", "ngh": "bệnh, ốm", "parts": [["疒", "", true], ["丙", "can Bính (thứ ba)", false]]},
+  "院": {"hv": "Viện", "ngh": "viện, cơ sở lớn có tường bao", "parts": [["阝", "gò đất (bộ 阜)", true], ["完", "hoàn chỉnh", false]]},
+  "医": {"hv": "Y", "ngh": "y, chữa bệnh", "parts": [["匚", "", true], ["矢", "", false]]},
+  "者": {"hv": "Giả", "ngh": "người (làm việc gì đó)", "parts": [["耂", "người già (bộ 老)", true], ["日", "", false]]},
+  "教": {"hv": "Giáo", "ngh": "dạy, giáo dục", "parts": [["孝", "hiếu thảo (耂+子)", false], ["攵", "", true]]},
+  "師": {"hv": "Sư", "ngh": "thầy; bậc thầy", "parts": [["𠂤", "gò, đống", false], ["巾", "", true]]},
+  "会": {"hv": "Hội", "ngh": "gặp gỡ, hội họp", "parts": [["人", "", true], ["云", "mây; nói", false]]},
+  "社": {"hv": "Xã", "ngh": "đoàn thể, công ty; đền thần", "parts": [["礻", "thần linh (bộ 示)", true], ["土", "", false]]},
+  "員": {"hv": "Viên", "ngh": "thành viên, nhân viên", "parts": [["口", "", true], ["貝", "", false]]},
+  "銀": {"hv": "Ngân", "ngh": "bạc; ngân hàng", "parts": [["金", "", true], ["艮", "", false]]},
+  "行": {"hv": "Hành/Hàng", "ngh": "đi; hàng lối; nhà băng", "parts": [["彳", "", true], ["亍", "bước chân phải", false]]},
+  "研": {"hv": "Nghiên", "ngh": "mài giũa, nghiên cứu", "parts": [["石", "", true], ["幵", "bằng phẳng", false]]},
+  "究": {"hv": "Cứu", "ngh": "tìm tòi đến cùng", "parts": [["穴", "", true], ["九", "số chín", false]]},
+  "誰": {"hv": "Thùy", "ngh": "ai", "parts": [["言", "", true], ["隹", "", false]]},
+  "歳": {"hv": "Tuế", "ngh": "tuổi; năm", "parts": [["止", "", true], ["戌", "chi Tuất (con chó)", false], ["小", "", false]]},
+  "何": {"hv": "Hà", "ngh": "gì, nào", "parts": [["亻", "", true], ["可", "có thể", false]]},
+  "韓": {"hv": "Hàn", "ngh": "nước Hàn", "parts": [["倝", "mặt trời mọc", false], ["韋", "", true]]},
+  "国": {"hv": "Quốc", "ngh": "nước, quốc gia", "parts": [["囗", "", true], ["玉", "", false]]},
+  "中": {"hv": "Trung", "ngh": "giữa, trong", "parts": [["丨", "", true], ["口", "", false]]},
+  "日": {"hv": "Nhật", "ngh": "ngày; mặt trời", "parts": [["日", "", true]]},
+  "本": {"hv": "Bản", "ngh": "gốc; sách; bản thân", "parts": [["木", "", true], ["一", "", false]]},
+  "失": {"hv": "Thất", "ngh": "mất, đánh mất", "parts": [["大", "", true], ["丿", "", false]]},
+  "礼": {"hv": "Lễ", "ngh": "lễ nghi, phép lịch sự", "parts": [["礻", "thần linh (bộ 示)", true], ["乚", "nét móc (bộ 乙)", false]]},
+  "名": {"hv": "Danh", "ngh": "tên", "parts": [["夕", "", false], ["口", "", true]]},
+  "前": {"hv": "Tiền", "ngh": "trước, phía trước", "parts": [["䒑", "hai nét trên", false], ["月", "", false], ["刂", "", true]]},
+  "来": {"hv": "Lai", "ngh": "đến, tới", "parts": [["木", "", true], ["丷", "hai nét chấm", false], ["一", "", false]]},
+  "願": {"hv": "Nguyện", "ngh": "cầu mong, thỉnh cầu", "parts": [["原", "nguồn, gốc (厂+泉)", false], ["頁", "", true]]},
+  "人": {"hv": "Nhân", "ngh": "người", "parts": [["人", "", true]]},
+  "方": {"hv": "Phương", "ngh": "phía, phương; vị (lịch sự)", "parts": [["方", "", true]]}
+};

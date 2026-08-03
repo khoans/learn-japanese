@@ -194,6 +194,17 @@ function showAnsKanji() {
     } else {
         ak.style.display = 'none';
     }
+    tipifyCard();
+}
+
+/* Bọc tooltip "bộ thủ cấu tạo" cho các chữ kanji trên thẻ. Gọi từ showAnsKanji() nên chỉ
+   chạy khi ĐÃ LẬT bài — lúc đang hỏi thì đề vẫn là text trơn, tooltip không làm lộ đáp án
+   (nextCard() ghi lại textContent nên phần bọc cũng tự mất khi sang thẻ mới). */
+function tipifyCard() {
+    if (typeof tipifyEl !== 'function') return;
+    tipifyEl($('kana'));
+    tipifyEl($('ansKanji'));
+    tipifyEl($('romaji'));
 }
 
 function styleAnswer() {

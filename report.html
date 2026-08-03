@@ -109,6 +109,9 @@ footer{border-top:1px solid var(--line);padding:20px 0 50px;color:var(--muted);f
 <!-- ===== Dữ liệu bài học (dùng chung với app; thêm bài/từ là trang này tự cập nhật) ===== -->
 <script src="data/registry.js"></script>
 <script src="data/themes.js"></script>
+<script src="data/radicals.js"></script>
+<script src="data/kanji-parts.js"></script>
+<script src="js/kanji-tip.js"></script>
 <script src="data/lessons/manifest.js"></script>
 <script>
 (function () {
@@ -191,7 +194,11 @@ function rowHtml(w){
   const hay=(w.jp+" "+w.r+" "+(w.kana||"")+" "+w.m).toLowerCase();
   const apx = w.apx ? '<span title="Từ phụ lục — tham khảo, không bắt buộc thuộc" style="color:#d9a441; font-size:11px; white-space:nowrap; margin-left:6px;">📎</span>' : '';
   return '<div class="row" data-h="'+esc(hay)+'">'+
-    '<span class="jp">'+esc(w.jp)+'</span><span class="rd">'+esc(w.r)+'</span><span class="mn">'+esc(w.m)+apx+'</span></div>';
+    '<span class="jp">'+kj(esc(w.jp))+'</span><span class="rd">'+esc(w.r)+'</span><span class="mn">'+esc(w.m)+apx+'</span></div>';
+}
+// Bọc tooltip bộ thủ cho kanji (js/kanji-tip.js); nếu chưa nạp được thì trả nguyên chuỗi.
+function kj(html){
+  return (typeof wrapKanjiInHtml==="function") ? wrapKanjiInHtml(html) : html;
 }
 function buildMain(){
   const m=document.getElementById("main");
@@ -233,7 +240,7 @@ function apply(){
       if(ok){
         vis++;
         const jp=r.querySelector(".jp"), rd=r.querySelector(".rd"), mn=r.querySelector(".mn");
-        jp.innerHTML=hi(jp.dataset.t||(jp.dataset.t=jp.textContent),q);
+        jp.innerHTML=kj(hi(jp.dataset.t||(jp.dataset.t=jp.textContent),q));
         rd.innerHTML=hi(rd.dataset.t||(rd.dataset.t=rd.textContent),q);
         mn.innerHTML=hi(mn.dataset.t||(mn.dataset.t=mn.textContent),q);
       }

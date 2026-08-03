@@ -49,6 +49,29 @@ csv/
 >   nguyên, không cần ngoặc. Phần trong ngoặc được bỏ đi khi đọc thành tiếng.
 > - Hai file này để trống (chỉ có dòng tiêu đề) cũng được — app chỉ ẩn phần đó đi.
 
+## `kanji-parts.csv` — bộ thủ cấu tạo nên từng chữ kanji
+
+File `csv/kanji-parts.csv` (nằm ngay trong `csv/`, dùng chung mọi bài) cho biết mỗi chữ
+kanji gồm những bộ thủ nào. App dùng nó để hiện **tooltip khi rê chuột vào chữ kanji**
+ở tab 🔍 Tra từ, 👁 Xem trước, trên thẻ luyện tập (chỉ sau khi lật bài) và ở `report.html`.
+
+| Cột | Ý nghĩa |
+|-----|---------|
+| `kanji` | một chữ kanji |
+| `am_han_viet` | âm Hán Việt (vd `Tư`) |
+| `nghia` | nghĩa tiếng Việt |
+| `bo_thu` | các bộ phận cấu tạo, cách nhau bằng `\|` |
+
+Quy ước trong cột `bo_thu`:
+- Dấu `*` đứng trước = **bộ thủ chính** (bộ Khang Hy của chữ đó) — vd `*禾|厶`.
+- Chỉ ghi chữ (vd `禾`) thì app tự tra nghĩa trong 214 bộ thủ (`radicals.csv`).
+- Bộ phận **không** nằm trong 214 bộ thủ thì tự ghi nghĩa sau dấu `=` — vd `可=có thể`.
+- Dạng viết tắt (亻 刂 攵 礻 艹 氵 阝 耂…) app tự quy về dạng gốc để tra nghĩa.
+
+> Danh sách này **soạn dần theo từng bài**: hiện đã đủ 35 chữ của Bài 1. Chữ nào chưa có
+> trong file thì app hiện bình thường, không có tooltip — thêm dòng vào file rồi chạy
+> build là chữ đó có tooltip ngay.
+
 ## Cách thêm / sửa
 
 1. **Sửa bài có sẵn:** mở file CSV trong thư mục bài tương ứng (vd

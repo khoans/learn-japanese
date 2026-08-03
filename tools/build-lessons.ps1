@@ -192,6 +192,41 @@ $($rLines -join ",`r`n")
   Write-Host ("radicals.js: {0} bo thu" -f $rads.Count)
 }
 
+# --- Sinh data/kanji-parts.js tu csv/kanji-parts.csv (bo thu cau tao nen tung chu kanji) ---
+$kpCsv = Join-Path $CsvDir 'kanji-parts.csv'
+if (Test-Path $kpCsv) {
+  $kps = @(Import-Csv -Path $kpCsv -Encoding utf8)
+  $kpLines = foreach ($r in $kps) {
+    $k = ([string]$r.kanji).Trim()
+    if (-not $k) { continue }
+    # Cot bo_thu: cac thanh phan cach nhau bang "|". Dau "*" = bo thu CHINH (bo Khang Hy).
+    # Dang "chu=nghia" de tu ghi nghia cho thanh phan KHONG nam trong 214 bo thu.
+    $parts = @()
+    foreach ($p in ([string]$r.bo_thu -split '\|')) {
+      $p = $p.Trim()
+      if (-not $p) { continue }
+      $main = $false
+      if ($p.StartsWith('*')) { $main = $true; $p = $p.Substring(1) }
+      $ch = $p; $ngh = ''
+      $eq = $p.IndexOf('=')
+      if ($eq -ge 0) { $ch = $p.Substring(0, $eq); $ngh = $p.Substring($eq + 1) }
+      $parts += '[' + (Esc $ch) + ', ' + (Esc $ngh) + ', ' + $(if ($main) { 'true' } else { 'false' }) + ']'
+    }
+    '  ' + (Esc $k) + ': {"hv": ' + (Esc $r.am_han_viet) + ', "ngh": ' + (Esc $r.nghia) + ', "parts": [' + ($parts -join ', ') + ']}'
+  }
+  $kpJs = @"
+// TU DONG SINH tu  data/lessons/csv/kanji-parts.csv  boi  tools/build-lessons.ps1 -- DUNG SUA TAY.
+// Bo thu cau tao nen tung chu kanji (dung cho tooltip khi ro chuot vao chu).
+// KANJI_PARTS[chu] = { hv: am_han_viet, ngh: nghia, parts: [ [chu_thanh_phan, nghia_tu_ghi, la_bo_chinh], ... ] }
+// nghia_tu_ghi de trong => tra trong RADICALS (214 bo thu).
+const KANJI_PARTS = {
+$($kpLines -join ",`r`n")
+};
+"@
+  [System.IO.File]::WriteAllText((Join-Path $Root 'data\kanji-parts.js'), $kpJs, $Utf8NoBom)
+  Write-Host ("kanji-parts.js: {0} chu kanji" -f $kps.Count)
+}
+
 # --- Sinh data/themes.js tu csv/themes/ (tu vung theo CHU DE, tach roi he thong N5/N4) ---
 $themesRoot = Join-Path $CsvDir 'themes'
 $thList = @(); $thWords = @(); $thCount = 0

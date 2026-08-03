@@ -1171,7 +1171,7 @@ function renderLookup() {
     rows.forEach(function (v) {
         var badge = v.theme ? ('Chủ đề: ' + v.theme) : ('Bài ' + v.bai + ' · ' + v.level);
         html += '<div class="pickrow on" style="cursor:default;">'
-            + '<span class="pjp" style="min-width:70px;">' + escapeHtml(v.jp) + '</span>'
+            + '<span class="pjp" style="min-width:70px;">' + kanjiTipHtml(v.jp) + '</span>'
             + '<span class="pinfo"><span class="prd">' + escapeHtml(v.r || '') + '</span> <span class="pmn">' + escapeHtml(v.m || '') + '</span></span>'
             + (v.apx ? '<span title="Từ phụ lục — tham khảo, không bắt buộc thuộc" style="color:var(--gold); font-size:11px; white-space:nowrap; flex:0 0 auto;">📎 phụ lục</span>' : '')
             + '<span style="color:var(--ink-dim); font-size:12px; white-space:nowrap; flex:0 0 auto;">' + escapeHtml(badge) + '</span>'
@@ -1189,7 +1189,7 @@ function renderPreview() {
     items.forEach(function (it) {
         var _og = originLabel(it[0]);
         html += '<div style="display:flex; gap:10px; align-items:baseline; padding:5px 4px; border-bottom:1px solid #2c2f31; font-size:14px;">'
-            + '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff; min-width:64px;">' + escapeHtml(it[0]) + '</span>'
+            + '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; color:#fff; min-width:64px;">' + kanjiTipHtml(it[0]) + '</span>'
             + '<span style="color:#9ecbff; min-width:90px;">' + escapeHtml(it[1] || '') + '</span>'
             + '<span style="color:#c8c8c8; flex:1;">' + escapeHtml(it[2] || '') + '</span>'
             + (_og ? '<span style="color:#9aa0a6; font-size:12px; white-space:nowrap;">' + escapeHtml(_og) + '</span>' : '')
