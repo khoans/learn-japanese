@@ -79,6 +79,19 @@ Quy ước trong cột `bo_thu`:
 > trong file thì app hiện bình thường, không có tooltip — thêm dòng vào file rồi chạy
 > build là chữ đó có tooltip ngay.
 
+## ⛔ Quy tắc: thêm từ vựng là thêm ĐỦ BỘ
+
+Mỗi khi thêm/sửa từ vựng (bài mới, chủ đề mới, hay chỉ vài từ lẻ), hãy điền **đủ mọi mục**
+của từ đó ngay trong lần sửa ấy:
+
+1. Trong `words.csv`: cột `tiengNhat` để **dạng kanji chuẩn** (đừng ghi kana thay cho từ có
+   kanji), đủ `romaji`, `nghia`, và `kana` đúng — **katakana cho từ ngoại lai**
+   (`アメリカ` chứ không phải `あめりか`); điền `phuluc` nếu là từ tham khảo.
+2. Trong `kanji-parts.csv`: thêm **một dòng cho mỗi chữ kanji mới** mà từ đó mang vào
+   (bộ thủ + `*` bộ chính + âm Hán Việt + nghĩa + `am_on` + `am_kun`). Thiếu dòng này thì
+   chữ đó **không có tooltip bộ thủ** và **không lên thẻ** ở chế độ "Kanji theo bài".
+3. Chạy build rồi kiểm lại: không còn chữ kanji nào của bài bị thiếu trong `kanji-parts.csv`.
+
 ## Cách thêm / sửa
 
 1. **Sửa bài có sẵn:** mở file CSV trong thư mục bài tương ứng (vd

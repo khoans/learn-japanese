@@ -50,6 +50,15 @@ Các bài được gom theo **trình độ**. Hiện tại mới có **N5**. Th�
 N3…) chỉ là tạo thư mục `csv/N4/` rồi bỏ các bài vào (xem dưới) — app tự hiện thêm
 nhóm nút "Trình độ N4". *(Chức năng học trộn nhiều trình độ sẽ làm sau.)*
 
+## ⛔ Quy tắc: thêm từ vựng là thêm ĐỦ BỘ
+
+Mỗi lần thêm/sửa từ vựng (bài mới, chủ đề mới, hay chỉ vài từ lẻ) hãy điền **đủ mọi mục**
+ngay lần đó: cột `tiengNhat` để **dạng kanji chuẩn**, đủ `romaji` + `nghia` + `kana`
+(**katakana cho từ ngoại lai**), `phuluc` nếu là từ tham khảo — **và thêm một dòng trong
+`data/lessons/csv/kanji-parts.csv` cho mỗi chữ kanji mới** (bộ thủ + âm Hán Việt + nghĩa +
+âm On + âm Kun). Thiếu dòng đó thì chữ ấy không có tooltip bộ thủ và không xuất hiện trong
+chế độ luyện "Kanji theo bài".
+
 ## Mỗi bài được soạn thế nào (CSV)
 
 Mỗi bài là **một thư mục** trong `data/lessons/csv/<TRÌNH_ĐỘ>/lesson-NN/`, gồm 5 file

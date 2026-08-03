@@ -113,4 +113,14 @@ Layered on top of the drill; all persist in `localStorage` and are wired in `js/
 
 **Add a new level (e.g. N4):** create `data/lessons/csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill it in, run the build. The level and its lessons appear automatically (grouped under an "N4" label). See the *Levels* note above for the cross-level-mixing limitation.
 
+**Adding vocabulary — always complete, never partial (user rule, 2026-08-04):** whenever you add
+or edit vocabulary (new lesson, new theme, or a couple of words in an existing `words.csv`), fill
+in everything that word is entitled to in the same change: the proper **kanji form** in
+`tiengNhat` (don't substitute kana), `romaji`, `nghia`, a correct `kana` reading (**katakana for
+loanwords**), `phuluc` if it's 参考語彙 — **and a row in `data/lessons/csv/kanji-parts.csv` for every
+kanji character it introduces** (radicals with `*` on the Kangxi radical, âm Hán Việt, nghĩa,
+`am_on`, `am_kun`), since that file drives both the hover tooltip and the `lkanji` drill mode.
+Then rebuild and verify no kanji of that lesson is missing from `KANJI_PARTS`. The `/add-vocab`
+and `/add-theme` skills encode this rule and the "list missing kanji" snippet.
+
 **Add words/sentences/grammar to an existing lesson:** edit the matching CSV in `data/lessons/csv/<LEVEL>/lesson-NN/` (e.g. `N5/lesson-06/words.csv`), then run `tools/build-lessons.ps1`. Do **not** edit the generated `data/lessons/<LEVEL>/lesson-NN.js` directly — it will be overwritten on the next build.

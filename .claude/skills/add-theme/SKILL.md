@@ -10,6 +10,19 @@ hoàn toàn** hệ thống trình độ/bài (N5, N4…). Chủ đề = **chỉ 
 
 Kiến trúc: mỗi chủ đề là 1 thư mục `data/lessons/csv/themes/<id>/words.csv` + 1 dòng trong
 `data/lessons/csv/themes/themes.csv`. Chạy `tools/build-lessons.ps1` → tự sinh `data/themes.js`.
+
+## ⛔ LUẬT BẤT DI BẤT DỊCH — thêm từ vựng là thêm ĐỦ BỘ
+
+Người dùng đã chốt: **hễ thêm từ vựng thì phải thêm đầy đủ mọi mục của từ đó.** Với chủ đề:
+
+- `words.csv` đủ **cả 4 cột** — `tiengNhat` để **dạng kanji chuẩn** nếu từ có kanji (đừng ghi
+  kana thay thế), `romaji`, `nghia`, `kana` là cách đọc (**katakana cho từ ngoại lai**).
+- **Mọi chữ kanji mới** dùng trong chủ đề phải được thêm vào `data/lessons/csv/kanji-parts.csv`
+  (bộ thủ + `*` bộ chính + âm Hán Việt + nghĩa + `am_on` + `am_kun`) — đó là nguồn của
+  **tooltip rê chuột vào kanji** (có ở tab 🔍 Tra từ, 👁 Xem trước, thẻ luyện tập, `report.html`).
+  Cách liệt kê chữ còn thiếu + quy ước cột: xem bước 4b của skill `add-vocab`.
+
+Áp dụng cho **mọi lần chạm vào từ vựng**, kể cả chỉ bổ sung vài từ lẻ vào chủ đề đã có.
 **Không cần sửa HTML hay code.**
 
 Nếu người dùng KHÔNG đưa tên chủ đề → hỏi lại rồi mới làm.
@@ -66,6 +79,9 @@ Dòng log `themes/<id>: N tu` và `themes.js: K chu de, M tu` xác nhận đã n
 - (Tuỳ chọn) boot-sim: dựng lại thứ tự nạp như `index.html` rồi gọi
   `poolForKey('theme|<id>')` để chắc số thẻ đúng và **không hồi quy** (`poolForKey('lword|1')`
   vẫn ra như cũ). Xem mẫu `scratchpad/theme-boot.js` nếu còn.
+
+- **Checklist "đủ bộ":** mọi từ có kanji để dạng kanji ở `tiengNhat`; cột `kana` dùng katakana
+  cho từ ngoại lai; **mọi chữ kanji đều đã có dòng trong `kanji-parts.csv`**.
 
 ### 7. Báo cáo & hỏi commit
 - Tóm tắt: “Chủ đề <ten> (`<id>`) — N từ”, tổng số chủ đề/từ sau khi thêm.

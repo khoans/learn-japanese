@@ -83,6 +83,27 @@ README.md                       maintainer guide (Vietnamese)
 ✍️ handwrite tag, ✍ Thứ tự nét / ✏️ Luyện viết (hanzi-writer), and — after the card is
 flipped — the hover-a-kanji radical tooltip.
 
+## The other golden rule: vocabulary is added COMPLETE, never partially
+
+**Stated by the user on 2026-08-04 and it applies from now on, to every session.** Any time
+you add or touch vocabulary — a whole new lesson, a theme, or two stray words in an existing
+`words.csv` — you must fill in *every* field that word is entitled to, in the same change:
+
+1. `words.csv`: `tiengNhat` carries the **proper kanji form** (never substitute kana for a word
+   that has kanji), plus `romaji`, `nghia`, and a correct `kana` reading — **katakana for
+   loanwords** (`アメリカ`, not `あめりか`) — and `phuluc` when it's a 参考語彙 entry.
+2. `csv/kanji-parts.csv`: **one row for every kanji character that word introduces** — radical
+   breakdown with `*` on the Kangxi radical, âm Hán Việt, nghĩa, `am_on`, `am_kun`. This is what
+   feeds the hover tooltip **and** the `lkanji` drill mode; skip it and the character is silently
+   inert everywhere.
+3. Rebuild, then re-check: no kanji of that lesson missing from `KANJI_PARTS`, exactly one `*`
+   per row, `am_on` or `am_kun` present, every component resolving to a meaning.
+
+The `/add-vocab` and `/add-theme` skills both open with this rule and carry the ready-made
+"list the missing kanji" one-liner (step 4b of `add-vocab`) — use them rather than re-deriving.
+Historically this repo was filled in layer by layer (kanji forms, then appendix flags, then
+readings, then radicals), which is exactly the drift this rule exists to stop.
+
 ## The golden rule
 
 **Lesson content is authored as CSV and generated into JS. Never hand-edit the
