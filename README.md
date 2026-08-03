@@ -66,6 +66,12 @@ CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề c
 > bằng tiếng Việt. Ba cặp `cau_hoiN/dap_anN` không bắt buộc — để trống thì bài đọc
 > không có câu hỏi.
 
+> **Furigana (cách đọc kanji).** Trong `reading.csv` và `conversation.csv`, viết cách đọc
+> trong **ngoặc vuông ngay sau kanji**: `私[わたし]は 学生[がくせい]です。` App sẽ hiện cách
+> đọc nhỏ phía trên kanji **khi rê chuột vào** (chạm, nếu dùng điện thoại), và có nút
+> `ふ Luôn hiện furigana` để ghim hiện hết. Câu viết toàn kana thì không cần ngoặc.
+> Khi bấm 🔊 app tự bỏ phần trong ngoặc rồi mới đọc.
+
 > Cột `kana` để trống thì app dùng luôn phần `tiengNhat`. Bạn KHÔNG cần viết code —
 > `tools/build-lessons.ps1` sẽ tự chuyển CSV thành file `.js` cho app.
 

@@ -75,6 +75,11 @@ Thư mục `data/lessons/csv/N5/lesson-NN/`. Ô nào chứa dấu phẩy `,` ph�
 > ⚠️ Số dòng `|` của `nghia` phải **bằng đúng** số dòng của `doan_van`/`hoi_thoai` — build
 > KHÔNG kiểm tra, lệch là bản dịch ghép sai câu.
 
+> **Furigana:** nếu viết kanji trong bài đọc/hội thoại thì **bắt buộc** kèm cách đọc trong
+> ngoặc vuông ngay sau: `私[わたし]は 学生[がくせい]です。` (app hiện furigana khi rê chuột).
+> Mặc định các bài đọc/hội thoại ngắn vẫn viết **toàn kana** theo quy ước N5; chỉ dùng
+> kanji+furigana cho các bài đọc dài, và khi dùng thì **mọi kanji** đều phải có ngoặc.
+
 Ánh xạ nội bộ (build tự làm, đừng lo): grammar `mau_cau/giai_thich/vi_du/vi_du_romaji/nghia`
 → `p/g/ex/exr/m`.
 

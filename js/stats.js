@@ -976,14 +976,28 @@ let readShowVi = false, readShowAns = false, convShowVi = false;
 function splitLines(s) {
     return String(s == null ? '' : s).split('|').map(function (x) { return x.trim(); }).filter(function (x) { return x !== ''; });
 }
+
+/* ===== Furigana =====
+   Trong CSV, cách đọc viết ngay sau kanji trong ngoặc vuông:  私[わたし]は 学生[がくせい]です。
+   -> HTML <ruby>私<rt>わたし</rt></ruby> (CSS cho hiện khi rê chuột).
+   Câu không có ngoặc vuông thì giữ nguyên, nên nội dung toàn kana vẫn chạy bình thường. */
+const FURI_RE = /([一-鿿々〇ヵヶ]+)\[([^\]]+)\]/g;
+function furiHtml(s) {
+    return escHtml(s).replace(FURI_RE, '<ruby>$1<rt>$2</rt></ruby>');
+}
+// Bỏ phần [cách đọc] để đọc to / so khớp: "私[わたし]は" -> "私は"
+function plainJp(s) {
+    return String(s == null ? '' : s).replace(/\[[^\]]*\]/g, '');
+}
+
 // Nút 🔊 đọc to một đoạn tiếng Nhật.
-function speakBtn(text) {
+function speakBtn(text, label) {
     const b = document.createElement('button');
     b.className = 'btn small';
-    b.textContent = '🔊';
-    b.title = 'Đọc to';
+    b.textContent = label || '🔊';
+    b.title = label ? 'Đọc to toàn bộ' : 'Đọc to';
     b.style.cssText = 'padding:2px 7px; font-size:12px; flex:0 0 auto;';
-    b.addEventListener('click', function (e) { e.stopPropagation(); speak(text); });
+    b.addEventListener('click', function (e) { e.stopPropagation(); speak(plainJp(text)); });
     return b;
 }
 // Một dòng: chữ Nhật (bấm để nghe) + nghĩa tiếng Việt ẩn/hiện.
@@ -993,12 +1007,12 @@ function jpLine(jp, vi, showVi, prefix) {
     const btn = speakBtn(jp);
     const txt = document.createElement('div');
     txt.style.cssText = 'flex:1 1 auto; cursor:pointer;';
-    let html = '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:15px; color:#fff; line-height:1.7;">';
+    let html = '<span style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:15px; color:#fff; line-height:2.1;">';
     if (prefix) html += '<span style="color:#9ecbff; font-weight:600;">' + escHtml(prefix) + '</span> ';
-    html += escHtml(jp) + '</span>';
+    html += furiHtml(jp) + '</span>';
     if (vi) html += '<div class="rd-vi" style="font-size:12.5px; color:#9aa0a6; margin-top:1px; display:' + (showVi ? 'block' : 'none') + ';">' + escHtml(vi) + '</div>';
     txt.innerHTML = html;
-    txt.addEventListener('click', function () { speak(jp); });
+    txt.addEventListener('click', function () { speak(plainJp(jp)); });
     wrap.appendChild(btn);
     wrap.appendChild(txt);
     return wrap;
@@ -1025,7 +1039,7 @@ function renderRead() {
         title.style.cssText = 'flex:1 1 auto; color:#cfe6ff; font-weight:600; font-size:13.5px;';
         title.textContent = (i + 1) + '. ' + (r.t || 'Bài đọc');
         head.appendChild(title);
-        head.appendChild(speakBtn(jp.join('')));
+        head.appendChild(speakBtn(jp.join(''), '🔊 Nghe cả bài'));
         card.appendChild(head);
 
         jp.forEach(function (line, k) { card.appendChild(jpLine(line, vi[k] || '', readShowVi)); });
@@ -1038,9 +1052,9 @@ function renderRead() {
             r.q.forEach(function (qa, k) {
                 const q = document.createElement('div');
                 q.style.cssText = 'margin-top:5px;';
-                q.innerHTML = '<div style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:14px; color:#e8e8e8;">' +
-                    (k + 1) + ') ' + escHtml(qa[0]) + '</div>' +
-                    '<div class="rd-ans" style="font-size:13px; color:#7fd88f; margin-top:2px; display:' + (readShowAns ? 'block' : 'none') + ';">→ ' + escHtml(qa[1] || '') + '</div>';
+                q.innerHTML = '<div style="font-family:Hiragino Sans,Noto Sans JP,sans-serif; font-size:14px; color:#e8e8e8; line-height:2;">' +
+                    (k + 1) + ') ' + furiHtml(qa[0]) + '</div>' +
+                    '<div class="rd-ans" style="font-size:13px; color:#7fd88f; margin-top:2px; line-height:2; display:' + (readShowAns ? 'block' : 'none') + ';">→ ' + furiHtml(qa[1] || '') + '</div>';
                 card.appendChild(q);
             });
         }
@@ -1069,7 +1083,7 @@ function renderConv() {
         title.style.cssText = 'flex:1 1 auto; color:#cfe6ff; font-weight:600; font-size:13.5px;';
         title.textContent = (i + 1) + '. ' + (c.t || 'Hội thoại');
         head.appendChild(title);
-        head.appendChild(speakBtn(jp.map(function (l) { return l.replace(/^[^：:]{1,12}[：:]/, ''); }).join('　')));
+        head.appendChild(speakBtn(jp.map(function (l) { return l.replace(/^[^：:]{1,12}[：:]/, ''); }).join('　'), '🔊 Nghe cả bài'));
         card.appendChild(head);
 
         if (c.s) {

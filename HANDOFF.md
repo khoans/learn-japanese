@@ -78,6 +78,9 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   with the wrong Japanese line (the build does NOT check this). Each `hoi_thoai` turn must
   start with `TênNgười：` (full-width or ASCII colon) or the speaker label won't render.
   Both files are optional — a lesson without them just shows "chưa có bài đọc/hội thoại".
+  **Furigana** = reading in square brackets right after the kanji (`私[わたし]は`) → `<ruby>`;
+  shown on hover (CSS), pinned by the `ふ` button. `plainJp()` strips brackets before TTS —
+  if you add code that speaks or compares these strings, run it through `plainJp()` first.
 
 ## Common tasks
 

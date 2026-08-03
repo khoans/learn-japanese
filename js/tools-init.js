@@ -452,6 +452,18 @@ syncKanaBar();
         this.classList.toggle('active', readShowAns);
         renderRead();
     });
+    // Furigana mặc định chỉ hiện khi rê chuột (CSS); nút này ghim cho hiện luôn.
+    function furiToggle(btnId, listId) {
+        on(btnId, 'click', function () {
+            const list = $(listId);
+            if (!list) return;
+            const onNow = list.classList.toggle('furi-on');
+            this.textContent = onNow ? 'ふ Ẩn furigana' : 'ふ Luôn hiện furigana';
+            this.classList.toggle('active', onNow);
+        });
+    }
+    furiToggle('readFuriToggle', 'readList');
+    furiToggle('convFuriToggle', 'convList');
     on('convViToggle', 'click', function () {
         convShowVi = !convShowVi;
         this.textContent = convShowVi ? '🇻🇳 Ẩn nghĩa' : '🇻🇳 Hiện nghĩa';

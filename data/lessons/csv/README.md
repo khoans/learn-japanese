@@ -43,6 +43,10 @@ csv/
 > - `hoi_thoai` — mỗi lượt nói viết `TênNgười：câu nói`, cách nhau bằng `|`; `nghia` cũng
 >   phải **cùng số dòng**.
 > - Các cặp `cau_hoiN` / `dap_anN` không bắt buộc; để trống thì bài đọc không có câu hỏi.
+> - **Furigana:** viết cách đọc trong ngoặc vuông ngay sau kanji — `私[わたし]は 学生[がくせい]です。`
+>   App hiện cách đọc nhỏ phía trên kanji **khi rê chuột vào** (hoặc chạm trên điện thoại),
+>   và có nút `ふ Luôn hiện furigana` để ghim cho hiện hết. Câu viết toàn kana thì cứ để
+>   nguyên, không cần ngoặc. Phần trong ngoặc được bỏ đi khi đọc thành tiếng.
 > - Hai file này để trống (chỉ có dòng tiêu đề) cũng được — app chỉ ẩn phần đó đi.
 
 ## Cách thêm / sửa
