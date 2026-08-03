@@ -136,7 +136,7 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   `|`-separated, `*` = Kangxi radical, `char=nghĩa` for components outside the 214 radicals)
   → generates `data/kanji-parts.js` (`KANJI_PARTS`). Powers the hover-a-kanji-see-its-radicals
   tooltip (`js/kanji-tip.js`, loaded by index.html **and** report.html). **Filled in lesson by
-  lesson — Bài 1–3 (90 kanji) so far**; kanji missing from it just render without a tooltip.
+  lesson — Bài 1–4 (117 kanji) so far; see the status table under "Current state"**; kanji missing from it just render without a tooltip.
   It also feeds the **"Kanji theo bài" drill mode** (`lkanji`), which has **two card kinds**
   picked by the `#lkanjiForm` select → deck key `lkanji|<lessons>|C` or `|W`:
   • **`C` = chữ rời** (single characters). Pool = `KANJI_LESSON` (built in `js/core.js`), which
@@ -286,8 +286,8 @@ or `file://`** — don't rely on it. Instead:
   If a new kanji's component "khong tra duoc nghia", either add the variant there or give
   it an explicit `=nghĩa` in the CSV — don't invent a new radical row.
 - **Source data has genuine typos.** Two number-kanji homophone mix-ups have been found and
-  fixed so far: Bài 1 `三` (should be `さん`, the polite suffix) and Bài 2 `五` (should be
-  `語`). When touching a lesson's `words.csv`, glance for more of this kind.
+  fixed so far: Bài 1 `三` (should be `さん`, the polite suffix), Bài 2 `五` (should be `語`)
+  and Bài 4 `戸` (the particle `と` "và", written as the kanji for *door*). When touching a lesson's `words.csv`, glance for more of this kind.
 - **No tooling:** there is no npm/make/lint/test. Don't look for them.
 
 ## Current state (2026-08-04)
@@ -300,8 +300,20 @@ or `file://`** — don't rely on it. Instead:
   and are the usual "add the next lesson" request:
   • **Đọc hiểu + hội thoại:** all 17 lessons have **5 + 5**; Bài 1 additionally has
     **10 long kanji+furigana readings** (no questions).
-  • **`kanji-parts.csv`** (radical breakdown + On/Kun): **Bài 1–3 done, 90 kanji.**
-    Bài 4+ not started → those kanji have no tooltip and don't show in the `lkanji` deck.
+  • **`kanji-parts.csv`** (radical breakdown + On/Kun) — **UPDATE THIS TABLE whenever you
+    extend it**, the user asks for the next lesson by number and expects the status to be
+    current:
+
+| Bài | kanji added | running total | done? |
+|-----|-------------|---------------|-------|
+| 1 | 35 | 35 | ✅ |
+| 2 | 18 | 53 | ✅ |
+| 3 | 37 | 90 | ✅ |
+| 4 | 27 | 117 | ✅ |
+| 5–17 | — | — | ❌ **not started** |
+
+  Kanji absent from this file have no hover tooltip and don't appear as `lkanji` *chữ rời*
+  cards; they still appear as *từ ghép* cards, just without the per-character gloss.
 - **Shipped recently** (newest first): `lkanji` split into *chữ rời* / *từ ghép*;
   Bài 3 kanji data; "Kanji theo bài" mode; hover-kanji radical tooltip
   (`js/kanji-tip.js` + `kanji-parts.csv`, also in `report.html`); furigana-on-hover +

@@ -35,7 +35,7 @@ data/
       _TEMPLATE/                   · thư mục mẫu để chép khi tạo bài mới
       README.md                    · hướng dẫn chi tiết cho người biên soạn
       kanji-parts.csv            · bộ thủ cấu tạo nên từng chữ kanji (dùng cho tooltip khi
-                                   rê chuột vào kanji) — soạn dần theo bài, xong Bài 1–3
+                                   rê chuột vào kanji) — soạn dần theo bài, xong Bài 1–4
 tools/
   build-lessons.ps1              ← chạy để sinh lesson-*.js + manifest.js từ CSV
 ```

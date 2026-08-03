@@ -54,7 +54,7 @@ registerLesson("N5", 4, {
     ["日曜日", "nichiyoubi", "chủ nhật", "にちようび"],
     ["から", "kara", "từ ~", "から"],
     ["まで", "made", "đến ~", "まで"],
-    ["戸", "to", "và", "と"],
+    ["と", "to", "và (nối hai danh từ)", "と"],
     ["たいへんですね", "taihen desu ne", "anh/chị vất vả quá", "たいへんですね"],
     ["でんわばんごう", "denwabangou", "số điện thoại", "でんわばんごう"],
     ["なんばん", "nanban", "số bao nhiêu?", "なんばん"],
