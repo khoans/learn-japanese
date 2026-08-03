@@ -363,6 +363,7 @@ window.addEventListener('keydown', function (e) {
             if ($('hideReading')) $('hideReading').checked = !!o.hideReading;
             if ($('radCommon')) $('radCommon').checked = !!o.radCommon;
             if (o.lwf) $('lwordForm').value = o.lwf;
+            if (o.lkf && $('lkanjiForm')) $('lkanjiForm').value = o.lkf;
             if (o.apx && $('apxFilter')) $('apxFilter').value = o.apx;
         } catch (e) {
         }

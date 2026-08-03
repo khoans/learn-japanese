@@ -456,7 +456,7 @@ function lwordFlags() {
 function deckKey() {
     const m = $('mode').value;
     let base;
-    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lkanji') base = 'lkanji|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + lwordFlags(); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
+    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lkanji') base = 'lkanji|' + selectedLessons().join(',') + '|' + (($('lkanjiForm') && $('lkanjiForm').value === 'word') ? 'W' : 'C'); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + lwordFlags(); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
@@ -477,7 +477,7 @@ function deckLabel(key) {
     if (parts[0] === 'kanji130') return prefix + '130 kanji N5 · nhóm ' + (parts[1] || 'all');
     if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
     if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
-    if (parts[0] === 'lkanji') return prefix + 'Kanji · Bài ' + (parts[1] || '1');
+    if (parts[0] === 'lkanji') return prefix + 'Kanji · Bài ' + (parts[1] || '1') + (parts[2] === 'W' ? ' · từ ghép' : ' · chữ rời');
     if (parts[0] === 'lword') {
         var fl = parts[2] || '';
         return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (fl.indexOf('K') >= 0 ? ' (kanji)' : '')
@@ -636,8 +636,26 @@ function poolForKey(key) {
             return [hDisplay, hAnswer, row[3] || '', row[1], compareKey, kanjiForm];
         });
     }
+    if (parts[0] === 'lkanji' && parts[2] === 'W') {
+        // Kanji theo bài — kiểu TỪ GHÉP: các từ của bài có chứa kanji (病院, 会社員…).
+        // Mặt trước là dạng kanji, dòng phụ tách nghĩa từng chữ để thấy vì sao ghép lại thành từ đó.
+        const lessons = parseLessons(parts[1]);
+        return LWORDS.filter(function (row) {
+            return lessons.indexOf(row[2]) >= 0 && /[一-鿿々]/.test(row[0]);
+        }).map(function (row) {
+            const reading = row[4] || row[0];
+            const chars = String(row[0]).match(/[一-鿿々]/g) || [];
+            const gloss = chars.map(function (c) {
+                const o = (typeof KANJI_PARTS !== 'undefined') ? KANJI_PARTS[c] : null;
+                return o ? (c + ' ' + o.hv + ' · ' + o.ngh) : c;
+            }).join('\n');
+            const answer = (reading !== row[0]) ? (reading + '  ·  ' + row[3]) : row[3];
+            return [row[0], answer, gloss, row[1], reading, row[0]];
+        });
+    }
     if (parts[0] === 'lkanji') {
-        // Kanji theo bài: mỗi chữ gắn với bài đầu tiên nó xuất hiện (chỉ số KANJI_LESSON ở core.js).
+        // Kanji theo bài — kiểu CHỮ RỜI: mỗi chữ gắn với bài đầu tiên nó xuất hiện
+        // (chỉ số KANJI_LESSON ở core.js).
         const lessons = parseLessons(parts[1]);
         return KANJI_LESSON.filter(function (it) {
             return lessons.indexOf(it.bai) >= 0;

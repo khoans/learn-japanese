@@ -610,6 +610,7 @@ function syncControls() {
     $('kgrpWrap').style.display = (mode === 'kanji130') ? 'block' : 'none';
     $('ngrpWrap').style.display = (mode === 'number') ? 'block' : 'none';
     $('lwordFormWrap').style.display = (mode === 'lword' || mode === 'theme') ? 'block' : 'none';
+    if ($('lkanjiFormWrap')) $('lkanjiFormWrap').style.display = (mode === 'lkanji') ? 'block' : 'none';
     if ($('apxWrap')) $('apxWrap').style.display = (mode === 'lword') ? 'block' : 'none';
     $('cgrpWrap').style.display = (mode === 'counter') ? 'block' : 'none';
     // "Ẩn cách đọc" chỉ liên quan chế độ Bộ thủ -> chỉ hiện toggle này trên màn hình chính khi đó
@@ -635,6 +636,7 @@ function saveLimit() {
         hideReading: $('hideReading') ? $('hideReading').checked : false,
         radCommon: $('radCommon') ? $('radCommon').checked : false,
         lwf: $('lwordForm').value,
+        lkf: $('lkanjiForm') ? $('lkanjiForm').value : 'char',
         apx: $('apxFilter') ? $('apxFilter').value : 'all'
     }));
 }
@@ -806,6 +808,13 @@ $('goalNum').addEventListener('change', function () {
 });
 $('algo').addEventListener('change', saveLimit);
 $('lwordForm').addEventListener('change', function () {
+    saveLimit();
+    updateCoverage();
+    if (phase === 'running') nextCard();
+    refreshPick();
+    refreshMas();
+});
+if ($('lkanjiForm')) $('lkanjiForm').addEventListener('change', function () {
     saveLimit();
     updateCoverage();
     if (phase === 'running') nextCard();

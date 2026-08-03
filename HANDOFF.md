@@ -2,7 +2,7 @@
 
 Read this first, then `CLAUDE.md` for the deep architecture. This file is the
 fast map + the tribal knowledge (gotchas, current state, how to verify) that
-isn't obvious from the code. Last updated: **2026-07-07**.
+isn't obvious from the code. Last updated: **2026-08-04**.
 
 ## 30-second orientation
 
@@ -13,7 +13,7 @@ or via GitHub Pages. All progress lives in `localStorage`.
 
 - Repo → GitHub Pages: `github.com/khoans/learn-japanese`, Pages from `main` `/`.
   **Deploy = `git push`.** No CI.
-- One UI: `index.html` (azure) `<script src>`s the seven `js/*.js` engine files in order.
+- One UI: `index.html` `<script src>`s the eight `js/*.js` engine files in order.
   **All logic is in `js/` (was one `app.js`, now split by concern).** *(A former second
   "classic" HTML shell was also removed.)*
 - The user (khoans) is Vietnamese, learning N5. Talk to them in Vietnamese;
@@ -29,12 +29,13 @@ sw.js                          service worker (MUST be at root for scope); reads
 manifest.json                  PWA manifest
 assets/icon.svg                static assets
 js/                            THE ENGINE, split by concern (classic scripts, shared global scope):
-  core.js                        data globals (LWORDS/LSENT/GRAM) + JSDoc typedefs + utils  — loads first
-  input-kana.js                  romaji → kana
+  kanji-tip.js                   hover-a-kanji radical tooltip — standalone, ALSO loaded by report.html
+  core.js                        data globals (LWORDS/LSENT/GRAM/READ/CONV/KANJI_LESSON) + utils
+  input-kana.js                  romaji → kana + the "⌨️ Cách gõ" reference table
   kanji130.js                    edit meaning/notes for the 130 kanji
   decks.js                       $, deck selection, poolForKey, canvas
   drill.js                       card flow (nextCard/reveal/grade), speech, notes
-  stats.js                       session summary, stats/chart, preview
+  stats.js                       session summary, stats/chart, preview, lookup, đọc hiểu/hội thoại
   tools-init.js                  tab bar, stroke/writing, ALL event wiring + init + PWA  — loads last
 data/
   registry.js                   registerLesson() + JPLessons collector — loads FIRST
@@ -53,6 +54,34 @@ tools/build-lessons.ps1         CSV -> generated .js + manifest.js (+ bumps sw c
 CLAUDE.md                       full architecture (English)
 README.md                       maintainer guide (Vietnamese)
 ```
+
+## What the app actually does (feature map)
+
+**Drill modes** — every mode is a string key parsed by `poolForKey()` (`js/decks.js`), built by
+`deckKey()` from the `#mode` select + its per-mode picker, optionally prefixed `W:` (viết) or
+`M:` (nghĩa→kana). Adding a mode = a branch in `poolForKey` + `deckKey` + `deckLabel` +
+`syncControls` visibility + an `<option>`:
+
+| key | UI name | source data |
+|-----|---------|-------------|
+| `char` | Ký tự rời | kana tables in `core-data.js` |
+| `word` | Đọc từ (N5) | `WORDS` |
+| `lword` | Từ theo bài | `LWORDS` (+ flags `K` kanji-front, `C` từ chính, `A` phụ lục) |
+| `lkanji` | Kanji theo bài | `KANJI_LESSON` (`C` chữ rời) / `LWORDS` (`W` từ ghép) |
+| `theme` | Từ theo chủ đề | `THEMEWORDS` (+ `K`) |
+| `sent` | Câu theo bài | `LSENT` |
+| `radical` | Bộ thủ | `RADICALS` (by group, `C` = phổ biến) |
+| `kanji` / `kanji130` | Kanji N5 | `KANJIV` / `KANJI130` |
+| `number` / `counter` | Số đếm / Đơn vị đếm | `NUMSET` / `COUNTSET` |
+
+**Tool tabs** (`TOOL_IDS` in `js/tools-init.js`, rendered by `renderTool`): ⚙ Tùy chọn ·
+✓ Chọn từ · 🎯 Đã thuộc (3-column transfer) · ✍️ Cần viết tay · 🔍 Tra từ · ✎ Sửa nghĩa ·
+📊 Thống kê · 文 Ngữ pháp · **📖 Đọc hiểu** · **💬 Hội thoại** · あ Bảng kana · ⌨️ Cách gõ ·
+👁 Xem trước. Plus the standalone `report.html`.
+
+**On-card aids:** furigana hint, 🔊 speech, personal note, 📎 phụ lục + Bài·Trình độ badge,
+✍️ handwrite tag, ✍ Thứ tự nét / ✏️ Luyện viết (hanzi-writer), and — after the card is
+flipped — the hover-a-kanji radical tooltip.
 
 ## The golden rule
 
@@ -87,9 +116,16 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   → generates `data/kanji-parts.js` (`KANJI_PARTS`). Powers the hover-a-kanji-see-its-radicals
   tooltip (`js/kanji-tip.js`, loaded by index.html **and** report.html). **Filled in lesson by
   lesson — Bài 1–3 (90 kanji) so far**; kanji missing from it just render without a tooltip.
-  It also feeds the **"Kanji theo bài" drill mode** (`lkanji`): `KANJI_LESSON` in `js/core.js`
-  pins each kanji to the FIRST lesson whose vocabulary uses it, so a kanji missing from this
-  CSV simply doesn't appear in that mode yet.
+  It also feeds the **"Kanji theo bài" drill mode** (`lkanji`), which has **two card kinds**
+  picked by the `#lkanjiForm` select → deck key `lkanji|<lessons>|C` or `|W`:
+  • **`C` = chữ rời** (single characters). Pool = `KANJI_LESSON` (built in `js/core.js`), which
+    pins each kanji to the **first** lesson whose vocabulary uses it, so 日 is studied once.
+    A kanji missing from `kanji-parts.csv` simply doesn't appear yet.
+  • **`W` = từ ghép** (compound words: 病院, 会社員…). Pool = the lesson's `LWORDS` rows that
+    contain any kanji; the extra line glosses each character (`病 Bệnh · bệnh, ốm` …), which
+    degrades gracefully to the bare character when that kanji isn't in `kanji-parts.csv` yet.
+  Both put the kanji in `card[5]`, so ✍ Thứ tự nét / ✏️ Luyện viết work on them.
+  Old saved keys without the flag (`lkanji|1`) fall through to `C` — keep that fallback.
 
 ## Common tasks
 
@@ -108,6 +144,13 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   fill the 5 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
 - **Add a level (N4…N1):** create `csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill,
   build. UI shows a per-level group automatically. See "levels" gotcha below.
+- **Extend the kanji data to the next lesson** (the user asks for this lesson by lesson,
+  e.g. "thêm bộ thủ cho bài 4"): list the lesson's kanji that aren't in `KANJI_PARTS` yet
+  (walk `JPLessons.words()` for rows of that lesson, match `/[一-鿿々]/`), append one row per
+  kanji to `csv/kanji-parts.csv` with radicals **and** `am_on`/`am_kun`, rebuild, then
+  validate that every component resolves (either an explicit `=nghĩa` or a hit in `RADICALS`
+  possibly via the variant map) and that every row marks exactly one `*` main radical.
+  This single file powers both the hover tooltip and the `lkanji` deck.
 - **Change engine logic:** edit the relevant `js/*.js` file. Keep all top-level
   wiring/init in `js/tools-init.js` (last-loaded) to avoid cross-file hoisting bugs.
 - **Change one UI's look:** edit that HTML's `<style>`/markup; the other is unaffected.
@@ -125,7 +168,21 @@ or `file://`** — don't rely on it. Instead:
    `registerLesson` accepts `("N5", N, {...})` and legacy `(N, {...})`.
 3. Fidelity after a data refactor: back up the old generated `.js`, regenerate,
    deep-compare the registered objects (normalize: kana defaults to tiengNhat).
-4. Final human check: ask the user to double-click the HTML once.
+4. **Run the real render code on a fake DOM** — this has caught more than syntax checks.
+   Slice the function(s) out of the `js/` file by *marker string* (never hard-coded line
+   numbers — they drift), `vm.runInContext` them next to the real generated data with a
+   minimal `El`/`document` stub, and print the resulting HTML / card tuples. Two gotchas
+   learned the hard way: `eval`'d `let`/`const` do **not** leak into the surrounding scope
+   (use `vm.runInContext` on concatenated sources so classic-script scope is reproduced),
+   and `poolForKey`'s branches share text with `deckLabel`'s — search **after**
+   `indexOf('function poolForKey')`.
+5. Content sanity for `reading.csv`/`conversation.csv`: assert `jp.split('|').length ===
+   vi.split('|').length` per row, and that every dialogue turn matches `/^[^：:]{1,12}[：:]/`.
+   For `kanji-parts.csv`: every row has exactly one `*`, has `am_on` or `am_kun`, and every
+   component resolves (explicit `=nghĩa`, or `RADICALS` directly / via the variant map).
+6. Final human check: ask the user to double-click the HTML once. **Browser automation
+   (claude-in-chrome) has been unavailable in every session so far** — assume you cannot
+   see the page and say so plainly instead of implying you verified it visually.
 
 ## Gotchas / landmines
 
@@ -147,10 +204,13 @@ or `file://`** — don't rely on it. Instead:
   session-selector literal `'cur'`, or persisted `localStorage` field names. LS keys
   are `jp_`-prefixed; `_v1`/`_v2` suffixes are schema versions — bump, don't mutate shape.
 - **Row shapes (positional; level appended by registry):**
-  `LWORDS` row `[display, romaji, lessonNum, nghia, kana, level]`;
+  `LWORDS` row `[display, romaji, lessonNum, nghia, kana, level, phuluc(0|1)]`;
   `LSENT` row `[jp, romaji, lessonNum, nghia, level]`;
-  `GRAM` = `{ "<num>": [ {p,g,ex,exr,m}, … ] }`. `poolForKey` emits a uniform 6-tuple
-  `[prompt, answer, extra, romaji, compareKey, kanjiForm]`.
+  `GRAM` = `{ "<num>": [ {p,g,ex,exr,m}, … ] }`;
+  `READ`/`CONV` = `{ "<num>": [ {t,jp,vi,q?,s?,bai,level}, … ] }` (objects, not tuples —
+  the registry only stamps `bai`/`level` on them). `poolForKey` emits a uniform 6-tuple
+  `[prompt, answer, extra, romaji, compareKey, kanjiForm]`. `card[2]` (extra) is rendered
+  into `#wordMeaning`, which is `white-space:pre-line` — so `\n` in it makes real lines.
 - **Two "Đã thuộc" (mastered) buckets — session vs. permanent.** The mastery panel
   (`masGrp`) is a **3-column transfer** (`makeTriTransfer` in `js/drill.js`):
   *Chưa thuộc* | *Đã thuộc (session)* | *Đã thuộc (cố định)* — three **mutually
@@ -199,25 +259,38 @@ or `file://`** — don't rely on it. Instead:
   `initCanvas()`/`renderKeyLabels()`/… init calls, IIFEs, tool-relocation, PWA) lives in
   `js/tools-init.js` (last). Put new wiring/init there. Verify a refactor with a Node
   boot-sim (stub DOM, load registry+core-data+manifest+lessons + the 7 files in order).
+- **Kanji tooltip vs. the 214-radical table:** `RADICALS` stores **traditional** forms
+  (戶, 攴, 艸, 示…). Components written in the Japanese/abbreviated form must go through
+  the `VARIANT` map in `js/kanji-tip.js` (亻→人, 刂→刀, 攵→攴, 礻→示, 糹→糸, 戸→戶, 広→廣…).
+  If a new kanji's component "khong tra duoc nghia", either add the variant there or give
+  it an explicit `=nghĩa` in the CSV — don't invent a new radical row.
+- **Source data has genuine typos.** Two number-kanji homophone mix-ups have been found and
+  fixed so far: Bài 1 `三` (should be `さん`, the polite suffix) and Bài 2 `五` (should be
+  `語`). When touching a lesson's `words.csv`, glance for more of this kind.
 - **No tooling:** there is no npm/make/lint/test. Don't look for them.
 
-## Current state (2026-07-07)
+## Current state (2026-08-04)
 
-- One level, **N5**, lessons **1–10** (run `tools/build-lessons.ps1` — it prints the
-  current word/sentence/grammar totals). Bài 4/5/7 recently gained time-phrase vocab
-  (buổi × ngày, "thứ … kế tiếp / tuần sau") and Bài 7 the polite-offer set (いかがですか…).
-- Single UI is **`index.html`**; engine split into `js/`; static layout
+- One level, **N5**, lessons **1–17** (run `tools/build-lessons.ps1` — it prints the live
+  totals: ~1312 từ · 943 câu · 133 ngữ pháp · 95 bài đọc · 85 hội thoại).
+- Single UI is **`index.html`**; engine split into `js/` (8 files); static layout
   (`assets/`, `js/`, `data/`, `tools/`).
-- **Study aids shipped this session** (see the two gotchas above): 3-column mastery
-  (session vs. permanent `jp_mastered_v1`, key `L`); handwrite tag (`jp_handwrite_v2`,
-  key `W`, ✍️ badge + "Cần viết tay" tab); vocab lookup ("🔍 Tra từ" tab) + on-card
-  Bài·Trình độ badge (`CARD_ORIGIN`/`originLabel`); standalone live **`report.html`**.
-- Working tree clean (all pushed to `main`).
-- Recent commits: `57aed65` (report.html integrated + linked), `5d1e155` (Tra từ tab +
-  origin badge), `2122df1` (Cần viết tay list), `9f1b61d` (handwrite tag),
-  `9db0c5b` (3-column mastery + key `L`).
+- **Content completeness by lesson** — the two things that are filled in *incrementally*
+  and are the usual "add the next lesson" request:
+  • **Đọc hiểu + hội thoại:** all 17 lessons have **5 + 5**; Bài 1 additionally has
+    **10 long kanji+furigana readings** (no questions).
+  • **`kanji-parts.csv`** (radical breakdown + On/Kun): **Bài 1–3 done, 90 kanji.**
+    Bài 4+ not started → those kanji have no tooltip and don't show in the `lkanji` deck.
+- **Shipped recently** (newest first): `lkanji` split into *chữ rời* / *từ ghép*;
+  Bài 3 kanji data; "Kanji theo bài" mode; hover-kanji radical tooltip
+  (`js/kanji-tip.js` + `kanji-parts.csv`, also in `report.html`); furigana-on-hover +
+  "🔊 Nghe cả bài" + 10 long readings for Bài 1; 📖 Đọc hiểu / 💬 Hội thoại tabs with
+  `reading.csv` / `conversation.csv`; Bài 1–2 kanji fixes (`三`→`さん`, `五`→`語`,
+  missing kanji forms, katakana readings for loanwords).
 - Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
-  sentence practice for now).
+  sentence practice for now); kanji data for Bài 4–17.
+- **Known wart:** mastery/handwrite stores key on `card[0]`, so a one-character word
+  (私) and its kanji card collide — marking one mastered hides the other.
 - `references/` (third-party reference HTML) is intentionally **untracked** — not
   committed/deployed.
 
