@@ -82,11 +82,14 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   **Furigana** = reading in square brackets right after the kanji (`私[わたし]は`) → `<ruby>`;
   shown on hover (CSS), pinned by the `ふ` button. `plainJp()` strips brackets before TTS —
   if you add code that speaks or compares these strings, run it through `plainJp()` first.
-- `csv/kanji-parts.csv` → `kanji, am_han_viet, nghia, bo_thu` (one row per kanji; components
+- `csv/kanji-parts.csv` → `kanji, am_han_viet, nghia, bo_thu, am_on, am_kun` (one row per kanji; components
   `|`-separated, `*` = Kangxi radical, `char=nghĩa` for components outside the 214 radicals)
   → generates `data/kanji-parts.js` (`KANJI_PARTS`). Powers the hover-a-kanji-see-its-radicals
   tooltip (`js/kanji-tip.js`, loaded by index.html **and** report.html). **Filled in lesson by
   lesson — Bài 1–2 (53 kanji) so far**; kanji missing from it just render without a tooltip.
+  It also feeds the **"Kanji theo bài" drill mode** (`lkanji`): `KANJI_LESSON` in `js/core.js`
+  pins each kanji to the FIRST lesson whose vocabulary uses it, so a kanji missing from this
+  CSV simply doesn't appear in that mode yet.
 
 ## Common tasks
 

@@ -61,12 +61,19 @@ kanji gồm những bộ thủ nào. App dùng nó để hiện **tooltip khi r�
 | `am_han_viet` | âm Hán Việt (vd `Tư`) |
 | `nghia` | nghĩa tiếng Việt |
 | `bo_thu` | các bộ phận cấu tạo, cách nhau bằng `\|` |
+| `am_on` | âm On (katakana), nhiều âm cách nhau bằng `・` — có thể để trống |
+| `am_kun` | âm Kun (hiragana), okurigana để trong ngoặc: `おお(きい)` — có thể để trống |
 
 Quy ước trong cột `bo_thu`:
 - Dấu `*` đứng trước = **bộ thủ chính** (bộ Khang Hy của chữ đó) — vd `*禾|厶`.
 - Chỉ ghi chữ (vd `禾`) thì app tự tra nghĩa trong 214 bộ thủ (`radicals.csv`).
 - Bộ phận **không** nằm trong 214 bộ thủ thì tự ghi nghĩa sau dấu `=` — vd `可=có thể`.
 - Dạng viết tắt (亻 刂 攵 礻 艹 氵 阝 耂…) app tự quy về dạng gốc để tra nghĩa.
+
+> File này còn là nguồn của **chế độ luyện "Kanji theo bài"**: mỗi chữ được gắn với **bài
+> đầu tiên** nó xuất hiện trong từ vựng, mặt sau thẻ hiện âm On/Kun + nghĩa, dòng phụ hiện
+> âm Hán Việt + bộ thủ + các từ trong bài chứa chữ đó. Chữ nào chưa có trong file này thì
+> chưa xuất hiện trong chế độ đó.
 
 > Danh sách này **soạn dần theo từng bài**: hiện đã đủ kanji của **Bài 1–2** (53 chữ). Chữ nào chưa có
 > trong file thì app hiện bình thường, không có tooltip — thêm dòng vào file rồi chạy

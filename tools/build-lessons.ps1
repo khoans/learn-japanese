@@ -212,12 +212,15 @@ if (Test-Path $kpCsv) {
       if ($eq -ge 0) { $ch = $p.Substring(0, $eq); $ngh = $p.Substring($eq + 1) }
       $parts += '[' + (Esc $ch) + ', ' + (Esc $ngh) + ', ' + $(if ($main) { 'true' } else { 'false' }) + ']'
     }
-    '  ' + (Esc $k) + ': {"hv": ' + (Esc $r.am_han_viet) + ', "ngh": ' + (Esc $r.nghia) + ', "parts": [' + ($parts -join ', ') + ']}'
+    '  ' + (Esc $k) + ': {"hv": ' + (Esc $r.am_han_viet) + ', "ngh": ' + (Esc $r.nghia) +
+      ', "on": ' + (Esc (Col $r 'am_on')) + ', "kun": ' + (Esc (Col $r 'am_kun')) +
+      ', "parts": [' + ($parts -join ', ') + ']}'
   }
   $kpJs = @"
 // TU DONG SINH tu  data/lessons/csv/kanji-parts.csv  boi  tools/build-lessons.ps1 -- DUNG SUA TAY.
 // Bo thu cau tao nen tung chu kanji (dung cho tooltip khi ro chuot vao chu).
-// KANJI_PARTS[chu] = { hv: am_han_viet, ngh: nghia, parts: [ [chu_thanh_phan, nghia_tu_ghi, la_bo_chinh], ... ] }
+// KANJI_PARTS[chu] = { hv: am_han_viet, ngh: nghia, on: am_On, kun: am_Kun,
+//                      parts: [ [chu_thanh_phan, nghia_tu_ghi, la_bo_chinh], ... ] }
 // nghia_tu_ghi de trong => tra trong RADICALS (214 bo thu).
 const KANJI_PARTS = {
 $($kpLines -join ",`r`n")

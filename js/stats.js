@@ -599,7 +599,7 @@ function syncControls() {
     const mode = $('mode').value;
     const isChar = mode === 'char';
     const isWord = mode === 'word';
-    const isLesson = (mode === 'sent' || mode === 'lword');
+    const isLesson = (mode === 'sent' || mode === 'lword' || mode === 'lkanji');
     const isKanji = mode === 'kanji';
     $('rangeWrap').style.opacity = isChar ? '1' : '0.4';
     $('range').disabled = !isChar;

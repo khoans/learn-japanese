@@ -456,7 +456,7 @@ function lwordFlags() {
 function deckKey() {
     const m = $('mode').value;
     let base;
-    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + lwordFlags(); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
+    if (m === 'counter') base = 'counter|' + selectedCGroups().join(','); else if (m === 'number') base = 'number|' + selectedNGroups().join(','); else if (m === 'kanji') base = 'kanji|' + selectedKRows().join(','); else if (m === 'kanji130') base = 'kanji130|' + selectedKGroups().join(','); else if (m === 'radical') base = 'radical|' + selectedRGroups().join(',') + (($('radCommon') && $('radCommon').checked) ? '|C' : ''); else if (m === 'sent') base = 'sent|' + selectedLessons().join(','); else if (m === 'lkanji') base = 'lkanji|' + selectedLessons().join(','); else if (m === 'lword') base = 'lword|' + selectedLessons().join(',') + lwordFlags(); else if (m === 'theme') base = 'theme|' + selectedThemes().join(',') + ($('lwordForm').value === 'kanji' ? '|K' : ''); else if (m === 'word') base = 'word|' + $('script').value; else base = 'char|' + $('script').value + '|' + $('range').value;
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
@@ -477,6 +477,7 @@ function deckLabel(key) {
     if (parts[0] === 'kanji130') return prefix + '130 kanji N5 · nhóm ' + (parts[1] || 'all');
     if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
     if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
+    if (parts[0] === 'lkanji') return prefix + 'Kanji · Bài ' + (parts[1] || '1');
     if (parts[0] === 'lword') {
         var fl = parts[2] || '';
         return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (fl.indexOf('K') >= 0 ? ' (kanji)' : '')
@@ -633,6 +634,31 @@ function poolForKey(key) {
             var hDisplay = hasK ? reading : kanji;
             var hAnswer = (hDisplay !== reading) ? (reading + '  ·  ' + row[1]) : row[1];
             return [hDisplay, hAnswer, row[3] || '', row[1], compareKey, kanjiForm];
+        });
+    }
+    if (parts[0] === 'lkanji') {
+        // Kanji theo bài: mỗi chữ gắn với bài đầu tiên nó xuất hiện (chỉ số KANJI_LESSON ở core.js).
+        const lessons = parseLessons(parts[1]);
+        return KANJI_LESSON.filter(function (it) {
+            return lessons.indexOf(it.bai) >= 0;
+        }).map(function (it) {
+            const o = KANJI_PARTS[it.k] || {};
+            const readings = [o.on || '', o.kun || ''].filter(Boolean).join(' / ');
+            const answer = (readings ? readings + '  ·  ' : '') + (o.ngh || '');
+            // Dòng phụ: âm Hán Việt + các bộ thủ cấu tạo + vài từ trong bài chứa chữ này.
+            const bo = (o.parts || []).map(function (p) {
+                return p[0] + (p[2] ? '*' : '');
+            }).join(' + ');
+            const ws = it.words.map(function (w) {
+                return w[0] + (w[1] && w[1] !== w[0] ? '（' + w[1] + '）' : '') + (w[2] ? ' ' + w[2] : '');
+            }).join(' · ');
+            const extra = ['Hán Việt: ' + (o.hv || '—'), bo ? 'Bộ: ' + bo : '', ws ? 'Từ: ' + ws : '']
+                .filter(Boolean).join('\n');
+            // Chuỗi để gõ/so khớp: lấy cách đọc ĐẦU TIÊN, bỏ dấu ngoặc okurigana
+            // ("や(める)" -> "やめる"), ưu tiên Kun; nếu chỉ có On thì đổi katakana -> hiragana.
+            let cmp = (o.kun || o.on || it.k).split('・')[0].replace(/[()（）]/g, '');
+            if (!o.kun && o.on) cmp = kataToHira(cmp);
+            return [it.k, answer, extra, kanaRomaji(cmp), cmp, it.k];
         });
     }
     if (parts[0] === 'theme') {

@@ -95,6 +95,35 @@ const APPENDIX = {};
 /** true nếu từ (theo chữ hiển thị card[0]) là từ phụ lục / tham khảo. */
 function isAppendix(key) { return !!APPENDIX[key]; }
 
+/* ===== Kanji theo bài =====
+   Mỗi chữ kanji được gắn với bài ĐẦU TIÊN nó xuất hiện trong từ vựng (nên học 日 ở Bài 1
+   thì Bài 5 không bắt học lại). Chỉ nhận những chữ đã có dữ liệu trong data/kanji-parts.js
+   (KANJI_PARTS soạn dần theo bài) — chữ chưa soạn thì bỏ qua, không hiện trong chế độ này.
+   KANJI_LESSON: [ { k, bai, level, words: [ [tu, kana, nghia], ... ] }, ... ] theo thứ tự bài. */
+const KANJI_LESSON = [];
+(function () {
+    if (typeof KANJI_PARTS === 'undefined') return;
+    var byChar = {};
+    LWORDS.forEach(function (w) {
+        var chars = String(w[0]).match(/[一-鿿々]/g);
+        if (!chars) return;
+        var seen = {};
+        chars.forEach(function (c) {
+            if (seen[c] || !KANJI_PARTS[c]) return;   // mỗi từ chỉ tính 1 lần cho mỗi chữ
+            seen[c] = true;
+            if (!byChar[c]) {
+                byChar[c] = {k: c, bai: w[2], level: w[5], words: []};
+                KANJI_LESSON.push(byChar[c]);
+            }
+            // Từ ví dụ: chỉ lấy từ của đúng bài đã gắn, tối đa 4 từ cho gọn thẻ.
+            if (byChar[c].bai === w[2] && byChar[c].words.length < 4) {
+                byChar[c].words.push([w[0], w[4] || '', w[3] || '']);
+            }
+        });
+    });
+    KANJI_LESSON.sort(function (a, b) { return a.bai - b.bai; });
+})();
+
 /** Nhãn nguồn gốc của một mục (theo chữ hiển thị card[0]); '' nếu không thuộc bài/chủ đề nào. */
 function originLabel(key) {
     var o = CARD_ORIGIN[key];
@@ -239,6 +268,13 @@ function kanaSegToRomaji(s) {
         i++;
     }
     return out;
+}
+
+/** Katakana -> hiragana (dùng khi chỉ có âm On mà cần chuỗi để gõ). */
+function kataToHira(s) {
+    return String(s == null ? '' : s).replace(/[ァ-ヶ]/g, function (c) {
+        return String.fromCharCode(c.charCodeAt(0) - 0x60);
+    });
 }
 
 function kanaRomaji(str) {

@@ -130,7 +130,7 @@ label.cap{ display:block; font-size:11px; color:var(--ink-dim); margin-bottom:7p
   position:relative; z-index:1; word-break:break-word; }
 #ansKanji{ font-family:var(--fjps); color:var(--ink); line-height:1.2; margin-top:4px; }
 #romaji{ font-size:24px; color:var(--slate); min-height:32px; margin-top:8px; letter-spacing:.3px; }
-#wordMeaning{ font-size:18px; color:var(--ink-dim); margin-top:3px; }
+#wordMeaning{ font-size:18px; color:var(--ink-dim); margin-top:3px; white-space:pre-line; }
 #timeNow{ font-size:13px; color:var(--ink-faint); min-height:16px; margin-top:8px; }
 #typeInput{ margin:16px auto 0; width:82%; max-width:340px; background:var(--input);
   color:var(--ink); border:1px solid var(--shu-line); border-radius:9px;
@@ -272,7 +272,7 @@ table{ width:100%; border-collapse:collapse; }
 </div>
 <div class="field-row">
   <div class="col"><label class="cap">Nội dung</label>
-    <select id="mode"><option value="char">Ký tự rời</option><option value="word">Đọc từ (N5)</option><option value="lword">Từ theo bài</option><option value="theme">Từ theo chủ đề</option><option value="sent">Câu theo bài</option><option value="radical">Bộ thủ (thông dụng)</option><option value="kanji">Từ vựng Kanji N5</option><option value="kanji130">Kanji đơn N5 (130 chữ)</option><option value="number">Số đếm (kanji)</option><option value="counter">Đơn vị đếm</option></select></div>
+    <select id="mode"><option value="char">Ký tự rời</option><option value="word">Đọc từ (N5)</option><option value="lword">Từ theo bài</option><option value="lkanji">Kanji theo bài</option><option value="theme">Từ theo chủ đề</option><option value="sent">Câu theo bài</option><option value="radical">Bộ thủ (thông dụng)</option><option value="kanji">Từ vựng Kanji N5</option><option value="kanji130">Kanji đơn N5 (130 chữ)</option><option value="number">Số đếm (kanji)</option><option value="counter">Đơn vị đếm</option></select></div>
   <div class="col" id="scriptWrap"><label class="cap">Bảng chữ</label>
     <select id="script"><option value="mix">Trộn cả hai</option><option value="hira">Chỉ Hiragana</option><option value="kata">Chỉ Katakana</option></select></div>
   <div class="col" id="rangeWrap"><label class="cap">Phạm vi</label>
