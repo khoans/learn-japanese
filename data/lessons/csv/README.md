@@ -68,7 +68,7 @@ Quy ước trong cột `bo_thu`:
 - Bộ phận **không** nằm trong 214 bộ thủ thì tự ghi nghĩa sau dấu `=` — vd `可=có thể`.
 - Dạng viết tắt (亻 刂 攵 礻 艹 氵 阝 耂…) app tự quy về dạng gốc để tra nghĩa.
 
-> Danh sách này **soạn dần theo từng bài**: hiện đã đủ 35 chữ của Bài 1. Chữ nào chưa có
+> Danh sách này **soạn dần theo từng bài**: hiện đã đủ kanji của **Bài 1–2** (53 chữ). Chữ nào chưa có
 > trong file thì app hiện bình thường, không có tooltip — thêm dòng vào file rồi chạy
 > build là chữ đó có tooltip ngay.
 
