@@ -86,7 +86,7 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   `|`-separated, `*` = Kangxi radical, `char=nghĩa` for components outside the 214 radicals)
   → generates `data/kanji-parts.js` (`KANJI_PARTS`). Powers the hover-a-kanji-see-its-radicals
   tooltip (`js/kanji-tip.js`, loaded by index.html **and** report.html). **Filled in lesson by
-  lesson — Bài 1–2 (53 kanji) so far**; kanji missing from it just render without a tooltip.
+  lesson — Bài 1–3 (90 kanji) so far**; kanji missing from it just render without a tooltip.
   It also feeds the **"Kanji theo bài" drill mode** (`lkanji`): `KANJI_LESSON` in `js/core.js`
   pins each kanji to the FIRST lesson whose vocabulary uses it, so a kanji missing from this
   CSV simply doesn't appear in that mode yet.
