@@ -225,5 +225,12 @@ const KANJI_PARTS = {
   "料": {"hv": "Liệu", "ngh": "vật liệu; tiền phí", "on": "リョウ", "kun": "", "parts": [["米", "", false], ["斗", "", true]]},
   "理": {"hv": "Lý", "ngh": "lẽ phải, đạo lý; sửa sang", "on": "リ", "kun": "", "parts": [["王", "viên ngọc (bộ 玉)", true], ["里", "", false]]},
   "丈": {"hv": "Trượng", "ngh": "trượng (đơn vị đo); người đàn ông", "on": "ジョウ", "kun": "たけ", "parts": [["一", "", true], ["丿", "", false]]},
-  "夫": {"hv": "Phu", "ngh": "chồng; người đàn ông", "on": "フ", "kun": "おっと", "parts": [["一", "", false], ["大", "", true]]}
+  "夫": {"hv": "Phu", "ngh": "chồng; người đàn ông", "on": "フ", "kun": "おっと", "parts": [["一", "", false], ["大", "", true]]},
+  "夜": {"hv": "Dạ", "ngh": "ban đêm, buổi tối", "on": "ヤ", "kun": "よる・よ", "parts": [["亠", "", false], ["亻", "", false], ["夕", "", true]]},
+  "仕": {"hv": "Sĩ", "ngh": "làm việc, phụng sự", "on": "シ・ジ", "kun": "つか(える)", "parts": [["亻", "", true], ["士", "", false]]},
+  "事": {"hv": "Sự", "ngh": "việc, sự việc", "on": "ジ・ズ", "kun": "こと", "parts": [["亅", "", true], ["口", "", false], ["彐", "", false]]},
+  "漢": {"hv": "Hán", "ngh": "nhà Hán; người Hán, chữ Hán", "on": "カン", "kun": "", "parts": [["氵", "", true], ["艹", "", false], ["口", "", false], ["大", "", false]]},
+  "字": {"hv": "Tự", "ngh": "chữ, chữ viết", "on": "ジ", "kun": "あざ", "parts": [["宀", "", false], ["子", "", true]]},
+  "分": {"hv": "Phân", "ngh": "chia, phần; phút", "on": "ブン・フン", "kun": "わ(ける)・わ(かる)", "parts": [["八", "", false], ["刀", "", true]]},
+  "違": {"hv": "Vi", "ngh": "khác, sai, trái ngược", "on": "イ", "kun": "ちが(う)", "parts": [["辶", "", true], ["韋", "", false]]}
 };
