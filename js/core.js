@@ -17,13 +17,13 @@
  * - [4] compareKey — chuỗi dùng so khớp khi gõ đáp án
  * - [5] kanjiForm  — dạng kanji hiện thêm khi đọc ('' nếu không có)
  */
-/** Từ theo bài: [display, romaji, lessonNum, nghĩa, kana, level]
- *  @typedef {[string, string, number, string, string, string]} LWordRow */
-/** Câu theo bài: [jp, romaji, lessonNum, nghĩa, level]
- *  @typedef {[string, string, number, string, string]} LSentRow */
+/** Từ theo bài: [display, romaji, lessonNum, nghĩa, kana, level, phụlục, course, lid]
+ *  @typedef {[string, string, number, string, string, string, number, string, string]} LWordRow */
+/** Câu theo bài: [jp, romaji, lessonNum, nghĩa, level, course, lid]
+ *  @typedef {[string, string, number, string, string, string, string]} LSentRow */
 /** Điểm ngữ pháp — p=mẫu câu, g=giải thích, ex=ví dụ(Nhật), exr=ví dụ(romaji), m=nghĩa
  *  @typedef {{p:string, g:string, ex:string, exr:string, m:string}} GrammarPoint */
-/** Ngữ pháp theo bài (khóa = số bài dạng chuỗi)  @typedef {Object.<string, GrammarPoint[]>} Grammar */
+/** Ngữ pháp theo bài (khóa = lid "GIAOTRINH:số bài")  @typedef {Object.<string, GrammarPoint[]>} Grammar */
 /** Thống kê 1 mục — r=romaji, c=đúng, w=sai, t=hết giờ, ts=tổng ms, tn=số lần tính giờ
  *  @typedef {{r:string, c:number, w:number, t:number, ts:number, tn:number}} StatBucket */
 /**
@@ -54,11 +54,13 @@ const LWORDS = JPLessons.words();
 const LSENT = JPLessons.sentences();
 /** @type {Grammar} */
 const GRAM = JPLessons.grammar();
-/** @type {number[]} */
-const ALL_LESSONS = JPLessons.nums();
-/** Bài đọc hiểu theo bài: { "1": [ {t, jp, vi, q, bai, level}, ... ] } */
+/** TẤT CẢ khoá bài ("MINNA:1", "GUNGUN:1"…) theo thứ tự giáo trình → trình độ → số bài.
+ *  LƯU Ý: từ khi có 2 giáo trình, đây là chuỗi lid chứ KHÔNG còn là số bài.
+ *  @type {string[]} */
+const ALL_LESSONS = JPLessons.lids();
+/** Bài đọc hiểu theo bài: { "MINNA:1": [ {t, jp, vi, q, bai, level, course, lid}, ... ] } */
 const READ = JPLessons.readings();
-/** Hội thoại theo bài: { "1": [ {t, s, jp, vi, bai, level}, ... ] } */
+/** Hội thoại theo bài: { "MINNA:1": [ {t, s, jp, vi, bai, level, course, lid}, ... ] } */
 const CONV = JPLessons.conversations();
 
 /* ===== Chỉ mục "từ vựng → bài / trình độ (hoặc chủ đề)" — dùng cho tra cứu, badge trên thẻ, báo cáo ===== */
@@ -69,10 +71,19 @@ const THEME_NAME = {};
 // CARD_ORIGIN[khoá] = {bai, level} cho từ/câu theo bài, hoặc {theme} cho từ theo chủ đề.
 // Đăng ký khoá theo CẢ dạng kanji (w[0]) LẪN cách đọc kana (w[4]/w[3]) vì poolForKey có thể hiển
 // thị dạng kana làm card[0] (chế độ mặc định) hoặc kanji (chế độ "K"). Giữ mục ĐẦU TIÊN nếu trùng.
+// CARD_ORIGIN_ALL[khoá] = MỌI nguồn của từ đó (một từ hay có mặt ở cả hai giáo trình),
+// CARD_ORIGIN[khoá] = nguồn đầu tiên. originLabel() ưu tiên nguồn thuộc giáo trình đang học.
 const CARD_ORIGIN = {};
-function _setOrigin(key, o) { if (key && !(key in CARD_ORIGIN)) CARD_ORIGIN[key] = o; }
-LWORDS.forEach(function (w) { var o = {bai: w[2], level: w[5]}; _setOrigin(w[0], o); _setOrigin(w[4], o); });
-LSENT.forEach(function (s) { _setOrigin(s[0], {bai: s[2], level: s[4]}); });
+const CARD_ORIGIN_ALL = {};
+function _setOrigin(key, o) {
+    if (!key) return;
+    if (!(key in CARD_ORIGIN)) CARD_ORIGIN[key] = o;
+    var list = CARD_ORIGIN_ALL[key] || (CARD_ORIGIN_ALL[key] = []);
+    for (var i = 0; i < list.length; i++) if (list[i].lid === o.lid && list[i].theme === o.theme) return;
+    list.push(o);
+}
+LWORDS.forEach(function (w) { var o = {bai: w[2], level: w[5], course: w[7], lid: w[8]}; _setOrigin(w[0], o); _setOrigin(w[4], o); });
+LSENT.forEach(function (s) { _setOrigin(s[0], {bai: s[2], level: s[4], course: s[5], lid: s[6]}); });
 (typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []).forEach(function (w) {
     var o = {theme: (THEME_NAME[w[4]] || w[4])}; _setOrigin(w[0], o); _setOrigin(w[3], o);
 });
@@ -99,11 +110,13 @@ function isAppendix(key) { return !!APPENDIX[key]; }
    Mỗi chữ kanji được gắn với bài ĐẦU TIÊN nó xuất hiện trong từ vựng (nên học 日 ở Bài 1
    thì Bài 5 không bắt học lại). Chỉ nhận những chữ đã có dữ liệu trong data/kanji-parts.js
    (KANJI_PARTS soạn dần theo bài) — chữ chưa soạn thì bỏ qua, không hiện trong chế độ này.
-   KANJI_LESSON: [ { k, bai, level, words: [ [tu, kana, nghia], ... ] }, ... ] theo thứ tự bài. */
+   Tính RIÊNG cho TỪNG GIÁO TRÌNH: 日 học ở Minna Bài 1 vẫn phải xuất hiện ở chương Gungun
+   đầu tiên có nó, vì hai giáo trình là hai lộ trình học tách rời.
+   KANJI_LESSON: [ { k, lid, bai, level, course, words: [ [tu, kana, nghia], ... ] }, ... ]. */
 const KANJI_LESSON = [];
 (function () {
     if (typeof KANJI_PARTS === 'undefined') return;
-    var byChar = {};
+    var byChar = {};   // khoá: "GIAOTRINH§chữ"
     LWORDS.forEach(function (w) {
         var chars = String(w[0]).match(/[一-鿿々]/g);
         if (!chars) return;
@@ -111,26 +124,37 @@ const KANJI_LESSON = [];
         chars.forEach(function (c) {
             if (seen[c] || !KANJI_PARTS[c]) return;   // mỗi từ chỉ tính 1 lần cho mỗi chữ
             seen[c] = true;
-            if (!byChar[c]) {
-                byChar[c] = {k: c, bai: w[2], level: w[5], words: []};
-                KANJI_LESSON.push(byChar[c]);
+            var ck = w[7] + '§' + c;
+            if (!byChar[ck]) {
+                byChar[ck] = {k: c, lid: w[8], bai: w[2], level: w[5], course: w[7], words: []};
+                KANJI_LESSON.push(byChar[ck]);
             }
             // Từ ví dụ: chỉ lấy từ của đúng bài đã gắn, tối đa 4 từ cho gọn thẻ.
-            if (byChar[c].bai === w[2] && byChar[c].words.length < 4) {
-                byChar[c].words.push([w[0], w[4] || '', w[3] || '']);
+            if (byChar[ck].lid === w[8] && byChar[ck].words.length < 4) {
+                byChar[ck].words.push([w[0], w[4] || '', w[3] || '']);
             }
         });
     });
-    KANJI_LESSON.sort(function (a, b) { return a.bai - b.bai; });
+    // Sắp theo đúng thứ tự bài đã đăng ký (giáo trình → trình độ → số bài → phần A/B/C).
+    var lOrder = {};
+    JPLessons.lids().forEach(function (lid, i) { lOrder[lid] = i; });
+    KANJI_LESSON.sort(function (a, b) { return lOrder[a.lid] - lOrder[b.lid]; });
 })();
 
-/** Nhãn nguồn gốc của một mục (theo chữ hiển thị card[0]); '' nếu không thuộc bài/chủ đề nào. */
+/** Nhãn nguồn gốc của một mục (theo chữ hiển thị card[0]); '' nếu không thuộc bài/chủ đề nào.
+ *  Từ nằm ở cả hai giáo trình (vd 水) thì hiện nguồn của GIÁO TRÌNH ĐANG HỌC. */
 function originLabel(key) {
     var o = CARD_ORIGIN[key];
+    var all = CARD_ORIGIN_ALL[key];
+    if (all && all.length > 1 && typeof getCourse === 'function') {
+        var cur = getCourse();
+        for (var i = 0; i < all.length; i++) if (all[i].course === cur) { o = all[i]; break; }
+    }
     var apx = isAppendix(key) ? ' · 📎 phụ lục' : '';
     if (!o) return apx ? '📎 phụ lục' : '';
     if (o.theme) return 'Chủ đề: ' + o.theme + apx;
-    return 'Bài ' + o.bai + ' · ' + o.level + apx;
+    // "Minna · Bài 3 · N5" — có tên giáo trình vì hai giáo trình đều đánh số từ 1.
+    return JPLessons.lessonLabelFull(o.lid) + ' · ' + o.level + apx;
 }
 
 function kanaSegToRomaji(s) {

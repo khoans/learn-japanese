@@ -221,5 +221,9 @@ const KANJI_PARTS = {
   "蟹": {"hv": "Giải", "ngh": "con cua", "on": "カイ", "kun": "かに", "parts": [["解", "cởi, tháo", false], ["虫", "", true]]},
   "烏": {"hv": "Ô", "ngh": "con quạ", "on": "ウ", "kun": "からす", "parts": [["鳥", "con chim (bớt một nét)", false], ["灬", "lửa (bộ 火)", true]]},
   "賊": {"hv": "Tặc", "ngh": "giặc, kẻ cướp", "on": "ゾク", "kun": "", "parts": [["貝", "", true], ["戎", "binh khí", false]]},
-  "蛸": {"hv": "Tiêu", "ngh": "bạch tuộc", "on": "", "kun": "たこ", "parts": [["虫", "", true], ["肖", "giống, tựa", false]]}
+  "蛸": {"hv": "Tiêu", "ngh": "bạch tuộc", "on": "", "kun": "たこ", "parts": [["虫", "", true], ["肖", "giống, tựa", false]]},
+  "料": {"hv": "Liệu", "ngh": "vật liệu; tiền phí", "on": "リョウ", "kun": "", "parts": [["米", "", false], ["斗", "", true]]},
+  "理": {"hv": "Lý", "ngh": "lẽ phải, đạo lý; sửa sang", "on": "リ", "kun": "", "parts": [["王", "viên ngọc (bộ 玉)", true], ["里", "", false]]},
+  "丈": {"hv": "Trượng", "ngh": "trượng (đơn vị đo); người đàn ông", "on": "ジョウ", "kun": "たけ", "parts": [["一", "", true], ["丿", "", false]]},
+  "夫": {"hv": "Phu", "ngh": "chồng; người đàn ông", "on": "フ", "kun": "おっと", "parts": [["一", "", false], ["大", "", true]]}
 };

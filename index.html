@@ -101,6 +101,8 @@ label.cap{ display:block; font-size:11px; color:var(--ink-dim); margin-bottom:7p
 #jp button.small:hover{ color:var(--ink); border-color:#37506A; }
 #jp button.small.active{ background:var(--shu); border-color:var(--shu-bright); color:#07151F;
   font-weight:700; box-shadow:0 4px 14px -6px rgba(52,168,238,.6); }
+/* Tab chọn GIÁO TRÌNH (Minna / Gungun): to hơn nút bài một chút cho ra "cấp trên". */
+#jp button.small.course{ padding:8px 16px; font-size:13.5px; border-radius:10px; font-weight:600; }
 #jp button.small.green{ background:var(--jade-bg); border-color:var(--jade-line); color:#bdf0d3; }
 #jp button.small.red{ background:var(--clay-bg); border-color:var(--clay-line); color:#ffcabf; }
 
@@ -289,9 +291,15 @@ table{ width:100%; border-collapse:collapse; }
       <option value="weak">Theo độ yếu (sai/chậm)</option>
     </select></div>
 </div>
+<!-- Giáo trình: học MỘT giáo trình tại một thời điểm — lọc luôn danh sách bài, ngữ pháp,
+     đọc hiểu, hội thoại. Nút được dựng động từ data/lessons/csv/courses.csv. -->
+<div id="courseWrap" class="field">
+  <label class="cap">Giáo trình</label>
+  <div id="courseTabs" class="chips" style="display:none;"></div>
+</div>
 <div id="baiWrap" class="field" style="display:none;">
   <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-    <label class="cap" style="margin:0;">Chọn bài (kết hợp được nhiều bài)</label>
+    <label class="cap" id="baiWrapLabel" style="margin:0;">Chọn bài (kết hợp được nhiều bài)</label>
     <span class="chips" style="margin:0;">
       <button type="button" id="baiAll" class="btn small">Chọn tất cả</button>
       <button type="button" id="baiNone" class="btn small">Bỏ chọn tất cả</button>
@@ -742,14 +750,10 @@ table{ width:100%; border-collapse:collapse; }
 <script src="data/lessons/manifest.js"></script>
 <script>
 (function () {
-  var man = window.LESSON_MANIFEST || {};
-  var levels = window.LEVELS || [];
-  for (var li = 0; li < levels.length; li++) {
-    var lv = levels[li], nums = man[lv] || [];
-    for (var i = 0; i < nums.length; i++) {
-      var nn = (nums[i] < 10 ? '0' : '') + nums[i];
-      document.write('<script src="data/lessons/' + lv + '/lesson-' + nn + '.js"><\/script>');
-    }
+  // manifest.js liet ke san duong dan tung file bai (GIAOTRINH/TRINHDO/lesson-NN.js).
+  var files = window.LESSON_FILES || [];
+  for (var i = 0; i < files.length; i++) {
+    document.write('<script src="data/lessons/' + files[i] + '"><\/script>');
   }
 })();
 </script>

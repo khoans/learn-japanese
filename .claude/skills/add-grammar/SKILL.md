@@ -1,6 +1,6 @@
 ---
 name: add-grammar
-description: Đối chiếu danh sách ngữ pháp người dùng dán vào với ngữ pháp HIỆN TẠI của một bài Minna no Nihongo (N5), tìm điểm còn THIẾU, bổ sung vào grammar.csv và thêm câu ví dụ tương ứng vào sentences.csv. Dùng khi người dùng dán các điểm ngữ pháp của một bài (thường mở đầu "Ngữ pháp ... Bài N") và muốn kiểm tra bài đó có thiếu ngữ pháp không. CHỈ cho app tiếng Nhật này, chỉ NGỮ PHÁP + câu ví dụ (không thêm từ vựng trừ khi cần cho ví dụ).
+description: Đối chiếu danh sách ngữ pháp người dùng dán vào với ngữ pháp HIỆN TẠI của một bài trong app tiếng Nhật (Minna no Nihongo "Bài N", hoặc Gungun "Chương N phần A/B/C"), tìm điểm còn THIẾU, bổ sung vào grammar.csv và thêm câu ví dụ tương ứng vào sentences.csv. XÁC ĐỊNH GIÁO TRÌNH trước khi sửa file. Dùng khi người dùng dán các điểm ngữ pháp của một bài (thường mở đầu "Ngữ pháp ... Bài N") và muốn kiểm tra bài đó có thiếu ngữ pháp không. CHỈ cho app tiếng Nhật này, chỉ NGỮ PHÁP + câu ví dụ (không thêm từ vựng trừ khi cần cho ví dụ).
 ---
 
 # /add-grammar — đối chiếu & bổ sung ngữ pháp cho một bài
@@ -9,18 +9,33 @@ Người dùng dán vào **danh sách các điểm ngữ pháp** của một bà
 dung). Nhiệm vụ: **so sánh với ngữ pháp hiện tại của bài đó, tìm điểm còn thiếu, bổ sung vào
 `grammar.csv`, và thêm câu ví dụ cho các cấu trúc mới/chưa có vào `sentences.csv`.**
 
-Xác định số bài `N` từ nội dung người dùng dán (vd "Ngữ pháp ... Bài 8" ⇒ N = 8). `NN` = N dạng
-2 chữ số. **Nếu không rõ số bài → HỎI lại rồi mới làm.** Mặc định trình độ **N5** (`data/lessons/csv/N5/lesson-NN/`).
+## 0. XÁC ĐỊNH GIÁO TRÌNH + ĐƠN VỊ BÀI (bắt buộc)
+
+App có **2 giáo trình**, mỗi giáo trình có `grammar.csv` riêng cho từng đơn vị:
+
+| Giáo trình | Đơn vị | Thư mục |
+| --- | --- | --- |
+| **Minna no Nihongo** | Bài N | `data/lessons/csv/MINNA/N5/lesson-NN/` |
+| **Gungun** | Chương N **phần A/B/C** (mỗi phần có ngữ pháp riêng) | `data/lessons/csv/GUNGUN/N5/lesson-NN<PHẦN>/` |
+
+- "Bài 8" / không nói gì thêm → **Minna**, `N = 8`, `NN = 08`.
+- "Chương 1 phần B" / "gungun 1B" → **Gungun**, thư mục `lesson-01B`.
+- **Không rõ giáo trình hoặc số bài/phần → HỎI, đừng đoán.** Đặt nhầm giáo trình là ngữ pháp
+  chui vào sai sách và hiện sai chỗ trong app.
+
+Gọi `<DIR>` = thư mục ở trên, `<JS>` = `data/lessons/<GIÁO_TRÌNH>/N5/lesson-<NN>[PHẦN].js`.
+Trình độ mặc định **N5**.
 
 ## Quy trình
 
 ### 1. Đọc trạng thái hiện tại của bài
 Đọc cả 3 file của bài:
-- `data/lessons/csv/N5/lesson-NN/grammar.csv` — danh sách ngữ pháp HIỆN TẠI (cột `mau_cau`).
-- `data/lessons/csv/N5/lesson-NN/sentences.csv` — câu ví dụ đã có (để biết cấu trúc nào đã được minh hoạ, tránh trùng).
-- `data/lessons/csv/N5/lesson-NN/words.csv` — từ vựng của bài (để viết ví dụ đúng phạm vi).
+- `<DIR>/grammar.csv` — danh sách ngữ pháp HIỆN TẠI (cột `mau_cau`).
+- `<DIR>/sentences.csv` — câu ví dụ đã có (để biết cấu trúc nào đã được minh hoạ, tránh trùng).
+- `<DIR>/words.csv` — từ vựng của bài (để viết ví dụ đúng phạm vi).
 
-Nếu thư mục bài chưa tồn tại → báo bài chưa có, gợi ý dùng `/add-vocab N` trước; dừng.
+Nếu thư mục bài chưa tồn tại → báo bài chưa có, gợi ý dùng `/add-vocab` trước
+(`/add-vocab N` cho Minna, `/add-vocab gungun NP` cho Gungun); dừng.
 
 ### 2. Đối chiếu & tìm điểm thiếu
 Lập bảng đối chiếu **từng điểm** người dùng dán ↔ ngữ pháp hiện có. Một điểm coi là "ĐÃ CÓ" nếu
@@ -44,8 +59,10 @@ Giữ nguyên các dòng cũ; chỉ thêm dòng mới (và đánh số lại n�
 
 ### 4. Thêm câu ví dụ vào sentences.csv
 Với **mỗi cấu trúc mới thêm** (và cả cấu trúc cũ mà sentences.csv chưa minh hoạ), thêm **2–4 câu**
-vào `sentences.csv` (header `cau,romaji,nghia`):
-- Dùng đúng **từ vựng + ngữ pháp của bài N hoặc bài trước** (đọc words.csv để đúng phạm vi).
+vào `<DIR>/sentences.csv` (header `cau,romaji,nghia`):
+- Dùng đúng **từ vựng + ngữ pháp của bài đó hoặc bài/phần trước trong CÙNG giáo trình**
+  (đọc `<DIR>/words.csv` để đúng phạm vi). Đừng mượn từ vựng của giáo trình kia — hai lộ
+  trình học tách rời, người học có thể chưa gặp từ đó ở sách này.
 - Câu hỏi–đáp: tách 2 dòng, dòng đáp án bắt đầu bằng `…`.
 - Nếu câu minh hoạ một lưu ý đọc (vd 何 = なん) hay quy tắc, thêm chú thích ngắn trong cột `nghia` (vd "(何 đọc là なん)").
 - Nếu ví dụ cần một từ chưa có trong `words.csv` nhưng là **từ vựng chuẩn của bài đó** (vd パーティー ở Bài 6),
@@ -60,22 +77,24 @@ ghi trong `CLAUDE.md` và `HANDOFF.md`.)
 
 ### 6. Build
 Chạy: `pwsh -ExecutionPolicy Bypass -File tools/build-lessons.ps1`
-Nó sinh lại `data/lessons/N5/lesson-NN.js`, cập nhật `manifest.js`, bump cache `sw.js`. Không sửa HTML.
+Nó sinh lại `<JS>`, cập nhật `manifest.js`, bump cache `sw.js`. Không sửa HTML.
 
 ### 7. Verify
-- `node --check data/lessons/N5/lesson-NN.js` — cú pháp hợp lệ.
-- Xác nhận output build cho bài N tăng đúng số câu / số ngữ pháp.
+- `node --check <JS>` — cú pháp hợp lệ.
+- Xác nhận output build **cho đúng dòng của giáo trình đó** tăng đúng số câu / số ngữ pháp.
 - Spot-check vài dòng có dấu phẩy đã bọc nháy đúng.
 
 ### 8. Báo cáo & hỏi commit
 - Bảng đối chiếu: điểm nào đã có, điểm nào vừa thêm.
-- Tóm tắt: "Bài N — trước C1 ngữ pháp/S1 câu → nay C2 ngữ pháp/S2 câu".
+- Tóm tắt kèm **tên giáo trình**: "Minna · Bài N" / "Gungun · Chương N phần P —
+  trước C1 ngữ pháp/S1 câu → nay C2 ngữ pháp/S2 câu".
 - **HỎI người dùng trước khi commit/push** (đừng tự commit trừ khi được yêu cầu). Khi commit,
   add cả CSV nguồn lẫn `.js` sinh ra + `sw.js`.
 
 ## Phong cách (nhất quán với các bài đã có — xem `lesson-06`, `lesson-07`)
 - Câu **chủ yếu hiragana**, katakana cho từ ngoại lai, **cách khoảng giữa các bunsetsu**.
 - Ngữ pháp đánh số ①②③…, giải thích **tiếng Việt** ngắn gọn + 1 ví dụ Nhật/romaji/nghĩa.
-- Chỉ dùng từ vựng/ngữ pháp thuộc **bài N hoặc bài trước** (tránh mẫu của bài sau).
+- Chỉ dùng từ vựng/ngữ pháp thuộc **bài đó hoặc bài trước, trong cùng giáo trình**
+  (tránh mẫu của bài sau, và tránh mượn từ giáo trình kia).
 - Không đối chiếu từ trí nhớ máy móc: đọc kỹ grammar.csv hiện tại để tránh báo "thiếu" một mẫu
   thực ra đã có dưới tên khác.

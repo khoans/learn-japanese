@@ -22,16 +22,22 @@ data/
   radicals.js                  ← TỰ ĐỘNG SINH từ csv/radicals.csv: 214 bộ thủ (RADICALS)
   themes.js                    ← TỰ ĐỘNG SINH từ csv/themes/: từ vựng theo CHỦ ĐỀ (THEME_LIST, THEMEWORDS)
   lessons/
-    manifest.js                  ← DANH SÁCH trình độ + số bài (TỰ ĐỘNG SINH). Trang + sw.js đều đọc.
-    N5/lesson-01.js … lesson-10.js ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
+    manifest.js                  ← DANH SÁCH giáo trình + trình độ + số bài (TỰ ĐỘNG SINH).
+                                   Trang + sw.js đều đọc.
+    MINNA/N5/lesson-01.js …      ← mỗi bài 1 file (TỰ ĐỘNG SINH từ CSV) — ĐỪNG sửa tay.
+    GUNGUN/N5/lesson-01.js …
     csv/                         ← NGUỒN DỮ LIỆU GỐC — soạn ở đây bằng Excel/Sheets:
-      N5/                          · một thư mục cho mỗi TRÌNH ĐỘ (N5, N4, N3…)
-        lesson-01/                 · một thư mục cho mỗi BÀI, gồm 5 file:
-          words.csv                  – từ vựng (cột: tiengNhat, romaji, nghia, kana, phuluc)
-          sentences.csv              – câu     (cột: cau, romaji, nghia)
-          grammar.csv                – ngữ pháp (cột: mau_cau, giai_thich, vi_du, vi_du_romaji, nghia)
-          reading.csv                – bài đọc hiểu (cột: tieu_de, doan_van, nghia, cau_hoi1…3, dap_an1…3)
-          conversation.csv           – hội thoại (cột: tieu_de, boi_canh, hoi_thoai, nghia)
+      courses.csv                  · DANH SÁCH GIÁO TRÌNH (cột: id, ten, ten_ngan, donvi, thutu)
+      MINNA/                       · một thư mục cho mỗi GIÁO TRÌNH (MINNA, GUNGUN…)
+        N5/                        · một thư mục cho mỗi TRÌNH ĐỘ (N5, N4, N3…)
+          lesson-01/               · một thư mục cho mỗi BÀI, gồm 5 file:
+            words.csv                – từ vựng (cột: tiengNhat, romaji, nghia, kana, phuluc)
+            sentences.csv            – câu     (cột: cau, romaji, nghia)
+            grammar.csv              – ngữ pháp (cột: mau_cau, giai_thich, vi_du, vi_du_romaji, nghia)
+            reading.csv              – bài đọc hiểu (cột: tieu_de, doan_van, nghia, cau_hoi1…3, dap_an1…3)
+            conversation.csv         – hội thoại (cột: tieu_de, boi_canh, hoi_thoai, nghia)
+      GUNGUN/N5/lesson-01A/        · giáo trình thứ hai (Gungun): MỖI PHẦN của chương là
+      GUNGUN/N5/lesson-01B/          một thư mục riêng (lesson-<số chương><phần>)
       _TEMPLATE/                   · thư mục mẫu để chép khi tạo bài mới
       README.md                    · hướng dẫn chi tiết cho người biên soạn
       kanji-parts.csv            · bộ thủ cấu tạo nên từng chữ kanji (dùng cho tooltip khi
@@ -44,11 +50,41 @@ tools/
 > lưu tiến độ ở `localStorage`.
 > Phải giữ thư mục `js/` và `data/` nằm cạnh `index.html` (nạp bằng đường dẫn tương đối).
 
-## Trình độ (N5 → N1)
+## Giáo trình (Minna no Nihongo · Gungun)
 
-Các bài được gom theo **trình độ**. Hiện tại mới có **N5**. Thêm trình độ mới (N4,
-N3…) chỉ là tạo thư mục `csv/N4/` rồi bỏ các bài vào (xem dưới) — app tự hiện thêm
-nhóm nút "Trình độ N4". *(Chức năng học trộn nhiều trình độ sẽ làm sau.)*
+Từ vựng / câu / ngữ pháp được chia theo **giáo trình** trước, rồi mới tới trình độ và số bài:
+
+```
+csv/<GIÁO_TRÌNH>/<TRÌNH_ĐỘ>/lesson-NN/     vd  csv/MINNA/N5/lesson-07/
+csv/<GIÁO_TRÌNH>/<TRÌNH_ĐỘ>/lesson-NN<PHẦN>/   csv/GUNGUN/N5/lesson-01A/
+```
+
+**Phần A/B/C (Gungun).** Mỗi chương Gungun chia thành nhiều **phần**, mỗi phần có từ vựng
+và ngữ pháp riêng → **mỗi phần là một đơn vị học riêng**: một thư mục `lesson-01A/`,
+`lesson-01B/`, `lesson-01C/`… (tên = `lesson-` + số chương + chữ phần). Trong app, các nút
+hiện dưới nhãn "Chương 1" thành **[Phần A] [Phần B] [Phần C]** — chọn được nhiều phần
+cùng lúc như chọn nhiều bài. Bài không chia phần (toàn bộ Minna) thì vẫn là `lesson-07/`.
+
+Trong app có hàng nút **Giáo trình** ở đầu phần cài đặt: **học một giáo trình tại một
+thời điểm** — chọn Minna thì mọi thứ (nút bài, ngữ pháp, đọc hiểu, hội thoại, tra từ)
+chỉ hiện của Minna, chọn Gungun thì đổi hết sang Gungun. Lựa chọn được nhớ lại lần sau.
+
+Danh sách giáo trình nằm ở `data/lessons/csv/courses.csv`:
+
+| cột | ý nghĩa |
+| --- | --- |
+| `id` | mã = **đúng tên thư mục** (`MINNA`, `GUNGUN`) |
+| `ten` | tên hiện trên nút (`Minna no Nihongo`) |
+| `ten_ngan` | tên ngắn dùng cho badge trên thẻ (`Minna`) |
+| `donvi` | gọi một bài là gì: `Bài` (Minna) hay `Chương` (Gungun) |
+| `thutu` | thứ tự hiện nút (1, 2, …) |
+
+Thêm **giáo trình mới**: tạo `csv/<MÃ>/<TRÌNH_ĐỘ>/lesson-01/`, thêm một dòng vào
+`courses.csv`, chạy build — nút giáo trình tự xuất hiện, không sửa code.
+
+Thêm **trình độ mới** (N4, N3…) cho một giáo trình: tạo `csv/MINNA/N4/` rồi bỏ các bài
+vào — app tự hiện thêm nhóm "Trình độ N4". *(Học trộn nhiều trình độ / nhiều giáo trình
+trong cùng một bộ đề thì chưa làm.)*
 
 ## ⛔ Quy tắc: thêm từ vựng là thêm ĐỦ BỘ
 
@@ -61,7 +97,7 @@ chế độ luyện "Kanji theo bài".
 
 ## Mỗi bài được soạn thế nào (CSV)
 
-Mỗi bài là **một thư mục** trong `data/lessons/csv/<TRÌNH_ĐỘ>/lesson-NN/`, gồm 5 file
+Mỗi bài là **một thư mục** trong `data/lessons/csv/<GIÁO_TRÌNH>/<TRÌNH_ĐỘ>/lesson-NN/`, gồm 5 file
 CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề cột — ĐỪNG xoá**:
 
 - `words.csv` — cột `tiengNhat, romaji, nghia, kana, phuluc`
@@ -96,21 +132,22 @@ CSV mở bằng Excel/Google Sheets. Dòng đầu mỗi file là **tiêu đề c
 ## Thêm bài mới (Bài 8, 9…) — soạn bằng CSV, KHÔNG đụng code
 
 1. Vào `data/lessons/csv/`, chép **cả thư mục** `_TEMPLATE/` → đổi tên thành
-   `N5/lesson-08/` (đúng trình độ + số bài).
+   `MINNA/N5/lesson-08/` (đúng **giáo trình** + trình độ + số bài; Gungun thì là
+   `GUNGUN/N5/lesson-02A/`, `lesson-02B/`… — **một thư mục cho mỗi phần**).
 2. Mở 3 file CSV bên trong bằng Excel/Sheets, điền dữ liệu (giữ dòng tiêu đề), **Lưu**
    ở định dạng CSV (UTF-8). Xoá dòng ví dụ mẫu.
 3. Chạy build: chuột phải `tools/build-lessons.ps1` → **Run with PowerShell**
    (hoặc `./tools/build-lessons.ps1` trong PowerShell ở thư mục gốc).
-4. Xong. Script tự sinh `data/lessons/N5/lesson-08.js` và cập nhật `manifest.js`; nút
+4. Xong. Script tự sinh `data/lessons/MINNA/N5/lesson-08.js` và cập nhật `manifest.js`; nút
    **"Bài 8"** tự xuất hiện trong app (không sửa file HTML nào), phần ngữ pháp cũng
    tự hiện. Xem thêm `data/lessons/csv/README.md`.
 
 ## Thêm/sửa từ vựng cho bài đã có
 
-Mở file CSV tương ứng trong thư mục bài (ví dụ `data/lessons/csv/N5/lesson-06/words.csv`),
+Mở file CSV tương ứng trong thư mục bài (ví dụ `data/lessons/csv/MINNA/N5/lesson-06/words.csv`),
 thêm/sửa dòng, lưu lại, rồi chạy `tools/build-lessons.ps1`. Không đụng HTML/`js/`.
 
-> **Lưu ý:** các file `data/lessons/<TRÌNH_ĐỘ>/lesson-*.js` và `manifest.js` là **tự
+> **Lưu ý:** các file `data/lessons/<GIÁO_TRÌNH>/<TRÌNH_ĐỘ>/lesson-*.js` và `manifest.js` là **tự
 > động sinh** từ CSV — đừng sửa trực tiếp, mọi thay đổi sẽ bị ghi đè ở lần build sau.
 > Xoá thư mục bài trong CSV rồi build lại thì file `.js` tương ứng cũng tự bị xoá.
 
@@ -141,20 +178,22 @@ Tất cả đều lưu ở `localStorage` (khóa `jp_…`), không cần soạn 
   `she`→シェ, `je`→ジェ, `tsa/tse/tso`→ツァ/ツェ/ツォ, `va/vi/ve/vo`→ヴァ…, `fa/fi/fe/fo`→ファ…,
   `ye`→イェ, `-`→ー; và **kana nhỏ** gõ bằng `x…`/`l…` (`xi`→ィ, `xya`→ャ, `xtu`→ッ).
   Ví dụ: `supagetthi` → スパゲッティ, `pa-thi-` → パーティー, `dhizuni-rando` → ディズニーランド.
-- **Tra từ** (tab 🔍 Tra từ): tra mọi từ vựng kèm **Bài · Trình độ** (hoặc **Chủ đề**), có
-  tìm + lọc. Mỗi thẻ khi luyện cũng hiện badge nhỏ "Bài N · trình độ" (từ `CARD_ORIGIN`
-  trong `js/core.js`). Nút **↗ Trang báo cáo** mở `report.html`.
+- **Tra từ** (tab 🔍 Tra từ): tra mọi từ vựng kèm **Giáo trình · Bài · Trình độ** (hoặc
+  **Chủ đề**), có tìm + lọc (lọc theo giáo trình / trình độ / từng bài). Mỗi thẻ khi luyện
+  cũng hiện badge nhỏ "Minna · Bài 3 · N5" (từ `CARD_ORIGIN` trong `js/core.js`).
+  Nút **↗ Trang báo cáo** mở `report.html` (gom theo Giáo trình → Trình độ → Bài).
 
 ## Lưu ý kỹ thuật
 
 - Các file được nạp bằng thẻ `<script>` thường (không phải ES module) nên app vẫn
   chạy khi mở trực tiếp bằng `file://`, không cần web server.
 - Thứ tự nạp bắt buộc: `registry.js` → `core-data.js` → `manifest.js` → (bộ nạp
-  tự sinh các thẻ `<TRÌNH_ĐỘ>/lesson-*.js` theo `manifest.js`) → các file `js/`
-  (`core.js` → … → `tools-init.js`). Các file `js/` nạp CUỐI (đọc các `const` toàn
+  tự sinh các thẻ `<GIÁO_TRÌNH>/<TRÌNH_ĐỘ>/lesson-*.js` theo `manifest.js`) → các file
+  `js/` (`core.js` → … → `tools-init.js`). Các file `js/` nạp CUỐI (đọc các `const` toàn
   cục mà file dữ liệu khai báo) và chung một scope toàn cục — KHÔNG đổi thứ tự.
-- `manifest.js` đặt biến `LEVELS` (danh sách trình độ) và `LESSON_MANIFEST` (số bài
-  theo từng trình độ). Bộ nạp trong mỗi file HTML dùng `document.write` để chèn thẻ
+- `manifest.js` đặt `COURSES` (danh sách giáo trình), `LESSON_MANIFEST` (giáo trình →
+  trình độ → số bài) và `LESSON_FILES` (đường dẫn từng file bài).
+  Bộ nạp trong mỗi file HTML dùng `document.write` để chèn thẻ
   `<script>` cho từng bài **theo đúng thứ tự, đồng bộ** — chạy được cả trên `file://`
   (không thể quét thư mục ở `file://`, nên `manifest.js` đóng vai danh sách bài).
   `sw.js` cũng `importScripts('./data/lessons/manifest.js')` để dùng chung danh sách

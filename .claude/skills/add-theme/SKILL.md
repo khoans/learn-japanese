@@ -1,12 +1,18 @@
 ---
 name: add-theme
-description: Thêm MỘT chủ đề từ vựng (theo chủ đề, tách rời hệ thống trình độ N5/N4) vào app. Dùng khi người dùng gõ "/add-theme <tên chủ đề>" (vd /add-theme đồ ăn, /add-theme thời tiết). TỰ SOẠN ~25–30 từ đúng chủ đề (chữ Nhật + romaji + nghĩa + kana), sinh CSV, cập nhật themes.csv rồi chạy build. CHỈ dùng cho tiếng Nhật, chỉ TỪ VỰNG (không câu, không ngữ pháp).
+description: Thêm MỘT chủ đề từ vựng (theo chủ đề, KHÔNG thuộc giáo trình nào — tách rời Minna/Gungun và hệ thống trình độ N5/N4) vào app. Nếu người dùng muốn thêm từ vựng của một BÀI/CHƯƠNG thì dùng /add-vocab và hỏi rõ giáo trình. Dùng khi người dùng gõ "/add-theme <tên chủ đề>" (vd /add-theme đồ ăn, /add-theme thời tiết). TỰ SOẠN ~25–30 từ đúng chủ đề (chữ Nhật + romaji + nghĩa + kana), sinh CSV, cập nhật themes.csv rồi chạy build. CHỈ dùng cho tiếng Nhật, chỉ TỪ VỰNG (không câu, không ngữ pháp).
 ---
 
 # /add-theme <tên chủ đề>
 
 Thêm **một chủ đề từ vựng** vào chế độ **"Từ theo chủ đề"** của app — danh mục **tách rời
-hoàn toàn** hệ thống trình độ/bài (N5, N4…). Chủ đề = **chỉ từ vựng** (không câu, không ngữ pháp).
+hoàn toàn** hệ thống giáo trình / trình độ / bài. Chủ đề = **chỉ từ vựng** (không câu, không
+ngữ pháp).
+
+> **Không thuộc giáo trình nào.** Chủ đề KHÔNG nằm trong Minna hay Gungun, không có số bài,
+> không bị nút "Giáo trình" lọc — nên **đừng** đặt vào `csv/MINNA/…` hay `csv/GUNGUN/…`.
+> Nếu người dùng thực ra muốn thêm từ vựng **của một bài/chương** thì dùng `/add-vocab`
+> (và hỏi rõ giáo trình) chứ không phải skill này.
 
 Kiến trúc: mỗi chủ đề là 1 thư mục `data/lessons/csv/themes/<id>/words.csv` + 1 dòng trong
 `data/lessons/csv/themes/themes.csv`. Chạy `tools/build-lessons.ps1` → tự sinh `data/themes.js`.

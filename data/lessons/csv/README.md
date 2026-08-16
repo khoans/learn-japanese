@@ -6,25 +6,36 @@ bạn chỉ cần sửa ở đây, không cần đụng tới file code.
 
 ## Cấu trúc thư mục
 
-Dữ liệu được gom theo **trình độ** (N5, N4, N3, N2, N1), mỗi trình độ chứa nhiều
-**bài**, mỗi bài là **một thư mục riêng** gồm 5 file:
+Dữ liệu được gom theo **giáo trình** (Minna no Nihongo, Gungun…) → **trình độ**
+(N5, N4, N3, N2, N1) → **bài**; mỗi bài là **một thư mục riêng** gồm 5 file:
 
 ```
 csv/
-  N5/                      ← trình độ
-    lesson-01/             ← một bài (thư mục riêng)
-      words.csv            ← từ vựng
-      sentences.csv        ← câu ví dụ
-      grammar.csv          ← ngữ pháp
-      reading.csv          ← bài đọc hiểu
-      conversation.csv     ← đoạn hội thoại
-    lesson-02/
-      ...
-  N4/                      ← thêm trình độ mới = tạo thư mục N4, N3...
-    lesson-01/
-      ...
+  courses.csv              ← DANH SÁCH GIÁO TRÌNH (id, ten, ten_ngan, donvi, thutu)
+  MINNA/                   ← giáo trình (đúng bằng cột id trong courses.csv)
+    N5/                    ← trình độ
+      lesson-01/           ← một bài (thư mục riêng)
+        words.csv          ← từ vựng
+        sentences.csv      ← câu ví dụ
+        grammar.csv        ← ngữ pháp
+        reading.csv        ← bài đọc hiểu
+        conversation.csv   ← đoạn hội thoại
+      lesson-02/
+        ...
+    N4/                    ← thêm trình độ mới = tạo thư mục N4, N3...
+      lesson-01/
+  GUNGUN/                  ← giáo trình thứ hai (bài gọi là "Chương")
+    N5/
+      lesson-01A/          ← PHẦN A của chương 1 (mỗi phần = một thư mục riêng,
+      lesson-01B/            có từ vựng + ngữ pháp riêng)
+      lesson-01C/
   _TEMPLATE/               ← thư mục mẫu để chép khi tạo bài mới
 ```
+
+**Thêm giáo trình mới:** tạo thư mục `csv/<MÃ>/<TRÌNH_ĐỘ>/lesson-01/` và thêm một dòng
+vào `courses.csv` — cột `id` = đúng tên thư mục, `ten` = tên hiện trên nút, `ten_ngan` =
+tên ngắn cho badge, `donvi` = gọi một bài là gì (`Bài` / `Chương`), `thutu` = thứ tự nút.
+Trong app có hàng nút **Giáo trình**: học một giáo trình tại một thời điểm.
 
 ## Cột (dòng tiêu đề đầu tiên — ĐỪNG xoá)
 
@@ -95,14 +106,18 @@ của từ đó ngay trong lần sửa ấy:
 ## Cách thêm / sửa
 
 1. **Sửa bài có sẵn:** mở file CSV trong thư mục bài tương ứng (vd
-   `N5/lesson-06/words.csv`), thêm/sửa dòng, **Lưu** (định dạng `.csv`, mã **UTF-8**).
-2. **Thêm bài mới (vd Bài 8 của N5):** chép cả thư mục `_TEMPLATE/` → đổi tên thành
-   `N5/lesson-08/`, rồi điền vào 3 file bên trong (xoá dòng ví dụ mẫu).
-3. **Thêm trình độ mới (vd N4):** tạo thư mục `N4/`, rồi bỏ các thư mục `lesson-01/`,
+   `MINNA/N5/lesson-06/words.csv`), thêm/sửa dòng, **Lưu** (định dạng `.csv`, mã **UTF-8**).
+2. **Thêm bài mới (vd Bài 8 của Minna N5):** chép cả thư mục `_TEMPLATE/` → đổi tên thành
+   `MINNA/N5/lesson-08/`, rồi điền vào các file bên trong (xoá dòng ví dụ mẫu).
+3. **Thêm chương/phần Gungun:** mỗi **phần** là một thư mục — `GUNGUN/N5/lesson-02A/`,
+   `lesson-02B/`, `lesson-02C/`… (tên = `lesson-` + số chương 2 chữ số + chữ phần).
+   Chương không chia phần thì để `lesson-02/` như bình thường.
+4. **Thêm trình độ mới (vd N4):** tạo thư mục `MINNA/N4/`, rồi bỏ các thư mục `lesson-01/`,
    `lesson-02/`… (chép từ `_TEMPLATE/`) vào trong.
-4. **Chạy build:** ở thư mục gốc dự án, chuột phải `tools/build-lessons.ps1` →
+5. **Thêm giáo trình mới:** tạo `<MÃ>/<TRÌNH_ĐỘ>/lesson-01/` + thêm dòng vào `courses.csv`.
+6. **Chạy build:** ở thư mục gốc dự án, chuột phải `tools/build-lessons.ps1` →
    **Run with PowerShell** (hoặc `./tools/build-lessons.ps1`).
-5. **Xong.** Mở lại app — bài/trình độ mới tự hiện ra. Không phải sửa file HTML nào.
+7. **Xong.** Mở lại app — bài/phần/trình độ/giáo trình mới tự hiện ra. Không phải sửa HTML.
 
 ## Lưu ý
 
@@ -110,5 +125,5 @@ của từ đó ngay trong lần sửa ấy:
   **UTF-8**. Các file mẫu đã có sẵn "BOM" nên Excel thường tự nhận đúng.
 - **Google Sheets:** File → Import → Upload; khi tải về chọn *Comma-separated values (.csv)*.
 - Nếu ô có dấu phẩy hoặc dấu ngoặc kép, Excel/Sheets tự bọc ngoặc kép — cứ để nguyên.
-- Các file trong `data/lessons/<TRÌNH_ĐỘ>/*.js` và `manifest.js` là **tự động sinh ra**
+- Các file trong `data/lessons/<GIÁO_TRÌNH>/<TRÌNH_ĐỘ>/*.js` và `manifest.js` là **tự động sinh ra**
   từ CSV; đừng sửa tay (sẽ bị ghi đè ở lần build sau).

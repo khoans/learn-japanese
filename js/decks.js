@@ -1,51 +1,127 @@
+/* ===== GIÁO TRÌNH (Minna no Nihongo / Gungun / …) =====
+   Học MỘT giáo trình tại một thời điểm: nút chọn giáo trình lọc luôn danh sách bài,
+   ngữ pháp, đọc hiểu, hội thoại. Lựa chọn được nhớ ở localStorage (jp_course_v1).
+   Mọi khoá bài đều là "lid" = "<GIÁO_TRÌNH>:<số bài>" (xem data/registry.js). */
+const LS_COURSE = 'jp_course_v1';
+let curCourse = '';
+
+function courseList() { return (JPLessons.courses && JPLessons.courses()) || []; }
+function defaultCourse() { var cs = courseList(); return cs.length ? cs[0].id : 'MINNA'; }
+function getCourse() {
+    if (!curCourse) {
+        var saved = lsGet(LS_COURSE), ok = false;
+        courseList().forEach(function (c) { if (c.id === saved) ok = true; });
+        curCourse = ok ? saved : defaultCourse();
+    }
+    return curCourse;
+}
+function setCourse(id) {
+    if (id === getCourse()) return;
+    curCourse = id;
+    lsSet(LS_COURSE, id);
+    buildLessonUI();
+    renderGram();
+    renderRead();
+    renderConv();
+}
+/** Số bài "1" (khoá cũ, chỉ có một giáo trình) -> lid đầy đủ "MINNA:1". */
+function normLid(x) {
+    var s = String(x == null ? '' : x).trim();
+    if (!s) return '';
+    return /^\d+$/.test(s) ? (defaultCourse() + ':' + s) : s;
+}
+
 /* ===== Tao nut chon bai + danh sach ngu phap dong tu du lieu da nap ===== */
 function buildLessonUI() {
+    var cur = getCourse();
+    var tabs = $('courseTabs');
+    if (tabs) {
+        tabs.innerHTML = '';
+        var cs = courseList();
+        cs.forEach(function (c) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'btn small course' + (c.id === cur ? ' active' : '');
+            b.setAttribute('data-course', c.id);
+            b.textContent = c.ten;
+            tabs.appendChild(b);
+        });
+        tabs.style.display = (cs.length > 1) ? 'flex' : 'none';
+    }
     var box = $('baiBtns');
     if (box) {
         box.innerHTML = '';
-        var levels = (JPLessons.levels && JPLessons.levels()) || [];
-        if (!levels.length) levels = ['N5'];
+        var unit = JPLessons.unitLabel(cur);
+        var levels = (JPLessons.levelsOf && JPLessons.levelsOf(cur)) || [];
+        if (!levels.length) {
+            box.innerHTML = '<div class="muted" style="font-size:12.5px; padding:4px 2px;">Giáo trình này chưa có bài nào — thêm thư mục CSV rồi chạy tools/build-lessons.ps1.</div>';
+        }
         levels.forEach(function (lv) {
-            var nums = (JPLessons.numsOf && JPLessons.numsOf(lv)) || ALL_LESSONS;
             var lab = document.createElement('div');
             lab.className = 'lvl-label';
             lab.textContent = 'Trình độ ' + lv;
             lab.style.cssText = 'flex-basis:100%; width:100%; margin:2px 0 4px; font-size:11px; font-weight:700; letter-spacing:1px; opacity:.6;';
             box.appendChild(lab);
-            nums.forEach(function (num) {
+            // Một "bài" ở đây là một ĐƠN VỊ HỌC: bài của Minna, hoặc PHẦN (A/B/C) của một
+            // chương Gungun. Chương có nhiều phần thì hiện nhãn "Chương N" rồi các nút phần.
+            var lastNum = null;
+            JPLessons.lessonsOf(cur, lv).forEach(function (L) {
+                if (L.part && L.num !== lastNum) {
+                    var chap = document.createElement('div');
+                    chap.className = 'chap-label';
+                    chap.textContent = unit + ' ' + L.num;
+                    chap.style.cssText = 'flex-basis:100%; width:100%; margin:6px 0 2px; font-size:12px; font-weight:600; opacity:.75;';
+                    box.appendChild(chap);
+                }
+                lastNum = L.num;
                 var btn = document.createElement('button');
                 btn.className = 'btn small bai active';
-                btn.setAttribute('data-bai', num);
+                btn.setAttribute('data-lid', L.lid);
+                btn.setAttribute('data-bai', L.num);
                 btn.setAttribute('data-level', lv);
-                btn.textContent = 'Bài ' + num;
+                btn.setAttribute('data-course', cur);
+                if (L.part) btn.setAttribute('data-part', L.part);
+                btn.textContent = L.part ? ('Phần ' + L.part) : (unit + ' ' + L.num);
                 box.appendChild(btn);
             });
         });
     }
+    var lbl = $('baiWrapLabel');
+    // Giáo trình chia phần (Gungun) thì đơn vị chọn là PHẦN, không phải cả chương.
+    var hasPart = JPLessons.lidsOf(cur).some(function (lid) { return !!JPLessons.parseLid(lid).part; });
+    var u = hasPart ? 'phần' : JPLessons.unitLabel(cur).toLowerCase();
+    if (lbl) lbl.textContent = 'Chọn ' + u + ' (kết hợp được nhiều ' + u + ')';
     fillLessonSelect('gramSel', GRAM);
     fillLessonSelect('readSel', READ);
     fillLessonSelect('convSel', CONV);
 }
 
-/* Đổ danh sách "Bài N" vào một <select>, chỉ những bài thực sự có dữ liệu. */
-function fillLessonSelect(selId, dataByNum) {
+/* Đổ danh sách bài vào một <select> — chỉ bài của GIÁO TRÌNH đang chọn và thực sự có dữ liệu.
+   value = lid ("MINNA:3"), nhãn = "Bài 3" / "Chương 3" tuỳ giáo trình. */
+function fillLessonSelect(selId, dataByLid) {
     var sel = $(selId);
     if (!sel) return;
+    var prev = sel.value;
     sel.innerHTML = '';
-    var nums = Object.keys(dataByNum || {}).map(Number).sort(function (a, b) { return a - b; });
-    if (!nums.length) {
+    var cur = getCourse();
+    var lids = (JPLessons.lidsOf ? JPLessons.lidsOf(cur) : []).filter(function (lid) {
+        var rows = (dataByLid || {})[lid];
+        return rows && rows.length;
+    });
+    if (!lids.length) {
         var none = document.createElement('option');
         none.value = '';
         none.textContent = '(chưa có dữ liệu)';
         sel.appendChild(none);
         return;
     }
-    nums.forEach(function (num) {
+    lids.forEach(function (lid) {
         var opt = document.createElement('option');
-        opt.value = num;
-        opt.textContent = 'Bài ' + num;
+        opt.value = lid;
+        opt.textContent = JPLessons.lessonLabel(lid);
         sel.appendChild(opt);
     });
+    if (lids.indexOf(prev) >= 0) sel.value = prev;
 }
 
 buildLessonUI();
@@ -460,6 +536,21 @@ function deckKey() {
     return ($('dir').value === 'write' ? 'W:' : ($('dir').value === 'meaning' ? 'M:' : '')) + base;
 }
 
+/** "MINNA:1,MINNA:2" -> "Minna · Bài 1,2"; "GUNGUN:1A,GUNGUN:1B" -> "Gungun · Chương 1A,1B". */
+function lessonsLabel(seg) {
+    var lids = String(seg || '').split(',').map(normLid).filter(Boolean);
+    if (!lids.length) return 'Tất cả bài';
+    var order = [], byCourse = {};
+    lids.forEach(function (lid) {
+        var p = JPLessons.parseLid(lid);
+        if (!byCourse[p.course]) { byCourse[p.course] = []; order.push(p.course); }
+        byCourse[p.course].push(JPLessons.lessonShort(lid));
+    });
+    return order.map(function (c) {
+        return JPLessons.courseShort(c) + ' · ' + JPLessons.unitLabel(c) + ' ' + byCourse[c].join(',');
+    }).join(' + ');
+}
+
 function deckLabel(key) {
     let prefix = '';
     if (key.indexOf('W:') === 0) {
@@ -476,11 +567,11 @@ function deckLabel(key) {
     if (parts[0] === 'kanji') return prefix + 'Kanji N5 · hàng ' + (parts[1] || 'all');
     if (parts[0] === 'kanji130') return prefix + '130 kanji N5 · nhóm ' + (parts[1] || 'all');
     if (parts[0] === 'radical') return prefix + 'Bộ thủ' + (parts[2] === 'C' ? ' (phổ biến)' : '') + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' nhóm' : '');
-    if (parts[0] === 'sent') return prefix + 'Câu · Bài ' + (parts[1] || '1-5');
-    if (parts[0] === 'lkanji') return prefix + 'Kanji · Bài ' + (parts[1] || '1') + (parts[2] === 'W' ? ' · từ ghép' : ' · chữ rời');
+    if (parts[0] === 'sent') return prefix + 'Câu · ' + lessonsLabel(parts[1]);
+    if (parts[0] === 'lkanji') return prefix + 'Kanji · ' + lessonsLabel(parts[1]) + (parts[2] === 'W' ? ' · từ ghép' : ' · chữ rời');
     if (parts[0] === 'lword') {
         var fl = parts[2] || '';
-        return prefix + 'Từ · Bài ' + (parts[1] || '1-6') + (fl.indexOf('K') >= 0 ? ' (kanji)' : '')
+        return prefix + 'Từ · ' + lessonsLabel(parts[1]) + (fl.indexOf('K') >= 0 ? ' (kanji)' : '')
             + (fl.indexOf('C') >= 0 ? ' · từ chính' : (fl.indexOf('A') >= 0 ? ' · 📎 phụ lục' : ''));
     }
     if (parts[0] === 'theme') return prefix + 'Từ theo chủ đề' + (parts[1] ? ' · ' + parts[1].split(',').filter(Boolean).length + ' chủ đề' : '') + (parts[2] === 'K' ? ' (kanji)' : '');
@@ -489,22 +580,22 @@ function deckLabel(key) {
     return prefix + 'Ký tự · ' + scriptNames[parts[1]] + ' · ' + rangeNames[parts[2]];
 }
 
+/** Đoạn bài trong khoá bộ đề -> mảng lid hợp lệ. Chấp nhận cả khoá cũ ("1,2" = Minna). */
 function parseLessons(seg) {
-    if (!seg) return ALL_LESSONS.slice();
-    const lessons = seg.split(',').map(function (num) {
-        return parseInt(num, 10);
-    }).filter(function (num) {
-        return ALL_LESSONS.indexOf(num) >= 0;
+    const fallback = function () { return JPLessons.lidsOf(getCourse()).slice(); };
+    if (!seg) return fallback();
+    const lessons = seg.split(',').map(normLid).filter(function (lid) {
+        return ALL_LESSONS.indexOf(lid) >= 0;
     });
-    return lessons.length ? lessons : ALL_LESSONS.slice();
+    return lessons.length ? lessons : fallback();
 }
 
 function selectedLessons() {
     const a = [];
-    document.querySelectorAll('[data-bai]').forEach(function (b) {
-        if (b.classList.contains('active')) a.push(parseInt(b.getAttribute('data-bai'), 10));
+    document.querySelectorAll('[data-lid]').forEach(function (b) {
+        if (b.classList.contains('active')) a.push(b.getAttribute('data-lid'));
     });
-    return a.length ? a : ALL_LESSONS.slice();
+    return a.length ? a : JPLessons.lidsOf(getCourse()).slice();
 }
 
 function selectedKRows() {
@@ -603,7 +694,7 @@ function poolForKey(key) {
     if (parts[0] === 'sent') {
         const lessons = parseLessons(parts[1]);
         return LSENT.filter(function (row) {
-            return lessons.indexOf(row[2]) >= 0;
+            return lessons.indexOf(row[6]) >= 0;   // row[6] = lid
         }).map(function (row) {
             return [row[0], row[1], row[3] || '', row[1], row[0], ''];
         });
@@ -614,7 +705,7 @@ function poolForKey(key) {
         const kanjiMode = (flags.indexOf('K') >= 0);
         const onlyCore = (flags.indexOf('C') >= 0), onlyApx = (flags.indexOf('A') >= 0);
         return LWORDS.filter(function (row) {
-            if (lessons.indexOf(row[2]) < 0) return false;
+            if (lessons.indexOf(row[8]) < 0) return false;   // row[8] = lid
             // Cùng quy ước với badge 📎: chỉ tính là phụ lục khi từ đó không phải từ chính ở bài nào khác.
             var apx = !!row[6] && isAppendix(row[0]);
             if (onlyCore && apx) return false;
@@ -641,7 +732,7 @@ function poolForKey(key) {
         // Mặt trước là dạng kanji, dòng phụ tách nghĩa từng chữ để thấy vì sao ghép lại thành từ đó.
         const lessons = parseLessons(parts[1]);
         return LWORDS.filter(function (row) {
-            return lessons.indexOf(row[2]) >= 0 && /[一-鿿々]/.test(row[0]);
+            return lessons.indexOf(row[8]) >= 0 && /[一-鿿々]/.test(row[0]);
         }).map(function (row) {
             const reading = row[4] || row[0];
             const chars = String(row[0]).match(/[一-鿿々]/g) || [];
@@ -658,7 +749,7 @@ function poolForKey(key) {
         // (chỉ số KANJI_LESSON ở core.js).
         const lessons = parseLessons(parts[1]);
         return KANJI_LESSON.filter(function (it) {
-            return lessons.indexOf(it.bai) >= 0;
+            return lessons.indexOf(it.lid) >= 0;
         }).map(function (it) {
             const o = KANJI_PARTS[it.k] || {};
             const readings = [o.on || '', o.kun || ''].filter(Boolean).join(' / ');

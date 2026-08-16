@@ -828,17 +828,30 @@ if ($('apxFilter')) $('apxFilter').addEventListener('change', function () {
     refreshPick();
     refreshMas();
 });
-document.querySelectorAll('[data-bai]').forEach(function (b) {
-    b.addEventListener('click', function () {
-        b.classList.toggle('active');
-        updateCoverage();
-        if (phase === 'running') nextCard();
-        refreshPick();
-        refreshMas();
-    });
+// Nút bài được DỰNG LẠI mỗi lần đổi giáo trình (buildLessonUI) nên phải bắt sự kiện
+// uỷ quyền ở thùng chứa, không gắn trực tiếp lên từng nút.
+if ($('baiBtns')) $('baiBtns').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-lid]');
+    if (!b) return;
+    b.classList.toggle('active');
+    updateCoverage();
+    if (phase === 'running') nextCard();
+    refreshPick();
+    refreshMas();
+});
+// Chọn giáo trình (Minna / Gungun / …): đổi luôn danh sách bài + ngữ pháp + đọc hiểu + hội thoại.
+if ($('courseTabs')) $('courseTabs').addEventListener('click', function (e) {
+    const b = e.target.closest('[data-course]');
+    if (!b) return;
+    setCourse(b.getAttribute('data-course'));
+    updateCoverage();
+    if (phase === 'running') nextCard();
+    refreshPick();
+    refreshMas();
+    populateLookupFilter(true);
 });
 function setAllBai(on) {
-    document.querySelectorAll('[data-bai]').forEach(function (b) {
+    document.querySelectorAll('[data-lid]').forEach(function (b) {
         b.classList.toggle('active', on);
     });
     updateCoverage();
@@ -958,15 +971,15 @@ if ($('radCommon')) $('radCommon').addEventListener('change', function () {
 });
 
 function renderGram() {
-    const lessonNum = $('gramSel').value;
-    const items = GRAM[lessonNum] || [];
+    const lid = $('gramSel').value;          // "MINNA:3" — khoá theo giáo trình + số bài
+    const items = GRAM[lid] || [];
     const box = $('gramList');
     box.innerHTML = '';
     items.forEach(function (gram) {
         const div = document.createElement('div');
         div.style.cssText = 'margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #2c2f31;';
         var html = '<div style="color:#cfe6ff; font-weight:600; font-size:14px;">' + gram.p + '</div>';
-        html += '<div style="color:#c8c8c8; font-size:13px; margin-top:4px; line-height:1.5;">' + gram.gram + '</div>';
+        html += '<div style="color:#c8c8c8; font-size:13px; margin-top:4px; line-height:1.5;">' + (gram.g || '') + '</div>';
         if (gram.ex) {
             html += '<div style="margin-top:6px; font-size:13px;"><span style="color:#fff; font-family:Hiragino Sans,Noto Sans JP,sans-serif;">' + gram.ex + '</span> <span style="color:#9ecbff;"> ' + gram.exr + '</span></div>';
             html += '<div style="font-size:12px; color:#9aa0a6; margin-top:2px;">' + gram.m + '</div>';
@@ -1131,22 +1144,27 @@ function renderKanaChart() {
 /* ===== Tra từ: toàn bộ từ vựng + bài & trình độ (hoặc chủ đề), có tìm & lọc ===== */
 function _vocabAll() {
     var out = [];
-    LWORDS.forEach(function (w) { out.push({jp: w[0], r: w[1], kana: w[4], m: w[3], bai: w[2], level: w[5], theme: null, apx: !!w[6]}); });
+    LWORDS.forEach(function (w) { out.push({jp: w[0], r: w[1], kana: w[4], m: w[3], bai: w[2], level: w[5], course: w[7], lid: w[8], theme: null, apx: !!w[6]}); });
     (typeof THEMEWORDS !== 'undefined' ? THEMEWORDS : []).forEach(function (w) {
-        out.push({jp: w[0], r: w[1], kana: w[3], m: w[2], bai: null, level: null, theme: (THEME_NAME[w[4]] || w[4])});
+        out.push({jp: w[0], r: w[1], kana: w[3], m: w[2], bai: null, level: null, course: null, lid: null, theme: (THEME_NAME[w[4]] || w[4])});
     });
     return out;
 }
 
-function populateLookupFilter() {
+function populateLookupFilter(force) {
     var sel = $('lookupFilter');
-    if (!sel || sel._built) return;
+    if (!sel || (sel._built && !force)) return;
+    var prev = sel.value;
     var html = '<option value="all">Tất cả</option>';
-    (JPLessons.levels ? JPLessons.levels() : []).forEach(function (lv) {
-        html += '<optgroup label="' + escapeHtml(lv) + '">';
-        html += '<option value="lv:' + escapeHtml(lv) + '">' + escapeHtml(lv) + ' — tất cả bài</option>';
-        JPLessons.numsOf(lv).forEach(function (n) {
-            html += '<option value="bai:' + escapeHtml(lv) + ':' + n + '">' + escapeHtml(lv) + ' · Bài ' + n + '</option>';
+    // Nhóm theo GIÁO TRÌNH → trình độ → bài (khoá "bai:<lid>").
+    (JPLessons.courses ? JPLessons.courses() : []).forEach(function (c) {
+        html += '<optgroup label="' + escapeHtml(c.ten) + '">';
+        html += '<option value="course:' + escapeHtml(c.id) + '">' + escapeHtml(c.ten) + ' — tất cả</option>';
+        JPLessons.levelsOf(c.id).forEach(function (lv) {
+            html += '<option value="lv:' + escapeHtml(c.id) + ':' + escapeHtml(lv) + '">' + escapeHtml(c.tenNgan) + ' · ' + escapeHtml(lv) + ' — tất cả bài</option>';
+            JPLessons.lessonsOf(c.id, lv).forEach(function (L) {
+                html += '<option value="bai:' + escapeHtml(L.lid) + '">' + escapeHtml(c.tenNgan) + ' · ' + escapeHtml(JPLessons.lessonLabel(L.lid)) + '</option>';
+            });
         });
         html += '</optgroup>';
     });
@@ -1157,6 +1175,7 @@ function populateLookupFilter() {
     }
     sel.innerHTML = html;
     sel._built = true;
+    if (prev) { sel.value = prev; if (!sel.value) sel.value = 'all'; }
 }
 
 function renderLookup() {
@@ -1169,8 +1188,9 @@ function renderLookup() {
     var rows = all.filter(function (v) {
         if (f !== 'all') {
             var p = f.split(':');
-            if (p[0] === 'lv' && v.level !== p[1]) return false;
-            if (p[0] === 'bai' && !(v.level === p[1] && String(v.bai) === p[2])) return false;
+            if (p[0] === 'course' && v.course !== p[1]) return false;
+            if (p[0] === 'lv' && !(v.course === p[1] && v.level === p[2])) return false;
+            if (p[0] === 'bai' && v.lid !== p[1] + ':' + p[2]) return false;
             if (p[0] === 'theme' && v.theme !== p.slice(1).join(':')) return false;
         }
         if (q && ((v.jp + ' ' + (v.r || '') + ' ' + (v.kana || '') + ' ' + (v.m || '')).toLowerCase().indexOf(q) < 0)) return false;
@@ -1178,7 +1198,7 @@ function renderLookup() {
     });
     var html = '<div style="font-size:12px; color:var(--ink-dim); margin-bottom:8px;">' + rows.length + ' / ' + all.length + ' từ</div>';
     rows.forEach(function (v) {
-        var badge = v.theme ? ('Chủ đề: ' + v.theme) : ('Bài ' + v.bai + ' · ' + v.level);
+        var badge = v.theme ? ('Chủ đề: ' + v.theme) : (JPLessons.lessonLabelFull(v.lid) + ' · ' + v.level);
         html += '<div class="pickrow on" style="cursor:default;">'
             + '<span class="pjp" style="min-width:70px;">' + kanjiTipHtml(v.jp) + '</span>'
             + '<span class="pinfo"><span class="prd">' + escapeHtml(v.r || '') + '</span> <span class="pmn">' + escapeHtml(v.m || '') + '</span></span>'
@@ -1206,10 +1226,10 @@ function renderPreview() {
     });
     const mode = $('mode').value;
     if (mode === 'lword' || mode === 'sent') {
-        selectedLessons().forEach(function (n) {
-            const g = GRAM[String(n)];
+        selectedLessons().forEach(function (lid) {
+            const g = GRAM[lid];
             if (!g || !g.length) return;
-            html += '<div style="font-weight:600; color:#cfe6ff; margin:16px 0 6px; font-size:13px;">Ngữ pháp — Bài ' + n + '</div>';
+            html += '<div style="font-weight:600; color:#cfe6ff; margin:16px 0 6px; font-size:13px;">Ngữ pháp — ' + escapeHtml(JPLessons.lessonLabelFull(lid)) + '</div>';
             g.forEach(function (gr) {
                 html += '<div style="margin-bottom:9px; font-size:13px; padding-bottom:7px; border-bottom:1px solid #2c2f31;">'
                     + '<div style="color:#cfe6ff; font-weight:600;">' + escapeHtml(gr.p) + '</div>'

@@ -115,14 +115,9 @@ footer{border-top:1px solid var(--line);padding:20px 0 50px;color:var(--muted);f
 <script src="data/lessons/manifest.js"></script>
 <script>
 (function () {
-  var man = window.LESSON_MANIFEST || {};
-  var levels = window.LEVELS || [];
-  for (var li = 0; li < levels.length; li++) {
-    var lv = levels[li], nums = man[lv] || [];
-    for (var i = 0; i < nums.length; i++) {
-      var nn = (nums[i] < 10 ? '0' : '') + nums[i];
-      document.write('<script src="data/lessons/' + lv + '/lesson-' + nn + '.js"><\/script>');
-    }
+  var files = window.LESSON_FILES || [];
+  for (var i = 0; i < files.length; i++) {
+    document.write('<script src="data/lessons/' + files[i] + '"><\/script>');
   }
 })();
 </script>
@@ -130,16 +125,20 @@ footer{border-top:1px solid var(--line);padding:20px 0 50px;color:var(--muted);f
 <script>
 /* ===== Xây dữ liệu báo cáo TRỰC TIẾP từ dữ liệu bài học đã nạp ===== */
 function buildDATA(){
-  var words = JPLessons.words();   // [display, romaji, lesson, meaning, kana, level]
+  // [display, romaji, lesson, meaning, kana, level, phuluc, course, lid]
+  var words = JPLessons.words();
+  // Nhóm: GIÁO TRÌNH × TRÌNH ĐỘ (Minna · N5, Gungun · N5, …)
   var levels = [];
-  JPLessons.levels().forEach(function(lv){
-    var L={level:lv,lessons:[]};
-    JPLessons.numsOf(lv).forEach(function(n){
-      var ws = words.filter(function(w){return w[5]===lv && w[2]===n;})
-                    .map(function(w){return {jp:w[0], r:w[1], kana:w[4], m:w[3], apx:!!w[6]};});
-      L.lessons.push({num:n, words:ws});
+  JPLessons.courses().forEach(function(c){
+    JPLessons.levelsOf(c.id).forEach(function(lv){
+      var L={level:c.ten+' · '+lv, unit:c.donvi, lessons:[]};
+      JPLessons.lessonsOf(c.id, lv).forEach(function(x){
+        var ws = words.filter(function(w){return w[8]===x.lid;})
+                      .map(function(w){return {jp:w[0], r:w[1], kana:w[4], m:w[3], apx:!!w[6]};});
+        L.lessons.push({num:x.num, lid:x.lid, label:JPLessons.lessonLabel(x.lid), words:ws});
+      });
+      levels.push(L);
     });
-    levels.push(L);
   });
   var themes=[];
   (typeof THEME_LIST!=='undefined'?THEME_LIST:[]).forEach(function(t){
@@ -178,7 +177,7 @@ function buildChips(){
   const c=document.getElementById("chips");
   let h='<button class="chip" data-k="all" aria-pressed="true">Tất cả</button>';
   DATA.levels.forEach(L=>L.lessons.forEach(x=>{
-    h+='<button class="chip" data-k="bai:'+L.level+':'+x.num+'" aria-pressed="false">'+L.level+' · Bài '+x.num+'</button>';
+    h+='<button class="chip" data-k="bai:'+x.lid+'" aria-pressed="false">'+esc(L.level)+' · '+esc(x.label)+'</button>';
   }));
   DATA.themes.forEach((t,i)=>{
     h+='<button class="chip theme" data-k="theme:'+i+'" aria-pressed="false">'+esc(t.name)+'</button>';
@@ -205,9 +204,9 @@ function buildMain(){
   let h="";
   DATA.levels.forEach(L=>{
     const tot=L.lessons.reduce((a,x)=>a+x.words.length,0);
-    h+='<section class="levelsec"><div class="levelhead"><span class="k">'+L.level+'</span><span class="rule"></span><span class="n">'+tot+' từ · '+L.lessons.length+' bài</span></div><div class="grid">';
+    h+='<section class="levelsec"><div class="levelhead"><span class="k">'+esc(L.level)+'</span><span class="rule"></span><span class="n">'+tot+' từ · '+L.lessons.length+' bài</span></div><div class="grid">';
     L.lessons.forEach(x=>{
-      h+='<div class="card" data-k="bai:'+L.level+':'+x.num+'"><div class="head"><span class="badge">Bài '+x.num+'</span><span class="c">'+x.words.length+' từ</span></div><div class="rows">'+x.words.map(rowHtml).join("")+'</div></div>';
+      h+='<div class="card" data-k="bai:'+x.lid+'"><div class="head"><span class="badge">'+esc(x.label)+'</span><span class="c">'+x.words.length+' từ</span></div><div class="rows">'+x.words.map(rowHtml).join("")+'</div></div>';
     });
     h+='</div></section>';
   });

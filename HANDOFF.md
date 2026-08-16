@@ -44,10 +44,13 @@ data/
   kanji-parts.js                GENERATED from csv/kanji-parts.csv — KANJI_PARTS (kanji -> its component radicals)
   themes.js                     GENERATED from csv/themes/ — THEME_LIST + THEMEWORDS (vocab by topic, no JLPT level)
   lessons/
-    manifest.js                 GENERATED — LEVELS + LESSON_MANIFEST (nums per level)
-    <LEVEL>/lesson-NN.js         GENERATED from CSV — e.g. N5/lesson-01.js — DO NOT hand-edit
+    manifest.js                 GENERATED — COURSES + LESSON_MANIFEST (course->level->nums) + LESSON_FILES
+    <COURSE>/<LEVEL>/lesson-NN[PART].js  GENERATED from CSV — MINNA/N5/lesson-01.js,
+                                GUNGUN/N5/lesson-01A.js — DO NOT hand-edit
     csv/                        *** SOURCE OF TRUTH ***  (edit here, in Excel/Sheets)
-      <LEVEL>/lesson-NN/words.csv|sentences.csv|grammar.csv|reading.csv|conversation.csv
+      courses.csv               the textbooks: id,ten,ten_ngan,donvi,thutu (MINNA=Bài, GUNGUN=Chương)
+      <COURSE>/<LEVEL>/lesson-NN[PART]/words.csv|sentences.csv|grammar.csv|reading.csv|conversation.csv
+                                (PART = A/B/C… — a Gungun chapter's phần; own vocab + grammar)
       _TEMPLATE/                copy-me folder for a new lesson
       README.md                 maintainer guide (VN)
 tools/build-lessons.ps1         CSV -> generated .js + manifest.js (+ bumps sw cache)
@@ -104,11 +107,39 @@ The `/add-vocab` and `/add-theme` skills both open with this rule and carry the 
 Historically this repo was filled in layer by layer (kanji forms, then appendix flags, then
 readings, then radicals), which is exactly the drift this rule exists to stop.
 
+### Before adding vocabulary, settle WHICH TEXTBOOK it belongs to
+
+Vocabulary never goes "into the app" in general — it goes into one course, or into no course
+at all. Decide this **first**; a word filed under the wrong book shows up in the wrong study
+track and under the wrong lesson button.
+
+| The user is talking about… | Goes to | Unit / folder |
+| --- | --- | --- |
+| "Bài N" of Minna no Nihongo (default when unqualified) | course `MINNA` | `csv/MINNA/N5/lesson-NN/` |
+| "Chương N", "phần A/B/C", or they paste Gungun content | course `GUNGUN` | one folder **per part**: `csv/GUNGUN/N5/lesson-NN<PART>/` (e.g. `lesson-01A`) |
+| A topic list (đồ ăn, thời tiết…), no lesson number | **no course** — themes | `csv/themes/<id>/words.csv` + a row in `themes.csv` |
+
+How to add, in both courses (the CSV shape is identical):
+
+1. Copy `csv/_TEMPLATE/` to the target folder above (per **part** for Gungun).
+2. Fill `words.csv` (`tiengNhat,romaji,nghia,kana,phuluc`) + `grammar.csv`; add
+   `sentences.csv` / `reading.csv` / `conversation.csv` as far as the content allows —
+   files left as header-only are fine.
+3. Add a `csv/kanji-parts.csv` row for every new kanji (the rule above).
+4. `pwsh -ExecutionPolicy Bypass -File tools/build-lessons.ps1` — the summary prints
+   **per course**, so check the new lesson landed under the intended textbook.
+
+Source-of-content difference, and it matters: **Minna** vocabulary can be fetched
+(vnjpclub) or reconstructed from the standard syllabus, and its 参考語彙 blocks get
+`phuluc=1`. **Gungun has no web source and we have no copy of it** — its content must come
+from what the user pastes; ask and wait rather than inventing a word list, and leave
+`phuluc` empty. `/add-vocab` encodes both flows (`/add-vocab 10` vs `/add-vocab gungun 1A`).
+
 ## The golden rule
 
 **Lesson content is authored as CSV and generated into JS. Never hand-edit the
-generated files.** Source of truth = `data/lessons/csv/<LEVEL>/lesson-NN/*.csv`.
-After editing CSV, run the build; it regenerates `data/lessons/<LEVEL>/lesson-NN.js`
+generated files.** Source of truth = `data/lessons/csv/<COURSE>/<LEVEL>/lesson-NN/*.csv`.
+After editing CSV, run the build; it regenerates `data/lessons/<COURSE>/<LEVEL>/lesson-NN.js`
 + `manifest.js`, deletes orphaned generated files, and bumps `sw.js` cache.
 
 Run the build (PowerShell 7, zero install):
@@ -161,10 +192,14 @@ CSV columns (Vietnamese headers; keep the header row; UTF-8 with BOM for Excel):
   append the reading if a kanji must appear. This keeps every example readable at N5.
   **Exception:** `words.csv` deliberately keeps the kanji in `tiengNhat` and the reading
   in the `kana` column — leave the kanji there. Rule applies to the drill running-text.
-- **Add a lesson (e.g. N5 Bài 8):** copy `csv/_TEMPLATE/` → `csv/N5/lesson-08/`,
+- **Add a lesson (e.g. Minna N5 Bài 8):** copy `csv/_TEMPLATE/` → `csv/MINNA/N5/lesson-08/`,
   fill the 5 CSVs, run the build. Button + grammar appear automatically. No HTML/sw edits.
-- **Add a level (N4…N1):** create `csv/N4/lesson-01/` (copy `_TEMPLATE/`), fill,
-  build. UI shows a per-level group automatically. See "levels" gotcha below.
+- **Add a level (N4…N1):** create `csv/MINNA/N4/lesson-01/` (copy `_TEMPLATE/`), fill,
+  build. UI shows a per-level group automatically. See "courses" gotcha below.
+- **Add a course (textbook):** create `csv/<ID>/<LEVEL>/lesson-01/` + a row in
+  `csv/courses.csv` (`id,ten,ten_ngan,donvi,thutu`; `donvi` = "Bài"/"Chương"), build.
+- **Add a Gungun chapter:** one folder per part — `csv/GUNGUN/N5/lesson-02A/`,
+  `lesson-02B/`… (copy `_TEMPLATE/`), fill `words.csv` + `grammar.csv`, build.
 - **Extend the kanji data to the next lesson** (the user asks for this lesson by lesson,
   e.g. "thêm bộ thủ cho bài 4"): list the lesson's kanji that aren't in `KANJI_PARTS` yet
   (walk `JPLessons.words()` for rows of that lesson, match `/[一-鿿々]/`), append one row per
@@ -184,9 +219,12 @@ or `file://`** — don't rely on it. Instead:
 1. Syntax: `node --check <file>` on generated `.js`, `registry.js`, `manifest.js`, `sw.js`.
 2. Runtime simulation (proves the whole load chain): a Node shim that sets
    `global.window = global`, evals `data/registry.js` then `data/lessons/manifest.js`,
-   loops `LEVELS × LESSON_MANIFEST[lv]` eval-ing each `data/lessons/<lv>/lesson-NN.js`,
-   then checks `JPLessons.words()/.sentences()/.grammar()/.levels()/.numsOf(lv)`.
-   `registerLesson` accepts `("N5", N, {...})` and legacy `(N, {...})`.
+   loops `LESSON_FILES` eval-ing each `data/lessons/<COURSE>/<LEVEL>/lesson-NN.js`,
+   then checks `JPLessons.words()/.sentences()/.grammar()/.courses()/.lidsOf(course)`.
+   `registerLesson` accepts `("MINNA", "N5", N, {...})` plus legacy `("N5", N, {...})`
+   and `(N, {...})`. Note top-level `const`/`let` do **not** land on `window`, so read
+   `ALL_LESSONS`/`GRAM`/`poolForKey` with a second `vm.runInContext` snippet, not
+   `sandbox.X`.
 3. Fidelity after a data refactor: back up the old generated `.js`, regenerate,
    deep-compare the registered objects (normalize: kana defaults to tiengNhat).
 4. **Run the real render code on a fake DOM** — this has caught more than syntax checks.
@@ -211,15 +249,25 @@ or `file://`** — don't rely on it. Instead:
   like `$lDir` silently aliases the base `$LDir` and corrupts output paths. Keep
   loop/base names distinct. (This bug already bit once.)
 - **`document.write` loader:** the shell has an inline loader that `document.write`s
-  the lesson `<script>` tags from `LEVELS`/`LESSON_MANIFEST`, in order, synchronously
+  the lesson `<script>` tags from `LESSON_FILES`, in order, synchronously
   — works on `file://` (can't list a dir over `file://`, hence the manifest). It runs
   during parse; don't make those scripts async/defer or it will wipe the document.
-- **Levels are half-migrated (by design).** Data + folders + manifest + `buildLessonUI`
-  are level-aware (`registry.js` exposes `levels()`, `numsOf(level)`; rows carry the
-  level as the last element; buttons carry `data-level`). BUT deck keys, `poolForKey`,
-  and `GRAM` still key by **lesson number only** → assumes a single active level /
-  unique numbers. **Cross-level mixing UI is deferred.** When N4 ships, make the
-  key/selection system and `GRAM` level-qualified.
+- **Gungun chapters are split into parts (phần A/B/C) — the part is the unit of study.**
+  Each part is its own lesson folder `lesson-01A/`, `lesson-01B/` (build regex
+  `^lesson-(\d+)([A-Za-z0-9]*)$`), registered via the optional 5th arg of `registerLesson`,
+  and gets its own lid (`GUNGUN:1A`). Minna lessons have `part: ''`. Iterate
+  `JPLessons.lessonsOf(course, level)` (not `numsOf`, which collapses parts) whenever you
+  build lesson UI. Buttons show a "Chương N" row label + one **Phần A/B/C** button each.
+- **Courses (giáo trình) are the top grouping, and the lesson key is `lid`.** Content
+  lives under `csv/<COURSE>/<LEVEL>/lesson-NN[PART]/` (`MINNA`, `GUNGUN`), and **every**
+  place that keys by lesson uses `lid = "<COURSE>:<num><PART>"` — `GRAM`/`READ`/`CONV`, deck keys
+  (`lword|MINNA:1,MINNA:2`), `[data-lid]` buttons, the three lesson `<select>`s,
+  `LWORDS[8]`/`LSENT[6]`, `KANJI_LESSON[].lid`, report.html cards. Bare numbers are legacy
+  and get upgraded to the first course by `normLid()` in `js/decks.js`. Only **one course
+  is active at a time** (`jp_course_v1`, `getCourse()`/`setCourse()`); cross-course and
+  cross-level mixing in one deck is still deferred (no UI produces such a key).
+- **Lesson buttons are rebuilt on every course switch** → bind their click handlers by
+  **delegation on `#baiBtns`** (and `#courseTabs`), never per button; `js/stats.js` does this.
 - **Never rename** (would break persisted state / external data): DOM id strings in
   `$('...')`, external data globals (`WORDS`/`KANJIV`/`KANJI130`/`NUMSET`/…), the
   session-selector literal `'cur'`, or persisted `localStorage` field names. LS keys
@@ -290,10 +338,12 @@ or `file://`** — don't rely on it. Instead:
   and Bài 4 `戸` (the particle `と` "và", written as the kanji for *door*). When touching a lesson's `words.csv`, glance for more of this kind.
 - **No tooling:** there is no npm/make/lint/test. Don't look for them.
 
-## Current state (2026-08-04)
+## Current state (2026-08-16)
 
-- One level, **N5**, lessons **1–17** (run `tools/build-lessons.ps1` — it prints the live
-  totals: ~1312 từ · 943 câu · 133 ngữ pháp · 95 bài đọc · 85 hội thoại).
+- Two **courses**: `MINNA` (Minna no Nihongo, N5, lessons **1–17**) and `GUNGUN` (Gungun,
+  "Chương" split into **phần A/B/C**, scaffolded with **empty** `csv/GUNGUN/N5/lesson-01A|B|C/`
+  waiting for content the user will supply chapter by chapter). Run `tools/build-lessons.ps1` — it prints the live totals per course
+  (~1312 từ · 943 câu · 133 ngữ pháp · 95 bài đọc · 85 hội thoại, all Minna today).
 - Single UI is **`index.html`**; engine split into `js/` (8 files); static layout
   (`assets/`, `js/`, `data/`, `tools/`).
 - **Content completeness by lesson** — the two things that are filled in *incrementally*
@@ -316,13 +366,16 @@ or `file://`** — don't rely on it. Instead:
 
   Kanji absent from this file have no hover tooltip and don't appear as `lkanji` *chữ rời*
   cards; they still appear as *từ ghép* cards, just without the per-character gloss.
-- **Shipped recently** (newest first): `lkanji` split into *chữ rời* / *từ ghép*;
+- **Shipped recently** (newest first): **split by textbook** — course dimension
+  (`csv/<COURSE>/<LEVEL>/lesson-NN/`, `courses.csv`, `#courseTabs`, lid keys everywhere);
+  `lkanji` split into *chữ rời* / *từ ghép*;
   Bài 3 kanji data; "Kanji theo bài" mode; hover-kanji radical tooltip
   (`js/kanji-tip.js` + `kanji-parts.csv`, also in `report.html`); furigana-on-hover +
   "🔊 Nghe cả bài" + 10 long readings for Bài 1; 📖 Đọc hiểu / 💬 Hội thoại tabs with
   `reading.csv` / `conversation.csv`; Bài 1–2 kanji fixes (`三`→`さん`, `五`→`語`,
   missing kanji forms, katakana readings for loanwords).
-- Deferred / not built: cross-level mixing UI; verb-conjugation drill (user said use
+- Deferred / not built: cross-course / cross-level mixing in one deck (one course at a
+  time, by design); Gungun content itself; verb-conjugation drill (user said use
   sentence practice for now); kanji data for Bài 4–17.
 - **Known wart:** mastery/handwrite stores key on `card[0]`, so a one-character word
   (私) and its kanji card collide — marking one mastered hides the other.

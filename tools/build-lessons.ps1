@@ -2,12 +2,16 @@
   build-lessons.ps1  —  Sinh du lieu bai hoc tu CSV.
 
   DANH CHO NGUOI BIEN SOAN (khong can biet lap trinh):
-    1. Vao  data\lessons\csv\<TRINH_DO>\lesson-NN\  (vi du: csv\N5\lesson-07\),
+    1. Vao  data\lessons\csv\<GIAO_TRINH>\<TRINH_DO>\lesson-NN\
+       (vi du: csv\MINNA\N5\lesson-07\  hoac  csv\GUNGUN\N5\lesson-01\),
        mo cac file  words.csv / sentences.csv / grammar.csv  bang Excel / Google Sheets.
     2. Them / sua tu vung, cau, ngu phap. Luu lai (giu dinh dang CSV, ma UTF-8).
        - Them BAI moi: chep ca thu muc mau  csv\_TEMPLATE\  thanh
-         csv\N5\lesson-08\  (dat dung trinh do + so bai) roi dien vao.
-       - Them TRINH DO moi (N4, N3...): tao thu muc  csv\N4\  roi bo cac lesson-NN vao.
+         csv\MINNA\N5\lesson-08\  (dat dung giao trinh + trinh do + so bai) roi dien vao.
+       - Them TRINH DO moi (N4, N3...): tao thu muc  csv\MINNA\N4\  roi bo cac lesson-NN vao.
+       - Them GIAO TRINH moi: tao thu muc  csv\<TEN_MA>\<TRINH_DO>\lesson-NN\  va
+         them 1 dong vao  csv\courses.csv  (id, ten, ten_ngan, donvi, thutu).
+         "donvi" = cach goi mot bai tren giao dien: "Bài" (Minna) hay "Chương" (Gungun).
     3. Chay file nay: chuot phai -> "Run with PowerShell"
        (hoac:  ./tools/build-lessons.ps1 ).
     4. Xong! Mo lai app, bai moi tu dong hien ra. Khong sua file HTML nao ca.
@@ -27,7 +31,7 @@
                      "TenNguoi：cau noi"; nghia = ban dich, tach bang  |  theo dung
                      thu tu luot noi. boi_canh = mo ta tinh huong bang tieng Viet.)
 
-  Script sinh:  data\lessons\<TRINH_DO>\lesson-NN.js  va  data\lessons\manifest.js
+  Script sinh:  data\lessons\<GIAO_TRINH>\<TRINH_DO>\lesson-NN.js  va  data\lessons\manifest.js
   va tu tang so phien ban cache trong  sw.js .
 #>
 
@@ -55,36 +59,69 @@ function LevelRank([string]$lv) {
   if ($lv -match '^N(\d+)$') { return -[int]$Matches[1] } # N5 => -5 (dung truoc), N1 => -1
   return 100
 }
-
-# --- Thu thap: trinh do -> danh sach so bai (theo thu tu) ---
-$levelDirs = Get-ChildItem -Path $CsvDir -Directory | Where-Object { $_.Name -ne '_TEMPLATE' -and $_.Name -ne 'themes' }
-$levels = $levelDirs | Sort-Object @{ Expression = { LevelRank $_.Name } }, Name
-if ($levels.Count -eq 0) { throw "Khong thay thu muc trinh do nao trong $CsvDir (vi du: csv\N5\)" }
-
-$manifest = [ordered]@{}   # ten trinh do -> mang so bai
-$totW = 0; $totS = 0; $totG = 0; $totR = 0; $totC = 0
-
 # Lay gia tri mot cot CSV an toan (cot co the khong ton tai trong file cu).
 function Col($row, [string]$name) {
   if ($row.PSObject.Properties[$name]) { return [string]$row.$name }
   return ''
 }
 
-foreach ($lvDir in $levels) {
+# --- Danh sach GIAO TRINH (csv\courses.csv) ---
+# Moi giao trinh la MOT thu muc con cua csv\ (tru _TEMPLATE / themes). courses.csv chi bo
+# sung ten hien thi + cach goi don vi bai; thieu dong nao thi lay mac dinh (ten = id, "Bài").
+$coursesCsv = Join-Path $CsvDir 'courses.csv'
+$courseMeta = [ordered]@{}
+if (Test-Path $coursesCsv) {
+  foreach ($c in @(Import-Csv -Path $coursesCsv -Encoding utf8)) {
+    $cid = ([string]$c.id).Trim()
+    if (-not $cid) { continue }
+    $ord = 0; [void][int]::TryParse(([string]$c.thutu).Trim(), [ref]$ord)
+    $courseMeta[$cid] = @{
+      ten     = $(if ([string]::IsNullOrWhiteSpace($c.ten)) { $cid } else { ([string]$c.ten).Trim() })
+      tenNgan = $(if ([string]::IsNullOrWhiteSpace((Col $c 'ten_ngan'))) { '' } else { ((Col $c 'ten_ngan')).Trim() })
+      donvi   = $(if ([string]::IsNullOrWhiteSpace((Col $c 'donvi'))) { 'Bài' } else { ((Col $c 'donvi')).Trim() })
+      thutu   = $ord
+    }
+  }
+}
+function CourseRank([string]$id) {
+  if ($courseMeta.Contains($id)) { return [int]$courseMeta[$id].thutu }
+  return 999
+}
+
+# --- Thu thap: giao trinh -> trinh do -> danh sach so bai (theo thu tu) ---
+$courseDirs = Get-ChildItem -Path $CsvDir -Directory | Where-Object { $_.Name -ne '_TEMPLATE' -and $_.Name -ne 'themes' }
+$courses = $courseDirs | Sort-Object @{ Expression = { CourseRank $_.Name } }, Name
+if ($courses.Count -eq 0) { throw "Khong thay thu muc giao trinh nao trong $CsvDir (vi du: csv\MINNA\N5\)" }
+
+$manifest = [ordered]@{}   # giao trinh -> (trinh do -> mang so bai)
+$lessonFiles = @()         # duong dan tuong doi cac file .js sinh ra (cho loader + service worker)
+$totW = 0; $totS = 0; $totG = 0; $totR = 0; $totC = 0
+$totLessons = 0
+
+foreach ($cDir in $courses) {
+ $course = $cDir.Name
+ $levels = Get-ChildItem -Path $cDir.FullName -Directory | Sort-Object @{ Expression = { LevelRank $_.Name } }, Name
+ $byLevel = [ordered]@{}
+
+ foreach ($lvDir in $levels) {
   $level = $lvDir.Name
+  # Ten thu muc bai:  lesson-01        (bai/chuong khong chia phan)
+  #                   lesson-01A       (PHAN A cua chuong 1 - giao trinh Gungun)
   $lessonDirs = Get-ChildItem -Path $lvDir.FullName -Directory |
-    Where-Object { $_.Name -match '^lesson-(\d+)$' } |
-    Sort-Object @{ Expression = { [int]([regex]::Match($_.Name, '\d+').Value) } }
+    Where-Object { $_.Name -match '^lesson-(\d+)([A-Za-z0-9]*)$' } |
+    Sort-Object @{ Expression = { [int]([regex]::Match($_.Name, '^lesson-(\d+)').Groups[1].Value) } },
+                @{ Expression = { ([regex]::Match($_.Name, '^lesson-\d+(.*)$').Groups[1].Value).ToUpper() } }
   if ($lessonDirs.Count -eq 0) { continue }
 
-  $outDir = Join-Path $LDir $level
+  $outDir = Join-Path $LDir (Join-Path $course $level)
   New-Item -ItemType Directory -Force -Path $outDir | Out-Null
   $nums = @()
 
   foreach ($lessonDir in $lessonDirs) {
-    $num = [int]([regex]::Match($lessonDir.Name, '\d+').Value)
-    $nn  = '{0:D2}' -f $num
-    $nums += $num
+    $num  = [int]([regex]::Match($lessonDir.Name, '^lesson-(\d+)').Groups[1].Value)
+    $part = ([regex]::Match($lessonDir.Name, '^lesson-\d+(.*)$').Groups[1].Value).ToUpper()
+    $nn   = ('{0:D2}' -f $num) + $part
+    $nums += ('"' + $num + $part + '"')
 
     $words     = ImportCsvSafe (Join-Path $lessonDir.FullName 'words.csv')
     $sentences = ImportCsvSafe (Join-Path $lessonDir.FullName 'sentences.csv')
@@ -120,16 +157,19 @@ foreach ($lvDir in $levels) {
       '    {"t": ' + (Esc $r.tieu_de) + ', "s": ' + (Esc (Col $r 'boi_canh')) + ', "jp": ' + (Esc $r.hoi_thoai) + ', "vi": ' + (Esc $r.nghia) + '}'
     }
 
+    $partArg = if ($part) { ', "' + $part + '"' } else { '' }
+    $partTxt = if ($part) { " - Phan $part" } else { '' }
     $js = @"
-// ===== $level - Bai $num =====
-// TU DONG SINH tu  data/lessons/csv/$level/lesson-$nn/*.csv  boi  tools/build-lessons.ps1
+// ===== $course - $level - Bai $num$partTxt =====
+// TU DONG SINH tu  data/lessons/csv/$course/$level/lesson-$nn/*.csv  boi  tools/build-lessons.ps1
 // DUNG SUA TRUC TIEP FILE NAY -- moi thay doi se bi ghi de. Hay sua CSV roi chay lai script.
 // words: [ chu_hien_thi, romaji, nghia_tiengviet, kana, (1 = tu phu luc) ]
 // sentences: [ cau_nhat, romaji, nghia_tiengviet ]
 // grammar: { p: mau_cau, g: giai_thich, ex: vi_du, exr: vi_du_romaji, m: nghia }
 // readings: { t: tieu_de, jp: cau|cau|..., vi: nghia|nghia|..., q: [[cau_hoi, dap_an], ...] }
 // conversations: { t: tieu_de, s: boi_canh, jp: luot|luot|..., vi: nghia|nghia|... }
-registerLesson("$level", $num, {
+// Tham so cuoi (neu co) = PHAN cua chuong, vd "A".
+registerLesson("$course", "$level", $num, {
   words: [
 $($wLines -join ",`r`n")
   ],
@@ -145,30 +185,37 @@ $($rdLines -join ",`r`n")
   conversations: [
 $($cvLines -join ",`r`n")
   ]
-});
+}$partArg);
 "@
     [System.IO.File]::WriteAllText((Join-Path $outDir "lesson-$nn.js"), $js, $Utf8NoBom)
+    $lessonFiles += "$course/$level/lesson-$nn.js"
     $totW += $words.Count; $totS += $sentences.Count; $totG += $grammar.Count
-    $totR += $readings.Count; $totC += $convs.Count
-    Write-Host ("{0}/lesson-{1}: {2} tu, {3} cau, {4} ngu phap, {5} bai doc, {6} hoi thoai" -f $level, $nn, $words.Count, $sentences.Count, $grammar.Count, $readings.Count, $convs.Count)
+    $totR += $readings.Count; $totC += $convs.Count; $totLessons++
+    Write-Host ("{0}/{1}/lesson-{2}: {3} tu, {4} cau, {5} ngu phap, {6} bai doc, {7} hoi thoai" -f $course, $level, $nn, $words.Count, $sentences.Count, $grammar.Count, $readings.Count, $convs.Count)
   }
-  $manifest[$level] = $nums
+  $byLevel[$level] = $nums
+ }
+ if ($byLevel.Count -gt 0) { $manifest[$course] = $byLevel }
+ else { Write-Host ("{0}: chua co bai nao (bo qua)" -f $course) -ForegroundColor Yellow }
 }
 
 # --- Don file/thu muc "mo coi" (CSV da bi xoa) -> CSV la nguon duy nhat ---
+# Xoa sach moi thu muc sinh ra roi giu lai dung nhung file vua ghi o tren.
+$keepFiles = @{}; foreach ($f in $lessonFiles) { $keepFiles[(Join-Path $LDir ($f -replace '/', '\'))] = $true }
 Get-ChildItem -Path $LDir -Directory | Where-Object { $_.Name -ne 'csv' } | ForEach-Object {
-  $lv = $_.Name
-  if ($manifest.Contains($lv)) {
-    $keep = @{}; foreach ($n in $manifest[$lv]) { $keep["$n"] = $true }
-    Get-ChildItem -Path $_.FullName -Filter 'lesson-*.js' -File | ForEach-Object {
-      if ($_.Name -match '^lesson-(\d+)\.js$' -and -not $keep["$([int]$Matches[1])"]) {
-        Remove-Item $_.FullName -Force
-        Write-Host ("Da xoa (khong con CSV): {0}/{1}" -f $lv, $_.Name) -ForegroundColor Yellow
-      }
+  Get-ChildItem -Path $_.FullName -Recurse -Filter 'lesson-*.js' -File | ForEach-Object {
+    if (-not $keepFiles[$_.FullName]) {
+      Remove-Item $_.FullName -Force
+      Write-Host ("Da xoa (khong con CSV): {0}" -f $_.FullName.Substring($LDir.Length + 1)) -ForegroundColor Yellow
     }
-  } else {
-    Remove-Item $_.FullName -Recurse -Force
-    Write-Host ("Da xoa trinh do (khong con CSV): {0}" -f $lv) -ForegroundColor Yellow
+  }
+  # Don thu muc rong con lai (trinh do / giao trinh da bi xoa khoi CSV).
+  Get-ChildItem -Path $_.FullName -Recurse -Directory | Sort-Object { $_.FullName.Length } -Descending | ForEach-Object {
+    if (-not (Get-ChildItem -Path $_.FullName -Force)) { Remove-Item $_.FullName -Force }
+  }
+  if (-not (Get-ChildItem -Path $_.FullName -Force)) {
+    Remove-Item $_.FullName -Force
+    Write-Host ("Da xoa giao trinh (khong con CSV): {0}" -f $_.Name) -ForegroundColor Yellow
   }
 }
 
@@ -266,20 +313,41 @@ $($thWords -join ",`r`n")
 Write-Host ("themes.js: {0} chu de, {1} tu" -f $thList.Count, $thCount)
 
 # --- Sinh manifest.js (trang + service worker deu doc) ---
-$levelNames = @($manifest.Keys)
-$levelsJs = ($levelNames | ForEach-Object { '"' + $_ + '"' }) -join ', '
-$manLines = foreach ($lv in $levelNames) { '    "' + $lv + '": [' + (($manifest[$lv]) -join ', ') + ']' }
-$flatNums = ($manifest.Values | ForEach-Object { $_ } | Sort-Object -Unique) -join ', '
+$courseNames = @($manifest.Keys)
+$coursesJs = foreach ($c in $courseNames) {
+  $m = if ($courseMeta.Contains($c)) { $courseMeta[$c] } else { @{ ten = $c; tenNgan = ''; donvi = 'Bài' } }
+  $short = if ($m.tenNgan) { $m.tenNgan } else { $m.ten }
+  '    { id: ' + (Esc $c) + ', ten: ' + (Esc $m.ten) + ', tenNgan: ' + (Esc $short) + ', donvi: ' + (Esc $m.donvi) + ' }'
+}
+$manLines = foreach ($c in $courseNames) {
+  $lvLines = foreach ($lv in @($manifest[$c].Keys)) { '      "' + $lv + '": [' + (($manifest[$c][$lv]) -join ', ') + ']' }
+  '    "' + $c + '": {' + "`r`n" + ($lvLines -join ",`r`n") + "`r`n" + '    }'
+}
+$fileLines = ($lessonFiles | ForEach-Object { '    "' + $_ + '"' }) -join ",`r`n"
+# Tuong thich cu: danh sach trinh do (gop tat ca giao trinh) + danh sach so bai phang.
+$allLevels = @(); foreach ($c in $courseNames) { foreach ($lv in @($manifest[$c].Keys)) { if ($allLevels -notcontains $lv) { $allLevels += $lv } } }
+$allLevels = $allLevels | Sort-Object @{ Expression = { LevelRank $_ } }, { $_ }
+$levelsJs = ($allLevels | ForEach-Object { '"' + $_ + '"' }) -join ', '
+$flatNums = (@(foreach ($c in $courseNames) { foreach ($lv in @($manifest[$c].Keys)) {
+  foreach ($n in $manifest[$c][$lv]) { [int]([regex]::Match($n, '\d+').Value) } } }) | Sort-Object -Unique) -join ', '
 $manifestJs = @"
 // TU DONG SINH boi tools/build-lessons.ps1 -- DUNG SUA TAY.
-// Danh sach trinh do va so bai moi trinh do. Ca trang HTML lan service worker (sw.js)
-// deu doc, nen them bai/trinh do KHONG con phai sua file HTML hay sw.js nua.
+// Danh sach GIAO TRINH -> TRINH DO -> so bai. Ca trang HTML lan service worker (sw.js)
+// deu doc, nen them bai/trinh do/giao trinh KHONG con phai sua file HTML hay sw.js nua.
 (function (g) {
-  g.LEVELS = [$levelsJs];
+  // Giao trinh: id (= ten thu muc), ten hien thi, ten ngan (badge), don vi bai ("Bài"/"Chương").
+  g.COURSES = [
+$($coursesJs -join ",`r`n")
+  ];
   g.LESSON_MANIFEST = {
 $($manLines -join ",`r`n")
   };
-  g.LESSON_NUMS = [$flatNums]; // gop phang (tuong thich cu)
+  // Duong dan cac file bai (tuong doi voi data/lessons/) - loader va sw.js dung truc tiep.
+  g.LESSON_FILES = [
+$fileLines
+  ];
+  g.LEVELS = [$levelsJs];        // gop tat ca giao trinh (tuong thich cu)
+  g.LESSON_NUMS = [$flatNums];   // gop phang (tuong thich cu)
 })(typeof window !== 'undefined' ? window : self);
 "@
 [System.IO.File]::WriteAllText((Join-Path $LDir 'manifest.js'), $manifestJs, $Utf8NoBom)
@@ -298,5 +366,9 @@ if (Test-Path $swPath) {
 }
 
 Write-Host ""
-Write-Host ("XONG. {0} trinh do, {1} bai | {2} tu, {3} cau, {4} ngu phap, {5} bai doc, {6} hoi thoai." -f $levelNames.Count, ($manifest.Values | ForEach-Object { $_.Count } | Measure-Object -Sum).Sum, $totW, $totS, $totG, $totR, $totC) -ForegroundColor Green
-foreach ($lv in $levelNames) { Write-Host ("  {0}: bai {1}" -f $lv, (($manifest[$lv]) -join ', ')) }
+Write-Host ("XONG. {0} giao trinh, {1} bai | {2} tu, {3} cau, {4} ngu phap, {5} bai doc, {6} hoi thoai." -f $courseNames.Count, $totLessons, $totW, $totS, $totG, $totR, $totC) -ForegroundColor Green
+foreach ($c in $courseNames) {
+  $ten = if ($courseMeta.Contains($c)) { $courseMeta[$c].ten } else { $c }
+  Write-Host ("  {0} ({1}):" -f $ten, $c)
+  foreach ($lv in @($manifest[$c].Keys)) { Write-Host ("    {0}: bai {1}" -f $lv, (($manifest[$c][$lv]) -join ', ')) }
+}

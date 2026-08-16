@@ -1,14 +1,33 @@
 ---
 name: add-vocab
-description: Thêm tự động MỘT bài Minna no Nihongo (N5) vào app — từ vựng chính + phụ lục (参考語彙) + câu + ngữ pháp. Dùng khi người dùng gõ "/add-vocab <số bài>" (vd /add-vocab 10). Lấy DANH SÁCH TỪ VỰNG từ vnjpclub theo số bài (hay bị chặn → tự soạn theo giáo trình), TỰ SOẠN bảng phụ lục + câu + ngữ pháp theo mẫu chuẩn, sinh CSV rồi chạy build. KHÔNG dùng cho ngôn ngữ khác hay việc khác.
+description: Thêm từ vựng (+ câu, ngữ pháp) cho MỘT bài vào app tiếng Nhật — CHỌN GIÁO TRÌNH trước: Minna no Nihongo (bài 1..N, có phụ lục 参考語彙) hay Gungun (chương chia phần A/B/C, nội dung do người dùng cung cấp). Dùng khi người dùng gõ "/add-vocab <số bài>" (vd /add-vocab 10 = Minna bài 10, /add-vocab gungun 1A = Gungun chương 1 phần A) hoặc khi thêm/sửa vài từ lẻ vào bài đã có. Với Minna: lấy danh sách từ vựng từ vnjpclub (hay bị chặn → tự soạn theo giáo trình) + tự soạn phụ lục/câu/ngữ pháp. Với Gungun: KHÔNG có nguồn web, phải lấy nội dung người dùng dán vào. Sinh CSV rồi chạy build. KHÔNG dùng cho ngôn ngữ khác hay việc khác.
 ---
 
-# /add-vocab <số bài>
+# /add-vocab [giáo trình] <số bài / chương+phần>
 
-Thêm **Bài X** (N5) vào app theo đúng kiến trúc CSV → build. `X` = số bài người dùng đưa
-(ví dụ `/add-vocab 10` ⇒ X = 10). `NN` = X dạng 2 chữ số (`10`, `09`, …).
+Thêm một **đơn vị học** vào app theo đúng kiến trúc CSV → build.
 
-Nếu người dùng KHÔNG đưa số bài → hỏi lại số bài rồi mới làm.
+## 0. XÁC ĐỊNH GIÁO TRÌNH TRƯỚC (bắt buộc)
+
+App có **2 giáo trình**, dữ liệu tách rời hoàn toàn — sai giáo trình là hỏng cả bài:
+
+| Giáo trình | Mã | Đơn vị | Thư mục CSV | Nguồn nội dung |
+| --- | --- | --- | --- | --- |
+| Minna no Nihongo | `MINNA` | **Bài** 1…N | `csv/MINNA/N5/lesson-NN/` | web (vnjpclub) + tự soạn |
+| Gungun | `GUNGUN` | **Chương** chia **Phần A/B/C** | `csv/GUNGUN/N5/lesson-NN<PHẦN>/` | **người dùng dán vào** |
+
+Cách suy ra tham số:
+- `/add-vocab 10` → Minna, Bài 10 → `csv/MINNA/N5/lesson-10/`.
+- `/add-vocab gungun 1A` (hoặc "gungun chương 1 phần A") → `csv/GUNGUN/N5/lesson-01A/`.
+- Người dùng đang dán sẵn danh sách từ + ngữ pháp và nói "chương/phần" → Gungun.
+- **Không rõ giáo trình HOẶC không rõ số bài/phần → HỎI, đừng đoán.**
+
+Ký hiệu dùng trong tài liệu này: `X` = số bài/chương, `NN` = X dạng 2 chữ số,
+`<DIR>` = thư mục CSV của đơn vị đó (theo bảng trên), `<JS>` = file sinh ra tương ứng
+(`data/lessons/<GIÁO_TRÌNH>/N5/lesson-<NN>[PHẦN].js`).
+
+Các bước 2b (phụ lục), 4 (reading/conversation 5+5) và mục "Phong cách" ở dưới viết cho
+**Minna**; phần **Gungun** xem mục riêng ở cuối file.
 
 ## ⛔ LUẬT BẤT DI BẤT DỊCH — thêm từ vựng là thêm ĐỦ BỘ
 
@@ -28,10 +47,10 @@ Người dùng đã chốt: **hễ thêm từ vựng thì phải thêm đầy đ
 Áp dụng cho **mọi lần chạm vào từ vựng**, kể cả khi chỉ bổ sung vài từ lẻ vào bài đã có,
 không riêng lúc tạo bài mới.
 
-## Quy trình
+## Quy trình (mặc định = Minna; Gungun xem mục cuối file)
 
 ### 1. Kiểm tra trùng
-Nếu `data/lessons/csv/N5/lesson-NN/` đã tồn tại → báo bài đã có, HỎI có ghi đè không; dừng nếu không.
+Nếu `<DIR>` đã tồn tại → báo bài đã có, HỎI có ghi đè không; dừng nếu không.
 
 ### 2. Lấy từ vựng — 2 phần: **本冊語彙** (chính) + **参考語彙** (phụ lục)
 
@@ -66,7 +85,7 @@ giải thích ngữ pháp hay đoạn văn của trang — phần câu + ngữ p
 - Bỏ trợ từ/ngữ pháp thuần khỏi cột từ vựng nếu đã đưa vào grammar (vd `～から`).
 
 ### 4. Tạo 5 CSV — UTF-8 **CÓ BOM** (bắt đầu bằng ký tự ﻿), header **tiếng Việt**
-Thư mục `data/lessons/csv/N5/lesson-NN/`. Ô nào chứa dấu phẩy `,` phải bọc nháy kép `"..."`.
+Thư mục `<DIR>` (Minna: `csv/MINNA/N5/lesson-NN/`). Ô nào chứa dấu phẩy `,` phải bọc nháy kép `"..."`.
 
 - **`words.csv`** — header `tiengNhat,romaji,nghia,kana,phuluc`. Mỗi từ 1 dòng (từ bước 2–3).
   Cột `phuluc`: để TRỐNG với **từ chính** (本冊語彙, gồm cả từ phần 会話); điền `1` với các từ
@@ -111,7 +130,7 @@ Không được bỏ bước này (xem luật ở đầu file). File dùng chung
    node -e "const fs=require('fs'),vm=require('vm');const sb={console};vm.createContext(sb);
    vm.runInContext(fs.readFileSync('data/kanji-parts.js','utf8'),sb);
    const KP=vm.runInContext('KANJI_PARTS',sb);global.window=global;require('./data/registry.js');
-   require('./data/lessons/N5/lesson-NN.js');const s=new Set();
+   require('./<JS>');const s=new Set();   // vd ./data/lessons/GUNGUN/N5/lesson-01A.js
    JPLessons.words().forEach(w=>(String(w[0]).match(/[一-鿿々]/g)||[]).forEach(c=>s.add(c)));
    console.log([...s].filter(c=>!KP[c]).join(' '))"
    ```
@@ -125,11 +144,11 @@ Không được bỏ bước này (xem luật ở đầu file). File dùng chung
 
 ### 5. Build
 Chạy: `pwsh -ExecutionPolicy Bypass -File tools/build-lessons.ps1`
-Nó sinh `data/lessons/N5/lesson-NN.js`, cập nhật `data/lessons/manifest.js`, bump cache `sw.js`.
-Không cần sửa HTML.
+Nó sinh `<JS>`, cập nhật `data/lessons/manifest.js`, bump cache `sw.js`. Không cần sửa HTML.
+Dòng tổng kết in ra **theo từng giáo trình** — kiểm tra bài mới nằm đúng giáo trình mong muốn.
 
 ### 6. Verify
-- `node --check data/lessons/N5/lesson-NN.js`.
+- `node --check <JS>`.
 - Spot-check vài dòng có dấu phẩy (câu `から`, giải thích ngữ pháp) đã bọc nháy đúng.
 - (Nếu có `scratchpad/boot-sim.js` hoặc tự dựng) chạy boot-sim để chắc app nạp được và tổng
   số từ/câu tăng đúng.
@@ -148,7 +167,33 @@ Không cần sửa HTML.
 - **MỜI người dùng dán danh sách từ vựng + phụ lục trong sách** để đối chiếu bổ sung.
 - **HỎI người dùng trước khi commit** (đừng tự commit/push trừ khi được yêu cầu).
 
-## Phong cách (giữ nhất quán với các bài đã có: xem `data/lessons/csv/N5/lesson-08`, `lesson-09`)
+## GUNGUN — chương chia phần A/B/C
+
+Khác Minna ở **nguồn nội dung** và **đơn vị**; luật "thêm từ vựng là thêm ĐỦ BỘ" ở đầu file
+vẫn áp dụng y nguyên (kanji form, kana/katakana, romaji, nghĩa, + `kanji-parts.csv`).
+
+1. **Mỗi PHẦN là một thư mục riêng**: `csv/GUNGUN/N5/lesson-01A/`, `lesson-01B/`, `lesson-01C/`
+   (tên = `lesson-` + số chương 2 chữ số + chữ phần in hoa). Chương không chia phần thì
+   `lesson-02/`. Chép từ `csv/_TEMPLATE/`. Mỗi phần có **từ vựng + ngữ pháp riêng** và trở
+   thành **một nút "Phần A" riêng** trong app (khoá `GUNGUN:1A`).
+2. **KHÔNG có nguồn web** cho Gungun — đừng đi tra vnjpclub/langoal. Nội dung phải do
+   **người dùng cung cấp**. Nếu người dùng chưa dán → **HỎI và chờ**, đừng tự bịa danh sách
+   từ vựng "theo giáo trình" như bên Minna (ta không có bản quyền lẫn bản sao giáo trình này).
+3. **Không có khái niệm 参考語彙** → cột `phuluc` để trống hết, trừ khi người dùng nói rõ
+   khối nào là phụ lục/tham khảo.
+4. **Chỉ tạo file nào có nội dung.** Tối thiểu là `words.csv` + `grammar.csv` (đúng thứ
+   người dùng đưa). `sentences.csv` thì **tự soạn** câu dùng đúng từ + mẫu ngữ pháp của
+   *phần đó* (khoảng 10–20 câu, hoặc theo yêu cầu). `reading.csv` / `conversation.csv`
+   **không bắt buộc** — chỉ làm khi người dùng yêu cầu (đừng mặc định 5+5 như Minna).
+   File nào không có nội dung thì để **chỉ dòng tiêu đề** (build chấp nhận file rỗng).
+5. Ngữ pháp: `grammar.csv` cùng header `mau_cau,giai_thich,vi_du,vi_du_romaji,nghia`. Nếu
+   người dùng chỉ đưa mẫu câu + giải thích thì **tự soạn ví dụ** bằng từ vựng của chính
+   phần đó, và nói rõ trong báo cáo phần nào là tự soạn.
+6. Build + verify + checklist "đủ bộ" giống hệt Minna, chỉ đổi đường dẫn (`<DIR>`, `<JS>`).
+7. Báo cáo: “Gungun · Chương X phần P — A từ · B câu · C ngữ pháp · K kanji có bộ thủ”,
+   nêu rõ mục nào lấy nguyên từ nội dung người dùng dán, mục nào tự soạn.
+
+## Phong cách (giữ nhất quán với các bài đã có: xem `data/lessons/csv/MINNA/N5/lesson-08`, `lesson-09`)
 - Câu viết **chủ yếu hiragana**, katakana cho từ ngoại lai, **cách khoảng giữa các bunsetsu**.
 - Ngữ pháp đánh số ①②③…; giải thích ngắn gọn **tiếng Việt** + 1 ví dụ Nhật/romaji/nghĩa.
 - Chỉ dùng từ vựng/ngữ pháp thuộc **Bài X hoặc các bài trước** (tránh mẫu của bài sau).
