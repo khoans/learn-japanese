@@ -87,10 +87,20 @@ registerLesson("GUNGUN", "N5", 1, {
     ["あっ、しつれいしました。", "A, shitsurei shimashita.", "A, tôi xin lỗi."],
     ["…いえいえ、だいじょうぶです。", "…Ieie, daijoubu desu.", "…Không sao, không sao đâu."],
     ["ええと、わたしは タイじんです。", "Eeto, watashi wa taijin desu.", "Ờm... tôi là người Thái."],
-    ["こんばんは。そうですか。", "Konbanwa. Sou desu ka.", "Chào buổi tối. Vậy à?"]
+    ["こんばんは。そうですか。", "Konbanwa. Sou desu ka.", "Chào buổi tối. Vậy à?"],
+    ["リンさんは ベトナムじんです。わたしも ベトナムじんです。", "Rin-san wa betonamujin desu. Watashi mo betonamujin desu.", "Chị Linh là người Việt Nam. Tôi cũng là người Việt Nam."],
+    ["たなかさんは かいしゃいんです。やまださんも かいしゃいんです。", "Tanaka-san wa kaishain desu. Yamada-san mo kaishain desu.", "Anh Tanaka là nhân viên công ty. Anh Yamada cũng là nhân viên công ty."],
+    ["キムさんも がくせいですか。", "Kimu-san mo gakusei desu ka.", "Anh Kim cũng là sinh viên phải không?"],
+    ["…はい、キムさんも がくせいです。", "…Hai, Kimu-san mo gakusei desu.", "…Vâng, anh Kim cũng là sinh viên."],
+    ["これは にほんりょうりです。それも にほんりょうりです。", "Kore wa nihonryouri desu. Sore mo nihonryouri desu.", "Cái này là món ăn Nhật Bản. Cái đó cũng là món ăn Nhật Bản."],
+    ["あれも ジュースですか。", "Are mo juusu desu ka.", "Cái kia cũng là nước hoa quả phải không?"],
+    ["…いいえ、ビールです。", "…Iie, biiru desu.", "…Không, đó là bia."],
+    ["スーさんは きょうしです。わたしも きょうしです。", "Suu-san wa kyoushi desu. Watashi mo kyoushi desu.", "Chị Su là giáo viên. Tôi cũng là giáo viên."]
   ],
   grammar: [
-
+    {"p": "① N1 は N2 です。", "g": "は là trợ từ nêu chủ đề, viết là は nhưng ĐỌC là わ. N1 は N2 です = \"N1 là N2\" — dùng để giới thiệu bản thân, quốc tịch, nghề nghiệp, hoặc nói một vật là gì. Thể nghi vấn của mẫu này xem ③. Khi chỉ đồ vật thì N1 dùng これ (vật ở gần người nói), それ (gần người nghe), あれ (xa cả hai người); dạng lịch sự tương ứng là こちら／そちら／あちら. Ví dụ: リンさんは がくせいです。／これは にほんりょうりです。／それは ビールですか。…はい、そうです。", "ex": "わたしは ベトナムじんです。", "exr": "Watashi wa betonamujin desu.", "m": "Tôi là người Việt Nam."},
+    {"p": "② N1 も N2 です。", "g": "も có nghĩa là \"cũng\", dùng khi điều nói về N1 GIỐNG với điều vừa nói về người/vật trước đó. も ĐỨNG THAY chỗ của は — không nói ～はも. Thể hỏi cũng thêm か ở cuối (N1 も N2 ですか). Ví dụ: たなかさんは かいしゃいんです。やまださんも かいしゃいんです。／これは にほんりょうりです。それも にほんりょうりです。", "ex": "リンさんは がくせいです。わたしも がくせいです。", "exr": "Rin-san wa gakusei desu. Watashi mo gakusei desu.", "m": "Chị Linh là sinh viên. Tôi cũng là sinh viên."},
+    {"p": "③ N1 は N2 ですか。…はい、そうです。／いいえ、～です。", "g": "Thể NGHI VẤN của ①: giữ nguyên trật tự câu, chỉ thêm か vào cuối và lên giọng ở cuối câu (tiếng Nhật không dùng dấu ?). CÁCH TRẢ LỜI — đúng: はい、そうです。 hoặc はい、～です。 (nhắc lại N2); sai: いいえ、～です。 (nói luôn thông tin đúng, vì thể phủ định じゃ ありません chưa học ở phần này). Hỏi tên thì dùng （お）なまえは。 → ～です。 Ví dụ: これは ビールですか。…いいえ、ジュースです。／たなかさんも かいしゃいんですか。…はい、そうです。／おなまえは。…リンです。", "ex": "キムさんは かんこくじんですか。…はい、そうです。", "exr": "Kimu-san wa kankokujin desu ka. …Hai, sou desu.", "m": "Anh Kim là người Hàn Quốc phải không? …Vâng, đúng vậy."}
   ],
   readings: [
 
