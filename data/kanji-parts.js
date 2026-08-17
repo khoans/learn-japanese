@@ -232,5 +232,14 @@ const KANJI_PARTS = {
   "漢": {"hv": "Hán", "ngh": "nhà Hán; người Hán, chữ Hán", "on": "カン", "kun": "", "parts": [["氵", "", true], ["艹", "", false], ["口", "", false], ["大", "", false]]},
   "字": {"hv": "Tự", "ngh": "chữ, chữ viết", "on": "ジ", "kun": "あざ", "parts": [["宀", "", false], ["子", "", true]]},
   "分": {"hv": "Phân", "ngh": "chia, phần; phút", "on": "ブン・フン", "kun": "わ(ける)・わ(かる)", "parts": [["八", "", false], ["刀", "", true]]},
-  "違": {"hv": "Vi", "ngh": "khác, sai, trái ngược", "on": "イ", "kun": "ちが(う)", "parts": [["辶", "", true], ["韋", "", false]]}
+  "違": {"hv": "Vi", "ngh": "khác, sai, trái ngược", "on": "イ", "kun": "ちが(う)", "parts": [["辶", "", true], ["韋", "", false]]},
+  "帳": {"hv": "Trướng", "ngh": "quyển sổ; bức màn", "on": "チョウ", "kun": "とばり", "parts": [["巾", "", true], ["長", "", false]]},
+  "市": {"hv": "Thị", "ngh": "chợ; thành phố", "on": "シ", "kun": "いち", "parts": [["亠", "", false], ["巾", "", true]]},
+  "役": {"hv": "Dịch", "ngh": "vai trò, chức vụ; việc công", "on": "ヤク・エキ", "kun": "", "parts": [["彳", "", true], ["殳", "", false]]},
+  "所": {"hv": "Sở", "ngh": "nơi chốn, chỗ", "on": "ショ", "kun": "ところ", "parts": [["戸", "", true], ["斤", "", false]]},
+  "交": {"hv": "Giao", "ngh": "giao nhau, qua lại; trao đổi", "on": "コウ", "kun": "まじ(わる)", "parts": [["亠", "", true], ["父", "", false]]},
+  "使": {"hv": "Sử", "ngh": "sai khiến, sử dụng; sứ giả", "on": "シ", "kun": "つか(う)", "parts": [["亻", "", true], ["吏", "viên quan", false]]},
+  "号": {"hv": "Hiệu", "ngh": "số hiệu, tên hiệu", "on": "ゴウ", "kun": "", "parts": [["口", "", true], ["丂", "hơi nghẹn", false]]},
+  "円": {"hv": "Viên", "ngh": "tròn; đồng yên (tiền Nhật)", "on": "エン", "kun": "まる(い)", "parts": [["冂", "", true], ["十", "", false]]},
+  "当": {"hv": "Đương", "ngh": "đúng, trúng; đảm nhận", "on": "トウ", "kun": "あ(たる)・あ(てる)", "parts": [["⺌", "", true], ["彐", "", false]]}
 };
